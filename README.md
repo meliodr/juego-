@@ -6,15 +6,27 @@ Sandbox 3D de vuelo superhumano, exploración, agarres y destrucción. Desarroll
 
 Conseguir primero esta secuencia jugable: despegar, acelerar entre edificios, agarrar un carro, lanzarlo contra una pared, atravesar el hueco y continuar la pelea. La visión incluye **tres personajes originales** —combatiente de fuerza H01, genio cósmico esmeralda H02 y desplazador espacial H03—, una ciudad vertical densamente explorable y parcialmente destruible sobre un planeta pequeño, y un sistema solar compacto con Sol visible (no visitable), Luna y otros dos planetas visitables por regiones.
 
+**Hardware declarado para planificar: 64 GB RAM, NVIDIA RTX 4070 de 8 GB VRAM; CPU, distro Linux, SSD y driver por verificar en L00.**
+
 **Presupuesto de compras de assets y plugins: RD$0.** No implica hardware gratuito ni consumo ilimitado de servicios de IA. Prioridad: un sandbox divertido y pequeño antes de ampliar el mundo. El multijugador futuro no sustituye el modo individual sin conexión.
 
 ## Estado real — 14 de noviembre de 2026
+
+**V0.6 sigue siendo planificación, no aprobación para iniciar compilación, instalaciones o desarrollo de juego.** Las cinco skills y los nuevos documentos son el resultado actual. Sistema de alerta/civiles/karma y rendimiento están especificados con parámetros iniciales ajustables, no implementados.
 
 El repositorio contiene documentación de investigación y diseño. No contiene todavía un proyecto Unreal, un ejecutable ni paquetes de terceros. No se han compilado o ejecutado los candidatos en Unreal ni se ha inspeccionado el equipo Linux del usuario.
 
 El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.5 añade nuevas opciones comprobadas documentalmente (robots animados, mechas, monstruos, PCG, etc.). No son sistemas instalados. Se trabaja con distintos niveles de evidencia: páginas de autor, licencias, estructura del repositorio y, para componentes seleccionados, código inspeccionado. Un candidato no equivale a una dependencia aprobada o probada. La actualización Linux añade filtros de portabilidad; no certifica los candidatos. Las especificaciones de arte, personajes, movimientos, enemigos y red son propuestas, no implementaciones.
 
 ## Documentos
+
+**Última dirección operativa (v0.6):** diseño de civiles/alertas/karma, contrato de arquitectura/roles y backlog que condiciona el inicio a L00 Linux.
+
+- [Contrato de producción y arquitectura v0.6](docs/PRODUCTION_CONTRACT_V06.md): requisitos FR/NFR, RACI, subsistemas, riesgos, perfiles, rutas críticas, DoR/DoD, herramientas.
+- [Ciudadanos, alertas y karma v0.6](docs/CIVILIANS_ALERTS_KARMA_V06.md): testigos, tres tiers de ciudadanía, incidentes, 0–5 de alerta, karma −100..100, modo Creativo/Ciudad Viva/Desafío, co-op.
+- [Backlog de ejecución v0.6](docs/EXECUTION_BACKLOG_V06.md): propietarios de tareas y gates, tickets IB-L00/IB-F01/IB-U00, aceptación y checklist previo al comienzo.
+- [Cinco skills de Codex](.agents/skills/): auditoría de licencias, gate Linux, implementación jugable, sistemas cívicos, QA. Son instrucciones, no tareas ya ejecutadas.
+
 
 - [PLAN MAESTRO v0.5](docs/MASTER_PLAN_V05.md): fuente principal para alcance, fases, límites del motor y de la IA, arquitectura, gates y decisiones de descarte.
 - [Auditoría de recursos gratuitos v0.5](docs/FREE_RESOURCE_AUDIT_V05.md): nuevas opciones concretas para robots, mechas, kaijus, ciudad/espacio, licencias actualizadas y pruebas previas a importar.
@@ -32,7 +44,7 @@ El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.
 - [Plan de experimentos e integración](docs/REUSE_PLAN.md): evaluación técnica de componentes.
 - [Reglas para agentes de programación](AGENTS.md): reutilización responsable, presupuesto y evidencias requeridas.
 
-Precedencia: MASTER_PLAN_V05 para fases/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
+Precedencia: PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
 
 ## Personajes y enemigos
 
