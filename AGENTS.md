@@ -1,159 +1,74 @@
-# Directiva activa v1.1 — auditoría de destrucción y planetas
-
-Leer docs/CITY_DESTRUCTION_PLANETS_AUDIT_V11.md antes de integrar arquitectura de ciudad, edificio destructible, terreno o planetas. Priorizar **PlotBuilder UE5.8 MIT** para el experimento aislado de soporte/derrumbes, **Chaos nativo** para fractura y colisiones, **Quaternius/CC0 + PCG** para arquitectura, **Grzybojad UE5.1 MIT** sólo si se necesitan algoritmos de calle, y **Ephemera MIT UE5.8** como laboratorio orbital separado. Código de PlotBuilder NO es automáticamente sistema de ciudad completa; probar módulo 6–12 piezas y decidir frente a panel Chaos simple. RealtimeTerrain requiere plugins Cesium/GRT y otros: NO importar suite por impulso.
-
-Licencias: jugar en privado con amigos no autoriza copiar cualquier archivo; un repo sin LICENSE no es permiso de copiar. Revisar source/código/modelos por separado, no subir activos de juegos ajenos al GitHub público. Estado de esta revisión: documentación auditada, NO Unreal instalado/ejecutado. 1 jugador offline, cooperativo MUY LEJANO. La revisión v1.1 se antepone a referencias antiguas para estos sistemas.
-
-# Instrucción activa v1.0 — movilidad completa
-
-El usuario EXIGE que los personajes también caminen y corran, no solo vuelen. Leer docs/GROUND_FLIGHT_CREATORS_V10.md antes de editar locomoción, rig/AnimationBP o determinar donantes. Requisito para H01/H02/H03: Idle, Walk, Jog/Run, Sprint, Start/Stop/Turn, Jump/Fall, Takeoff, Hover, Cruise/Sonic, Brake, Land y Recover; **un solo pawn/controlador**. Fuente inicial de suelo: Unreal Third Person Combat; fuente C++ vuelo: ManOfSteel, sólo lo que sea legal e integrable; ground premium en Epic GASP UE5.8 aislado tras revisar uso AI/Fab; tutorial de transición LocoDev y blend Haez; ALS-Community es reserva, NO dependencia actual. Mantener coste assets RD$0. Pruebas GND-01..GND-06 y valoración humana. Co-op MUY LEJANO, no netcode temprano. El juego sigue NO IMPLEMENTADO: planificación, no compilar sin entorno real/autorización.
-
-# Directiva activa v0.9 — prioridad máxima de alcance
-
-El usuario quiere **cooperativo MUY LEJANO**, fuera de todos los gates actuales. NO crear N0/N1, netcode, pruebas LAN, listen servers, replicación de física, sesiones, EOS o roles dedicados de networking. Mantener solo límites modularizados e IDs para QA/guardado offline. Leer docs/FLIGHT_REUSE_AUDIT_V09.md antes de trabajar en vuelo o decidir referencias de proyectos. ManOfSteel tiene C++ MIT accesible pero animaciones bajo punteros Git LFS (~130B) y código UE5.3 que requiere adaptación segura a Linux. Priorizar el estudio/port mínimo de Flight.cpp, lean y camera sin personaje Superman ni Blueprints ausentes. Si portar resulta costoso, CMC nativo + animaciones CC0/Rokoko y reconstrucción mínima. Esta directiva reemplaza expresamente instrucciones antiguas sobre networking temprano, N0/N1 y COOP_PLAN. Nada del proyecto ha sido compilado localmente.
-
 # AGENTS.md — IMPACT: BEYOND
 
-## Dirección de sensación y animación — v0.8
+## Fuentes de verdad y estado
 
-- Leer docs/ANIMATION_FEEL_OPTIMIZATION_V08.md antes de vuelo animado, golpes, agarres, cámara, física parcial o rendimiento; usar skill impact-character-animation actualizada. Estado PLANIFICADO, no una build con movimientos.
-- **Regla de oro: control y física mandan, la animación sigue**: locomoción/colisión en CMC/Flight; AnimationBP blend y poses; nunca arreglar control con root motion global, teleport no intencionado o Montages largos.
-- Animación por capas: base Ground/Takeoff/Hover/Cruise/Sonic/Brake/Recover, aditivo bank/lean, upper-body hit/grab/summon/blink y corrección manos IK solo según interacción. Inertialization para transiciones compatibles; no para poses extremas repetidas.
-- Golpes épicos por anticipación, contacto confirmado con AttackId, reacción física parcial y seguimiento de impulso, sonido, FX y daño/rotura del entorno. Nunca usar animaciones cinemáticas obligatorias para todas las acciones ni sacudir cámara a costa de apuntar.
-- No congelar simulación global por hitstop; solo microcompresión estética local opcional. Co-op debe seguir moviéndose, sincronizarse y repartir responsabilidad.
-- Optimización por importancia: H01/H02/H03/objetivo con animación e IK de calidad, NPC cercanos simplificados, lejanos con Animation Budget Allocator/Animation Sharing si mediciones exigen; reducir trabajo de EventGraph Tick y FX por Niagara Effect Types. Solo activar Motion Warping/FullBodyIK cuando se pruebe que resuelven un defecto concreto.
-- 1080p Medium 60FPS son objetivos para RTX 4070 8GB y Linux Vulkan, no resultados; perf p95/p99, GPU/CPU, VRAM y playtest humano obligatorios. Cambiar antes cámara/sombrasy VFX, fragmentos y NPC que respuesta de vuelo.
-- Plan de tareas FEEL-01..FEEL-06 en docs/ANIMATION_FEEL_OPTIMIZATION_V08.md, sin iniciar gameplay hasta autorización y gate L00. No instalar plugins/editar Unreal desde esta documentación.
+1. Leer `docs/PLAN_ACTIVO.md` y el ticket correspondiente de `docs/TAREAS_ACTIVAS.md`.
+2. Leer solo la skill pertinente y los documentos temáticos que pide esa tarea.
+3. Los planes versionados anteriores son investigación y antecedentes. No reactivan tareas de red, nombres descartados ni otros alcances sustituidos.
 
-## Reglas vigentes adicionales — v0.7
+Estado a 2026-11-14: repositorio de planificación y skills. En la revisión de `main` anterior a esta consolidación no había `.uproject`, código de juego ni ejecutable. No se ha verificado el Linux del usuario. No declarar instalado, compilado, jugable, importado o probado lo que no se ha ejecutado. La petición actual es planificar; no autoriza instalaciones, cambios de sistema ni ejecución remota por sí sola.
 
-- Leer docs/ANIMATION_CHARACTER_PIPELINE_V07.md cuando se trabajen personajes, rigs o animaciones, y docs/REFERENCES_DYNAMIC_EVENTS_V07.md cuando se trabajen eventos aleatorios. Leer las skills impact-character-animation / impact-world-events según ticket. V0.7 no significa juego ejecutado.
-- Reutilizar primero Quaternius Universal Base Characters Standard/Universal Animation Library Standard, evaluar 15 mocaps de superhéroes de Rokoko, Epic Game Animation Sample 5.8 en laboratorio con revisión de Fab NoAI y Mesh2Motion MIT/CC0 para criaturas. No asumir que las 15 capturas contienen vuelo. MakeHuman/MPFB core CC0 para civiles si estilo compatible.
-- Cuerpo del héroe con animaciones de estado/IK controladas por FlightComponent: Ground/Takeoff/Hover/Cruise/Sonic/Brake/Recovery. Modelar armaduras en Blender mediante scripts si recursos no son suficientes; jamás declarar imagen 2D como modelo 3D listo.
-- Fuentes de referencia Roblox Project Power, Viltrumite Time, Viltrum Battlegrounds, Minecraft Viltrumite Flight/Invincible Incorporated/Fisk: observar ideas, NO copiar scripts, nombres de franquicia, rigs, mapas o audio ARR. Referencias verificadas principalmente por fichas/changelogs/vídeos descritos; no afirmar gameplay visto si no lo fue.
-- Eventos de sandbox diseñados: robo, meteorito, dron, invasión, kaiju, rival, rescate; libre de historia y siempre opcionales. Un World Event Director administra condiciones/cooldowns/presupuestos por región, spawn fuera de cámara y fallback ante colisión/streaming no preparado.
-- Un impacto meteoro = un incidente independiente de culpa del jugador. Alertas de distrito, amenaza y karma personal siguen separados por IncidentId/CausationId; eventos no duplican sanciones por fragmentos. En creativo puede desactivarse respuesta.
-- No introducir eventos antes del bucle vuelo + carro + pared + rival. Invasión reutiliza robots/kaiju existentes, no inventa 10 enemigos. Meteor usa crater prefab/Chaos localizado y fragmentos agarrables, no destrucción planetaria booleana.
-- El plan de Codex/roles sigue secuencial con pruebas Linux; nuevas skills son instrucciones, no servidores activos ni permisos de instalación.
+## Alcance y decisiones firmes
 
-## Estado y fuentes vigentes — v0.6
+- Sandbox individual, offline, Linux nativo y compras de assets/plugins RD$0. El cooperativo es MUY LEJANO: no N0/N1, LAN, RPC, replicación, servidor, lobby, EOS, matchmaking ni tests de latencia actuales.
+- Prioridad: caminar/correr/saltar y volar con un mismo personaje; luego agarrar/lanzar, destruir con huecos reales, combatir y repetir. No comenzar por planeta, campaña, gran ciudad o infraestructura online.
+- Vuelo libre sin combustible ni poderes bloqueados por karma. Movimiento responsivo, cámara legible y configuraciones de efectos/accesibilidad. Las animaciones acompañan al movimiento; no lo sustituyen con teletransportes ocultos.
+- H01 fuerza; H02 genio cósmico masculino esmeralda del concepto aprobado, sin fruta del diablo ni traje/icono de Linterna Verde; H03 teletransporte. H01/H02/H03 son IDs internos. No usar VECTOR o PRISMA como nombres de héroes ni recuperar al enemigo constructor genérico. No confundir arte 2D con modelo riggeado listo.
+- Robots, kaijus y superhumanos; desarme de piezas preparadas con consecuencias funcionales y sin gore explícito. Primero un robot pequeño y un rival, no diez rigs.
+- Ciudadanos, amenaza, alerta y karma son sistemas distintos. No atribuir automáticamente daño enemigo al jugador. Modos creativos permiten desactivar consecuencias.
+- La visión espacial conserva planeta principal pequeño/continuo visualmente, Luna, dos planetas visitables por regiones y Sol solo visible. Se integra después del sandbox urbano estable, no física detallada de todos los cuerpos.
 
-**NO iniciar gameplay solo porque exista este plan.** El usuario quiere arquitectura, roles, skills y criterios claros antes de autorizar ejecución. La base aún es documental; no hay Unreal compilado/probado en la máquina Linux.
-**Hardware declarado**: 64 GB RAM y NVIDIA RTX 4070 8 GB VRAM. Faltan CPU, distro, espacio/SSD, driver Vulkan y versión UE; auditar en L00, no volver a preguntar RAM/GPU.
-**Fuente principal**: docs/PRODUCTION_CONTRACT_V06.md y docs/EXECUTION_BACKLOG_V06.md. **Reputación/alertas/NPC**: docs/CIVILIANS_ALERTS_KARMA_V06.md. Los documentos v0.5 y anteriores son contexto cuando no contradigan v0.6.
-**Procedimientos reusables**: .agents/skills/impact-license-audit, impact-linux-gate, impact-gameplay-gate, impact-civic-systems, impact-qa-review; leer el SKILL.md correspondiente cuando llegue ticket.
-**Separación de sistemas**: Alerta de distrito 0–5, Karma de jugador/región −100..100 y amenaza enemiga son diferentes. Modo Creativo permite desactivarlos. Nunca atribuir automáticamente a jugador daño causado por kaiju/robot. No penalizar por cada fragmento de un único incidente.
-**Ciudadanos**: empezar 3–6 actores con StateTree/SmartObjects; NPC Tier A/B/C y MassCrowd son ampliación condicional a profiling. MassAI/MassGameplay/ZoneGraph son experimentales en UE5.8: no introducir antes del gate.
-**Hardware/performance**: presupuestos objetivo 1080p 60fps, no resultados. Perfil escalable Low/Medium, número de NPC y física limitados por 8GB VRAM y CPU desconocida. Medir paquete Linux Vulkan real y p95/p99 de frame.
-**Flujo**: ticket Ready -> auditoría/licencia -> rama aislada -> integración mínima -> build/test -> prueba jugable humana -> revisión -> merge. Un solo dueño de main; no editar mismo UAsset en paralelo. DoD exige evidencia.
-**Alcance**: 3 héroes H01/H02/H03, robots/kaijus/superhumanos, región urbana destructible, sistema solar compacto, co-op 2 jugadores posterior. MVP = vuelo + carro + pared + enemigo y pequeños testigos; no historia, poderes y vuelo sin bloqueo por karma.
-No borrar las otras reglas que siguen.
+## Entorno conocido y límites de acceso
 
-## Misión
+Hardware reportado: **64 GB RAM, RTX 4070 de 8 GB VRAM**. Inspeccionar CPU, modelo exacto de GPU, distribución, driver/Vulkan, SSD/espacio y motor/toolchain. No repetir la pregunta de RAM/GPU ni confundir el contenedor del chat con la máquina del usuario.
 
-Crear un sandbox superheroico 3D divertido mediante reutilización gratuita. Priorizar vuelo frenético, agarres, lanzamientos y destrucción. No convertir la primera entrega en un proyecto de planeta completo.
+Motor/parche y toolchain se fijan al pasar IB-L00, no por una versión citada en documentación cambiante. No actualizar a Preview ni modificar driver/distribución sin autorización. Unreal MCP es opcional y debe comprobarse en el editor local; no exponerlo a Internet ni convertirlo en dependencia del ejecutable.
 
-Leer README.md, docs/CITY_DESTRUCTION_PLANETS_AUDIT_V11.md, docs/GROUND_FLIGHT_CREATORS_V10.md, docs/FLIGHT_REUSE_AUDIT_V09.md, docs/ANIMATION_FEEL_OPTIMIZATION_V08.md, docs/ANIMATION_CHARACTER_PIPELINE_V07.md, docs/REFERENCES_DYNAMIC_EVENTS_V07.md, docs/PRODUCTION_CONTRACT_V06.md, docs/CIVILIANS_ALERTS_KARMA_V06.md, docs/EXECUTION_BACKLOG_V06.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
+Robert es el Dot del usuario, no una herramienta cuya conexión o ejecución debamos dar por hecha. Un encargo escrito no significa que fue enviado, aceptado o ejecutado. Los roles de integrador, artista técnico y QA son responsabilidades, no agentes necesariamente activos. No trasladar permisos/roles de otros proyectos.
 
-Precedencia: MASTER_PLAN_V05 para orden/criterios, FREE_RESOURCE_AUDIT_V05 para nuevas licencias y recursos, CODEX_QA_PLAYBOOK_V05 para autonomía/QA; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
+## Flujo de trabajo
 
-## Decisiones creativas vigentes — 2026-11-14
+- Una tarea de implementación activa. Auditoría paralela solo sin modificar los mismos archivos. Un responsable de integración; no editar simultáneamente el mismo Blueprint/mapa.
+- Trabajar en rama/checkpoint seguro y revisar cambios previos. No force-push, resets destructivos, sobrescritura de trabajo ajeno, cambios en otros repositorios o merges no autorizados.
+- Antes: objetivo, archivos permitidos, dependencia, procedencia, prueba, límite y rollback. Después: commit, resultado observado, evidencia, problemas y siguiente decisión.
+- Primera tarea operativa: IB-L00. Luego FLT-AUD/GND00/F01 → C00/P01/D01 → E01/S01. Consultar la cola; no abrir trabajos de planetas por iniciativa propia.
+- No añadir otra versión de plan encima de esta guía. Actualizar el plan activo y su cola, preservando decisiones y registrando cambios. Git conserva el historial previo de README/AGENTS.
 
-- El usuario rechazó los nombres VECTOR y PRISMA. No usarlos en interfaz, conceptos ni nuevas clases. H01/H02 son identificadores internos, no nombres artísticos. Los nombres finales siguen pendientes.
-- Mantener al combatiente de fuerza y al genio cósmico masculino de la referencia aprobada. H01: traje grafito con placas claras y acentos rojos. H02: hombre de cabello corto rizado, traje oscuro con plata/oro y energía esmeralda, manos espectrales y manifestaciones de genio. No sustituir H02 por la heroína genérica inicial.
-- H02 no depende de una fruta del diablo, ni usa traje o símbolo de Linterna Verde. No recuperar la iconografía de franquicias de la primera referencia.
-- Eliminar el arquetipo de enemigo constructor/energético genérico. Esto no elimina al héroe de creación ni convierte todos los rivales en copias de él.
-- Incorporar H03, desplazador espacial de teletransporte original: traje índigo, fracturas luminosas azul-violeta; Blink, contra-blink, golpe de reaparición, regreso a marca. Sin símbolos/rasgos copiados de Nightcrawler. Personaje NO creado todavía, sin nombre definitivo.
-- Mundo objetivo: ciudad muy densa y vertical con destrucción por capas y perforación funcional, planeta principal a escala reducida, Luna + dos planetas visitables en regiones pequeñas. Sol visible, no aterrizable. No desarrollar una simulación estelar completa ni publicar un mapa GTA/Marvel.
-- Robots, kaijus y superhumanos son las tres familias. Robots/kaijus pierden piezas con efectos sobre capacidades y con fragmentos importantes reutilizables. Separación estilizada sin vísceras ni anatomía explícita.
-- Diez enemigos diseñados no son alcance simultáneo: primer robot modular pequeño, rival de vuelo y después kaiju mediano de prueba. No modelar diez rigs ni añadir una forma colosal antes del bucle básico.
-- Documentos anteriores pueden contener nombres/identidades históricos. Aplicar COMBAT_ROSTER_V03 cuando entren en conflicto. El arte de conversación no está automáticamente subido al repositorio ni implica un modelo 3D importable.
+## Reutilizar antes de crear
 
-## Reglas ejecutivas adicionales — v0.5
+Consultar auditorías de vuelo y ciudad/destrucción/planetas. ManOfSteel: evaluar solo C++ y clips realmente disponibles/permitidos, no asumir que punteros LFS sean assets. REPIRK: solo agarre mínimo. PlotBuilder: ensayo del soporte en estructura pequeña contra alternativa Chaos nativa; no importar inventario/tienda. Ephemera: laboratorio espacial separado.
 
-- Trabajar **por gates** L00 -> F01 -> C01 -> P01 -> D01 -> E01 -> S01 -> H02/H03 -> K01 -> N01 -> W01/W02. El primer prototipo debe jugarse, nunca comenzar importando todo el catálogo. La prioridad es vuelo, carro y hueco transitable; sistema solar completo y red pública no bloquean esa secuencia.
-- La licencia de Quaternius **puede diferir por pack/fecha**: páginas anteriores CC0; nueva QAL (agosto 2026) restringe redistribución standalone de packs bajo ella. Verificar licencia ligada al archivo descargado. No confundir Standard gratuito con Source de pago. Cuidado con licencias de Fab.
-- Preferir robots Sci-Fi Essentials Standard y mechas/monstruos animados CC0 como base provisional; ninguna malla se considera desarmable hasta preparar módulos y aprobar pruebas. No instalar a la vez dos frameworks de desmembramiento.
-- Unreal 5.8/Linux: hardware recomendado 32GB RAM/8GB VRAM, Vulkan, y toolchain versión específica según requisitos actualizados. **No inventar las especificaciones reales del usuario**. Si no hay GPU/editor accesible, sólo completar documentación/código estático e indicar el bloqueo.
-- Unreal MCP es experimental y sus operaciones editor/game thread deben ser serializadas. No exponer puerto ni afirmar que Codex editó uassets sin evidencia. La IA no evalúa por sí sola la sensación de jugar.
-- Mantener pruebas N0/N1 de red desde primer movimiento/agarre, pero no crear lobby/relay ni sistemas de Internet antes de pasar el sandbox local. El modo individual sin conexión debe funcionar siempre.
+Una necesidad, un candidato y una alternativa nativa. Inventariar bytes, permisos, versión y dependencias antes de integrar. Si exige migrar un framework grande, volver a la alternativa; dejar de buscar cuando una opción supera la prueba. Conservar una sola implementación principal de movimiento/agarre/destrucción.
 
-## Estado inicial
+## Reglas técnicas de juego
 
-Este repositorio contiene documentación. No contiene todavía un proyecto Unreal. Ningún candidato del catálogo se ha compilado o ejecutado durante la investigación inicial. No describir documentos, personajes propuestos ni matrices de pruebas como un juego implementado.
+- Separar locomoción, acción y presentación. Datos editables para velocidades/daño/efectos; pocos componentes, no un framework gigante antes de jugar.
+- Barrer también el volumen del objeto transportado; no pegar un carro a las manos e ignorar su colisión.
+- Un dueño lógico por objeto, un desprendimiento por PartId y daño no duplicado por AttackId/TargetId. Restaurar estados al soltar, destruir o reiniciar. Son reglas offline, no trabajo de networking.
+- Pared rota implica colisión transitable; polvo o Niagara no sustituyen el hueco. Solo pocos fragmentos significativos físicos/agarrables, resto cosmético.
+- Desarme elimina la capacidad correspondiente. Teleport valida cápsula, carga y región lista. Un efecto no decide daño, karma ni movimiento.
+- No penalizar al usuario por cada fragmento del mismo impacto ni premiar rescates fabricados indefinidamente.
 
-## Plataforma y jugabilidad
+## Licencias y seguridad
 
-- Linux nativo con Vulkan. No depender de Wine/Proton, DLL de Windows ni servicios gráficos exclusivos de un fabricante.
-- No imponer distribución ni versión del motor sin inspeccionar el entorno real. Usar toolchain/documentación correspondientes a la versión elegida. No confundir un contenedor de chat con el equipo del usuario.
-- Todo candidato requiere inspección de fuentes/descriptores y pruebas de compilación, empaquetado y ejecución en Linux. README, licencia MIT o binario Windows no acreditan compatibilidad.
-- R02/REPIRK condicionado a portabilidad del agarre; R03 en reserva hasta confirmar Linux, licencia y acceso. Pared Chaos modular como respaldo. R01/Ephemera es laboratorio separado, no base obligatoria.
-- Orden: L00 Linux -> D0 vuelo/control/cámara -> distrito urbano de prueba -> D1 carro/pared y piezas robóticas -> D2 rival y sandbox -> H02/variedad/kaiju -> H03 blink seguro -> cooperativo regional -> ciudad ampliada y laboratorio planeta->órbita->luna->dos planetas. Preparar N0/N1 temprano; no esperar la campaña espacial para probar red. N0/N1 se prueban durante D0/D1. No construir lobby/Internet antes de la primera diversión individual.
-- Vuelo sin combustible; interacción compartida; no autofrenadas bruscas invisibles, menús por cada agarre ni generación de objetos con IA durante gameplay.
-- Todos los héroes implementados funcionan solos y pueden repetirse en cooperativo. El núcleo de H02 reutiliza golpe, agarre, escudo y martillo con presentación de genio; brazos extra y avatar colosal son ampliaciones.
-- Teleport de H03: usar primero APIs nativas de Unreal y comprobaciones de cápsula/destino; nunca dentro de paredes, sin colisión cargada ni a regiones no preparadas. El servidor valida teletransportación en cooperativo. No reutilizar scripts/assets de mods GTA o Marvel.
-- Para ciudad explorar Quaternius Downtown City MegaKit Standard CC0 (solo parte gratuita), Kenney y PCG nativo; PCGEx MIT solo si simplifica trabajo real. Para sistemas planetarios evaluar Ephemera MIT o Cosmic Architect MIT en laboratorio Linux aislado; no fusionar ambos ni importar paquetes de pago. Para arte espacial Quaternius Ultimate Space / Kenney Space/Station CC0.
-- Reutilizar acciones de H01 para el rival sin darle conocimiento perfecto de entradas/posición. Primer robot con unas pocas piezas; no corte universal ni combinaciones infinitas de amputación.
-- Identidad de cómic 3D estilizado, siluetas legibles y materiales consistentes. Priorizar modelos provisionales/piezas rígidas antes que capas/ropa complejas.
-- Compilar no demuestra diversión. Obtener feedback humano de control, velocidad y claridad además de pruebas técnicas.
+Verificar código, modelos, clips, audio y plugins por separado; público/gratuito no equivale a permiso universal. Mantener LICENSE, avisos y procedencia. Revisar edición Standard/Source y términos concretos; no comprar ni contratar APIs para completar tareas. El juego privado no justifica subir assets protegidos a GitHub público.
 
-## Dos jugadores y límites
+No publicar credenciales, rutas privadas, datos del usuario ni archivos de terceros sin permiso. No redistribuir el motor, paquetes de Fab u otros recursos como bibliotecas sueltas. No contactar autores, comprar, alterar visibilidad/permisos o abrir puertos sin autorización. Inspeccionar scripts antes de ejecutarlos.
 
-- El usuario pidió dos jugadores a futuro. Cooperativo LAN y después Internet con anfitrión jugador/cámara individual es la propuesta actual. No afirmar que escogió explícitamente online frente a pantalla dividida.
-- Preparar autoridad y contratos desde el inicio; probar dos conexiones con movimiento, carro y pared antes de consolidar donantes. 'Activar Replicates' no resuelve todo.
-- No usar jugador 0 como propietario global de cámara, poderes, inventario o streaming. Entradas/cámara/UI locales; daño, agarres y cambios estructurales con autoridad definida.
-- Un solo portador por objeto y un solo desprendimiento por PartId/versión. Validar solicitudes por actor poseído; limpiar propiedad en muerte, desconexión, destrucción y reinicio. No dos clientes decidiendo daño definitivo.
-- Replicar estado jugable de estructuras/piezas y pocos objetos importantes; escombros cosméticos sin colisión/daño jugables locales. No asumir Chaos determinista ni depender solo de eventos transitorios para daño persistente.
-- Movimiento personalizado integrado con predicción/replicación de CMC cuando aplique. No mover por Tick con SetActorLocation y declarar red resuelta.
-- Individual puede pausar; online menú/pérdida de foco libera entradas pero no detiene el mundo. No pausa global por impacto ni cámara lenta unilateral que cambie simulación.
-- Fuego amigo desactivado por defecto. Agarre de aliado requiere aceptación individual y posibilidad de soltarse; no basta una opción del anfitrión.
-- Primera región cooperativa acotada y anunciada; no prometer órbita/superficie simultáneas, migración de anfitrión, PvP, pantalla dividida o conexión universal sin configurar red.
-- No contratar servicios, abrir puertos, instalar VPN, conectar proveedores ni modificar red sin autorización específica. Ninguna IA externa es necesaria en runtime.
+## Skills existentes
 
-## Presupuesto y permisos
+- `impact-linux-gate`: acceso, toolchain y paquete Linux.
+- `impact-license-audit`: procedencia, integridad y permisos.
+- `impact-gameplay-gate`: una mecánica y su prueba.
+- `impact-character-animation`: rig/retarget/poses/IK/cámara.
+- `impact-qa-review`: regresión, perfiles y evidencia.
+- `impact-civic-systems`: ciudadanos/alerta/karma cuando toque.
+- `impact-world-events`: eventos cuando existan sus participantes.
 
-- Compras de assets/plugins: RD$0. No usar ediciones Pro/Source de pago, pruebas temporales o dependencias que exijan comprar después.
-- No asumir acceso ilimitado a servicios IA ni contratar APIs para runtime.
-- No copiar repositorios sin licencia explícita. No inferir licencias por ser públicos ni por otros proyectos del autor.
-- Conservar LICENSE, copyright y avisos al incorporar código permitido; documentar cambios propios.
-- Revisar arte por separado del código. Mantener personajes y marcas originales.
-- Repositorio público: no publicar credenciales, rutas personales, datos privados ni paquetes de Fab/tiendas cuya redistribución fuente no esté permitida.
-- No contactar autores, publicar mensajes ni cambiar visibilidad/permisos sin autorización adicional.
+Si una skill histórica menciona red, aplicar el alcance offline actual y omitir esa rama. Las skills no conceden herramientas, acceso o permisos adicionales.
 
-## Reutilización
+## Evidencia y cierre
 
-1. Elegir un subsistema y prueba pequeña. Consultar catálogo antes de escribirlo entero.
-2. Inspeccionar archivos, licencia y dependencias; fijar commit/versión. README no prueba que assets/Blueprints existan.
-3. Importar lo mínimo en un experimento aislado. Justificar un framework completo.
-4. Ejecutar pruebas del plan, Linux y puertas cooperativas pertinentes. Registrar fallos y coste cualitativo de adaptación.
-5. Conservar una sola solución principal por sistema; no superponer frameworks incompatibles.
-6. Dejar de buscar cuando una opción gratuita cumple la prueba y permite avanzar al sandbox.
+Estados: PLANIFICADO, EN CURSO, IMPLEMENTADO SIN VALIDAR, COMPILADO, EJECUTADO, ACEPTADO o BLOQUEADO. No inventar porcentajes, benchmarks ni tests. Un build sin render no valida Vulkan, cámara, arte o diversión. Un vídeo ajeno tampoco.
 
-## Seguridad de ejecución
-
-Inspeccionar scripts de terceros antes de ejecutarlos. No ejecutar instaladores desconocidos ni desactivar controles de seguridad. No instalar plugins globalmente ni modificar el motor sin necesidad/autorización. No acciones destructivas de Git, sobrescritura de trabajo existente ni cambios en otros repositorios.
-
-MCP es opcional y de editor; verificar disponibilidad en Linux antes de prometer automatización. No exponerlo a Internet ni hacerlo dependencia del ejecutable. No modificar configuraciones existentes a ciegas.
-
-## Evidencia y estados
-
-Estados: DESCUBIERTO, DOCUMENTADO, FUENTE_INSPECCIONADA, COMPILADO, EJECUTADO, ACEPTADO, BLOQUEADO. No saltar de enlace a ACEPTADO. Compilación no demuestra jugabilidad, rendimiento ni calidad visual.
-
-Para cerrar una tarea, registrar:
-
-- Fuentes/commit upstream, licencia y archivos importados.
-- Versión real de Unreal, distribución Linux, compilador, GPU/driver y hardware.
-- Comandos/pasos reproducibles, mapa, resultado esperado y observado.
-- Logs de compilación/empaquetado; pruebas ejecutadas y fallidas.
-- Resolución/calidad/hardware con mediciones; no FPS sin contexto. Separar primera ejecución y repeticiones.
-- En red: anfitrión/cliente, procesos/equipos, RTT, pérdida/jitter y configuración. PIE limpio no sustituye paquetes Linux ni prueba de latencia.
-- Para desarme: PartId, ataques deshabilitados, número de piezas generadas y resultado de reinicio/reconexión.
-- Limitaciones y cambios propios. No inventar porcentajes.
-
-No se fija parche del motor aquí: comprobar instalación/experimentos antes de hacerlo. Un selector de documentación actualizado no autoriza migrar a Preview.
-
-## Primera tarea técnica pendiente
-
-Inspeccionar Linux y preparar la base mínima Unreal. Obtener paquete nativo y circuito de vuelo con aceleración, frenado, recuperación y cámara. Probar N0; después R02 y pared según D1/N1. No descargar catálogo entero ni empezar migración planetaria.
-
-No declarar terminado sin abrir, ejecutar y empaquetar donde exista motor funcional. Sin Unreal, completar solo inspección/documentación útil e indicar qué prueba no pudo ejecutarse. No crear Blueprints ficticios ni presentar código no compilado como validado.
+Registrar versiones reales, instrucciones, mapa, resultados/fallos, logs, capturas cuando sean pertinentes y rendimiento con hardware/resolución/calidad. Separar primera ejecución del recorrido repetido. Meta 1080p/60 FPS configurable, no garantía para el equipo. Conservar build anterior jugable. El usuario evalúa control/potencia/deseo de repetir; no sustituirlo por una afirmación de IA.
