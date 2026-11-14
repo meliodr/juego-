@@ -1,3 +1,7 @@
+# DOCUMENTO POSPUESTO — no aplicable al desarrollo actual (v0.9)
+
+El usuario decidió tratar la versión de dos jugadores como **una posibilidad muy lejana**. Este archivo se conserva exclusivamente para futura investigación. Sus indicaciones de pruebas N0/N1 tempranas, autoridad del servidor, despliegue LAN, replicación y roadmap han quedado **reemplazadas** por docs/FLIGHT_REUSE_AUDIT_V09.md. No crear ni probar estas capacidades ahora. El proyecto actual es offline para un solo jugador. Mantener separación modular útil también para guardado/QA; no prometer compatibilidad futura automática.
+
 # IMPACT: BEYOND — Cooperativo de dos jugadores
 
 Fecha: 2026-11-14. Estado: PROPUESTA TÉCNICA; no implementado ni ejecutado. El usuario quiere poder jugar con dos jugadores en una entrega posterior. La elección LAN/online antes que pantalla dividida es una propuesta de implementación, no una preferencia confirmada del usuario.
