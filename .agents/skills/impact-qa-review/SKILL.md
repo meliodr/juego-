@@ -1,14 +1,17 @@
 ---
 name: impact-qa-review
-description: Review implementation tickets and Linux gameplay evidence for IMPACT BEYOND; produce PASS/FAIL/BLOCKED and approve only independently reproduced gates.
+description: Review an IMPACT BEYOND single-player task against its acceptance criteria, reproduce available Linux tests and report evidence without claiming unexecuted results.
 ---
-# QA and release review
-Read AGENTS.md, docs/PRODUCTION_CONTRACT_V06.md, docs/MASTER_PLAN_V05.md and docs/CODEX_QA_PLAYBOOK_V05.md.
-1. Identify ticket/Gate/DoD, commit, source changes, license provenance and expected vs actual behavior. Do not take another agent's "done" as evidence.
-2. Run native Linux build/package and tests when environment available, with graphics/driver/system specs. Visual camera/VFX/feel need GPU render and human session.
-3. For physics: 30 consecutive grabs, 50 panel impacts, reset/cleanup; validate actual collision changes, no duplicate hit/limb and no held item crossing solid objects.
-4. For city: witnesses/alert decay/reputation attribution, no rescue farming, no NPC spawner in direct view; compare CPU/GPU/VRAM with NPC tiers and Chaos running.
-5. For future network: two clients/host and latency/emulation, one owner per object, same wall state and same alert, per-player karma, stable safe teleport.
-6. Report one of PASS/FAIL/BLOCKED with reproducible steps, screenshots/logs and metrics. Separate tool-generated evidence from human subjective score. Require control/flight/fun playtest before feature expansion.
-7. Merge recommendation only after passing gate and verifying regressions. Never claim '60 FPS' unless measured on target GPU/resolution/profile.
-Stop and mark BLOCKED if Linux hardware, asset licensing or engine build unavailable. Do not silently change system drivers or discard work.
+# QA y revisión de entrega
+
+Leer `AGENTS.md`, `docs/PLAN_ACTIVO.md` y la ficha en `docs/TAREAS_ACTIVAS.md`. Los documentos antiguos aportan casos adicionales cuando sean pertinentes, pero no son requisitos de red. **No ejecutar N0/N1, dos clientes, servidores, LAN o pruebas de latencia: cooperativo muy lejano.**
+
+1. Identificar ticket, revisión exacta, cambio, permisos de recursos y resultado esperado. Separar lo inspeccionado de lo ejecutado. No aceptar la afirmación «terminado» del implementador como evidencia.
+2. En entorno autorizado comprobar compilación, paquete y ejecución Linux cuando corresponda; registrar motor/toolchain, hardware, driver, resolución y calidad. No confundir contenedor del agente con equipo del usuario. Sin GPU/editor marcar el ámbito bloqueado.
+3. Ejecutar la matriz del ticket: movimiento tierra-aire, colisión de carga, hueco transitable, desarme funcional, limpieza y reinicio. Las cantidades propuestas de repetición no prueban ausencia universal de errores.
+4. Medir frame time, p95/p99, peor tirón, CPU/GPU/VRAM y actores/cuerpos cuando toque rendimiento; separar primera ejecución de recorrido repetido. No afirmar 60 FPS por un ajuste de límite o benchmark de terceros.
+5. Para ciudadanos/eventos cuando se incorporen: comprobar atribución del incidente, alerta/karma separados, ausencia de recompensas duplicadas, huida y límites del director de eventos.
+6. Pedir valoración del usuario cuando el cambio afecte control, claridad, cámara o potencia. No afirmar diversión a partir de logs. Si el mismo agente implementó y revisó, indicarlo y no simular QA independiente.
+7. Emitir PASS/FAIL/BLOCKED por prueba, pasos para reproducir, evidencias, regresiones y recomendación CONTINUAR/CORREGIR/BLOQUEADO. Conservar la build anterior y no integrar fallos críticos ocultos.
+
+No instalar drivers, cambiar el motor, borrar trabajo, exponer puertos o contratar servicios para superar un bloqueo sin autorización. La revisión no concede permisos nuevos ni inicia trabajo futuro automáticamente.
