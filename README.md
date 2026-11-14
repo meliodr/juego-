@@ -12,13 +12,17 @@ Conseguir primero esta secuencia jugable: despegar, acelerar entre edificios, ag
 
 ## Estado real — 14 de noviembre de 2026
 
-**V0.7 sigue siendo planificación documentada: no hay proyecto Unreal compilado ni librerías importadas a Linux; no supone autorización automática para instalar software.** Las cinco skills y los nuevos documentos son el resultado actual. Sistema de alerta/civiles/karma y rendimiento están especificados con parámetros iniciales ajustables, no implementados.
+**V0.8 continúa siendo planificación documentada: no hay proyecto Unreal compilado ni bibliotecas importadas en Linux; no supone autorización para instalar software.** Las cinco skills y los nuevos documentos son el resultado actual. Sistema de alerta/civiles/karma y rendimiento están especificados con parámetros iniciales ajustables, no implementados.
 
 El repositorio contiene documentación de investigación y diseño. No contiene todavía un proyecto Unreal, un ejecutable ni paquetes de terceros. No se han compilado o ejecutado los candidatos en Unreal ni se ha inspeccionado el equipo Linux del usuario.
 
 El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.5 añade nuevas opciones comprobadas documentalmente (robots animados, mechas, monstruos, PCG, etc.). No son sistemas instalados. Se trabaja con distintos niveles de evidencia: páginas de autor, licencias, estructura del repositorio y, para componentes seleccionados, código inspeccionado. Un candidato no equivale a una dependencia aprobada o probada. La actualización Linux añade filtros de portabilidad; no certifica los candidatos. Las especificaciones de arte, personajes, movimientos, enemigos y red son propuestas, no implementaciones.
 
 ## Documentos
+
+**Dirección de animación, epicidad y rendimiento v0.8:** [ANIMATION_FEEL_OPTIMIZATION_V08.md](docs/ANIMATION_FEEL_OPTIMIZATION_V08.md). Define estados, capas de AnimationBP, cancelaciones, golpes, cámaras, reacción física, VFX, costes de animación, criterios FEL-01 a FEL-10 y tareas FEEL-01 a FEEL-06. Sigue siendo planificación; no hay escenas animadas ni paquetes Linux ejecutados.
+
+
 
 **Nuevos recursos de diseño (v0.7):** bibliotecas de animación reutilizables, fabricación 3D con Blender y sucesos aleatorios documentados desde referencias Roblox/Minecraft.
 
