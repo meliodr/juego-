@@ -20,6 +20,9 @@ El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.
 
 ## Documentos
 
+**Prioridad actual v0.9:** [Auditoría ManOfSteel y otros proyectos de vuelo](docs/FLIGHT_REUSE_AUDIT_V09.md). Análisis real de C++/animaciones Git LFS, candidatos alternativos y plan de integración. **El cooperativo pasa a visión muy lejana; no se programan ni prueban funciones de red ahora.**
+
+
 **Dirección de animación, epicidad y rendimiento v0.8:** [ANIMATION_FEEL_OPTIMIZATION_V08.md](docs/ANIMATION_FEEL_OPTIMIZATION_V08.md). Define estados, capas de AnimationBP, cancelaciones, golpes, cámaras, reacción física, VFX, costes de animación, criterios FEL-01 a FEL-10 y tareas FEEL-01 a FEEL-06. Sigue siendo planificación; no hay escenas animadas ni paquetes Linux ejecutados.
 
 
@@ -55,7 +58,7 @@ El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.
 - [Plan de experimentos e integración](docs/REUSE_PLAN.md): evaluación técnica de componentes.
 - [Reglas para agentes de programación](AGENTS.md): reutilización responsable, presupuesto y evidencias requeridas.
 
-Precedencia: ANIMATION_CHARACTER_PIPELINE_V07 para bibliotecas, creación de personajes y animaciones; REFERENCES_DYNAMIC_EVENTS_V07 para referencias y eventos aleatorios; PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
+Precedencia: FLIGHT_REUSE_AUDIT_V09 para selección de vuelo y prioridad muy lejana de co-op; ANIMATION_CHARACTER_PIPELINE_V07 para bibliotecas, creación de personajes y animaciones; REFERENCES_DYNAMIC_EVENTS_V07 para referencias y eventos aleatorios; PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
 
 ## Personajes y enemigos
 
@@ -73,7 +76,7 @@ Tres familias de enemigos: robots de diferentes escalas, kaijus y superhumanos. 
 
 **Linux y vuelo -> distrito urbano denso -> carro + pared + robot modular -> rival y sandbox -> genio cósmico/kaiju -> teletransporte seguro H03 -> cooperativo regional -> órbita/Luna/dos planetas.**
 
-Las pruebas N0/N1 de dos conexiones, movimiento y agarre/destrucción empiezan durante las primeras fases; no esperar a terminar todo el contenido para investigar red. No hace falta un lobby online completo para entregar el primer sandbox individual.
+**Se posponen todas las pruebas N0/N1 de red.** La implementación y el testing actuales son para un jugador, sin backend ni lobby. El sistema individual no debe retrasarse por co-op futuro.
 
 Vuelo sin combustible, frenado explícito, interacciones compartidas y destrucción que abra rutas reales. Los tres héroes deben ser autosuficientes y poder repetirse en cooperativo (una vez implementados). Las manifestaciones colosales, grandes jefes y vuelo planetario no bloquean el primer bucle divertido.
 
