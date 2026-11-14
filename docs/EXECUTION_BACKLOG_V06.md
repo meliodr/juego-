@@ -1,3 +1,15 @@
+# Plan de revisión activo v1.1 — ciudad destructible y planetas
+
+Fuente: docs/CITY_DESTRUCTION_PLANETS_AUDIT_V11.md. Estas son auditorías/experimentos, NO juegos ya implementados y no autorizan instalaciones. **Cooperativo N0/N1/N02 permanece DEFERRED.**
+
+- AUD-D01 (prioridad para destrucción): PlotBuilder MIT UE5.8 - estudiar/exportar sólo grafo de soporte y colapso; compararlo contra Chaos nativo en una casa de 6–12 paneles. 50 impactos de carro, huecos válidos, 20 resets y mediciones Linux. No migrar inventario/tienda/editor de casas completos.
+- AUD-C01 (ciudad): PCG + kit gratuito Quaternius/Kenney para 2–4 manzanas; caminar/correr/volar, colisiones, silueta urbana y streaming. Grzybojad MIT como fallback de calles, no proyecto completo.
+- AUD-W01 (reserva que no bloquea gameplay urbano): Ephemera MIT UE5.8, revisar tools/Content/orígenes de recursos y compilar Linux aislado; prueba planeta->órbita->luna->regreso. Cosmic Architect UE5.7 MIT alternativa si hace falta.
+- AUD-P01 (interacción física): REPIRK agarre MIT (código abierto Win64 UE5.7) vs Physics Handle nativo; carga carro en vuelo y sweeps del volumen, 30 agarres/throw.
+- Proyectos sin licencia raíz (Fugo PlanetGenerator, Toby PlanetCreator, draquel VoxelWorlds, MOChloe ElementSandbox) son REFERENCIA, no archivos autorizados de copia. GPL-3.0 de ProceduralPlanetGeneration no es elección de base. RealtimeTerrain MIT 5.8 en reserva por dependencias.
+
+**Antes de ejecución:** L00 Linux real con CPU/driver/SSD/UE confirmados, luego F01 locomoción de ManOfSteel adaptada; no importar ciudad entera o sistema solar para sustituir una prueba pequeña.
+
 # Actualización v1.0: caminar/correr + transición a vuelo
 
 **OBLIGATORIO**: tras L00 y FLT-AUD, antes de cerrar F01, tener mismo personaje **Idle/Walk/Jog/Sprint/Jump/Fall/Takeoff/Hover/Cruise/Sonic/Brake/Land/Recover**. No dos personajes para tierra y aire. Fuente: docs/GROUND_FLIGHT_CREATORS_V10.md. Mantener co-op deferred según v0.9.
