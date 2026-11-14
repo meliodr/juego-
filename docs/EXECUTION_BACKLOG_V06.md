@@ -1,3 +1,9 @@
+# Actualización de alcance v0.9 — LEER ANTES DEL BACKLOG ANTERIOR
+
+El usuario pospone cooperativo a un horizonte muy lejano. Todos los tickets N0/N1/N02 quedan **DEFERRED y excluidos de prioridades actuales**, aunque aparezcan con P0/P2 en tablas históricas de abajo. No ejecutar test de dos instancias, replicación, sesión LAN, Red o servidor antes de nueva solicitud. Esto anula requisitos de red para cerrar F01/P01/D01.
+
+Prioridad nueva de vuelo: FLT-AUD (ManOfSteel Flight.cpp, LFS/licencias) -> FLT-BASE (proyecto Linux CMC + lean/camera MIT mínima) -> FLT-ANIM (1 rig con poses permitidas) -> FLT-QA (10min vuelo y 20 transiciones reales). Documentación: docs/FLIGHT_REUSE_AUDIT_V09.md. L00 Linux sigue siendo primer gate de ejecución. Después ciudad, carro, pared, enemigos, sistema cívico.
+
 # IMPACT: BEYOND — Backlog de inicio y dependencias v0.6
 Estado: listo para **revisión del plan**, NO se autoriza por sí mismo ejecutar el motor en la máquina del usuario. Equipo informado: 64GB RAM + RTX4070 8GB VRAM. Datos pendientes: CPU, Linux distro/kernel, driver NVIDIA/Vulkan, Unreal instalado, SSD/espacio.
 
