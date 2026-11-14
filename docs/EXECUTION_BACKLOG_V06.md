@@ -46,6 +46,20 @@ Estos tickets se ejecutan después de la validación técnica necesaria; **no re
 
 Los videos de experiencias Roblox/Minecraft son referencias y NO dependen de importación de recursos ARR. La revisión visual de animaciones y clips originales de Rokoko/GASP requiere abrir/inspeccionar los archivos permitidos; su ficha pública no certifica calidad o pertenencia del clip. No generar modelos 3D reales desde imagen sin rigging.
 
+## Tareas de sensación y optimización añadidas (v0.8)
+Leer [ANIMATION_FEEL_OPTIMIZATION_V08.md](ANIMATION_FEEL_OPTIMIZATION_V08.md), sin alterar el orden de vuelo->carro->pared. Son criterios de calidad, **no nuevos requisitos bloqueantes para crear L00**.
+
+| ID | Prioridad | Qué se entrega | Después de | Test de aceptación |
+|---|---|---|---|---|
+| IB-FEEL01 | P0 | 1 héroe con Takeoff/Hover/Cruise/Sonic/Brake/Recover y cámara suave | F01 + ANIM00 | FEL-01/02: 20 cambios sin snaps, 10min de vuelo y valoración 4/5 |
+| IB-FEEL02 | P0/P1 | Agarres IK de varios tamaños, golpe ligero/pesado y reacción física parcial | P01/D01 + FEEL01 | FEL-03/04/05/06: 30 agarres y 20 recuperaciones sin camera snaps |
+| IB-FEEL03 | P1 | 4 capas de efectos de golpe, polvo, audio/material y shockwave | S01 | FEL-07: legibilidad, cámaras y rendimiento medido, sin 20 partículas de daño duplicado |
+| IB-FEEL04 | P2 | Escalado NPC: Animation Budget Allocator/Sharing/LOD si perfiles justifican | U01 + profiling | FEL-09: p95/p99 y CPU/VRAM con 0/4/8/12 ciudadanos Tier A |
+| IB-FEEL05 | P1-investigación | Validar hitstop solo visual, cámara local y golpes en red | N0/N1 + FEEL02 | FEL-10: servidor nunca se congela, clients conservan acciones |
+| IB-FEEL06 | P2 | Kaiju con peso/anticipación/daño por pieza y cámara | K01 | 3 puntos de desarme con telegraph y frames/VRAM medidos |
+
+La IA puede crear código/AnimBP y preparar clips, pero el usuario evalúa naturalidad, potencia, mareo y repetibilidad. No comprar mocap para cumplir.
+
 ## Ticket de implementación IB-L00 listo para ejecutar CUANDO el usuario autorice
 **Objetivo:** comprobar hardware/UE/driver y abrir proyecto base Linux mínimo.
 **Entradas:** repositorio y acceso real Linux; distro/CPU/SSD desconocidos se deben inspeccionar, no preguntar por RAM/GPU ya dichas.
