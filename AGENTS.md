@@ -4,9 +4,9 @@
 
 Crear un sandbox superheroico 3D divertido mediante reutilización gratuita. Priorizar vuelo frenético, agarres, lanzamientos y destrucción. No convertir la primera entrega en un proyecto de planeta completo.
 
-Leer README.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
+Leer README.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
 
-Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para identidad, protagonistas, enemigos y repertorios; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
+Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
 
 ## Decisiones creativas vigentes — 2026-11-14
 
@@ -14,6 +14,8 @@ Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núc
 - Mantener al combatiente de fuerza y al genio cósmico masculino de la referencia aprobada. H01: traje grafito con placas claras y acentos rojos. H02: hombre de cabello corto rizado, traje oscuro con plata/oro y energía esmeralda, manos espectrales y manifestaciones de genio. No sustituir H02 por la heroína genérica inicial.
 - H02 no depende de una fruta del diablo, ni usa traje o símbolo de Linterna Verde. No recuperar la iconografía de franquicias de la primera referencia.
 - Eliminar el arquetipo de enemigo constructor/energético genérico. Esto no elimina al héroe de creación ni convierte todos los rivales en copias de él.
+- Incorporar H03, desplazador espacial de teletransporte original: traje índigo, fracturas luminosas azul-violeta; Blink, contra-blink, golpe de reaparición, regreso a marca. Sin símbolos/rasgos copiados de Nightcrawler. Personaje NO creado todavía, sin nombre definitivo.
+- Mundo objetivo: ciudad muy densa y vertical con destrucción por capas y perforación funcional, planeta principal a escala reducida, Luna + dos planetas visitables en regiones pequeñas. Sol visible, no aterrizable. No desarrollar una simulación estelar completa ni publicar un mapa GTA/Marvel.
 - Robots, kaijus y superhumanos son las tres familias. Robots/kaijus pierden piezas con efectos sobre capacidades y con fragmentos importantes reutilizables. Separación estilizada sin vísceras ni anatomía explícita.
 - Diez enemigos diseñados no son alcance simultáneo: primer robot modular pequeño, rival de vuelo y después kaiju mediano de prueba. No modelar diez rigs ni añadir una forma colosal antes del bucle básico.
 - Documentos anteriores pueden contener nombres/identidades históricos. Aplicar COMBAT_ROSTER_V03 cuando entren en conflicto. El arte de conversación no está automáticamente subido al repositorio ni implica un modelo 3D importable.
@@ -28,9 +30,11 @@ Este repositorio contiene documentación. No contiene todavía un proyecto Unrea
 - No imponer distribución ni versión del motor sin inspeccionar el entorno real. Usar toolchain/documentación correspondientes a la versión elegida. No confundir un contenedor de chat con el equipo del usuario.
 - Todo candidato requiere inspección de fuentes/descriptores y pruebas de compilación, empaquetado y ejecución en Linux. README, licencia MIT o binario Windows no acreditan compatibilidad.
 - R02/REPIRK condicionado a portabilidad del agarre; R03 en reserva hasta confirmar Linux, licencia y acceso. Pared Chaos modular como respaldo. R01/Ephemera es laboratorio separado, no base obligatoria.
-- Orden: L00 Linux -> D0 vuelo/control/cámara -> D1 carro/pared y pocas piezas robóticas -> D2 rival y sandbox -> H02/variedad/kaiju de prueba -> cooperativo regional -> expansión orbital. N0/N1 se prueban durante D0/D1. No construir lobby/Internet antes de la primera diversión individual.
+- Orden: L00 Linux -> D0 vuelo/control/cámara -> distrito urbano de prueba -> D1 carro/pared y piezas robóticas -> D2 rival y sandbox -> H02/variedad/kaiju -> H03 blink seguro -> cooperativo regional -> ciudad ampliada y laboratorio planeta->órbita->luna->dos planetas. Preparar N0/N1 temprano; no esperar la campaña espacial para probar red. N0/N1 se prueban durante D0/D1. No construir lobby/Internet antes de la primera diversión individual.
 - Vuelo sin combustible; interacción compartida; no autofrenadas bruscas invisibles, menús por cada agarre ni generación de objetos con IA durante gameplay.
-- Ambos héroes funcionan solos y pueden repetirse en cooperativo. El núcleo de H02 reutiliza golpe, agarre, escudo y martillo con presentación de genio; brazos extra y avatar colosal son ampliaciones.
+- Todos los héroes implementados funcionan solos y pueden repetirse en cooperativo. El núcleo de H02 reutiliza golpe, agarre, escudo y martillo con presentación de genio; brazos extra y avatar colosal son ampliaciones.
+- Teleport de H03: usar primero APIs nativas de Unreal y comprobaciones de cápsula/destino; nunca dentro de paredes, sin colisión cargada ni a regiones no preparadas. El servidor valida teletransportación en cooperativo. No reutilizar scripts/assets de mods GTA o Marvel.
+- Para ciudad explorar Quaternius Downtown City MegaKit Standard CC0 (solo parte gratuita), Kenney y PCG nativo; PCGEx MIT solo si simplifica trabajo real. Para sistemas planetarios evaluar Ephemera MIT o Cosmic Architect MIT en laboratorio Linux aislado; no fusionar ambos ni importar paquetes de pago. Para arte espacial Quaternius Ultimate Space / Kenney Space/Station CC0.
 - Reutilizar acciones de H01 para el rival sin darle conocimiento perfecto de entradas/posición. Primer robot con unas pocas piezas; no corte universal ni combinaciones infinitas de amputación.
 - Identidad de cómic 3D estilizado, siluetas legibles y materiales consistentes. Priorizar modelos provisionales/piezas rígidas antes que capas/ropa complejas.
 - Compilar no demuestra diversión. Obtener feedback humano de control, velocidad y claridad además de pruebas técnicas.
