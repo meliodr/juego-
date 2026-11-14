@@ -1,14 +1,17 @@
 ---
 name: impact-gameplay-gate
-description: Implement one small IMPACT BEYOND gameplay vertical slice, such as flight, grab and throw, destructible walls, enemy limb, energy construct, or safe blink, and prove it works.
+description: Implement and validate one small single-player IMPACT BEYOND mechanic in the authorized Linux environment, reusing approved components before creating replacements.
 ---
-# Gameplay implementation
-Read AGENTS.md, docs/MASTER_PLAN_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md and docs/PRODUCTION_CONTRACT_V06.md.
-1. Start with one ready ticket: exact observable outcome, allowed paths, test scenario, rollback, upstream license. Do not begin the planet or a second framework while testing a wall or grab.
-2. Prefer native Unreal components and audited open components. One implementation of Flight/Grab/Destruction as source of truth; separate gameplay state from animation and FX.
-3. Implement smallest change in isolated branch. Reuse Data Assets, typed events and Gameplay Tags for tuning. Avoid a whole ability framework unless required and approved.
-4. Respect future co-op: sender action validated by authority, stable ActorId/PartId, single holder of object, idempotent incident/damage, no hardcoded player zero.
-5. A fast car held in hands needs its own swept collision test; a broken wall needs a genuinely passable collision change. Safe teleport checks capsule/loaded destination. Robot arm loss must remove the corresponding attack.
-6. Run actual build/test in Linux, document log, 30 cycles grab or 50 impacts or 50 blink destinations as relevant. Check regression of previous working mechanics.
-7. Ask for human playtest when camera/feel is affected; do not claim fun based on code. Report PASS/FAIL/BLOCKED, commit, risk, next task. Roll back when a donor requires rewriting half the project.
-Stop if no Linux runtime/editor test is available: code inspection only, do not state that gameplay was executed.
+# Gameplay: una tarea, una prueba observable
+
+Leer `AGENTS.md`, `docs/PLAN_ACTIVO.md` y la ficha de `docs/TAREAS_ACTIVAS.md`. Consultar únicamente la auditoría/skill de arte necesaria. Los planes históricos no reactivan red: **cooperativo, N0/N1, replicación y LAN están aplazados**.
+
+1. Confirmar tarea, dependencia aprobada, acceso al entorno, cambios previos y rama. Especificar resultado, archivos permitidos, prueba y reversión. No modificar sistema, motor global u otros repositorios sin permiso.
+2. Elegir un donante permitido y una alternativa nativa. Revisar licencia, edición, integridad de archivos/LFS y dependencias. Importar solo lo necesario; si implica reconstruir un framework entero, registrar bloqueo y volver a la alternativa.
+3. Mantener un controlador de caminar/correr/saltar/volar. Separar locomoción, interacción, daño y presentación. Datos editables para tuning; no rehacer toda la arquitectura en un ticket.
+4. Mantener IDs y propietario lógico por objeto para pruebas y guardado **offline**. No implementar autoridad de servidor, RPC ni predicción de red. Un impacto/parte no se aplica dos veces.
+5. La carga transportada necesita comprobación de su volumen; la pared rota necesita colisión transitable; el teleport requiere destino válido/cargado; una pieza desprendida deshabilita su capacidad. Animación y VFX no son fuente de daño.
+6. Compilar y ejecutar las pruebas de la ficha en Linux cuando haya entorno. Incluir regresión del bucle anterior y paquete fuera del editor para el cierre correspondiente. Registrar versiones, escenario, resultados y mediciones reales.
+7. Solicitar valoración humana si cambia control/cámara/sensación. El mismo agente que implementa y prueba no debe describirse como revisor independiente. Proponer integrar solo tras aceptación; conservar versión válida anterior.
+
+Estados honestos: PLANIFICADO, EN CURSO, IMPLEMENTADO SIN VALIDAR, COMPILADO, EJECUTADO, ACEPTADO o BLOQUEADO. Si falta editor/GPU/permisos, indicar la prueba pendiente y no declararla superada. Una captura del donante no valida nuestra implementación. Este procedimiento no activa herramientas ni permisos nuevos.
