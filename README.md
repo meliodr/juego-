@@ -12,13 +12,20 @@ Conseguir primero esta secuencia jugable: despegar, acelerar entre edificios, ag
 
 ## Estado real — 14 de noviembre de 2026
 
-**V0.6 sigue siendo planificación, no aprobación para iniciar compilación, instalaciones o desarrollo de juego.** Las cinco skills y los nuevos documentos son el resultado actual. Sistema de alerta/civiles/karma y rendimiento están especificados con parámetros iniciales ajustables, no implementados.
+**V0.7 sigue siendo planificación documentada: no hay proyecto Unreal compilado ni librerías importadas a Linux; no supone autorización automática para instalar software.** Las cinco skills y los nuevos documentos son el resultado actual. Sistema de alerta/civiles/karma y rendimiento están especificados con parámetros iniciales ajustables, no implementados.
 
 El repositorio contiene documentación de investigación y diseño. No contiene todavía un proyecto Unreal, un ejecutable ni paquetes de terceros. No se han compilado o ejecutado los candidatos en Unreal ni se ha inspeccionado el equipo Linux del usuario.
 
 El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.5 añade nuevas opciones comprobadas documentalmente (robots animados, mechas, monstruos, PCG, etc.). No son sistemas instalados. Se trabaja con distintos niveles de evidencia: páginas de autor, licencias, estructura del repositorio y, para componentes seleccionados, código inspeccionado. Un candidato no equivale a una dependencia aprobada o probada. La actualización Linux añade filtros de portabilidad; no certifica los candidatos. Las especificaciones de arte, personajes, movimientos, enemigos y red son propuestas, no implementaciones.
 
 ## Documentos
+
+**Nuevos recursos de diseño (v0.7):** bibliotecas de animación reutilizables, fabricación 3D con Blender y sucesos aleatorios documentados desde referencias Roblox/Minecraft.
+
+- [Pipeline de animación y personajes v0.7](docs/ANIMATION_CHARACTER_PIPELINE_V07.md): bases humanas, robots/kaijus, Rokoko/Quaternius/GASP/Mesh2Motion/MakeHuman, rigging y QA.
+- [Referencias y eventos dinámicos v0.7](docs/REFERENCES_DYNAMIC_EVENTS_V07.md): análisis Project Power/Viltrumite Flight/Fisk, meteorito, robo, invasión, robots y director por incidentes.
+- [Skills Codex de animación y eventos](.agents/skills/): nuevos impact-character-animation e impact-world-events; procedimientos, no agentes ejecutados.
+
 
 **Última dirección operativa (v0.6):** diseño de civiles/alertas/karma, contrato de arquitectura/roles y backlog que condiciona el inicio a L00 Linux.
 
@@ -44,7 +51,7 @@ El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.
 - [Plan de experimentos e integración](docs/REUSE_PLAN.md): evaluación técnica de componentes.
 - [Reglas para agentes de programación](AGENTS.md): reutilización responsable, presupuesto y evidencias requeridas.
 
-Precedencia: PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
+Precedencia: ANIMATION_CHARACTER_PIPELINE_V07 para bibliotecas, creación de personajes y animaciones; REFERENCES_DYNAMIC_EVENTS_V07 para referencias y eventos aleatorios; PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
 
 ## Personajes y enemigos
 
