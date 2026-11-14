@@ -4,7 +4,7 @@ Sandbox 3D de vuelo superhumano, exploración, agarres y destrucción. Desarroll
 
 ## Objetivo
 
-Conseguir primero esta secuencia jugable: despegar, acelerar entre edificios, agarrar un carro, lanzarlo contra una pared, atravesar el hueco y continuar la pelea. La visión incluye dos personajes originales —un combatiente de fuerza y un genio cósmico de energía esmeralda— y un planeta visualmente continuo con regiones detalladas y salida al espacio.
+Conseguir primero esta secuencia jugable: despegar, acelerar entre edificios, agarrar un carro, lanzarlo contra una pared, atravesar el hueco y continuar la pelea. La visión incluye **tres personajes originales** —combatiente de fuerza H01, genio cósmico esmeralda H02 y desplazador espacial H03—, una ciudad vertical densamente explorable y parcialmente destruible sobre un planeta pequeño, y un sistema solar compacto con Sol visible (no visitable), Luna y otros dos planetas visitables por regiones.
 
 **Presupuesto de compras de assets y plugins: RD$0.** No implica hardware gratuito ni consumo ilimitado de servicios de IA. Prioridad: un sandbox divertido y pequeño antes de ampliar el mundo. El multijugador futuro no sustituye el modo individual sin conexión.
 
@@ -16,6 +16,8 @@ Se catalogan **28 candidatos y 3 índices de descubrimiento**, con distintos niv
 
 ## Documentos
 
+- [Ciudad destructible, sistema solar y teletransporte v0.4](docs/CITY_SOLAR_TELEPORT_V04.md): actualización vigente de ciudades densas, cuatro cuerpos jugables/visibles, tercer héroe, recursos gratuitos concretos, orden de ensamblaje y pruebas. Prevalece para alcance de ciudad/espacio/teletransporte.
+
 - [Personajes, enemigos y repertorios v0.3](docs/COMBAT_ROSTER_V03.md): dirección vigente de los dos héroes, ataques contextuales, diez conceptos de enemigos, desarme funcional y alcance escalonado. Prevalece sobre nombres/diseños anteriores.
 - [Diseño inicial del sandbox](docs/SANDBOX_DESIGN.md): distrito, modos, interacciones y criterios de diversión. Su identidad y catálogo de personajes han sido sustituidos por COMBAT_ROSTER_V03.
 - [Plan cooperativo de dos jugadores](docs/COOP_PLAN.md): alcance LAN/online propuesto, preparación temprana, agarres exclusivos, destrucción compartida, fases y pruebas. Los nombres antiguos de héroes son referencias históricas; aplicar los identificadores actuales H01/H02.
@@ -25,7 +27,7 @@ Se catalogan **28 candidatos y 3 índices de descubrimiento**, con distintos niv
 - [Plan de experimentos e integración](docs/REUSE_PLAN.md): evaluación técnica de componentes.
 - [Reglas para agentes de programación](AGENTS.md): reutilización responsable, presupuesto y evidencias requeridas.
 
-Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para identidad, protagonistas, enemigos y movimientos; SANDBOX_DESIGN para modos/escenario no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
+Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
 
 ## Personajes y enemigos
 
@@ -33,17 +35,19 @@ H01: combatiente superhumano de fuerza, nombre pendiente. Conservar la direcció
 
 H02: genio cósmico masculino, nombre pendiente. Conservar el concepto aceptado de traje oscuro con plata/oro y energía esmeralda; manos espectrales, agarre, escudo, martillo y manifestaciones avanzadas. Sin fruta del diablo ni traje/iconos de una franquicia. No sustituirlo por la constructora genérica de la primera propuesta.
 
+H03: desplazador espacial, nombre pendiente; estética índigo/azul-violeta original, teletransporte de corto alcance, contra-blink, golpe de reaparición y marcador de retorno posterior. Puede explorar y volar; no copiar aspecto de Nightcrawler. Su teleport exige destino libre y zona cargada.
+
 Los dos nombres geométricos propuestos anteriormente fueron rechazados y no deben reutilizarse. Se retira el arquetipo de enemigo constructor/energético genérico, no los poderes de H02.
 
 Tres familias de enemigos: robots de diferentes escalas, kaijus y superhumanos. Robots/kaijus pierden piezas que modifican ataques, movilidad y objetos disponibles. Diez conceptos documentados no equivalen a diez enemigos encargados para la primera entrega.
 
 ## Jugabilidad y entregas
 
-**Linux y vuelo -> carro + pared + robot modular sencillo -> rival y sandbox -> genio cósmico y kaiju de prueba -> cooperativo regional -> expansión orbital.**
+**Linux y vuelo -> distrito urbano denso -> carro + pared + robot modular -> rival y sandbox -> genio cósmico/kaiju -> teletransporte seguro H03 -> cooperativo regional -> órbita/Luna/dos planetas.**
 
 Las pruebas N0/N1 de dos conexiones, movimiento y agarre/destrucción empiezan durante las primeras fases; no esperar a terminar todo el contenido para investigar red. No hace falta un lobby online completo para entregar el primer sandbox individual.
 
-Vuelo sin combustible, frenado explícito, interacciones compartidas y destrucción que abra rutas reales. Ambos héroes deben ser autosuficientes y poder repetirse en cooperativo. Las manifestaciones colosales, grandes jefes y vuelo planetario no bloquean el primer bucle divertido.
+Vuelo sin combustible, frenado explícito, interacciones compartidas y destrucción que abra rutas reales. Los tres héroes deben ser autosuficientes y poder repetirse en cooperativo (una vez implementados). Las manifestaciones colosales, grandes jefes y vuelo planetario no bloquean el primer bucle divertido.
 
 Primer robot propuesto: Carcelero con pocas piezas desprendibles. Malek, nombre provisional, representa el primer duelo aéreo; Rhazkar, también provisional, es el primer laboratorio kaiju con cuerno, placa y cola preparados. Las variantes se incorporan solo tras validar el bucle. Escenario inicial por sectores: avenida, puerto y cantera; no tres mundos nuevos simultáneos.
 
@@ -57,6 +61,9 @@ La entrega debe funcionar desde un ejecutable Linux fuera del editor. Las prueba
 | Destrucción jugable | Chaos nativo con módulos de colisión; R03 queda como comparación condicionada | Confirmar Linux, licencia/acceso, rendimiento y reconstrucción del estado en red. No asumir física determinista idéntica entre clientes. |
 | Personajes y animación | Standard gratuito de Quaternius; maniquí provisional como respaldo | Confirmar archivos realmente incluidos, formatos, licencias y retargeting. |
 | Separación de piezas | Partes rígidas preparadas primero; Thyke/Dismemberment como candidato posterior | Preparar mallas, huesos y piezas; compilar/probar Linux. El desarme del primer robot no requiere corte arbitrario ni replicar partículas. |
+| Ciudad densa | Quaternius Downtown City MegaKit Standard (solo parte gratuita CC0), PCG nativo, Kenney Roads/Industrial/Car Kit | No asumir que el Source de pago, shaders ni colisiones especializadas estén incluidos; primer distrito, no GTA/NY. |
+| Teletransporte | Teleport/TeleportTo + comprobación de colisión de Unreal | H03 requiere comprobación de destino y precarga; pruebas Linux/red futuras. |
+| Espacio y destinos | Ephemera (MIT, referencia), Cosmic Architect (MIT, alternativo), Quaternius Ultimate Space y Kenney Space Kits CC0 | Las superficies jugables se implementan por regiones, Sol solo visual, compatibilidad Linux pendiente. |
 | Exploración planetaria | Estudiar 0xWerz/ephemera en un laboratorio separado | Es un sandbox ambiental. Algunas integraciones están limitadas a Win64; núcleo Linux no probado. Multijugador orbital es otra validación. |
 
 Las fuentes y sus condiciones están enlazadas en el catálogo, la base Linux y el plan cooperativo. Estas son decisiones de evaluación, no confirmaciones de compatibilidad.
