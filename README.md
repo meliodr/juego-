@@ -12,9 +12,14 @@ Conseguir primero esta secuencia jugable: despegar, acelerar entre edificios, ag
 
 El repositorio contiene documentación de investigación y diseño. No contiene todavía un proyecto Unreal, un ejecutable ni paquetes de terceros. No se han compilado o ejecutado los candidatos en Unreal ni se ha inspeccionado el equipo Linux del usuario.
 
-Se catalogan **28 candidatos y 3 índices de descubrimiento**, con distintos niveles de evidencia: páginas de autor, licencias, estructura del repositorio y, para componentes seleccionados, código inspeccionado. Un candidato no equivale a una dependencia aprobada o probada. La actualización Linux añade filtros de portabilidad; no certifica los candidatos. Las especificaciones de arte, personajes, movimientos, enemigos y red son propuestas, no implementaciones.
+El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.5 añade nuevas opciones comprobadas documentalmente (robots animados, mechas, monstruos, PCG, etc.). No son sistemas instalados. Se trabaja con distintos niveles de evidencia: páginas de autor, licencias, estructura del repositorio y, para componentes seleccionados, código inspeccionado. Un candidato no equivale a una dependencia aprobada o probada. La actualización Linux añade filtros de portabilidad; no certifica los candidatos. Las especificaciones de arte, personajes, movimientos, enemigos y red son propuestas, no implementaciones.
 
 ## Documentos
+
+- [PLAN MAESTRO v0.5](docs/MASTER_PLAN_V05.md): fuente principal para alcance, fases, límites del motor y de la IA, arquitectura, gates y decisiones de descarte.
+- [Auditoría de recursos gratuitos v0.5](docs/FREE_RESOURCE_AUDIT_V05.md): nuevas opciones concretas para robots, mechas, kaijus, ciudad/espacio, licencias actualizadas y pruebas previas a importar.
+- [Playbook Codex/Linux/QA v0.5](docs/CODEX_QA_PLAYBOOK_V05.md): qué puede automatizarse, qué no, MCP experimental, compilación nativa, test y evidencias.
+
 
 - [Ciudad destructible, sistema solar y teletransporte v0.4](docs/CITY_SOLAR_TELEPORT_V04.md): actualización vigente de ciudades densas, cuatro cuerpos jugables/visibles, tercer héroe, recursos gratuitos concretos, orden de ensamblaje y pruebas. Prevalece para alcance de ciudad/espacio/teletransporte.
 
@@ -27,7 +32,7 @@ Se catalogan **28 candidatos y 3 índices de descubrimiento**, con distintos niv
 - [Plan de experimentos e integración](docs/REUSE_PLAN.md): evaluación técnica de componentes.
 - [Reglas para agentes de programación](AGENTS.md): reutilización responsable, presupuesto y evidencias requeridas.
 
-Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
+Precedencia: MASTER_PLAN_V05 para fases/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
 
 ## Personajes y enemigos
 
