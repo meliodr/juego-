@@ -1,3 +1,7 @@
+# Fe de erratas y alcance v0.9
+
+Cooperativo explícitamente **MUY LEJANO**. Cualquier FR-13, NFR-06, N0/N1/N02, rol de Networking, Server authority o prioridad LAN descritos abajo son **visión remota NO activa**. No son condiciones para aprobar V0 ni para avanzar a S01. Actualmente diseñar y probar solo un jugador en Linux offline. Fuente superior: docs/FLIGHT_REUSE_AUDIT_V09.md. Reutilizar lógica C++ ManOfSteel si pasa la auditoría/port y reconstruir animación desde fuentes permitidas; no intentar portar proyecto completo.
+
 # IMPACT: BEYOND — Contrato de producción y arquitectura v0.6
 
 Fecha: 2026-11-14. ESTADO: **PLAN PARA REVISIÓN; DESARROLLO NO INICIADO**. Linux nativo; Unreal Engine estable por determinar tras pruebas locales; hardware declarado por usuario: **64 GB RAM y RTX 4070 con 8 GB VRAM**. CPU, Linux, driver, SSD y versión instalada de UE aún no comprobados. Cero compras de assets/plugins.
