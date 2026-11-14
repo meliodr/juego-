@@ -1,5 +1,16 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Reglas vigentes adicionales — v0.7
+
+- Leer docs/ANIMATION_CHARACTER_PIPELINE_V07.md cuando se trabajen personajes, rigs o animaciones, y docs/REFERENCES_DYNAMIC_EVENTS_V07.md cuando se trabajen eventos aleatorios. Leer las skills impact-character-animation / impact-world-events según ticket. V0.7 no significa juego ejecutado.
+- Reutilizar primero Quaternius Universal Base Characters Standard/Universal Animation Library Standard, evaluar 15 mocaps de superhéroes de Rokoko, Epic Game Animation Sample 5.8 en laboratorio con revisión de Fab NoAI y Mesh2Motion MIT/CC0 para criaturas. No asumir que las 15 capturas contienen vuelo. MakeHuman/MPFB core CC0 para civiles si estilo compatible.
+- Cuerpo del héroe con animaciones de estado/IK controladas por FlightComponent: Ground/Takeoff/Hover/Cruise/Sonic/Brake/Recovery. Modelar armaduras en Blender mediante scripts si recursos no son suficientes; jamás declarar imagen 2D como modelo 3D listo.
+- Fuentes de referencia Roblox Project Power, Viltrumite Time, Viltrum Battlegrounds, Minecraft Viltrumite Flight/Invincible Incorporated/Fisk: observar ideas, NO copiar scripts, nombres de franquicia, rigs, mapas o audio ARR. Referencias verificadas principalmente por fichas/changelogs/vídeos descritos; no afirmar gameplay visto si no lo fue.
+- Eventos de sandbox diseñados: robo, meteorito, dron, invasión, kaiju, rival, rescate; libre de historia y siempre opcionales. Un World Event Director administra condiciones/cooldowns/presupuestos por región, spawn fuera de cámara y fallback ante colisión/streaming no preparado.
+- Un impacto meteoro = un incidente independiente de culpa del jugador. Alertas de distrito, amenaza y karma personal siguen separados por IncidentId/CausationId; eventos no duplican sanciones por fragmentos. En creativo puede desactivarse respuesta.
+- No introducir eventos antes del bucle vuelo + carro + pared + rival. Invasión reutiliza robots/kaiju existentes, no inventa 10 enemigos. Meteor usa crater prefab/Chaos localizado y fragmentos agarrables, no destrucción planetaria booleana.
+- El plan de Codex/roles sigue secuencial con pruebas Linux; nuevas skills son instrucciones, no servidores activos ni permisos de instalación.
+
 ## Estado y fuentes vigentes — v0.6
 
 **NO iniciar gameplay solo porque exista este plan.** El usuario quiere arquitectura, roles, skills y criterios claros antes de autorizar ejecución. La base aún es documental; no hay Unreal compilado/probado en la máquina Linux.
@@ -17,7 +28,7 @@ No borrar las otras reglas que siguen.
 
 Crear un sandbox superheroico 3D divertido mediante reutilización gratuita. Priorizar vuelo frenético, agarres, lanzamientos y destrucción. No convertir la primera entrega en un proyecto de planeta completo.
 
-Leer README.md, docs/PRODUCTION_CONTRACT_V06.md, docs/CIVILIANS_ALERTS_KARMA_V06.md, docs/EXECUTION_BACKLOG_V06.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
+Leer README.md, docs/ANIMATION_CHARACTER_PIPELINE_V07.md, docs/REFERENCES_DYNAMIC_EVENTS_V07.md, docs/PRODUCTION_CONTRACT_V06.md, docs/CIVILIANS_ALERTS_KARMA_V06.md, docs/EXECUTION_BACKLOG_V06.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
 
 Precedencia: MASTER_PLAN_V05 para orden/criterios, FREE_RESOURCE_AUDIT_V05 para nuevas licencias y recursos, CODEX_QA_PLAYBOOK_V05 para autonomía/QA; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
 
