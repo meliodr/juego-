@@ -1,3 +1,14 @@
+# Actualización v1.0: caminar/correr + transición a vuelo
+
+**OBLIGATORIO**: tras L00 y FLT-AUD, antes de cerrar F01, tener mismo personaje **Idle/Walk/Jog/Sprint/Jump/Fall/Takeoff/Hover/Cruise/Sonic/Brake/Land/Recover**. No dos personajes para tierra y aire. Fuente: docs/GROUND_FLIGHT_CREATORS_V10.md. Mantener co-op deferred según v0.9.
+
+- **IB-GND00 (P0)**: Third Person Combat base; añadir caminar y sprint según DataAssets, BlendSpace, arranques/paradas simples y giro, sin importar ALS completo. Gate GND-01/02: 10min y 30 secuencias terrestres.
+- **IB-GND01 (P0)**: ManOfSteel Flight/Lean parcial con locomoción terrestre; transiciones Run/Jump/Flight/Land/Run, 30 ciclos en calles y techos. Gate GND-03.
+- **IB-GND02 (P1)**: si hay deslizamiento/snaps, GASP 5.8 para clips de start/stop/pivot bajo licencia permitida, Gorka Games/Matt Aspland como referencias; gate GND-06 y p95/p99.
+- **IB-GND03 (P1)**: con P01, caminar/correr/volar con objeto agarrado y distintas masas, IK controlado; gate GND-04.
+
+Ningún tutorial o GitHub sin LICENSE autoriza copiar assets. Proyecto L00 sigue sin ejecutarse en Linux.
+
 # Actualización de alcance v0.9 — LEER ANTES DEL BACKLOG ANTERIOR
 
 El usuario pospone cooperativo a un horizonte muy lejano. Todos los tickets N0/N1/N02 quedan **DEFERRED y excluidos de prioridades actuales**, aunque aparezcan con P0/P2 en tablas históricas de abajo. No ejecutar test de dos instancias, replicación, sesión LAN, Red o servidor antes de nueva solicitud. Esto anula requisitos de red para cerrar F01/P01/D01.
