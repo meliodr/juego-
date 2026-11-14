@@ -1,5 +1,16 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Dirección de sensación y animación — v0.8
+
+- Leer docs/ANIMATION_FEEL_OPTIMIZATION_V08.md antes de vuelo animado, golpes, agarres, cámara, física parcial o rendimiento; usar skill impact-character-animation actualizada. Estado PLANIFICADO, no una build con movimientos.
+- **Regla de oro: control y física mandan, la animación sigue**: locomoción/colisión en CMC/Flight; AnimationBP blend y poses; nunca arreglar control con root motion global, teleport no intencionado o Montages largos.
+- Animación por capas: base Ground/Takeoff/Hover/Cruise/Sonic/Brake/Recover, aditivo bank/lean, upper-body hit/grab/summon/blink y corrección manos IK solo según interacción. Inertialization para transiciones compatibles; no para poses extremas repetidas.
+- Golpes épicos por anticipación, contacto confirmado con AttackId, reacción física parcial y seguimiento de impulso, sonido, FX y daño/rotura del entorno. Nunca usar animaciones cinemáticas obligatorias para todas las acciones ni sacudir cámara a costa de apuntar.
+- No congelar simulación global por hitstop; solo microcompresión estética local opcional. Co-op debe seguir moviéndose, sincronizarse y repartir responsabilidad.
+- Optimización por importancia: H01/H02/H03/objetivo con animación e IK de calidad, NPC cercanos simplificados, lejanos con Animation Budget Allocator/Animation Sharing si mediciones exigen; reducir trabajo de EventGraph Tick y FX por Niagara Effect Types. Solo activar Motion Warping/FullBodyIK cuando se pruebe que resuelven un defecto concreto.
+- 1080p Medium 60FPS son objetivos para RTX 4070 8GB y Linux Vulkan, no resultados; perf p95/p99, GPU/CPU, VRAM y playtest humano obligatorios. Cambiar antes cámara/sombrasy VFX, fragmentos y NPC que respuesta de vuelo.
+- Plan de tareas FEEL-01..FEEL-06 en docs/ANIMATION_FEEL_OPTIMIZATION_V08.md, sin iniciar gameplay hasta autorización y gate L00. No instalar plugins/editar Unreal desde esta documentación.
+
 ## Reglas vigentes adicionales — v0.7
 
 - Leer docs/ANIMATION_CHARACTER_PIPELINE_V07.md cuando se trabajen personajes, rigs o animaciones, y docs/REFERENCES_DYNAMIC_EVENTS_V07.md cuando se trabajen eventos aleatorios. Leer las skills impact-character-animation / impact-world-events según ticket. V0.7 no significa juego ejecutado.
@@ -28,7 +39,7 @@ No borrar las otras reglas que siguen.
 
 Crear un sandbox superheroico 3D divertido mediante reutilización gratuita. Priorizar vuelo frenético, agarres, lanzamientos y destrucción. No convertir la primera entrega en un proyecto de planeta completo.
 
-Leer README.md, docs/ANIMATION_CHARACTER_PIPELINE_V07.md, docs/REFERENCES_DYNAMIC_EVENTS_V07.md, docs/PRODUCTION_CONTRACT_V06.md, docs/CIVILIANS_ALERTS_KARMA_V06.md, docs/EXECUTION_BACKLOG_V06.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
+Leer README.md, docs/ANIMATION_FEEL_OPTIMIZATION_V08.md, docs/ANIMATION_CHARACTER_PIPELINE_V07.md, docs/REFERENCES_DYNAMIC_EVENTS_V07.md, docs/PRODUCTION_CONTRACT_V06.md, docs/CIVILIANS_ALERTS_KARMA_V06.md, docs/EXECUTION_BACKLOG_V06.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
 
 Precedencia: MASTER_PLAN_V05 para orden/criterios, FREE_RESOURCE_AUDIT_V05 para nuevas licencias y recursos, CODEX_QA_PLAYBOOK_V05 para autonomía/QA; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
 
