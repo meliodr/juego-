@@ -20,6 +20,9 @@ El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.
 
 ## Documentos
 
+**Auditoría de destrucción y planetas v1.1:** [CITY_DESTRUCTION_PLANETS_AUDIT_V11.md](docs/CITY_DESTRUCTION_PLANETS_AUDIT_V11.md) — inspección de PlotBuilder MIT UE5.8 (soportes/derrumbes), UE_Physics, Grzybojad road generation, Ephemera MIT y Cosmic Architect, más alternativas con licencias/compatibilidad pendientes, pruebas Linux propuestas y límites de copia privada. Investigación documentada; no se compiló en Linux.
+
+
 **Nueva especificación v1.0 de movimiento completo:** [Caminar, correr y volar + creadores auditados](docs/GROUND_FLIGHT_CREATORS_V10.md). Los tres héroes deben moverse a pie, correr/esprintar, saltar, activar vuelo, frenar y aterrizar con transiciones naturales. Selección de Epic GASP/ThirdPerson/ManOfSteel y creadores Haez, LocoDev, Matt Aspland, PanicPetal, Gorka Games y otros; licencia y nivel de acceso indicados.
 
 
@@ -61,7 +64,7 @@ El catálogo original contiene **28 candidatos y 3 índices**; la auditoría v0.
 - [Plan de experimentos e integración](docs/REUSE_PLAN.md): evaluación técnica de componentes.
 - [Reglas para agentes de programación](AGENTS.md): reutilización responsable, presupuesto y evidencias requeridas.
 
-Precedencia: GROUND_FLIGHT_CREATORS_V10 para locomoción completa y catálogo de creadores; FLIGHT_REUSE_AUDIT_V09 para selección de vuelo y prioridad muy lejana de co-op; ANIMATION_CHARACTER_PIPELINE_V07 para bibliotecas, creación de personajes y animaciones; REFERENCES_DYNAMIC_EVENTS_V07 para referencias y eventos aleatorios; PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
+Precedencia: CITY_DESTRUCTION_PLANETS_AUDIT_V11 para reutilización de ciudades/derrumbes/planetas y permisos; GROUND_FLIGHT_CREATORS_V10 para locomoción completa y catálogo de creadores; FLIGHT_REUSE_AUDIT_V09 para selección de vuelo y prioridad muy lejana de co-op; ANIMATION_CHARACTER_PIPELINE_V07 para bibliotecas, creación de personajes y animaciones; REFERENCES_DYNAMIC_EVENTS_V07 para referencias y eventos aleatorios; PRODUCTION_CONTRACT_V06 para roles/arquitectura/requisitos, EXECUTION_BACKLOG_V06 para gate concreto, CIVILIANS_ALERTS_KARMA_V06 para ciudad/alerta/karma; MASTER_PLAN_V05 para fases históricas/puertas y riesgo; FREE_RESOURCE_AUDIT_V05 para selección reciente de recursos/licencias; CODEX_QA_PLAYBOOK_V05 para prácticas de agente; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02, enemigos y movimientos anteriores; CITY_SOLAR_TELEPORT_V04 para ciudad, planetas y nuevo H03; SANDBOX_DESIGN para modos no sustituidos; COOP_PLAN para pausas online, autoridad y puertas de red. Las exclusiones antiguas de multijugador describen la primera entrega, no una arquitectura permanentemente individual. El catálogo no certifica compatibilidad.
 
 ## Personajes y enemigos
 
