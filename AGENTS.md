@@ -1,10 +1,23 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Estado y fuentes vigentes — v0.6
+
+**NO iniciar gameplay solo porque exista este plan.** El usuario quiere arquitectura, roles, skills y criterios claros antes de autorizar ejecución. La base aún es documental; no hay Unreal compilado/probado en la máquina Linux.
+**Hardware declarado**: 64 GB RAM y NVIDIA RTX 4070 8 GB VRAM. Faltan CPU, distro, espacio/SSD, driver Vulkan y versión UE; auditar en L00, no volver a preguntar RAM/GPU.
+**Fuente principal**: docs/PRODUCTION_CONTRACT_V06.md y docs/EXECUTION_BACKLOG_V06.md. **Reputación/alertas/NPC**: docs/CIVILIANS_ALERTS_KARMA_V06.md. Los documentos v0.5 y anteriores son contexto cuando no contradigan v0.6.
+**Procedimientos reusables**: .agents/skills/impact-license-audit, impact-linux-gate, impact-gameplay-gate, impact-civic-systems, impact-qa-review; leer el SKILL.md correspondiente cuando llegue ticket.
+**Separación de sistemas**: Alerta de distrito 0–5, Karma de jugador/región −100..100 y amenaza enemiga son diferentes. Modo Creativo permite desactivarlos. Nunca atribuir automáticamente a jugador daño causado por kaiju/robot. No penalizar por cada fragmento de un único incidente.
+**Ciudadanos**: empezar 3–6 actores con StateTree/SmartObjects; NPC Tier A/B/C y MassCrowd son ampliación condicional a profiling. MassAI/MassGameplay/ZoneGraph son experimentales en UE5.8: no introducir antes del gate.
+**Hardware/performance**: presupuestos objetivo 1080p 60fps, no resultados. Perfil escalable Low/Medium, número de NPC y física limitados por 8GB VRAM y CPU desconocida. Medir paquete Linux Vulkan real y p95/p99 de frame.
+**Flujo**: ticket Ready -> auditoría/licencia -> rama aislada -> integración mínima -> build/test -> prueba jugable humana -> revisión -> merge. Un solo dueño de main; no editar mismo UAsset en paralelo. DoD exige evidencia.
+**Alcance**: 3 héroes H01/H02/H03, robots/kaijus/superhumanos, región urbana destructible, sistema solar compacto, co-op 2 jugadores posterior. MVP = vuelo + carro + pared + enemigo y pequeños testigos; no historia, poderes y vuelo sin bloqueo por karma.
+No borrar las otras reglas que siguen.
+
 ## Misión
 
 Crear un sandbox superheroico 3D divertido mediante reutilización gratuita. Priorizar vuelo frenético, agarres, lanzamientos y destrucción. No convertir la primera entrega en un proyecto de planeta completo.
 
-Leer README.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
+Leer README.md, docs/PRODUCTION_CONTRACT_V06.md, docs/CIVILIANS_ALERTS_KARMA_V06.md, docs/EXECUTION_BACKLOG_V06.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
 
 Precedencia: MASTER_PLAN_V05 para orden/criterios, FREE_RESOURCE_AUDIT_V05 para nuevas licencias y recursos, CODEX_QA_PLAYBOOK_V05 para autonomía/QA; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
 
