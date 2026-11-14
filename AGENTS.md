@@ -4,9 +4,9 @@
 
 Crear un sandbox superheroico 3D divertido mediante reutilización gratuita. Priorizar vuelo frenético, agarres, lanzamientos y destrucción. No convertir la primera entrega en un proyecto de planeta completo.
 
-Leer README.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
+Leer README.md, docs/MASTER_PLAN_V05.md, docs/FREE_RESOURCE_AUDIT_V05.md, docs/CODEX_QA_PLAYBOOK_V05.md, docs/CITY_SOLAR_TELEPORT_V04.md, docs/COMBAT_ROSTER_V03.md, docs/GAMEPLAY_SPEC.md, docs/SANDBOX_DESIGN.md, docs/COOP_PLAN.md, docs/LINUX_BASELINE.md, docs/REUSE_CATALOG.md y docs/REUSE_PLAN.md antes de modificar arquitectura o importar dependencias.
 
-Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
+Precedencia: MASTER_PLAN_V05 para orden/criterios, FREE_RESOURCE_AUDIT_V05 para nuevas licencias y recursos, CODEX_QA_PLAYBOOK_V05 para autonomía/QA; LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núcleo individual; COMBAT_ROSTER_V03 para H01/H02 y enemigos; CITY_SOLAR_TELEPORT_V04 para ciudad, exploración solar y H03; SANDBOX_DESIGN para modos/escenarios no sustituidos; COOP_PLAN para dos jugadores, autoridad, pausa online y pruebas tempranas. Las exclusiones antiguas de multijugador se refieren a la primera entrega, no a una arquitectura permanentemente individual. El catálogo conserva candidatos y reservas, no aprobaciones de compatibilidad.
 
 ## Decisiones creativas vigentes — 2026-11-14
 
@@ -19,6 +19,15 @@ Precedencia: LINUX_BASELINE para plataforma; GAMEPLAY_SPEC para controles y núc
 - Robots, kaijus y superhumanos son las tres familias. Robots/kaijus pierden piezas con efectos sobre capacidades y con fragmentos importantes reutilizables. Separación estilizada sin vísceras ni anatomía explícita.
 - Diez enemigos diseñados no son alcance simultáneo: primer robot modular pequeño, rival de vuelo y después kaiju mediano de prueba. No modelar diez rigs ni añadir una forma colosal antes del bucle básico.
 - Documentos anteriores pueden contener nombres/identidades históricos. Aplicar COMBAT_ROSTER_V03 cuando entren en conflicto. El arte de conversación no está automáticamente subido al repositorio ni implica un modelo 3D importable.
+
+## Reglas ejecutivas adicionales — v0.5
+
+- Trabajar **por gates** L00 -> F01 -> C01 -> P01 -> D01 -> E01 -> S01 -> H02/H03 -> K01 -> N01 -> W01/W02. El primer prototipo debe jugarse, nunca comenzar importando todo el catálogo. La prioridad es vuelo, carro y hueco transitable; sistema solar completo y red pública no bloquean esa secuencia.
+- La licencia de Quaternius **puede diferir por pack/fecha**: páginas anteriores CC0; nueva QAL (agosto 2026) restringe redistribución standalone de packs bajo ella. Verificar licencia ligada al archivo descargado. No confundir Standard gratuito con Source de pago. Cuidado con licencias de Fab.
+- Preferir robots Sci-Fi Essentials Standard y mechas/monstruos animados CC0 como base provisional; ninguna malla se considera desarmable hasta preparar módulos y aprobar pruebas. No instalar a la vez dos frameworks de desmembramiento.
+- Unreal 5.8/Linux: hardware recomendado 32GB RAM/8GB VRAM, Vulkan, y toolchain versión específica según requisitos actualizados. **No inventar las especificaciones reales del usuario**. Si no hay GPU/editor accesible, sólo completar documentación/código estático e indicar el bloqueo.
+- Unreal MCP es experimental y sus operaciones editor/game thread deben ser serializadas. No exponer puerto ni afirmar que Codex editó uassets sin evidencia. La IA no evalúa por sí sola la sensación de jugar.
+- Mantener pruebas N0/N1 de red desde primer movimiento/agarre, pero no crear lobby/relay ni sistemas de Internet antes de pasar el sandbox local. El modo individual sin conexión debe funcionar siempre.
 
 ## Estado inicial
 
