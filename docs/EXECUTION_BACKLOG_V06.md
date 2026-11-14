@@ -27,6 +27,25 @@ P0 = debe quedar jugable antes de expandir; P1 = después del bucle físico; P2 
 | IB-W01 | P2 | planeta proxy, atmósfera, Sol visible, órbita y regreso | Codex World/Engine / QA | F01,C01 | 10 viajes ida/vuelta con estado estable |
 | IB-W02 | P2 | luna y dos planetas cada uno con área local jugable | Codex World / QA | W01 | aterrizar/explorar/interactuar/regresar; no solo esfera visual |
 
+## Tareas añadidas por v0.7 — animación, arte, sucesos aleatorios
+
+Estos tickets se ejecutan después de la validación técnica necesaria; **no retrasan IB-L00/IB-F01 ni el primer carro y pared**. Fuentes de verdad: ANIMATION_CHARACTER_PIPELINE_V07.md y REFERENCES_DYNAMIC_EVENTS_V07.md.
+
+| ID | Prioridad | Dueño propuesto | Resultado/Dependencia | Aceptación |
+|---|---|---|---|---|
+| IB-ANIM00 | P1 | Codex auditor recursos + integrador Unreal | tras L00; verificar ZIP Standard Quaternius UBC/UAL, 15 mocaps Rokoko, licencias/rig | manifiesto de archivos concretos, clips, términos, imports de 1 humanoide en Linux |
+| IB-ANIM01 | P1 | Codex Gameplay/Arte técnico + QA | tras F01/ANIM00; 6-10 poses Hover/Cruise/Sonic/Brake/Takeoff/Land/Recover con IK de manos | paquete Linux con 20 transiciones sin snaps y 30 agarres; prueba humana de cámara/velocidad |
+| IB-ART01 | P1 | Codex Blender/Arte técnico + QA | tras ANIM01; traje original H01 y base compartida, variantes H02/H03 después | arte exportable rigged, sin clipping grave, licencia y rendimiento evaluado |
+| IB-ROBOTART | P1 | Codex Arte/Enemies + QA | tras E01 y auditoría Sci-Fi Standard | un robot con 2-3 piezas separables, IA cambia al perderlas |
+| IB-KAIJUART | P2 | Codex Creature/Rig + QA | tras K01; Quaternius Monster/Mesh2Motion | una criatura animada y tres sockets/piezas con impacto y colisión; no gore |
+| IB-EVT00 | P1 | Codex City/Event Designer + QA | tras S01/U00; director DataAssets, semilla, cooldown, slots y debug | 30 selecciones reproducibles; máximo 1 evento grande y limpieza |
+| IB-EVT01 | P1 | Codex City/AI + QA | tras U01/EVT00; robo con ladrón, testigo y huida | evento se detecta, puede ignorarse o detenerse, termina sin pop-in |
+| IB-EVT02 | P1 | Codex Gameplay/Destruction + QA | tras D01/EVT00; meteorito visible y cráter prefab con 2-5 piedras | 30 impactos, un IncidentId, suelo válido, colisión cambiada y piezas agarrables |
+| IB-EVT03 | P2 | Codex AI/Response + QA | tras E01/U02/EVT00; mini invasión de robots reutilizados | spawn budget, alarma/evacuación, derrota/retirada y reset sin duplicar karma |
+| IB-EVT04 | P2 | Codex World/AI + QA | tras K01/W01; kaiju, meteor lunar/espacial, expansión regional | estabilidad y atribución correcta con un evento importante activo |
+
+Los videos de experiencias Roblox/Minecraft son referencias y NO dependen de importación de recursos ARR. La revisión visual de animaciones y clips originales de Rokoko/GASP requiere abrir/inspeccionar los archivos permitidos; su ficha pública no certifica calidad o pertenencia del clip. No generar modelos 3D reales desde imagen sin rigging.
+
 ## Ticket de implementación IB-L00 listo para ejecutar CUANDO el usuario autorice
 **Objetivo:** comprobar hardware/UE/driver y abrir proyecto base Linux mínimo.
 **Entradas:** repositorio y acceso real Linux; distro/CPU/SSD desconocidos se deben inspeccionar, no preguntar por RAM/GPU ya dichas.
