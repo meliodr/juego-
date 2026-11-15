@@ -863,6 +863,8 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 		double FurthestThrowY = 0.0;
 		double LeadingWallFace = 0.0;
 		double FurthestCargoNose = 0.0;
+		FVector PreviousCargoPosition = FVector::ZeroVector;
+		double PeakCargoApproachSpeed = 0.0;
 		int32 Completed = 0;
 		int32 Frame = 0;
 		int32 ReloadFrames = 0;
@@ -940,7 +942,7 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 						!Circuit->IsChargingThrow() && FMath::IsNearlyZero(Circuit->GetThrowCharge()));
 					AddInfo(TEXT("Verified that a reset cancels an active charge"));
 				}
-				if (State->Completed == 52)
+				if (State->Completed == 56)
 				{
 					return true;
 				}
@@ -993,6 +995,72 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 		{
 			PC->InputKey(FInputKeyEventArgs::CreateSimulated(Input, bHeld ? IE_Pressed : IE_Released, bHeld ? 1.f : 0.f));
 		};
+		if (State->Completed >= 52)
+		{
+			// One explicit placement and velocity seed per case, then real CMC and cargo ticks.
+			// This checks a thin cargo-only obstruction, not a continuous acceleration journey.
+			auto* Movement = Hero->GetCharacterMovement();
+			const bool bTurbo = State->Completed % 2 != 0;
+			const double Speed = bTurbo ? 36800.0 : 32000.0;
+			const double Lateral = State->Completed >= 54 ? 0.12 : 0.0;
+			const FVector Direction = FVector(-Lateral, 1.0, 0.0).GetSafeNormal();
+			if (Frame == 50)
+			{
+				TestFalse(TEXT("High-speed fixture starts with the car held"), Car->IsSimulatingPhysics());
+				const FVector Offset = Car->GetComponentLocation() - Hero->GetActorLocation();
+				Hero->SetActorLocation(FVector(1000000, 0, 10000), false, nullptr, ETeleportType::TeleportPhysics);
+				Car->SetWorldLocation(Hero->GetActorLocation() + Offset, false, nullptr, ETeleportType::TeleportPhysics);
+				Movement->SetMovementMode(MOVE_Flying);
+				Movement->StopMovementImmediately();
+				Key(EKeys::B, true);
+			}
+			if (Frame == 51) { Key(EKeys::B, false); Key(EKeys::E, true); }
+			if (Frame == 52) { Key(EKeys::E, false); if (bTurbo) { Key(EKeys::LeftShift, true); } }
+			if (Frame == 400)
+			{
+				TestEqual(TEXT("High-speed fixture selects traversal level five"), Hero->GetFlightLevel(), 5);
+				TestFalse(TEXT("Car remains held before high-speed approach"), Car->IsSimulatingPhysics());
+				AActor* Wall = Hero->GetWorld()->SpawnActor<AActor>();
+				if (!TestNotNull(TEXT("High-speed cargo-only wall"), Wall)) { return true; }
+				UBoxComponent* Box = NewObject<UBoxComponent>(Wall);
+				Wall->SetRootComponent(Box);
+				Box->InitBoxExtent(FVector(10000, 4, 80));
+				Box->SetCollisionProfileName(TEXT("BlockAll"));
+				State->LeadingWallFace = Car->Bounds.Origin.Y + Car->Bounds.BoxExtent.Y + 5000;
+				Wall->SetActorLocation(FVector(Hero->GetActorLocation().X, State->LeadingWallFace + 4, 10187));
+				Box->RegisterComponent();
+				State->AirStart = Hero->GetActorLocation();
+				State->PreviousCargoPosition = Car->GetComponentLocation();
+				State->PeakCargoApproachSpeed = 0;
+				State->FurthestCargoNose = Car->Bounds.Origin.Y + Car->Bounds.BoxExtent.Y;
+				Movement->Velocity = Direction * Speed;
+			}
+			if (Frame >= 400 && Frame < 430)
+			{
+				Hero->DoMove(Lateral, 1);
+				const double Nose = Car->Bounds.Origin.Y + Car->Bounds.BoxExtent.Y;
+				if (Frame > 400 && Nose < State->LeadingWallFace - 1000 && !Car->IsSimulatingPhysics())
+				{
+					State->PeakCargoApproachSpeed = FMath::Max(State->PeakCargoApproachSpeed,
+						FVector::Dist(Car->GetComponentLocation(), State->PreviousCargoPosition) / Hero->GetWorld()->GetDeltaSeconds());
+				}
+				State->PreviousCargoPosition = Car->GetComponentLocation();
+				State->FurthestCargoNose = FMath::Max(State->FurthestCargoNose, Nose);
+			}
+			if (Frame == 430)
+			{
+				AddInfo(FString::Printf(TEXT("Cargo sweep %.0f cm/s lateral %.2f: measured %.1f cm/s, nose %.1f, wall %.1f"),
+					Speed, Lateral, State->PeakCargoApproachSpeed, State->FurthestCargoNose, State->LeadingWallFace));
+				TestTrue(TEXT("Car actually approaches at traversal or turbo speed"), State->PeakCargoApproachSpeed >= Speed * 0.98);
+				TestTrue(TEXT("High-speed cargo reaches thin wall without tunneling"), FMath::IsNearlyEqual(State->FurthestCargoNose, State->LeadingWallFace, 8.0));
+				TestTrue(TEXT("Hero clears the cargo-only wall"), Hero->GetActorLocation().Y > State->LeadingWallFace + 100);
+				TestTrue(TEXT("Obstructed cargo is released safely"), Car->IsSimulatingPhysics());
+				if (bTurbo) { Key(EKeys::LeftShift, false); }
+				State->bAwaitingReload = true;
+				Circuit->ResetCircuit();
+			}
+			return false;
+		}
 		if (State->Completed == 51)
 		{
 			if (Frame == 50)
