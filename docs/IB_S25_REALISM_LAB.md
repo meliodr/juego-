@@ -2,6 +2,8 @@
 
 Estado del 2026-11-15: **CÓDIGO y pruebas ligeras PASS; Unreal, mapa, capturas, DX12 y aceptación artística PENDIENTES.** No es una entrega fotorealista terminada ni integración global/Sprint 7.5. RD$0, sin compras, plugins nuevos, cook, cambios de seguridad o merge.
 
+**Publicación bloqueada:** commit de código local `b60d888c3aa39d203f1293b9c873e29c17f15385`. La revisión automática rechazó el push a `meliodr/juego-` y su única reevaluación tras consultar el historial, porque exige autorización explícita para publicar este contenido en ese repositorio público. No se ejecutó el push ni se creó PR. `IB_S25_PR_BODY.md` es el texto local preparado, no un PR existente. No se intentó otro transporte para eludir el rechazo.
+
 Base exacta: `1d01db54b63250ed0aacb0704a5ac16290324e32`. Rama: `prototype/ib-s25-realism-lab`. Worktree: `task/impact-s25-realism`, con repositorio auxiliar `task/impact-s25-repo`; se usó la carpeta autorizada porque las raíces originales no permitían operaciones Git en el sandbox. La auditoría posterior de solo lectura confirmó el checkout original en la misma base y una carpeta no versionada `ImpactBeyond 5.8/`. No se sobrescribió. La configuración documental de [coordinación](https://github.com/meliodr/juego-/blob/docs/roadmap-sprints-02-08-20261115/docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md) se leyó sin mezclar esa rama.
 
 ## Lo entregado y lo que falta

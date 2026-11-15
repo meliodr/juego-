@@ -73,5 +73,13 @@
     "Visible DX12/audio A/B FPS, p95/p99, GPU memory and streaming",
     "Human acceptance of realism"
   ],
-  "permission_denial_remaining": false
+  "permission_denial_remaining": true,
+  "publication": {
+    "code_commit": "b60d888c3aa39d203f1293b9c873e29c17f15385",
+    "push": "DENIED_NOT_EXECUTED",
+    "draft_pr": "NOT_CREATED_LOCAL_BODY_PREPARED",
+    "target": "https://github.com/meliodr/juego- : prototype/ib-s25-realism-lab",
+    "reason": "Automatic approval review requires explicit user authorization to publish this payload to the public repository. One reevaluation after reading relevant user history was also denied.",
+    "next_action": "Obtain explicit publication authorization; do not bypass via connector or alternate transport."
+  }
 }
