@@ -10,6 +10,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
+class UAnimSequence;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -72,6 +73,7 @@ protected:
 	/** Initialize input action bindings */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;
 
 protected:
 
@@ -88,6 +90,18 @@ private:
 	void SetFlightLevel(int32 Level);
 	bool IsFlightBrakeHeld() const;
 
+	void UpdateFlightPresentation(float DeltaSeconds);
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> HoverPose;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> TravelPose;
+
+	FTransform GroundMeshTransform;
+	FRotator FlightFacing = FRotator::ZeroRotator;
+	bool bPresentingFlight = false;
+	bool bUsingTravelPose = false;
 	int32 FlightLevel = 0;
 
 public:
