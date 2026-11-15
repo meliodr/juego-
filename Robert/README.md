@@ -1,5 +1,7 @@
 # Robert · Investigación para IMPACT: BEYOND
 
+> **USO PERSONAL DE JARRY. NO COMERCIAL.** Esta es la finalidad actual del juego. No implica permiso para extraer o redistribuir contenido ajeno.
+
 Corte: 15 de noviembre de 2026. Documentación solicitada por Jarry, organizada en GitHub. No contiene paquetes de terceros, instalaciones ni código de gameplay.
 
 ## Índice
@@ -8,6 +10,8 @@ Corte: 15 de noviembre de 2026. Documentación solicitada por Jarry, organizada 
 3. [Creadores que desarrollan juegos con IA](CREADORES_IA.md)
 
 4. [Ejemplos oficiales Epic y decisión de usar Fab](EJEMPLOS_EPIC.md)
+
+5. [Fuentes adicionales y límites de uso personal](FUENTES_ADICIONALES.md)
 
 ## Decisiones actuales de Jarry
 - Fab de Epic será la fuente de recursos gratuitos, con presupuesto RD$0 y licencia/NoAI comprobados por recurso. No supone instalar todos los candidatos; prevalece sobre selecciones generales anteriores.
