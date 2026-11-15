@@ -9,9 +9,9 @@ Base revisada: b65f9a6. Entorno objetivo: UE 5.8.4, Win64 Development, DX12, Lvl
 - Un proceso PowerShell independiente llamó a `xinput1_4.dll!XInputGetState` para los índices 0–3. Los cuatro devolvieron 1167 (dispositivo no conectado). Steam estaba en ejecución. El resultado mide la visibilidad XInput desde el proceso de sondeo. Valve documenta que la emulación puede operar dentro del proceso de juego mediante el overlay.
 - La lógica de vuelo escucha teclas estándar de gamepad: pulsaciones R3/R1/L1, estado de Cuadrado y valores analógicos de R2/L2. L3 se consulta al procesar movimiento en suelo. Las entradas HID genéricas de RawInput por sí solas no alimentan esas consultas. Se aplaza activar el plugin experimental de Epic hasta medir la ruta de Steam.
 
-- En el lanzamiento directo del paquete F01, el usuario informó que el juego no reaccionó al mando. La prueba con Steam Input sigue pendiente.
+- En el lanzamiento directo del paquete F01, el usuario informó que el juego no reaccionó al mando. Después de seguir la ruta de Steam Input, el usuario confirmó que el mando funcionó. No detalló cada control ni el transporte usado.
 
-## Prueba física pendiente
+## Reproducción y comprobación de controles
 
 1. Usar el paquete Win64 Development existente y conectar el DualSense por USB de datos. Para el primer ensayo usar un solo mando y un solo transporte.
 2. Abrir el paquete directamente una vez y probar ambos sticks y Cruz. Si ya responde, ejecutar la tabla completa en esa ruta antes de configurar Steam.
@@ -30,6 +30,6 @@ Base revisada: b65f9a6. Entorno objetivo: UE 5.8.4, Win64 Development, DX12, Lvl
 
 Tras la prueba, cerrar el paquete. Para revertir la configuración, eliminar el acceso directo externo de la biblioteca. La prueba no requiere recompilar, instalar software ni editar el personaje.
 
-**Decisión IB-F01** — CONTINUAR con la validación física. Se verificó la presencia HID y el resultado XInput del proceso de sondeo. Quedan por observar la emulación dentro del paquete y la respuesta completa de los controles. No se abrió el editor ni el juego durante esta auditoría.
+**Decisión IB-F01** — CONTINUAR con la validación física. Se verificó la presencia HID y el resultado XInput del proceso de sondeo. El usuario confirmó que el mando responde en el paquete lanzado desde Steam. Queda por registrar la respuesta de cada control de la tabla.
 
 Fuentes: [Emulación de gamepad en Steam Input](https://partner.steamgames.com/doc/features/steam_controller/steam_input_gamepad_emulation_bestpractices), [acceso directo a un juego externo](https://help.steampowered.com/en/faqs/view/4B8B-9697-2338-40EC), [plugin Windows RawInput de Epic](https://dev.epicgames.com/documentation/unreal-engine/API/PluginIndex/RawInput).
