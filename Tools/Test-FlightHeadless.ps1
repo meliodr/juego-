@@ -1,5 +1,6 @@
 param(
-    [string]$EngineRoot = 'C:\Program Files\Epic Games\UE_5.8'
+    [string]$EngineRoot = 'C:\Program Files\Epic Games\UE_5.8',
+    [switch]$Circuit
 )
 
 $ErrorActionPreference = 'Stop'
@@ -8,17 +9,19 @@ $Build = Join-Path $EngineRoot 'Engine/Build/BatchFiles/Build.bat'
 $Editor = Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor-Cmd.exe'
 $LogDir = Join-Path (Split-Path $Project) 'Saved/Logs'
 New-Item -ItemType Directory -Force $LogDir | Out-Null
-$Log = Join-Path $LogDir ('IB-F01-{0}.log' -f ([guid]::NewGuid().ToString('N')))
+$TestName = if ($Circuit) { 'ImpactBeyond.Circuit.Headless' } else { 'ImpactBeyond.Flight.Headless' }
+$Map = if ($Circuit) { '/Game/IB_C00/Lvl_IB_C00' } else { '/Game/ThirdPerson/Lvl_ThirdPerson' }
+$Log = Join-Path $LogDir ('{0}-{1}.log' -f $TestName, ([guid]::NewGuid().ToString('N')))
 
 & $Build ImpactBeyondEditor Win64 Development $Project -WaitMutex -NoHotReload -NoHotReloadFromIDE -NoUBA
 if ($LASTEXITCODE -ne 0) { throw "Build failed ($LASTEXITCODE)." }
 
 $Arguments = @(
     ('"{0}"' -f $Project)
-    '/Game/ThirdPerson/Lvl_ThirdPerson'
+    $Map
     '-game -nullrhi -unattended -nosplash -nosound -nopause -NoLiveCoding'
     '-UseFixedTimeStep -FPS=60'
-    '-ExecCmds="Automation RunTests ImpactBeyond.Flight.Headless"'
+    ('-ExecCmds="Automation RunTests {0}"' -f $TestName)
     '-TestExit="Automation Test Queue Empty"'
     ('-abslog="{0}"' -f $Log)
 )
@@ -31,6 +34,7 @@ if (!$Process.WaitForExit(300000)) {
 if (!(Test-Path -LiteralPath $Log)) { throw 'Unreal did not produce a log.' }
 Select-String -LiteralPath $Log -Pattern 'LogAutomationController:|Flight cap|After 20 frames|Wall \(' |
     Select-Object -Last 30 | ForEach-Object { $_.Line }
-if ($Process.ExitCode -ne 0 -or !(Select-String -LiteralPath $Log -Quiet -Pattern 'Test Completed\. Result=\{Success\}.*Path=\{ImpactBeyond\.Flight\.Headless\}')) {
-    throw "Flight test failed or did not complete (Unreal exit $($Process.ExitCode))."
+$Success = 'Test Completed\. Result=\{Success\}.*Path=\{' + [regex]::Escape($TestName) + '\}'
+if ($Process.ExitCode -ne 0 -or !(Select-String -LiteralPath $Log -Quiet -Pattern $Success)) {
+    throw "$TestName failed or did not complete (Unreal exit $($Process.ExitCode))."
 }

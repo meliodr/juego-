@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ImpactBeyondCharacter.h"
+#include "ImpactCircuitComponent.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/AnimSequence.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -21,10 +22,13 @@
 
 AImpactBeyondCharacter::AImpactBeyondCharacter()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> AirborneAsset(
-		TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jump/MM_Fall_Loop.MM_Fall_Loop"));
-	HoverPose = AirborneAsset.Object;
-	TravelPose = AirborneAsset.Object;
+	Circuit = CreateDefaultSubobject<UImpactCircuitComponent>(TEXT("Circuit"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> HoverAsset(
+		TEXT("/Game/IB_Flight/A_FlightHover.A_FlightHover"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> CruiseAsset(
+		TEXT("/Game/IB_Flight/A_FlightCruise.A_FlightCruise"));
+	HoverPose = HoverAsset.Object;
+	TravelPose = CruiseAsset.Object;
 
 	PrimaryActorTick.bCanEverTick = true;
 	// Set size for collision capsule
@@ -86,6 +90,12 @@ void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		PlayerInputComponent->BindKey(EKeys::Gamepad_RightShoulder, IE_Pressed, this, &AImpactBeyondCharacter::IncreaseFlightSpeed);
 		PlayerInputComponent->BindKey(EKeys::Q, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_LeftShoulder, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
+		PlayerInputComponent->BindKey(EKeys::G, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ToggleGrab);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Right, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ToggleGrab);
+		PlayerInputComponent->BindKey(EKeys::T, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ThrowCar);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Top, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ThrowCar);
+		PlayerInputComponent->BindKey(EKeys::R, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ResetCircuit);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_DPad_Down, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ResetCircuit);
 	}
 	else
 	{
@@ -190,7 +200,7 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 		TargetFacing.Yaw = Velocity.Rotation().Yaw;
 	}
 	const float Lean = FMath::GetMappedRangeValueClamped(
-		FVector2D(120.0f, 1800.0f), FVector2D(0.0f, 55.0f), HorizontalSpeed);
+		FVector2D(180.0f, 1500.0f), FVector2D(0.0f, 65.0f), HorizontalSpeed);
 	// Pitch up slightly during a climb and down during a dive, even without forward input.
 	const float VerticalPitch = FMath::Clamp(Velocity.Z / 60.0f, -15.0f, 15.0f);
 	const FVector FacingRight = FRotationMatrix(FRotator(0.0f, FlightFacing.Yaw, 0.0f)).GetUnitAxis(EAxis::Y);

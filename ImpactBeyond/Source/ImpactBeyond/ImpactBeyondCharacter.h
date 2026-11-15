@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class UAnimSequence;
+class UImpactCircuitComponent;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -84,6 +85,9 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 private:
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UImpactCircuitComponent> Circuit;
+
 	void ToggleFlight();
 	void IncreaseFlightSpeed();
 	void DecreaseFlightSpeed();

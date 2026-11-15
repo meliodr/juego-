@@ -39,8 +39,8 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 | 3 | IB-GND00 | Caminar, correr, esprintar y saltar, antes de vuelo | Integrador de gameplay | EJECUTADO; validación manual pendiente |
 | 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación | EJECUTADO; pruebas completas pendientes |
 | 5 | IB-C00 | Una manzana y fachada de prueba; F01 | Mundo/arte técnico | PLANIFICADO |
-| 6 | IB-P01 | Agarre y lanzamiento; F01 + escenario simple | Gameplay | PLANIFICADO |
-| 7 | IB-D01 | Hueco y piezas; P01 + C00 | Gameplay/destrucción | PLANIFICADO |
+| 6 | IB-P01 | Agarre y lanzamiento; F01 + escenario simple | Gameplay | EJECUTADO en el carro; [prueba y pendientes](IB_CIRCUITO_JUGABLE.md) |
+| 7 | IB-D01 | Hueco y piezas; P01 + C00 | Gameplay/destrucción | EJECUTADO en un panel; [prueba y pendientes](IB_CIRCUITO_JUGABLE.md) |
 | 8 | IB-E01 | Robot modular y rival aéreo, de uno en uno; D01 | Gameplay/IA | PLANIFICADO |
 | 9 | IB-S01 | Sandbox integrado + prueba humana; anteriores | Integrador + QA + usuario | PLANIFICADO |
 

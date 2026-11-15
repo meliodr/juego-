@@ -5,6 +5,10 @@
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMeshActor.h"
+#include "EngineUtils.h"
+#include "ImpactCircuitComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -278,6 +282,102 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Movement->Velocity = OriginalVelocity;
 		Floor->Destroy();
 	});
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FImpactCircuitTest, "ImpactBeyond.Circuit.Headless",
+	EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+
+bool FImpactCircuitTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = nullptr;
+	for (const FWorldContext& Context : GEngine->GetWorldContexts())
+	{
+		if (Context.WorldType == EWorldType::Game)
+		{
+			World = Context.World();
+			break;
+		}
+	}
+	APlayerController* PC = World ? World->GetFirstPlayerController() : nullptr;
+	ACharacter* Pawn = PC ? Cast<ACharacter>(PC->GetPawn()) : nullptr;
+	UImpactCircuitComponent* Circuit = Pawn ? Pawn->FindComponentByClass<UImpactCircuitComponent>() : nullptr;
+	if (!TestNotNull(TEXT("Circuit on the possessed character"), Circuit))
+	{
+		return false;
+	}
+	UStaticMeshComponent* Car = nullptr;
+	UStaticMeshComponent* Panel = nullptr;
+	for (TActorIterator<AStaticMeshActor> Actor(World); Actor; ++Actor)
+	{
+		if (Actor->ActorHasTag(TEXT("ImpactCircuitCar"))) { Car = Actor->GetStaticMeshComponent(); }
+		if (Actor->ActorHasTag(TEXT("ImpactCircuitPanel"))) { Panel = Actor->GetStaticMeshComponent(); }
+	}
+	if (!TestNotNull(TEXT("Tagged car"), Car) || !TestNotNull(TEXT("Tagged panel"), Panel))
+	{
+		return false;
+	}
+	const FVector InitialCarLocation = Car->GetComponentLocation();
+	Pawn->SetActorLocation(FVector(InitialCarLocation.X, InitialCarLocation.Y - 500.0, 98.0), false, nullptr, ETeleportType::TeleportPhysics);
+	PC->SetControlRotation(FRotator(0.0, 90.0, 0.0));
+	Circuit->ToggleGrab();
+	TestFalse(TEXT("Grab takes the car out of rigid simulation"), Car->IsSimulatingPhysics());
+	Circuit->ToggleGrab();
+	TestTrue(TEXT("Drop restores rigid simulation"), Car->IsSimulatingPhysics());
+	Circuit->ToggleGrab();
+	ADD_LATENT_AUTOMATION_COMMAND(FFlightStep([this, Circuit, Car, Panel, World, Frame = 0]() mutable
+	{
+		++Frame;
+		if (Frame == 12)
+		{
+			TestTrue(TEXT("Held car lifted above street"), Car->GetComponentLocation().Z > 150.0);
+			TestTrue(TEXT("Intact panel blocks collision"), Panel->IsCollisionEnabled());
+			Circuit->ThrowCar();
+			TestTrue(TEXT("Thrown car simulates physics"), Car->IsSimulatingPhysics());
+		}
+		if (Frame < 160) { return false; }
+		TestFalse(TEXT("Car impact disables panel collision"), Panel->IsCollisionEnabled());
+		const FVector Center = Panel->GetComponentLocation();
+		FCollisionQueryParams Query(SCENE_QUERY_STAT(ImpactCircuitOpening), false, Car->GetOwner());
+		TestFalse(TEXT("Capsule can cross the opening"), World->SweepTestByChannel(
+			FVector(Center.X, Center.Y - 250.0, 110.0), FVector(Center.X, Center.Y + 250.0, 110.0),
+			FQuat::Identity, ECC_Pawn, FCollisionShape::MakeCapsule(42.0, 96.0), Query));
+		Circuit->ResetCircuit();
+		return true;
+	}));
+	ADD_LATENT_AUTOMATION_COMMAND(FFlightStep([this, PreviousWorld = TWeakObjectPtr<UWorld>(World), InitialCarLocation, Frames = 0]() mutable
+	{
+		for (const FWorldContext& Context : GEngine->GetWorldContexts())
+		{
+			UWorld* NewWorld = Context.World();
+			if (Context.WorldType != EWorldType::Game || !NewWorld || NewWorld == PreviousWorld.Get() || !NewWorld->HasBegunPlay())
+			{
+				continue;
+			}
+			int32 CarCount = 0;
+			int32 PanelCount = 0;
+			for (TActorIterator<AStaticMeshActor> Actor(NewWorld); Actor; ++Actor)
+			{
+				if (Actor->ActorHasTag(TEXT("ImpactCircuitCar")))
+				{
+					++CarCount;
+					TestTrue(TEXT("Reset puts car back at spawn"), FVector::Dist(Actor->GetActorLocation(), InitialCarLocation) < 15.0);
+				}
+				if (Actor->ActorHasTag(TEXT("ImpactCircuitPanel")))
+				{
+					++PanelCount;
+					TestTrue(TEXT("Reset restores panel collision and visibility"), Actor->GetStaticMeshComponent()->IsCollisionEnabled()
+						&& Actor->GetStaticMeshComponent()->IsVisible());
+				}
+			}
+			TestEqual(TEXT("Reset leaves exactly one car"), CarCount, 1);
+			TestEqual(TEXT("Reset leaves exactly one panel"), PanelCount, 1);
+			return true;
+		}
+		if (++Frames < 240) { return false; }
+		AddError(TEXT("Circuit did not finish reloading after reset"));
+		return true;
+	}));
 	return true;
 }
 
