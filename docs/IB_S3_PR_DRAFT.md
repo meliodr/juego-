@@ -1,4 +1,4 @@
-# Draft PR preparado localmente — NO creado en GitHub
+# S3 — descripción del PR de laboratorio
 
 Repositorio: `meliodr/juego-`
 Head: `prototype/ib-s3-planet-lab`
@@ -24,6 +24,8 @@ Validación ejecutada:
 
 Reproducción y arquitectura: `docs/IB_S3_ARCHITECTURE.md`. Evidencia numérica: `docs/IB_S3_QA.json`. Herramientas: `Tools/IBS3_TestCore.ps1`, `IBS3_TestAuthoring.py`, `IBS3_AuthorLab.py`, `IBS3_RunUnreal.ps1`.
 
-## Estado de publicación
+## Autorización de publicación
 
-El intento `git push -u origin prototype/ib-s3-planet-lab` fue **DENEGADO antes de ejecutarse** por la revisión automática. Motivo informado: la evidencia confiable autoriza trabajo local/envío de encargos, pero no ese push externo concreto. No se reintentó ni se cambió de método. Lectura posterior confirmó que la rama no existe remotamente. El PR no se creó. Hace falta autorización explícita para publicar esta rama en `https://github.com/meliodr/juego-.git` y abrir este draft contra `prototype/ib-sprint02`.
+El primer intento de publicación fue denegado antes de ejecutarse por falta de autorización explícita para un push externo; no se eludió esa decisión. El 2026-11-15 se recibió y verificó una nueva autorización expresa para subir las ramas de laboratorio al repositorio público `meliodr/juego-` y abrir sus PR en borrador, sin fusionarlos. Esta autorización permite publicar `prototype/ib-s3-planet-lab` en `https://github.com/meliodr/juego-.git` y abrir un único draft contra `prototype/ib-sprint02`.
+
+La publicación no cambia los estados de QA anteriores ni constituye integración jugable. Este documento conserva la descripción y alcance del PR; la URL y el hash remoto se verifican por separado al finalizar la operación.
