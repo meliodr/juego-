@@ -13,7 +13,12 @@ Corte: 15 de noviembre de 2026. Documentación solicitada por Jarry, organizada 
 
 5. [Fuentes adicionales y límites de uso personal](FUENTES_ADICIONALES.md)
 
-6. [Super Heroes de HighRender: referencia pagada y límites](SUPER_HEROES_HIGHRENDER.md)
+6. Histórico excluido de selección: [Super Heroes de HighRender](SUPER_HEROES_HIGHRENDER.md). No recomendar ni reconsiderar mientras siga vigente la pauta de solo gratuito confirmado.
+
+## Filtro obligatorio: únicamente gratuito confirmado
+**Jarry no comprará nada. Solo buscar y presentar recursos cuyo precio gratuito esté confirmado.** No recomendar ni presentar elementos de pago o de precio incierto. Si no puede confirmarse el precio cero, excluirlo de la selección presentada. Comprobar también licencias y restricciones antes de incorporar; gratuito no significa uso irrestricto.
+
+Los análisis previos de pago o precio incierto se conservan únicamente como histórico, no como candidatos vigentes. No añadir artículos pagados nuevos.
 
 ## Decisiones actuales de Jarry
 - Fab de Epic será la fuente de recursos gratuitos, con presupuesto RD$0 y licencia/NoAI comprobados por recurso. No supone instalar todos los candidatos; prevalece sobre selecciones generales anteriores.
