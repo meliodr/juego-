@@ -46,3 +46,7 @@ Matriz adicional obligatoria al obtener turno: repetir cargas contra pared front
 - Scripts de editor y AutomationTests requieren compilación/ejecución antes de aceptarlos. La escena no debe presentarse como demo lista.
 
 Decisión: **CONTINUAR en un turno exclusivo de Unreal**, corregir cualquier fallo de compilación/API/colisión y después revisar DX12/control. Mantener PR draft; no merge ni reemplazo del paquete jugable existente. El mismo agente implementó y revisó el código; no hubo QA independiente.
+
+## Publicación bloqueada
+
+La implementación se guardó en el commit local `bfa20140e88b734f78bafbbde1bf0b476677b7ed`. La revisión automática **rechazó antes de ejecutar** el push de `prototype/ib-s35-interactions-lab` a `meliodr/juego-`, indicando autorización insuficientemente explícita para publicar código no público en ese destino. No se reintentó ni se cambió de herramienta para publicar. PR remoto: **NO CREADO**. El cuerpo listo y el motivo exacto están en `IB_S35_PR_DRAFT.md`; se requiere autorización específica para la publicación. Un commit documental posterior registra este bloqueo sin alterar la implementación.
