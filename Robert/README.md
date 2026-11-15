@@ -7,6 +7,12 @@ Corte: 15 de noviembre de 2026. Documentación solicitada por Jarry, organizada 
 2. [Personajes, animaciones, ciudad, vehículos, audio y efectos](RECURSOS_GRATUITOS.md)
 3. [Creadores que desarrollan juegos con IA](CREADORES_IA.md)
 
+4. [Ejemplos oficiales Epic y decisión de usar Fab](EJEMPLOS_EPIC.md)
+
+## Decisiones actuales de Jarry
+- Fab de Epic será la fuente de recursos gratuitos, con presupuesto RD$0 y licencia/NoAI comprobados por recurso. No supone instalar todos los candidatos; prevalece sobre selecciones generales anteriores.
+- IMPACT es actualmente para jugarlo él personalmente, no para comercializarlo. Esto no autoriza extraer cualquier contenido ni redistribuir recursos. Distinguir material solo para uso personal de material distribuible. Una futura publicación, colaboración con entrega de assets o comercialización requerirá revisar de nuevo las licencias.
+
 ## Cómo usar esta carpeta
 - Complementa, no reemplaza, el [plan activo](../docs/PLAN_ACTIVO.md), la [cola](../docs/TAREAS_ACTIVAS.md) y la [selección de plugins](../docs/PLUGIN_SELECTION_V14.md).
 - Reutilizar → configurar → adaptar → combinar; crear únicamente lo mínimo que falte. No acumular paquetes.
