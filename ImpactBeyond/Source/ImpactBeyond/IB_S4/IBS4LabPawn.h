@@ -61,5 +61,5 @@ private:
     void ToggleFlight();
     void ResetLab();
     void TestAlert();
-    UFUNCTION() void React(const FIBS4Hit& Hit, float Delta);
+    UFUNCTION() void React(const FIBS4Hit& Hit, const FIBS4Outcome& Outcome);
 };

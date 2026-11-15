@@ -102,10 +102,10 @@ void AIBS4LabScene::BeginPlay()
     }
     UE_LOG(LogTemp, Display, TEXT("IBS4 lab created: targets=%d threats=%d humanMesh=%s tankProxy=%d"), Targets.Num(), Threats.Num(), *GetNameSafe(HumanMesh), bUsingTankProxy);
 }
-void AIBS4LabScene::Incident(const FIBS4Hit& Hit, float Delta)
+void AIBS4LabScene::Incident(const FIBS4Hit& Hit, const FIBS4Outcome& Outcome)
 {
     auto* Hero = UGameplayStatics::GetPlayerPawn(this, 0);
-    if (Delta >= 0 || Hit.Instigator != Hero) return;
+    if (Outcome.RequestedHealthDelta >= 0 || Hit.Instigator != Hero) return;
     for (AIBS4Threat* Threat : Threats) if (IsValid(Threat)) Threat->ReportIncident(Hit.AttackId, Hit.Instigator, true);
     bRobotAlert = true;
 }

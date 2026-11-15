@@ -74,8 +74,11 @@ void AIBS4PreparedTarget::Configure()
     else if (Kind == EIBS4TargetKind::Robot)
     {
         Response->Surface = EIBS4Surface::Metal;
-        Place(0, FVector(0, 0, 85), FVector(100, 90, 130));
-        Place(1, FVector(80, 0, 135), FVector(100, 30, 30));
+        const auto Body = IBS4::robotBodyBox();
+        const auto Cannon = IBS4::cannonAttachmentBox();
+        Place(0, FVector(Body.x, Body.y, Body.z), FVector(Body.hx, Body.hy, Body.hz) * 2);
+        // Keep the cannon AND its conservative carry sweep outside the torso.
+        Place(1, FVector(Cannon.x, Cannon.y, Cannon.z), FVector(Cannon.hx, Cannon.hy, Cannon.hz) * 2);
         bCannonEnabled = !bBroken;
         if (bBroken)
         {
@@ -105,12 +108,14 @@ void AIBS4PreparedTarget::Configure()
     }
 }
 
-void AIBS4PreparedTarget::HandleResponse(const FIBS4Hit& Hit, float Delta)
+void AIBS4PreparedTarget::HandleResponse(const FIBS4Hit& Hit, const FIBS4Outcome& Outcome)
 {
     if (bBroken || Kind == EIBS4TargetKind::MaterialCoupon) return;
     // Only the prepared cannon joint can disable the cannon; a torso hit is not dismemberment.
     if (Kind == EIBS4TargetKind::Robot && Hit.Part != Pieces[1]) return;
-    AccumulatedDamage += FMath::Max(0.f, -Delta);
+    // Structural resistance is independent of remaining HP. A depleted torso
+    // must not make its intact cannon immune, and this never mutates HP twice.
+    AccumulatedDamage += FMath::Max(0.f, -Outcome.RequestedHealthDelta);
     if (AccumulatedDamage >= BreakThreshold && SetBrokenState(true))
     {
         PresentBreak(Hit.Point, Response->Surface);
@@ -137,23 +142,33 @@ void AIBS4PreparedTarget::HandleResponse(const FIBS4Hit& Hit, float Delta)
 
 bool AIBS4PreparedTarget::IsRestoreBlocked() const
 {
-    FCollisionObjectQueryParams Objects;
-    Objects.AddObjectTypesToQuery(ECC_Pawn);
-    Objects.AddObjectTypesToQuery(ECC_PhysicsBody);
     FCollisionQueryParams Query(SCENE_QUERY_STAT(IBS4Restore), false, this);
     for (AActor* Fragment : Debris) if (IsValid(Fragment)) Query.AddIgnoredActor(Fragment);
-    const FVector Extent = Kind == EIBS4TargetKind::Crater ? FVector(250, 250, 90) : FVector(120, 240, 180);
-    const FVector Center = Kind == EIBS4TargetKind::Crater ? FVector(0, 0, -20) : FVector(0, 0, 180);
-    return GetWorld()->OverlapAnyTestByObjectType(GetActorTransform().TransformPosition(Center), GetActorQuat(),
-        Objects, FCollisionShape::MakeBox(Extent * GetActorScale3D().GetAbs()), Query);
+    const auto Blocked = [this, &Query](const IBS4::RestoreBox& Box)
+    {
+        if (Box.hz <= 0) return false;
+        // Query only newly occupied volume, with a 1 mm contact tolerance. Include
+        // every blocker of WorldDynamic, including kinematic props and vehicles.
+        const FVector Extent = (FVector(Box.hx, Box.hy, Box.hz) - FVector(0.1)) * GetActorScale3D().GetAbs();
+        return GetWorld()->OverlapBlockingTestByChannel(GetActorTransform().TransformPosition(FVector(Box.x, Box.y, Box.z)),
+            GetActorQuat(), ECC_WorldDynamic, FCollisionShape::MakeBox(Extent), Query);
+    };
+    if (Kind == EIBS4TargetKind::Crater)
+    {
+        for (int X = -1; X <= 1; ++X) for (int Y = -1; Y <= 1; ++Y)
+            if (Blocked(IBS4::craterRestoreVolume(X, Y))) return true;
+        return false;
+    }
+    if (Kind == EIBS4TargetKind::Robot) return Blocked(IBS4::cannonAttachmentBox());
+    if (Kind == EIBS4TargetKind::Wall) return Blocked({0, 0, 130, 15, 110, 130});
+    return Blocked({0, 0, 120, 10, 75, 120});
 }
 
 bool AIBS4PreparedTarget::SetBrokenState(bool Broken)
 {
     if (Broken == bBroken) return false;
-    if (!Broken && GetWorld() && IsRestoreBlocked()) return false;
     // A held cannon must be released before restoring its attachment.
-    if (!Broken && Pieces[1]->ComponentHasTag(TEXT("IBS4Held"))) return false;
+    if (!Broken && !IBS4::canRestore(GetWorld() && IsRestoreBlocked(), Pieces[1]->ComponentHasTag(TEXT("IBS4Held")))) return false;
     ClearDebris();
     bBroken = Broken;
     Configure();

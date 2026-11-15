@@ -1,0 +1,42 @@
+# S4 — Revisión estática focalizada y regresiones locales
+
+2026-11-15. Encargo de continuación sobre `3b7c5c7780b454e2c80af2fce2fae8523663c3b6`. **No hay integración global, Editor, cook ni compilación Unreal.** Se mantiene el turno pesado reservado a S2.5 y el push previamente denegado sin reintentos ni solicitudes al usuario.
+
+## Fuente y límites de lectura
+
+Se leyó sin modificar `docs/IB_S35_S4_INTEGRATION_REVIEW.md` del checkout S3.5 indicado por coordinación. SHA-256 observado: `44209ab9f00b00f0a6bf4c2f5540dff7906110ee3f8fb48f4cf37a8139e7f094`. Se revisaron los fuentes S4 de política, respuesta, poder, blancos, sus consumidores y tests. Los headers locales de UE5.8.4 confirman que `AddIgnoredComponent` permite excluir solo la pieza, mientras `AddIgnoredActor` excluye también el torso. No se añadieron includes, llamadas o escrituras a S3.5.
+
+## Hallazgos y correcciones propias
+
+| Caso | Evidencia antes | Cambio S4 | Verificación disponible |
+|---|---|---|---|
+| Daño pedido confundido con pérdida real | Con HP=10 y Amount=60, `Receive` almacenaba 0 pero publicaba -60 | `FIBS4Outcome` separa RequestedHealthDelta=-60 y HealthDelta=-10. `resolveHealth` usa la precisión float del HP almacenado. PreparedTarget consume la solicitud filtrada para resistencia estructural; no vuelve a mutar salud | Tests nativos del mismo helper: overkill, HP=0, delta inferior a precisión float, salud/deltas inválidos. Suite Unreal ResponseContract preparada |
+| Replay con fecha renovada | `receive(1,0,0,Missile,...)` seguido de `receive(1,3,3,Missile,...)` aceptaba ambos | Al retirar slots se conserva `retiredThrough`; seriales antiguos no pueden revivir al cambiar IssuedAt. 256 entradas vivas, sin crecimiento de memoria ni expulsión de IDs vivos. RestoreHealth conserva ledger/cooldown | Nueva regresión falló antes con `FAIL: expired AttackId resurrected by refreshed IssuedAt`; pasa después. También cubre renovación repetida, límite de capacidad, ID nuevo, orden invertido dentro de ventana y rechazo bajo el límite retirado |
+| Tiempo absoluto negativo | Un paquete en t=-0,5 podía aceptarse | Rechazo de now/issued negativos antes de modificar ledger | Caso negativo y reutilización del ID corregido PASS |
+| Entrada contradictoria | Un Part ajeno al receptor no se validaba antes de restar HP; salud inválida tampoco | Rechazo de parte inválida/ajena y HP no finito/fuera de [0,100] antes del ledger. Switch explícito entre enums propios; enum desconocido rechazado | Helpers de HP nativos PASS; casos UE para parte ajena, enum y HP negativo preparados, no ejecutados |
+| Reset de cráter con ocupante cinemático | Solo consultaba Pawn/PhysicsBody, omitiendo WorldDynamic y otros bloqueadores. El volumen grueso llegaba 70 cm sobre el suelo y podía rechazar hover seguro | Consultas de bloqueo por canal WorldDynamic sobre los nueve volúmenes que realmente ascienden, con tolerancia de contacto 1 mm. Cubre bloqueadores estáticos/dinámicos según sus respuestas, no solo cuerpos simulados | Geometría compartida runtime/test PASS: 60/30 cm, nueve tiles, cuerpo sobre fondo bloqueado, hover fuera de volumen. Suite UE con Box no simulado WorldDynamic preparada |
+| Cañón nace penetrando torso | Torso x=[-50,50]; cañón x=[30,130]: solapamiento 20 cm al activar física | Cañón x=[65,165], separación 15 cm. También queda fuera del torso la esfera envolvente usada por telequinesis más 2 cm de margen | Test geométrico nativo del mismo layout PASS; comportamiento Chaos pendiente |
+| Barrido de cañón ignora torso | Poder hacía `AddIgnoredActor(Body->GetOwner())`; el cañón desprendido sigue siendo componente del robot | Se excluye solo `Body` en las consultas de transporte y lanzamiento. El torso vuelve a participar en oclusión/barrido | Revisión de llamada contra API real; suite UE de torso/cañón preparada, sin afirmar barrido físico ejecutado |
+
+Se preservan los bloqueos de reset con ocupantes o cañón agarrado, la limpieza exclusiva de fragmentos propios y la separación idempotente. La suite UE nueva comprueba que el reset rechazado deja el estado roto y la habilidad desactivada, y que al soltar/restaurar desaparece la simulación de la pieza suelta. También prepara el caso torso agotado → cañón impactado: la resistencia de la pieza todavía puede romperse aunque no quede HP que descontar. Ninguna de esas comprobaciones físicas se declara ejecutada.
+
+## Diferencias con S3.5 que siguen sin adaptador
+
+- **Enums:** `HeavyPunch=1` de S3.5 coincide con `Missile=1` de S4; `QuickPunch=0` coincide con Bullet. Son incompatibles semánticamente. El switch añadido solo traduce `EIBS4Weapon` a `IBS4::Weapon`, NO recibe ni traduce S3.5. No se instaló una conversión numérica o un consumidor global.
+- **Signo:** S4 pide Amount≥0. Un delta S3.5 negativo no puede pasarse sin una traducción explícita previa a la resolución. El test confirma rechazo sin consumir ID. S4 Punch sigue dañando a H01; solamente bala/misil humanos conservan inmunidad solicitada. La prueba de Punch no debe confundirse con la inmunidad del misil por su ordinal externo.
+- **Unidades:** MissilePushSpeed y Outcome.DeltaVelocity expresan cm/s, con `CMC::AddImpulse(..., true)`; no kg·cm/s. El campo es solicitud de cambio de velocidad, no medida real. No se convierte un impulso S3.5 ni se trata `bPhysicsResolved` como una nueva explosión. Sigue prohibido resolver física dos veces. Un límite numérico de 1.200 no arregla una entrada con unidades incorrectas.
+- **IDs/reloj:** MakeHit asigna seriales monotónicos positivos al crear el contacto. El límite retirado endurece esa condición: un ID externo antiguo/no visto bajo ese límite también se rechaza. Las pruebas de misiles usan ahora el orden real del asignador (antes el fixture alternaba rangos 100+i y 200+i). No se soporta convertir/truncar GUIDs ni usar contadores independientes. Mantener el IssuedAt original y acordar reloj/vida del blanco antes de integrar.
+- **Una mutación por blanco:** no conectar dos receptores mutadores. `RequestedHealthDelta` es información estructural, no autorización para aplicar otra salud. Cambió la firma de `OnResponse` a `(Hit, Outcome)` y se actualizaron todos sus consumidores S4; cualquier Blueprint futuro deberá usar esta firma.
+- **Agarre:** sigue siendo un adaptador creativo de laboratorio sobre primitive/tag. No se lo convierte en Lease S3.5 ni se habilitan dos propietarios. Guardado sigue estructural, sin persistir exactamente la pose de la pieza física.
+
+## Ejecuciones
+
+1. Antes de corregir Policy: se compiló el test ampliado con MSVC `/W4 /WX`; el ejecutable terminó con código 1 y el fallo de replay citado. No fue un fallo de compilación ni de Unreal.
+2. Después: `python Tools/IBS4_Check.py --report docs/IB_S4_REVIEW_NATIVE_RESULTS.json` → **2.010 comprobaciones PASS** (108 más que las 1.902 iniciales), auditoría de rutas PASS y sintaxis Python PASS. La ejecución de cierre, tras reconectar el entorno, volvió a pasar y regeneró el reporte con SHA-256 de los bytes de trabajo de 16 fuentes S4 y el test nativo. Estos hashes identifican el inventario revisado; solo `IBS4Policy.h` y `IBS4_PolicyTests.cpp` participaron en la compilación nativa. `head_at_run` registra el commit previo porque la revisión aún no estaba confirmada al ejecutar la prueba.
+3. `git diff --check` PASS. Revisión de todas las firmas/delegates OnResponse y de los únicos consumidores estructurales/alerta. No hay un include S3.5 en runtime ni escrituras fuera de los prefijos autorizados.
+
+Suites Unreal añadidas: `ImpactBeyond.S4.ResponseContract` y `ImpactBeyond.S4.RestoreOccupantsAndCannon`. **Preparadas, NO EJECUTADAS.** Las anteriores suites también siguen pendientes. La revisión numérica no prueba Chaos, cápsulas, actor lifecycle, reflexión/UHT, Blueprint, audio/VFX o rendimiento DX12.
+
+**Cierre local:** la desconexión anterior dejó esta revisión sin commit y el reporte todavía sin hashes; las afirmaciones anticipadas de cierre no constituían evidencia. Tras reconectar se preservó el diff, se repitió únicamente la prueba nativa y se actualizaron el reporte y el borrador local. El commit que contiene esta revisión y su reporte se identifica con el historial local de `prototype/ib-s4-response-lab`; el hash de `head_at_run` no debe presentarse como el commit de la revisión.
+
+**Publicación:** sigue rechazada por revisión automática según `IB_S4_PR_DRAFT.md`; no se intentó push/API/PR ni se pidió aprobación durante esta continuación. El siguiente paso permitido con motor requiere liberación y asignación del turno por coordinación.

@@ -6,6 +6,7 @@ Run: python Tools/IBS4_Check.py [--report docs/IB_S4_NATIVE_RESULTS.json]
 import argparse
 import ast
 import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -68,6 +69,7 @@ def main():
     report = {
         "utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "base": BASE,
+        "head_at_run": run(["git", "rev-parse", "HEAD"]).strip(),
         "stage": "NATIVE_POLICY_ONLY",
         "ownership": "PASS",
         "changed_files": sorted(changed),
@@ -75,6 +77,10 @@ def main():
         "compiler": compiler,
         "compiler_log": compiler_log.replace(str(ROOT), "<checkout>").replace(str(output), "<native-test-temp>"),
         "native_result": result.strip(),
+        "source_sha256": {
+            str(p.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(include.glob("*")) if p.is_file()
+        } | {"Tools/IBS4_PolicyTests.cpp": hashlib.sha256(source.read_bytes()).hexdigest()},
         "unreal_compile": "NOT_RUN",
         "unreal_automation": "NOT_RUN",
         "dx12_audio_gamepad": "NOT_RUN",

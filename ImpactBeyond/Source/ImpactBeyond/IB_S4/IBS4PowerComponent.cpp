@@ -76,7 +76,7 @@ void UIBS4PowerComponent::Release(bool Throw)
         if (!Pawn) return;
         const FVector Direction = Pawn->GetControlRotation().Vector();
         FCollisionQueryParams Query(SCENE_QUERY_STAT(IBS4Throw), false, GetOwner());
-        Query.AddIgnoredActor(Body->GetOwner());
+        Query.AddIgnoredComponent(Body);
         FHitResult Block;
         if (!GetWorld()->SweepSingleByChannel(Block, Body->Bounds.Origin, Body->Bounds.Origin + Direction * (HeldRadius + 30),
             FQuat::Identity, ECC_PhysicsBody, FCollisionShape::MakeSphere(HeldRadius), Query))
@@ -116,7 +116,9 @@ void UIBS4PowerComponent::TickComponent(float Dt, ELevelTick Type, FActorCompone
         const FVector Origin = Pawn->GetActorLocation() + FVector(0, 0, 55);
         const FVector Desired = Origin + Pawn->GetControlRotation().Vector() * FMath::Max(CarryDistance, HeldRadius + 100);
         FCollisionQueryParams Query(SCENE_QUERY_STAT(IBS4Cargo), false, Pawn);
-        Query.AddIgnoredActor(Body->GetOwner());
+        // A detached cannon still belongs to its robot actor. Ignore just the held
+        // component so that the torso remains a blocker for sight/sweep/throw.
+        Query.AddIgnoredComponent(Body);
         FHitResult Block, Sight;
         // Check both owner-to-target and actual cargo-to-target paths.
         const bool Occluded = GetWorld()->LineTraceSingleByChannel(Sight, Origin, Body->Bounds.Origin, ECC_Visibility, Query);

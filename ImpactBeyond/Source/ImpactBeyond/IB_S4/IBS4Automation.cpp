@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -117,6 +118,141 @@ bool FS4H01Test::RunTest(const FString&)
         TestEqual(TEXT("H01 has no bullet health loss"), Pawn->Response->Health, OriginalHealth);
     }
     AddInfo(TEXT("This suite does not certify audiovisual bullet impact or human feel."));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FS4ResponseContractTest, "ImpactBeyond.S4.ResponseContract",
+    EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+bool FS4ResponseContractTest::RunTest(const FString&)
+{
+    UWorld* World = LabWorld();
+    if (!TestNotNull(TEXT("S4 game world loaded"), World)) return false;
+    auto* Target = World->SpawnActor<AIBS4PreparedTarget>(FVector(100000, 20000, 0), FRotator::ZeroRotator);
+    auto* Foreign = World->SpawnActor<AIBS4PreparedTarget>(FVector(100000, 22000, 0), FRotator::ZeroRotator);
+    if (!Target || !Foreign)
+    {
+        AddError(TEXT("Response fixtures failed to spawn"));
+        if (Target) Target->Destroy();
+        if (Foreign) Foreign->Destroy();
+        return false;
+    }
+    Target->Kind = EIBS4TargetKind::MaterialCoupon;
+    FHitResult Trace;
+    auto Packet = UIBS4ResponseComponent::MakeHit(World, nullptr, EIBS4Weapon::Punch, 60, Trace);
+    Packet.Part = Foreign->GetPart();
+    TestFalse(TEXT("foreign component rejected before mutation"), Target->Response->Receive(Packet));
+    TestEqual(TEXT("foreign component did not consume ID"), Target->Response->AcceptedHits, 0);
+    Packet.Part = Target->GetPart();
+    Packet.Weapon = static_cast<EIBS4Weapon>(255);
+    TestFalse(TEXT("unknown enum rejected"), Target->Response->Receive(Packet));
+    Packet.Weapon = EIBS4Weapon::Punch;
+    Target->Response->Health = -1;
+    TestFalse(TEXT("invalid stored health rejected before ledger"), Target->Response->Receive(Packet));
+    Target->Response->Health = 10;
+    TestTrue(TEXT("corrected packet keeps same unused ID"), Target->Response->Receive(Packet));
+    TestEqual(TEXT("requested structural delta preserved"), Target->Response->LastOutcome.RequestedHealthDelta, -60.f);
+    TestEqual(TEXT("actual HP loss clamped"), Target->Response->LastOutcome.HealthDelta, -10.f);
+    TestEqual(TEXT("stored HP is zero"), Target->Response->Health, 0.f);
+    TestTrue(TEXT("Punch has no implicit Missile delta velocity"), Target->Response->LastOutcome.DeltaVelocity.IsZero());
+    TestFalse(TEXT("duplicate packet cannot mutate or republish"), Target->Response->Receive(Packet));
+    Target->Response->RestoreHealth();
+    TestFalse(TEXT("RestoreHealth does not create a new attack lifetime"), Target->Response->Receive(Packet));
+    auto* Robot = World->SpawnActorDeferred<AIBS4PreparedTarget>(AIBS4PreparedTarget::StaticClass(), FTransform(FVector(100000, 24000, 0)));
+    if (Robot)
+    {
+        Robot->Kind = EIBS4TargetKind::Robot;
+        UGameplayStatics::FinishSpawningActor(Robot, FTransform(FVector(100000, 24000, 0)));
+        TArray<UStaticMeshComponent*> Pieces;
+        Robot->GetComponents(Pieces);
+        UPrimitiveComponent* Torso = nullptr;
+        for (auto* Piece : Pieces) if (Piece != Robot->GetPart() && Piece->IsVisible()) { Torso = Piece; break; }
+        TestNotNull(TEXT("robot torso identified"), Torso);
+        if (Torso)
+        {
+            auto BodyHit = UIBS4ResponseComponent::MakeHit(World, nullptr, EIBS4Weapon::Punch, 100, Trace);
+            BodyHit.Part = Torso;
+            TestTrue(TEXT("torso damage accepted"), Robot->Response->Receive(BodyHit));
+            TestTrue(TEXT("torso hit does not detach cannon"), Robot->bCannonEnabled);
+            TestEqual(TEXT("torso HP depleted"), Robot->Response->Health, 0.f);
+            auto PartHit = UIBS4ResponseComponent::MakeHit(World, nullptr, EIBS4Weapon::Punch, 45, Trace);
+            PartHit.Part = Robot->GetPart();
+            TestTrue(TEXT("cannon hit after torso depleted accepted"), Robot->Response->Receive(PartHit));
+            TestFalse(TEXT("structural request still disables cannon at zero HP"), Robot->bCannonEnabled);
+            TestEqual(TEXT("cannon structural hit invents no HP loss"), Robot->Response->LastOutcome.HealthDelta, 0.f);
+            TestFalse(TEXT("duplicate cannon hit rejected"), Robot->Response->Receive(PartHit));
+        }
+        Robot->Destroy();
+    }
+    else AddError(TEXT("Robot damage fixture failed to spawn"));
+    Target->Destroy(); Foreign->Destroy();
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FS4RestoreOccupantsTest, "ImpactBeyond.S4.RestoreOccupantsAndCannon",
+    EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+bool FS4RestoreOccupantsTest::RunTest(const FString&)
+{
+    UWorld* World = LabWorld();
+    if (!TestNotNull(TEXT("S4 game world loaded"), World)) return false;
+    const FVector Origin(100000, 30000, 0);
+    auto* Crater = World->SpawnActorDeferred<AIBS4PreparedTarget>(AIBS4PreparedTarget::StaticClass(), FTransform(Origin));
+    auto* Robot = World->SpawnActorDeferred<AIBS4PreparedTarget>(AIBS4PreparedTarget::StaticClass(), FTransform(Origin + FVector(0, 2000, 0)));
+    if (!Crater || !Robot)
+    {
+        AddError(TEXT("Restore fixtures failed to spawn"));
+        if (Crater) Crater->Destroy();
+        if (Robot) Robot->Destroy();
+        return false;
+    }
+    Crater->Kind = EIBS4TargetKind::Crater;
+    Robot->Kind = EIBS4TargetKind::Robot;
+    UGameplayStatics::FinishSpawningActor(Crater, FTransform(Origin));
+    UGameplayStatics::FinishSpawningActor(Robot, FTransform(Origin + FVector(0, 2000, 0)));
+    auto* Occupant = World->SpawnActor<AActor>();
+    auto* Box = NewObject<UBoxComponent>(Occupant);
+    Occupant->SetRootComponent(Box);
+    Box->InitBoxExtent(FVector(8));
+    Box->SetCollisionProfileName(TEXT("BlockAllDynamic")); // explicitly NON-simulating WorldDynamic
+    Box->SetMobility(EComponentMobility::Movable);
+    Occupant->SetActorLocation(Origin + FVector(0, 0, -30));
+    Box->RegisterComponent();
+    Crater->SetBrokenState(true);
+    FAutomationTestFramework::Get().EnqueueLatentCommand(MakeShared<FS4Frame>(
+        [=, this, Step = 0]() mutable
+        {
+            if (Step == 0)
+            {
+                TestFalse(TEXT("kinematic occupant prevents rising floor"), Crater->ResetTarget());
+                TestTrue(TEXT("failed reset leaves crater broken"), Crater->bBroken);
+                Occupant->SetActorLocation(Origin + FVector(0, 0, 70));
+            }
+            else if (Step == 1)
+            {
+                TestTrue(TEXT("hover above floor permits reset"), Crater->ResetTarget());
+                TestTrue(TEXT("cannon detaches"), Robot->SetBrokenState(true));
+                Robot->GetPart()->ComponentTags.AddUnique(TEXT("IBS4Held"));
+            }
+            else if (Step == 2)
+            {
+                TestFalse(TEXT("held cannon prevents reset"), Robot->ResetTarget());
+                TestFalse(TEXT("held detached cannon does not re-enable attack"), Robot->bCannonEnabled);
+                FCollisionQueryParams Query(SCENE_QUERY_STAT(IBS4CannonTorso), false);
+                Query.AddIgnoredComponent(Robot->GetPart());
+                FHitResult Hit;
+                const FVector At = Robot->GetActorLocation();
+                TestTrue(TEXT("ignoring cannon preserves torso blocker"), World->LineTraceSingleByChannel(Hit,
+                    At + FVector(250, 0, 85), At + FVector(0, 0, 85), ECC_Visibility, Query));
+                TestTrue(TEXT("torso belongs to same robot"), Hit.GetActor() == Robot);
+                Robot->GetPart()->ComponentTags.Remove(TEXT("IBS4Held"));
+                TestTrue(TEXT("released cannon resets"), Robot->ResetTarget());
+                TestFalse(TEXT("reset has no loose simulated cannon"), Robot->GetPart()->IsSimulatingPhysics());
+                TestTrue(TEXT("reset restores cannon capability"), Robot->bCannonEnabled);
+                Crater->Destroy(); Robot->Destroy(); Occupant->Destroy();
+                return true;
+            }
+            ++Step;
+            return false;
+        }));
     return true;
 }
 

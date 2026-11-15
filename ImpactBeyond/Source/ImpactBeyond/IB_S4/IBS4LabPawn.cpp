@@ -142,7 +142,7 @@ void AIBS4LabPawn::TestAlert()
     for (TActorIterator<AIBS4Threat> It(GetWorld()); It; ++It) It->ReportIncident(Incident.AttackId, this, true);
     UE_LOG(LogTemp, Display, TEXT("IBS4 explicit player-requested test alert id=%lld"), Incident.AttackId);
 }
-void AIBS4LabPawn::React(const FIBS4Hit& Hit, float)
+void AIBS4LabPawn::React(const FIBS4Hit& Hit, const FIBS4Outcome&)
 {
     if (Hit.Weapon == EIBS4Weapon::Missile && Response->AppliedPushes != LastShakePushCount)
     {

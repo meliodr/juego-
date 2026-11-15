@@ -47,7 +47,7 @@ private:
     double RobotNextWarning = 0;
     double RobotFireAt = -1;
     bool bRobotAlert = false;
-    UFUNCTION() void Incident(const FIBS4Hit& Hit, float Delta);
+    UFUNCTION() void Incident(const FIBS4Hit& Hit, const FIBS4Outcome& Outcome);
 };
 
 UCLASS()

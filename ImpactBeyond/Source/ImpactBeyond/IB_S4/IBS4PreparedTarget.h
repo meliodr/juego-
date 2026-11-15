@@ -38,5 +38,5 @@ private:
     void Configure();
     void ClearDebris();
     bool IsRestoreBlocked() const;
-    UFUNCTION() void HandleResponse(const FIBS4Hit& Hit, float Delta);
+    UFUNCTION() void HandleResponse(const FIBS4Hit& Hit, const FIBS4Outcome& Outcome);
 };

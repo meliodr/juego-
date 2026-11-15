@@ -2,6 +2,8 @@
 
 Fecha: 2026-11-15. Base fija: `1d01db54b63250ed0aacb0704a5ac16290324e32`, PR #19. Rama: `prototype/ib-s4-response-lab`. Destino del PR draft: `prototype/ib-sprint02`. **Estado: CÓDIGO + política C++ nativa compilada/ejecutada; integración Unreal IMPLEMENTADA SIN VALIDAR.** No es Sprint 7.5 ni una integración de los otros laboratorios.
 
+Revisión posterior focalizada: [IB_S4_STATIC_REVIEW.md](IB_S4_STATIC_REVIEW.md). Resultado nativo actualizado: **2.010 checks**, en `IB_S4_REVIEW_NATIVE_RESULTS.json`. Se conserva el reporte inicial de 1.902 como evidencia histórica. El evento de respuesta ahora distingue solicitud estructural y pérdida efectiva de HP; el ledger conserva un límite retirado de seriales; reset/cannon/cargo recibieron las correcciones documentadas. No implica compatibilidad S3.5 ni validación Unreal.
+
 ## Qué hay realmente
 
 El cambio añade clases exclusivamente en `ImpactBeyond/Source/ImpactBeyond/IB_S4`, scripts `Tools/IBS4_*` y esta documentación. No modifica Character, Circuit, Landing, GameMode compartido, Build.cs, .uproject, Config, mapas anteriores ni carpetas S2.5/S3/S3.5. No introduce módulos, plugins, servicios o paquetes descargados. RD$0 de compras/servicios adicionales; no se consultó ninguna API de modelos de pago.
