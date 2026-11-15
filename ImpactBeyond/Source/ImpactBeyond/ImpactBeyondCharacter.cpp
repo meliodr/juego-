@@ -2,6 +2,7 @@
 
 #include "ImpactBeyondCharacter.h"
 #include "Engine/LocalPlayer.h"
+#include "Engine/Engine.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -16,6 +17,7 @@
 
 AImpactBeyondCharacter::AImpactBeyondCharacter()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
@@ -36,6 +38,7 @@ AImpactBeyondCharacter::AImpactBeyondCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
+	GetCharacterMovement()->BrakingDecelerationFlying = 1400.0f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -58,8 +61,8 @@ void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AImpactBeyondCharacter::DoJumpStart);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AImpactBeyondCharacter::DoJumpEnd);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AImpactBeyondCharacter::Move);
@@ -67,11 +70,111 @@ void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AImpactBeyondCharacter::Look);
+
+		PlayerInputComponent->BindKey(EKeys::F, IE_Pressed, this, &AImpactBeyondCharacter::ToggleFlight);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_RightThumbstick, IE_Pressed, this, &AImpactBeyondCharacter::ToggleFlight);
+		PlayerInputComponent->BindKey(EKeys::E, IE_Pressed, this, &AImpactBeyondCharacter::IncreaseFlightSpeed);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_RightShoulder, IE_Pressed, this, &AImpactBeyondCharacter::IncreaseFlightSpeed);
+		PlayerInputComponent->BindKey(EKeys::Q, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_LeftShoulder, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
 	}
 	else
 	{
 		UE_LOG(LogImpactBeyond, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+void AImpactBeyondCharacter::ToggleFlight()
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	if (Movement->IsFlying())
+	{
+		Movement->SetMovementMode(MOVE_Falling);
+		return;
+	}
+
+	const bool bTakingOff = Movement->IsMovingOnGround();
+	StopJumping();
+	Movement->SetMovementMode(MOVE_Flying);
+	SetFlightLevel(0);
+	if (bTakingOff)
+	{
+		// Let the movement component sweep the capsule during liftoff.
+		Movement->Velocity.Z = 450.0f;
+	}
+}
+
+void AImpactBeyondCharacter::IncreaseFlightSpeed()
+{
+	SetFlightLevel(FlightLevel + 1);
+}
+
+void AImpactBeyondCharacter::DecreaseFlightSpeed()
+{
+	SetFlightLevel(FlightLevel - 1);
+}
+
+void AImpactBeyondCharacter::SetFlightLevel(int32 Level)
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	if (!Movement->IsFlying() || FlightSpeeds.IsEmpty())
+	{
+		return;
+	}
+	FlightLevel = FMath::Clamp(Level, 0, FlightSpeeds.Num() - 1);
+	Movement->MaxFlySpeed = FMath::Max(1.0f, FlightSpeeds[FlightLevel]);
+}
+
+bool AImpactBeyondCharacter::IsFlightBrakeHeld() const
+{
+	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	return PlayerController && (PlayerController->IsInputKeyDown(EKeys::X)
+		|| PlayerController->IsInputKeyDown(EKeys::Gamepad_FaceButton_Left));
+}
+
+void AImpactBeyondCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (!Movement->IsFlying() || !PlayerController || !IsLocallyControlled())
+	{
+		return;
+	}
+
+	const bool bBraking = IsFlightBrakeHeld();
+	Movement->BrakingDecelerationFlying = bBraking ? 4200.0f : 1400.0f;
+	if (bBraking)
+	{
+		ConsumeMovementInputVector();
+	}
+	else
+	{
+		const float Up = PlayerController->IsInputKeyDown(EKeys::SpaceBar) ? 1.0f
+			: PlayerController->GetInputAnalogKeyState(EKeys::Gamepad_RightTriggerAxis);
+		const float Down = PlayerController->IsInputKeyDown(EKeys::C) ? 1.0f
+			: PlayerController->GetInputAnalogKeyState(EKeys::Gamepad_LeftTriggerAxis);
+		if (Down - Up > 0.12f && Movement->Velocity.Z <= 0.0f)
+		{
+			FFindFloorResult Floor;
+			Movement->FindFloor(GetActorLocation(), Floor, false);
+			if (Floor.IsWalkableFloor() && Floor.GetDistanceToFloor() <= 4.0f)
+			{
+				Movement->SetMovementMode(MOVE_Walking);
+				return;
+			}
+		}
+		AddMovementInput(FVector::UpVector, Up - Down);
+	}
+
+#if !UE_BUILD_SHIPPING
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1041, 0.1f, FColor::Cyan,
+			FString::Printf(TEXT("VUELO %d/%d | %.1f m/s%s"), FlightLevel + 1, FlightSpeeds.Num(),
+				Movement->Velocity.Size() / 100.0f, bBraking ? TEXT(" | FRENO") : TEXT("")));
+	}
+#endif
 }
 
 void AImpactBeyondCharacter::Move(const FInputActionValue& Value)
@@ -96,6 +199,10 @@ void AImpactBeyondCharacter::DoMove(float Right, float Forward)
 {
 	if (GetController() != nullptr)
 	{
+		if (GetCharacterMovement()->IsFlying() && IsFlightBrakeHeld())
+		{
+			return;
+		}
 		// Read held modifiers when processing movement so a missed release cannot latch a gait.
 		UCharacterMovementComponent* Movement = GetCharacterMovement();
 		Movement->MaxWalkSpeed = RunSpeed;
@@ -103,7 +210,8 @@ void AImpactBeyondCharacter::DoMove(float Right, float Forward)
 		{
 			if (Movement->IsMovingOnGround())
 			{
-				if (PlayerController->IsInputKeyDown(EKeys::LeftShift))
+				if (PlayerController->IsInputKeyDown(EKeys::LeftShift)
+					|| PlayerController->IsInputKeyDown(EKeys::Gamepad_LeftThumbstick))
 				{
 					Movement->MaxWalkSpeed = SprintSpeed;
 				}
@@ -143,7 +251,10 @@ void AImpactBeyondCharacter::DoLook(float Yaw, float Pitch)
 void AImpactBeyondCharacter::DoJumpStart()
 {
 	// signal the character to jump
-	Jump();
+	if (!GetCharacterMovement()->IsFlying())
+	{
+		Jump();
+	}
 }
 
 void AImpactBeyondCharacter::DoJumpEnd()

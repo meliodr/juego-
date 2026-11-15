@@ -58,6 +58,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1", Units="cm/s"))
 	float SprintSpeed = 700.0f;
 
+	/** Maximum speed of each flight level in centimeters per second. */
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight")
+	TArray<float> FlightSpeeds = {900.0f, 1800.0f, 3200.0f};
+
 public:
 
 	/** Constructor */
@@ -67,6 +71,7 @@ protected:
 
 	/** Initialize input action bindings */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 protected:
 
@@ -75,6 +80,15 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+private:
+	void ToggleFlight();
+	void IncreaseFlightSpeed();
+	void DecreaseFlightSpeed();
+	void SetFlightLevel(int32 Level);
+	bool IsFlightBrakeHeld() const;
+
+	int32 FlightLevel = 0;
 
 public:
 

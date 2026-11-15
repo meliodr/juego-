@@ -96,6 +96,21 @@ No hay tickets de red activos. N0/N1/N02 y otros requisitos multijugador de docu
 
 **Límite:** no planetas, agarres ni velocidad física ilimitada. Los clips faltantes se resuelven con pocas poses, no reconstruyendo una biblioteca entera.
 
+**Implementación Windows.** El personaje cambia entre caminar, caer y volar con CharacterMovementComponent y la cápsula de la plantilla. Vuelo dirigido por la cámara en horizontal, ascenso y descenso independientes, estacionario al soltar, freno explícito y transición a suelo al bajar contra una superficie caminable. La build de desarrollo muestra nivel y velocidad real. La pose en vuelo sigue siendo provisional.
+
+| Acción | Teclado/ratón | DualSense (asignaciones de gamepad) |
+|---|---|---|
+| Moverse / cámara | WASD / ratón | Stick izquierdo / derecho |
+| Saltar / esprintar en suelo | Espacio / Shift izquierdo | Cruz / L3 |
+| Entrar o salir de vuelo | F | R3 |
+| Subir o bajar nivel | E / Q | R1 / L1 |
+| Ascender / descender | Espacio / C | R2 / L2 |
+| Freno en vuelo | X | Cuadrado |
+
+Topes iniciales de la lista editable: 9, 18 y 32 m/s. Se podrá añadir un cuarto nivel de alta velocidad. El quinto se diseñará como una extensión que parte de estar en el cuarto y vuelve a él al terminar. No se fijan aún su duración ni umbrales, pendientes de un mapa de prueba adecuado.
+
+**Evidencia.** Editor y juego Win64 Development compilaron y AutomationTool completó el paquete. El ejecutable cargó Lvl_ThirdPerson en DX12 SM6. Prueba visual de teclado: despegue con F, estacionario a 0 m/s y selección del nivel 3/3. Pendientes la batería completa de frenado, aterrizaje, colisiones y la validación de eventos con DualSense físico. Windows detectó el dispositivo. Si Unreal no recibe eventos de gamepad directamente, se puede probar la ruta XInput mediante [Steam Input](https://partner.steamgames.com/doc/features/steam_controller/legacy_mode). Próxima entrega agrupada: circuito gris IB-C00, con recta, giro y recorrido repetible de vuelo y aterrizaje para validar más casos en una sola sesión.
+
 ## IB-C00 — Calle de pruebas legible
 
 **Resultado:** una manzana con avenida, giro, callejón, distintas alturas y azoteas; fachada pequeña preparada para el futuro D01.
