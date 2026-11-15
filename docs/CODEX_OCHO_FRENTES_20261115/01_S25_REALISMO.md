@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 01 — S2.5 · núcleo realista vertical
 
-**Modelo sugerido, no seleccionado:** Modelo Codex competente en arte técnico Unreal/Python, razonamiento High. Si hay visión en la sesión úsala para comparar imágenes; no enviar assets NoAI a modelo.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6.1 Terra · High (si está disponible en el selector real de Codex); inspección visual y pipeline PBR. Si no existe, Codex más capaz con visión y High.
 
 **Worktree Windows aislado:** `../impact-wave8-s25-visual` · **rama exclusiva:** `prototype/ib-wave8-s25-visual`.
 
