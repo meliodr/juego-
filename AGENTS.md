@@ -1,5 +1,14 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Reglas de selección Fab — catálogo activo (2026-11-15)
+
+Antes de crear un personaje, animación, vehículo, escenario, robot, kaiju, VFX o sonido, leer **docs/FAB_SELECCION_ACTIVA.md** y consultar **docs/FAB_CATALOGO_MAESTRO.csv**. Consultar lotes 01/02 para detalles por ficha. Los 52 productos solo están confirmados como **Gratis/Free en listados públicos**, NO como reclamados o instalados. No inferir «lo tengo» ni «no lo tengo» sin acceso real a Mi biblioteca; no descargar, comprar, reclamar o instalar nada automáticamente. Clasificación vigente: 8 SELECCIONAR, 5 PROBAR, 27 RESERVAR, 12 DESCARTAR. Una categoría no implica funcionalidad lista: un modelo de robot no es robot desarmable hasta la prueba.
+
+**No entrenar ni desarrollar ningún modelo IA para este juego.** IA como asistente de programación de Codex es diferente de entrenar una IA. Aplicar [Epic Content License sección 17](https://www.unrealengine.com/eula/content): **los assets con etiqueta NoAI no pueden proporcionarse como entrada a programas de IA generativa**; mantener los bytes de esos recursos fuera de prompts, subidas o análisis de modelos. Su uso dentro del juego debe seguir términos de su licencia, y nunca subir paquetes a GitHub público. «Generated with AI: Yes» es dato de origen, no requisito de entrenar. La edición Fab Standard permite uso privado, con restricciones a redistribución standalone; verificar la licencia real.
+
+Automatización «Auditoría Fab de IMPACT» programada cada 3 días desde 18/11/2026 para intentar revisar y actualizar GitHub, con reporte de cambios y bloqueos. **No presumir futuras ediciones ni acceso permanente**, ni delegar en la automatización decisiones de compra. Estado de hoy: ninguno de los assets ha sido importado/probado desde este chat. Seguir trabajando W00/W01 y el personaje que camina/corre/vuela como prioridad.
+
+
 ## Regla principal e innegociable — REUTILIZAR AL MÁXIMO
 
 **«Reutilizar lo más que se pueda y crear lo mínimo que se pueda».**
