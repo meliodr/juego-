@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 06 — S5 · reloj día/noche y mundo ciudadano opcional
 
-**Modelo sugerido, no seleccionado:** Codex C++/sistemas UE + scripting IA sencilla, razonamiento High; Extra High si requiere geometría planetaria.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6.1 Sol · High (si existe en Codex); reloj determinista y eventos. Alternativa: Codex UE/C++ con High.
 
 **Worktree Windows aislado:** `../impact-wave8-s5-life` · **rama exclusiva:** `prototype/ib-wave8-s5-life`.
 
