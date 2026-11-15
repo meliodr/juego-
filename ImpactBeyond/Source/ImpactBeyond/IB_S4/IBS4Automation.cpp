@@ -1,0 +1,181 @@
+#if WITH_DEV_AUTOMATION_TESTS
+#include "IBS4LabPawn.h"
+#include "IBS4PreparedTarget.h"
+#include "IBS4ResponseComponent.h"
+#include "IBS4Threat.h"
+#include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/PrimitiveComponent.h"
+#include "Engine/Engine.h"
+#include "Engine/World.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Misc/AutomationTest.h"
+
+namespace
+{
+UWorld* LabWorld()
+{
+    for (const auto& Context : GEngine->GetWorldContexts())
+        if (Context.WorldType == EWorldType::Game || Context.WorldType == EWorldType::PIE)
+            if (Cast<AIBS4LabPawn>(UGameplayStatics::GetPlayerPawn(Context.World(), 0))) return Context.World();
+    return nullptr;
+}
+class FS4Frame final : public IAutomationLatentCommand
+{
+    TFunction<bool()> Step;
+    uint64 Previous = MAX_uint64;
+public:
+    explicit FS4Frame(TFunction<bool()> In) : Step(MoveTemp(In)) {}
+    virtual bool Update() override
+    {
+        if (Previous == GFrameCounter) return false;
+        Previous = GFrameCounter;
+        return Step();
+    }
+};
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FS4CollisionTest, "ImpactBeyond.S4.PreparedCollision",
+    EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+bool FS4CollisionTest::RunTest(const FString&)
+{
+    UWorld* World = LabWorld();
+    if (!TestNotNull(TEXT("S4 game world loaded"), World)) return false;
+    const FVector Origin(100000, 0, 0);
+    const auto Spawn = [World](EIBS4TargetKind Kind, FVector Position)
+    {
+        auto* Actor = World->SpawnActorDeferred<AIBS4PreparedTarget>(AIBS4PreparedTarget::StaticClass(), FTransform(Position));
+        Actor->Kind = Kind;
+        UGameplayStatics::FinishSpawningActor(Actor, FTransform(Position));
+        return Actor;
+    };
+    auto* Wall = Spawn(EIBS4TargetKind::Wall, Origin);
+    auto* Crater = Spawn(EIBS4TargetKind::Crater, Origin + FVector(0, 2000, 0));
+    auto* Robot = Spawn(EIBS4TargetKind::Robot, Origin + FVector(0, 4000, 0));
+    FAutomationTestFramework::Get().EnqueueLatentCommand(MakeShared<FS4Frame>(
+        [=, this, Step = 0]() mutable
+        {
+            FCollisionQueryParams Query(SCENE_QUERY_STAT(IBS4Acceptance), false);
+            FHitResult Hit;
+            const int32 Phase = Step % 4;
+            if (Phase == 0)
+            {
+                TestTrue(TEXT("intact wall blocks capsule"), World->SweepSingleByChannel(Hit, Origin + FVector(-250, 0, 130),
+                    Origin + FVector(250, 0, 130), FQuat::Identity, ECC_Pawn, FCollisionShape::MakeCapsule(38, 90), Query));
+                TestTrue(TEXT("wall enters broken state"), Wall->SetBrokenState(true));
+                TestTrue(TEXT("crater enters broken state"), Crater->SetBrokenState(true));
+                TestTrue(TEXT("cannon detaches once"), Robot->SetBrokenState(true));
+                TestFalse(TEXT("cannon cannot detach twice"), Robot->SetBrokenState(true));
+            }
+            else if (Phase == 1)
+            {
+                TestFalse(TEXT("broken wall is capsule-transitable"), World->SweepSingleByChannel(Hit, Origin + FVector(-250, 0, 130),
+                    Origin + FVector(250, 0, 130), FQuat::Identity, ECC_Pawn, FCollisionShape::MakeCapsule(38, 90), Query));
+                const FVector Center = Crater->GetActorLocation();
+                TestTrue(TEXT("crater retains floor collision"), World->LineTraceSingleByChannel(Hit, Center + FVector(0, 0, 200),
+                    Center - FVector(0, 0, 300), ECC_Visibility, Query));
+                TestTrue(TEXT("crater center is 60 cm deep"), FMath::IsNearlyEqual(Hit.ImpactPoint.Z, Center.Z - 60, 1.0));
+                TestFalse(TEXT("detached cannon disables attack"), Robot->bCannonEnabled);
+                TestTrue(TEXT("detached cannon is physical"), Robot->GetPart()->IsSimulatingPhysics());
+                TestTrue(TEXT("detached cannon is interactable"), Robot->GetPart()->ComponentHasTag(TEXT("IBS4Grabbable")));
+            }
+            else if (Phase == 2)
+            {
+                TestTrue(TEXT("wall reset"), Wall->ResetTarget());
+                TestTrue(TEXT("crater reset"), Crater->ResetTarget());
+                TestTrue(TEXT("robot reset"), Robot->ResetTarget());
+            }
+            else
+            {
+                const FVector Center = Crater->GetActorLocation();
+                World->LineTraceSingleByChannel(Hit, Center + FVector(0, 0, 200), Center - FVector(0, 0, 300), ECC_Visibility, Query);
+                TestTrue(TEXT("reset floor is flush"), FMath::IsNearlyEqual(Hit.ImpactPoint.Z, Center.Z, 1.0));
+                TestTrue(TEXT("cannon capability restored"), Robot->bCannonEnabled);
+            }
+            if (++Step < 80) return false;
+            Wall->Destroy(); Crater->Destroy(); Robot->Destroy();
+            return true;
+        }));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FS4H01Test, "ImpactBeyond.S4.H01Response",
+    EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+bool FS4H01Test::RunTest(const FString&)
+{
+    UWorld* World = LabWorld();
+    if (!TestNotNull(TEXT("S4 game world loaded"), World)) return false;
+    auto* Pawn = Cast<AIBS4LabPawn>(UGameplayStatics::GetPlayerPawn(World, 0));
+    const float OriginalHealth = Pawn->Response->Health;
+    for (int32 I = 0; I < 20; ++I)
+    {
+        FHitResult Trace;
+        auto Hit = UIBS4ResponseComponent::MakeHit(World, nullptr, EIBS4Weapon::Bullet, 999, Trace);
+        TestTrue(TEXT("bullet accepted"), Pawn->Response->Receive(Hit));
+        TestFalse(TEXT("bullet duplicate rejected"), Pawn->Response->Receive(Hit));
+        TestEqual(TEXT("H01 has no bullet health loss"), Pawn->Response->Health, OriginalHealth);
+    }
+    AddInfo(TEXT("This suite does not certify audiovisual bullet impact or human feel."));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FS4MissileFlightTest, "ImpactBeyond.S4.MissileFlightRecovery",
+    EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+bool FS4MissileFlightTest::RunTest(const FString&)
+{
+    UWorld* World = LabWorld();
+    if (!TestNotNull(TEXT("S4 game world loaded"), World)) return false;
+    auto* Pawn = Cast<AIBS4LabPawn>(UGameplayStatics::GetPlayerPawn(World, 0));
+    const FTransform Saved = Pawn->GetActorTransform();
+    const bool SavedIntent = Pawn->Flight->bFlightIntent;
+    const FVector SavedVelocity = Pawn->GetVelocity();
+    const FVector Origin(100000, 10000, 0);
+    auto* Floor = World->SpawnActor<AActor>();
+    auto* Box = NewObject<UBoxComponent>(Floor);
+    Floor->SetRootComponent(Box);
+    Box->InitBoxExtent(FVector(10000, 3000, 50));
+    Box->SetCollisionProfileName(TEXT("BlockAll"));
+    Floor->SetActorLocation(Origin - FVector(0, 0, 50)); Box->RegisterComponent();
+    Pawn->Flight->SetFlightIntent(true);
+    const float InitialHealth = Pawn->Response->Health;
+    FAutomationTestFramework::Get().EnqueueLatentCommand(MakeShared<FS4Frame>(
+        [=, this, Trial = 0, Phase = 0, Began = 0.0, HitsBefore = 0, PushesBefore = 0,
+         MaxTravel = 0.0, Start = FVector::ZeroVector, Projectile = TWeakObjectPtr<AIBS4Missile>()]() mutable
+        {
+            const double Now = World->GetTimeSeconds();
+            if (Phase == 0)
+            {
+                Start = Origin + FVector(0, 0, Trial % 2 ? 390 : 140);
+                Pawn->SetActorLocation(Start, false, nullptr, ETeleportType::TeleportPhysics);
+                Pawn->GetCharacterMovement()->StopMovementImmediately();
+                HitsBefore = Pawn->Response->AcceptedHits; PushesBefore = Pawn->Response->AppliedPushes;
+                MaxTravel = 0;
+                Projectile = World->SpawnActor<AIBS4Missile>(Start - FVector(800, 0, 0), FRotator::ZeroRotator);
+                TestTrue(TEXT("missile spawned"), Projectile.IsValid());
+                Began = Now; Phase = 1;
+                return false;
+            }
+            MaxTravel = FMath::Max(MaxTravel, FVector::Dist2D(Start, Pawn->GetActorLocation()));
+            TestTrue(TEXT("flight intent retains airborne movement"), Pawn->GetCharacterMovement()->MovementMode == MOVE_Flying);
+            TestTrue(TEXT("capsule stays above prepared floor"), Pawn->GetActorLocation().Z >= 89);
+            TestTrue(TEXT("capsule collision remains enabled"), Pawn->GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::QueryAndPhysics);
+            TestEqual(TEXT("missile has zero H01 health loss"), Pawn->Response->Health, InitialHealth);
+            if (Now - Began < 2.8) return false;
+            TestEqual(TEXT("one projectile yields one accepted hit"), Pawn->Response->AcceptedHits - HitsBefore, 1);
+            TestEqual(TEXT("one projectile yields one push"), Pawn->Response->AppliedPushes - PushesBefore, 1);
+            TestTrue(TEXT("knockback measures 3-8 m in clear lab lane"), MaxTravel >= 300 && MaxTravel <= 800);
+            TestTrue(TEXT("recoverable velocity"), Pawn->GetVelocity().Size() < 120);
+            AddInfo(FString::Printf(TEXT("IBS4 missile trial=%d travel_cm=%.2f end_speed=%.2f"), Trial + 1, MaxTravel, Pawn->GetVelocity().Size()));
+            if (Projectile.IsValid()) Projectile->Destroy();
+            if (++Trial < 20) { Phase = 0; return false; }
+            Pawn->SetActorTransform(Saved, false, nullptr, ETeleportType::TeleportPhysics);
+            Pawn->Flight->SetFlightIntent(SavedIntent);
+            Pawn->GetCharacterMovement()->Velocity = SavedVelocity;
+            Floor->Destroy();
+            return true;
+        }));
+    AddInfo(TEXT("Twenty real projectiles, alternating 0.5 m / 3 m clearance. Does not replace free-flight or gamepad QA."));
+    return true;
+}
+#endif
