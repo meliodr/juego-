@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 03 — S3.5 · objetos físicos y puñetazos H01
 
-**Modelo sugerido, no seleccionado:** Codex C++/Chaos disponible con razonamiento High; Extra High solo si falla contrato de colisión.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6.1 Sol · High (si existe en Codex); física C++ y pruebas de colisión. Alternativa: modelo Codex C++ más capaz, High.
 
 **Worktree Windows aislado:** `../impact-wave8-s35-physics` · **rama exclusiva:** `prototype/ib-wave8-s35-physics`.
 
