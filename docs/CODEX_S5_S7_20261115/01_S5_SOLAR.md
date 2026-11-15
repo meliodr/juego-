@@ -1,0 +1,28 @@
+# Codex L05-A — S5: reloj planetario y luz realista
+
+**Modelo sugerido:** Codex más apto para geometría espacial + UE/C++, razonamiento **High**. El modelo sugerido no está aplicado.
+**Worktree:** `../impact-l05a-solar` · **rama:** `prototype/ib-l05a-solar-lab`.
+**Escritura exclusiva:** `ImpactBeyond/Source/ImpactBeyond/IB_S5/Time/**`, `ImpactBeyond/Content/IB_S5/Time/**`, `Tools/IBL05A_*`, `docs/IB_L05A_*`. No tocar Civics/los otros frentes.
+
+## Identificación, seguridad y precedencia
+
+Trabaja SOLO si tienes un chat Codex realmente abierto en el PC Windows del usuario. Esta ficha en GitHub NO inicia Codex ni selecciona modelo. Repositorio: https://github.com/meliodr/juego- . **BASE DE GAMEPLAY EXACTA:** `1d01db54b63250ed0aacb0704a5ac16290324e32` (`prototype/ib-sprint02`, PR #19). **BASE DOCUMENTAL** de estos prompts: PR documental de ocho frentes; léela remotamente, NO hagas merge del branch documental en el juego. En cada ejecución relee `git status`, `git worktree list`, remotes, branches, PRs recientes y diffs de S2.5/S3/S3.5/S4, auditoría PR #21 y refinamiento PR #22. Si nuevas entregas cambiaron el contrato, adapta propuesta SIN rebase destructivo ni duplicar trabajo.
+
+**GATE ESTRICTO:** al corte 15-11-2026 10:28 AST NO hay ramas de implementación S2.5/S3/S3.5/S4 publicadas; PR #20 es una ficha CC0, PR #21 auditoría con validador Git y PR #22 ajustes documentales. No asumas que faltan trabajos locales: inspecciónalos cuando tengas acceso y registra resultados. Mientras los cuatro gates previos no estén aceptados/compatibles, limita este frente a **contrato, prototipo aislado no integrado, tests offline sin Unreal, recursos locales ya legales**, y bloquea cualquier edición del mundo canónico. No escribas `ImpactBeyondCharacter.*`, `ImpactCircuitComponent.*`, `ImpactBeyondPlayerController.*`, `ImpactBeyondGameMode.*`, `ImpactBeyond.Build.cs`, `ImpactBeyond.uproject`, `Config/**`, `IB_C00/**`, `.umap` principal, ni carpetas de otros agentes. Cualquier cambio compartido va como propuesta en docs, sin aplicarlo. Los ocho frentes usan *worktrees diferentes* nacidos del mismo SHA y **una sola sesión Unreal Editor/cook/packaging por PC en todo momento**. No borrar DDC, cachés, datos ni sobrescribir worktrees.
+
+**Licencia/presupuesto:** RD$0; primero reusar Manny, Chaos, Niagara, materiales/meshes existentes y documentación. No descargar City Sample completo, reclamar Fab, aceptar nuevas licencias, habilitar/instalar plugins, comprar ni subir archivos fuente Epic/Fab como packs sueltos al repo público. Registrar `local/propiedad/licencia/tamaño/compatibilidad`; no suministrar bytes NoAI a modelos de IA. Meta de QA **1080p DX12 visible/audio ON y 60 FPS** (p95 frame <=16.7ms orientativo, p99/VRAM/hitches reportados, no declarados sin test); Windows UE5.8.x real por comprobar en máquina. Una prueba headless, screenshot estático o script aislado NO certifica jugabilidad ni FPS.
+
+**Entrega:** rama de laboratorio exclusiva desde SHA S2; PR **draft** dirigido a `prototype/ib-sprint02`, con solo rutas permitidas. Adjunta SHA+diff, lista de clases/activos y licencias, tests PASS/FAIL/SKIPPED con evidencia real, mapa aislado sólo si correspondió acceso/turno a Unreal, dependencias para el integrador y estado explícito `SOLO_DOC / PROTOTIPO / BUILD / DX12_VERIFICADO / BLOQUEADO`. Nunca merge a `main`. La integración será serial y después de la revisión de las entregas antiguas.
+
+## Encargo ejecutable tras los gates previos
+- Leer `docs/SPRINTS_03_04_05_CIUDADES_PODERES_TIEMPO.md`, `docs/ROADMAP_SPRINTS_02_A_08.md`, `docs/IB_REFINAR_S3_PLANETA.md` de PR #22. Diseñar `PlanetClock` con tiempo absoluto normalizado, `BodyId`, longitud/latitud, periodo 18/36/72min (36 predeterminado), pausa/avance creativo, serialización versionada y eventos de cambio de fase. Distinguir tiempo solar global de zonas locales. No poner cuatro clocks distintos.
+- Prototipo de cálculo **desacoplado** y determinista sin dependencias S3: sol en ecuador/polos, dateline y franja horaria, integración futura con World/RegionId. Un adaptador solo en tu propia carpeta podrá actualizar DirectionalLight, Sky Atmosphere, SkyLight y Fog si el mapa aislado carga; prohibido cambiar luces/blueprints globales.
+- Una demo A/B en nivel `/Game/IB_S5/Time/Lvl_IB_L05A_Solar` si Editor está libre, usando fachadas PBR existentes, sin programar cientos de farolas ni textura de City Sample. Farolas por celdas cerca del jugador y materiales emisivos escalables; optimización de SkyLight real time capture/time slicing tras mediciones.
+- No activar el plugin experimental Day Sequence ni reemplazar mapas existentes; solo comparación documentada.
+
+## Tests y criterio de salida
+1. Tests offline de 0, 6, 12, 18, 24h; saltos hacia atrás, 36 minutos sin drift, serialización/reload y diferencia local por longitudes 0/180°; tres ciclos acelerados sin discontinuidad.
+2. En Unreal, **solo con turno del editor**: amanecer/mediodía/atardecer/medianoche con capturas FOV idéntico; ciclo visible de 36min con audio y cambios de luz/ventanas/ambiente, comparación de hitches de SkyLight; viaje entre regiones y continuidad horaria si S3 está listo.
+3. Riesgos/gates: ningún efecto solar jugable global antes de completar S3 y S2.5; registrar explícitamente si solo se completó la matemática.
+
+**Integración futura:** un integrador conecta tu contrato a reloj de regiones S3, materiales City Sample-lite S2.5 y eventos S5-B. No asumas que esos sistemas existen. Priorizar no bajar de 60FPS durante transición día/noche.
