@@ -2,6 +2,10 @@
 
 > **Regla de desarrollo: reutilizar lo más que se pueda y crear lo mínimo que se pueda.** Primero buscar y verificar herramientas, modelos, animaciones y código existentes; configurar y adaptar antes de desarrollar desde cero. Crear solo lo indispensable para una experiencia estable y divertida. Detalles obligatorios en [AGENTS.md](AGENTS.md).
 
+## Auditoría Fab — primer lote 2026-11-15
+
+**[Catálogo de Fab: 25 fichas gratuitas revisadas, 3 promociones temporales y 4 pendientes](docs/FAB_AUDITORIA_LOTE01_2026-11-15.md)**. Primera selección: Scout Bot modular, animaciones de caída/planeo, Niagara Examples, efectos de energía, muestra de Chaos y ciudad/vehículos de Epic, sujetos a licencia/versión. Las promociones de Fab anuncian fin el **17 de noviembre a las 9:59 a. m. ET**. NO hemos agregado activos a la cuenta, descargado paquetes ni inspeccionado Mi biblioteca. Se mantiene la regla **reutilizar al máximo y crear lo mínimo**, sin retrasar W00/W01.
+
 ## Plugins seleccionados — v1.4
 
 **[Ver selección y pruebas de plugins para UE5.8](docs/PLUGIN_SELECTION_V14.md)**. Se usarán herramientas incluidas (Enhanced Input, IK Rig/Control Rig, Niagara, Chaos/Fracture y PCG), activadas por fase. Unreal MCP + AllToolsets será un experimento local de automatización cuando editor y agente funcionen. Externos elegidos para pruebas, no instalaciones actuales: PCGEx MIT rama 5.8, Realtime Destructible Mesh Free (Fab Standard) y Realtime Mesh Component Core MIT como reserva. **Ninguno se ha instalado ni probado en el equipo del usuario.** Primera tarea sigue IB-W00/W01: Windows/Unreal 5.8.
