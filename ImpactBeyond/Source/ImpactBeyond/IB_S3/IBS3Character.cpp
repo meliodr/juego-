@@ -123,6 +123,13 @@ bool AIBS3Character::PrepareMovement()
     Move->BrakingDecelerationFlying=Planet->Manifest->BrakeCmS2;
     Move->MaxFlySpeed=Planet->AllowedSpeed(GetActorLocation(),bBrake?0:(bTraversal?Planet->Manifest->TraversalSpeedCmS:8000));
     if(bBrake) ConsumeMovementInputVector();
+    else if(APlayerController* PC=Cast<APlayerController>(Controller))
+    {
+        // Digital keys are not Axis1D in UE 5.8. Read held-key state before CMC consumes movement.
+        Forward(float(PC->IsInputKeyDown(EKeys::W))-float(PC->IsInputKeyDown(EKeys::S)));
+        Right(float(PC->IsInputKeyDown(EKeys::D))-float(PC->IsInputKeyDown(EKeys::A)));
+        Ascend(float(PC->IsInputKeyDown(EKeys::E))-float(PC->IsInputKeyDown(EKeys::Q)));
+    }
     return true;
 }
 void AIBS3Character::Forward(float X) { if(!bBrake) AddMovementInput(TangentForward,X); }
@@ -153,12 +160,6 @@ void AIBS3Character::SetupPlayerInputComponent(UInputComponent* Input)
 {
     Super::SetupPlayerInputComponent(Input);
     // Raw axis/key bindings are local to this lab; no shared input config changes.
-    Input->BindAxisKey(EKeys::W,this,&AIBS3Character::Forward);
-    Input->BindAxisKey(EKeys::S).AxisDelegate.GetDelegateForManualSet().BindLambda([this](float V){Forward(-V);});
-    Input->BindAxisKey(EKeys::D,this,&AIBS3Character::Right);
-    Input->BindAxisKey(EKeys::A).AxisDelegate.GetDelegateForManualSet().BindLambda([this](float V){Right(-V);});
-    Input->BindAxisKey(EKeys::E,this,&AIBS3Character::Ascend);
-    Input->BindAxisKey(EKeys::Q).AxisDelegate.GetDelegateForManualSet().BindLambda([this](float V){Ascend(-V);});
     Input->BindAxisKey(EKeys::MouseX,this,&AIBS3Character::Turn); Input->BindAxisKey(EKeys::MouseY,this,&AIBS3Character::Look);
     Input->BindAxisKey(EKeys::Gamepad_LeftY,this,&AIBS3Character::Forward); Input->BindAxisKey(EKeys::Gamepad_LeftX,this,&AIBS3Character::Right);
     Input->BindAxisKey(EKeys::Gamepad_RightX,this,&AIBS3Character::TurnStick); Input->BindAxisKey(EKeys::Gamepad_RightY,this,&AIBS3Character::LookStick);

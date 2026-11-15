@@ -39,6 +39,8 @@ public:
     FVector PreviousUp = FVector::ForwardVector;
     bool PrepareMovement();
 private:
+    friend class FIBS3FlightCommand;
+    friend class FIBS3CaptureCommand;
     bool bFrameInitialized = false;
     bool bTraversal = false;
     bool bBrake = false;

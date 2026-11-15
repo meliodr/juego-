@@ -10,6 +10,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Math/RotationMatrix.h"
 #include "PhysicsEngine/BodyInstance.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "UObject/ConstructorHelpers.h"
 
 namespace
@@ -155,6 +157,13 @@ void AIBS3PlanetWorld::BeginPlay()
     Atmosphere->TransformMode=ESkyAtmosphereTransformMode::PlanetCenterAtComponentTransform;
     Atmosphere->MarkRenderStateDirty();
     Atmosphere->SetBottomRadius(Manifest->RadiusCm/100000.0);
+#if WITH_DEV_AUTOMATION_TESTS
+    // Explicit process-restart QA uses a separate GUID-named slot, never the player's save.
+    FString QASlot; FGuid QAGuid;
+    if(FParse::Value(FCommandLine::Get(),TEXT("IBS3QASaveSlot="),QASlot) &&
+        QASlot.StartsWith(TEXT("IB_S3_QA_Restart_")) && QASlot.Len()==49 &&
+        FGuid::ParseExact(QASlot.Mid(17),EGuidFormats::Digits,QAGuid)) SaveSlot=QASlot;
+#endif
     SeedObjects(); LoadState();
     for(const FIBS3City& C:Manifest->Cities)
     {

@@ -138,7 +138,7 @@ bool FIBS3SaveValidationTest::RunTest(const FString& Parameters)
     Reject(TEXT("Finite zero quaternion rejected"),[](UIBS3SaveGame* S){ S->Deltas[1].GlobalTransform.SetRotation(FQuat(0,0,0,0)); });
     Reject(TEXT("Stable origin cannot change"),[](UIBS3SaveGame* S){ S->Deltas[1].OriginRegionId=TEXT("earth.invalid.origin"); });
     Reject(TEXT("Object kind cannot change"),[](UIBS3SaveGame* S){ S->Deltas[1].Kind=TEXT("invalid-kind"); });
-    Reject(TEXT("Duplicate stable ID rejected"),[](UIBS3SaveGame* S){ S->Deltas.Add(S->Deltas[0]); });
+    Reject(TEXT("Duplicate stable ID rejected"),[](UIBS3SaveGame* S){ const FIBS3ObjectDelta Copy=S->Deltas[0]; S->Deltas.Add(Copy); });
     Reject(TEXT("Different coordinate revision rejected"),[](UIBS3SaveGame* S){ ++S->ManifestRevision; });
     TestTrue(TEXT("Restore fixture file"),UGameplayStatics::SaveGameToSlot(Baseline,FixtureSlot,0));
     Planet->LoadState(); TestTrue(TEXT("Valid file reload accepted"),Planet->bSaveCompatible);

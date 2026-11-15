@@ -11,7 +11,7 @@ void UIBS3MapWidget::NativeTick(const FGeometry& Geometry,float Dt)
 {
     Super::NativeTick(Geometry,Dt); Refresh-=Dt;
     if(Refresh>0 || !IsValid(Pilot) || !IsValid(Pilot->Planet) || !Pilot->Planet->IsOperational()) return;
-    Refresh=0.1f; auto* W=Pilot->Planet;
+    Refresh=0.1f; AIBS3PlanetWorld* W=Pilot->Planet.Get();
     const double R=W->Manifest->RadiusCm;
     const IBS3::V3 P=MapVector(Pilot->GetActorLocation()), Center=MapVector(W->GetActorLocation());
     const IBS3::Geo Geo=IBS3::geographic(P,R,Center,Pilot->LastLongitude);
@@ -51,23 +51,31 @@ int32 UIBS3MapWidget::NativePaint(const FPaintArgs& Args,const FGeometry& G,cons
     { if(GEngine) UWidgetBlueprintLibrary::DrawTextFormatted(C,FText::FromString(S),P,GEngine->GetSmallFont(),15,NAME_None,Color); };
     auto Mark=[&](FVector2D P,FLinearColor Color)
     { Line(P+FVector2D(-5,0),P+FVector2D(5,0),Color,3); Line(P+FVector2D(0,-5),P+FVector2D(0,5),Color,3); };
+    // A thick Slate line supplies a solid rectangular backing without a scene capture or new texture.
+    Line({12,68},{FMath::Min(1150.0,G.GetLocalSize().X-12),68},FLinearColor(0.01f,0.015f,0.025f,0.88f),124);
     Text(TEXT("S3 LAB | placeholder tecnico | M / panel tactil: mapa"),{24,18});
     Text(Telemetry,{24,40}); Text(DestinationText,{24,62},FLinearColor::Yellow); Text(RegionText,{24,84});
     Text(TEXT("F/R3 vuelo | Shift/L3 travesia | E/Q o R2/L2 altura | X/cuadrado freno | G/circulo interaccion | F5/abajo guardar"),{24,106});
     const FVector2D Origin(24,145); const FVector2D Size(FMath::Max(160.0,FMath::Min(900.0,G.GetLocalSize().X-48)),350);
     if(Pilot && Pilot->bGlobalMap)
     {
+        const double PanelHeight=Size.Y+55+FMath::DivideAndRoundUp(Icons.Num(),2)*24;
+        Line(Origin+FVector2D(0,PanelHeight/2),Origin+FVector2D(Size.X,PanelHeight/2),FLinearColor(0.01f,0.015f,0.025f,0.92f),PanelHeight);
         for(int32 X=0;X<=12;++X) Line(Origin+FVector2D(Size.X*X/12,0),Origin+FVector2D(Size.X*X/12,Size.Y));
         for(int32 Y=0;Y<=6;++Y) Line(Origin+FVector2D(0,Size.Y*Y/6),Origin+FVector2D(Size.X,Size.Y*Y/6));
-        for(const Icon& I:Icons)
+        for(int32 Index=0;Index<Icons.Num();++Index)
         {
+            const Icon& I=Icons[Index];
             FVector2D P=Origin+I.Global*Size; const auto Color=I.Destination?FLinearColor::Yellow:(I.Discovered?FLinearColor::Green:FLinearColor::Gray);
-            Mark(P,Color); Text(I.Label+(I.Discovered?TEXT(" [descubierta]"):TEXT(" [?]")),{FMath::Clamp(P.X+8,Origin.X,Origin.X+Size.X-210),P.Y+8},Color);
+            Mark(P,Color); Text(FString::FromInt(Index+1),{FMath::Clamp(P.X+8,Origin.X,Origin.X+Size.X-24),P.Y+8},Color);
+            Text(FString::Printf(TEXT("%d  %s %s"),Index+1,*I.Label,I.Discovered?TEXT("[descubierta]"):TEXT("[?]")),
+                Origin+FVector2D((Index%2)*(Size.X/2),Size.Y+40+(Index/2)*24),Color);
         }
         Mark(Origin+PlayerGlobal*Size,FLinearColor::White); Text(TEXT("-180                         Longitud                         +180 | N arriba"),Origin+FVector2D(0,Size.Y+12));
     }
     else
     {
+        Line(Origin+FVector2D(0,145),Origin+FVector2D(260,145),FLinearColor(0.01f,0.015f,0.025f,0.88f),290);
         const FVector2D Center=Origin+FVector2D(120,120); const double Range=200000; // 2 km, heading-up.
         for(int32 I=0;I<48;++I)
         {

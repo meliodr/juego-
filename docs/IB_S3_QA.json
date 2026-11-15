@@ -2,18 +2,22 @@
   "date": "2026-11-15",
   "base_commit": "1d01db54b63250ed0aacb0704a5ac16290324e32",
   "branch": "prototype/ib-s3-planet-lab",
-  "overall": "IMPLEMENTED_WITH_UNREAL_VALIDATION_PENDING",
+  "overall": "LOCAL_UNREAL_EXECUTED_ACCEPTANCE_PENDING",
   "unreal_installed": "5.8.4 changelist 58902052",
   "native_compiler": "MSVC 14.52.37025, C++17, /W4 /WX /O2",
   "native_core": {
     "status": "PASS",
     "assertions": 336251,
-    "radii_km": [25, 60, 90],
+    "radii_km": [
+      25,
+      60,
+      90
+    ],
     "loops": 6,
     "random_coordinate_samples": 30000,
     "max_coordinate_roundtrip_cm": 0.000161509891076,
-    "max_loop_return_cm": 0.000065556005366,
-    "max_altitude_drift_cm": 0.00002221763134,
+    "max_loop_return_cm": 6.5556005366e-05,
+    "max_altitude_drift_cm": 2.221763134e-05,
     "max_transport_error": 1.99682283926e-13,
     "trial_25km_500m_alt_270m_s_seconds": 593.411945678,
     "prefetch_320m_s_p95_1_5s_brake_80m_s2_margin_300m_m": 1420,
@@ -28,8 +32,8 @@
     "corrected_review_failures": 0,
     "total_current_native_assertions": 436423,
     "runtime_flight_helper_numeric_loops": 2,
-    "runtime_flight_helper_max_return_cm": 0.0000723808,
-    "runtime_flight_helper_max_altitude_drift_cm": 0.0000231871,
+    "runtime_flight_helper_max_return_cm": 7.23808e-05,
+    "runtime_flight_helper_max_altitude_drift_cm": 2.31871e-05,
     "manifest_revision": 2,
     "review_test_sha256": "9C9F99C86904D359F58A483E42E30641FCFC352C0F2C76C1DDB1D49FF0FA9D8B",
     "scope": "Native CPU math/policy and inspection of installed engine source, not Unreal execution"
@@ -47,20 +51,119 @@
     "near_cap_max_edge_sagitta_25km_cm": 2.1972592033847604,
     "author_script_sha256": "EBA3FB4C7C2A41F2D6BB6D6DE9987A84DCF990C861D9FC5C7921F8F1A88EEB94"
   },
-  "script_syntax": {"python": "PASS", "powershell": "PASS"},
-  "unreal_build_uht_ubt": "NOT_RUN_EXCLUSIVE_SLOT_UNCONFIRMED",
-  "map_and_asset_authoring": "NOT_RUN",
-  "unreal_manifest_test": "PREPARED_NOT_RUN",
-  "unreal_collision_and_residency_test": "PREPARED_NOT_RUN",
-  "unreal_save_validation_test": "PREPARED_NOT_RUN",
-  "four_character_landings": "NOT_RUN",
-  "ten_runtime_reentries": "NOT_RUN",
-  "full_restart_persistence": "NOT_RUN",
-  "actual_continuous_circumnavigation": "NOT_RUN",
-  "umg_visual_qa": "NOT_RUN",
+  "script_syntax": {
+    "python": "PASS",
+    "powershell": "PASS"
+  },
+  "unreal_build_uht_ubt": "PASS",
+  "map_and_asset_authoring": "PASS",
+  "unreal_manifest_test": "PASS",
+  "unreal_collision_and_residency_test": "PASS_SYNTHETIC_RESIDENCY_AND_REAL_QUERIES",
+  "unreal_save_validation_test": "PASS",
+  "four_character_landings": "PASS_CMC_FALL_WALK_FIXTURES",
+  "ten_runtime_reentries": "PASS_REAL_FLIGHT_320M_S",
+  "full_restart_persistence": "PASS_TWO_DISTINCT_PROCESSES",
+  "actual_continuous_circumnavigation": "PASS_ONE_ACTUAL_CMC_EQUATORIAL_LOOP_NULLRHI",
+  "umg_visual_qa": "PASS_TECHNICAL_READABILITY_SEVEN_RENDERED_CAPTURES",
   "packaged_dx12_1080p_60fps": "NOT_RUN",
   "steam_input_dualsense": "NOT_RUN",
   "art": "PLACEHOLDER_TECNICO_NOT_ACCEPTED_REALISM",
   "additional_spend_RD": 0,
-  "auto_merge": false
+  "auto_merge": false,
+  "unreal_compiler": "MSVC 14.44.35228, Windows SDK 10.0.26100.0, DisableUnity, MaxParallelActions=2",
+  "unreal_validation_document": "docs/IB_S3_UNREAL_VALIDATION.md",
+  "rendered_dx12": {
+    "status": "PASS_EDITOR_GAME_OFFSCREEN_NOT_PACKAGED",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "driver": "621.14",
+    "captures": "Saved/IB_S3_QA/Captures/A6ADBFBA4EF254A045D6F1A595DA4EFB",
+    "count": 7,
+    "fps_certified": false,
+    "automation_device_inventory_gpu": "Intel(R) UHD Graphics; generic device inventory differs from the explicit LogD3D12RHI chosen adapter 0 / LogRHI NVIDIA selection",
+    "cpu": "Intel Core i9-14900HX",
+    "os": "Windows 11 25H2 10.0.26200.9711",
+    "ram_gb": 64
+  },
+  "runtime_flight_reentry": {
+    "status": "PASS",
+    "count": 10,
+    "region_crossings": 20,
+    "elapsed_game_seconds": 185.882,
+    "peak_m_s": 320,
+    "brake_displacement_m_min": 216.882,
+    "brake_displacement_m_max": 216.928,
+    "altitude_cm": 50000,
+    "initial_fixture_placement": true,
+    "pose_writes_during_measured_flight": false,
+    "log": "FlightReentry-edecce2968db4e8796aa453f00497c47.log"
+  },
+  "process_restart": {
+    "status": "PASS",
+    "write_pid": 27148,
+    "verify_pid": 75784,
+    "wall_position_delta_cm": 0,
+    "car_position_delta_cm": 0.002,
+    "object_position_delta_cm": 0.001,
+    "settling_tolerance_cm": 150,
+    "separate_guid_slot": true
+  },
+  "publication": {
+    "pr": "https://github.com/meliodr/juego-/pull/27",
+    "draft": true,
+    "published_head": "2f08add14a341bfef1f3fd91a1c3c0c6b7e56a12",
+    "new_validation_changes": "LOCAL_ONLY_AWAITING_SCOPE_COORDINATION"
+  },
+  "authored_assets": [
+    {
+      "path": "ImpactBeyond/Content/IB_S3/DA_S3World.uasset",
+      "bytes": 1168,
+      "sha256": "7aa9f0d5c1da91b2fed6ba530e72ff79bd48d602efff686b8fb286db49bf3e5f"
+    },
+    {
+      "path": "ImpactBeyond/Content/IB_S3/Lvl_IB_S3_PlanetLab.umap",
+      "bytes": 20274,
+      "sha256": "b53b57a47ef41c358416ee42d688a7262313cec94ab083e217e9fc3f5ea43885"
+    },
+    {
+      "path": "ImpactBeyond/Content/IB_S3/SM_S3NearSurface.uasset",
+      "bytes": 472448,
+      "sha256": "9e9784e06fc3fd86d91542d790d1323102543148d192ac7acf0d009c08c2f575"
+    },
+    {
+      "path": "ImpactBeyond/Content/IB_S3/SM_S3Planet.uasset",
+      "bytes": 686161,
+      "sha256": "9afedfac7feef8fb78576cd401005319df103bd94d601c1209cd82b38c1ea181"
+    }
+  ],
+  "runtime_circumnavigation": {
+    "status": "PASS",
+    "completed_loops": 1,
+    "radius_cm": 2500000,
+    "altitude_cm": 50000,
+    "elapsed_game_seconds": 594.932818,
+    "return_error_cm": 762.171147,
+    "return_sample_tolerance_cm": 1000,
+    "altitude_error_cm_printed": "0.000000",
+    "exact_zero_claimed": false,
+    "region_crossings": 15,
+    "peak_m_s": 270,
+    "brake_displacement_m": 170.782,
+    "initial_fixture_placement": true,
+    "pose_writes_during_measured_flight": false,
+    "rendered": false,
+    "log": "Circumnavigation-5e28d684f0c04720a7b4f11740ac3c1f.log"
+  },
+  "exclusive_turn": {
+    "released": true,
+    "last_process_pid": 40472,
+    "exit_code": 0,
+    "no_unreal_build_processes_at_release": true,
+    "mutex_available_at_release": true,
+    "release_utc": "2026-11-15T18:33:27.2835687Z",
+    "desktop_input_used": false
+  }
 }

@@ -4,7 +4,9 @@ Repositorio: `meliodr/juego-`
 Head: `prototype/ib-s3-planet-lab`
 Base: `prototype/ib-sprint02`
 Draft: **true**
-Título: **S3 lab: planeta radial, cuatro hubs, UMG y persistencia — QA Unreal pendiente**
+Título del PR publicado: **S3 lab: planeta radial, cuatro hubs, UMG y persistencia - QA Unreal pendiente**
+
+Esta es la actualización local propuesta para el [PR draft #27](https://github.com/meliodr/juego-/pull/27). El remoto permanece en `2f08add`; no se publica esta validación hasta coordinar alcance.
 
 ## Descripción propuesta
 
@@ -20,7 +22,7 @@ Validación ejecutada:
 - Sintaxis Python/PowerShell, guard de turno exclusivo y alcance de archivos PASS.
 - Revisión estática posterior: cinco fallos nativos reproducidos y corregidos; **100.172 aserciones adicionales PASS** sobre orientación UE, integrador de vuelo real, subpasos acelerados, límites de precarga, barrera de carga y poses persistidas. Total actual **436.423 aserciones nativas**. Manifiesto revisión 2 por corrección de coordenadas; ticks, cuerpos físicos y carga transaccional de saves reforzados. Detalle: `docs/IB_S3_STATIC_REVIEW.md`.
 
-**No listo para integrar.** UHT/UBT y autoría del `.umap` NO ejecutados: turno pesado reservado a S2.5. Pruebas de motor preparadas pero NO ejecutadas. Pendientes cuatro aterrizajes, diez retornos físicos/persistencia tras reinicio, vuelta continua, colisión real CMC, UMG visual, DX12 empaquetado, 1080p/60fps y Steam Input/DualSense. El streamer actual instancia hubs pequeños; todavía no es carga asíncrona de ciudades artísticas grandes.
+**Validación Unreal local:** UHT/UBT, autoría del mapa, Manifest/RuntimeResidency/SaveValidation, seis caídas/contactos/marchas (cuatro hubs y polos), reinicio de proceso con save, diez reentradas mediante vuelo a 320 m/s y siete capturas DX12 1920x1080 completados. Se corrigieron fallos reales de compilación, input digital, fixtures y legibilidad. Detalle y límites en `docs/IB_S3_UNREAL_VALIDATION.md`. Una circunnavegación CMC real sin render pasó en 594,932818 s: 15 cruces, 270 m/s, retorno a 7,621711 m (tolerancia de muestreo 10 m), sin escrituras de posición durante el recorrido. **No listo para integración global:** faltan paquete Win64, perfil FPS/VRAM/audio, mando físico/Steam Input y aceptación humana. Hubs pequeños síncronos; no streaming asíncrono de ciudades artísticas grandes.
 
 Reproducción y arquitectura: `docs/IB_S3_ARCHITECTURE.md`. Evidencia numérica: `docs/IB_S3_QA.json`. Herramientas: `Tools/IBS3_TestCore.ps1`, `IBS3_TestAuthoring.py`, `IBS3_AuthorLab.py`, `IBS3_RunUnreal.ps1`.
 

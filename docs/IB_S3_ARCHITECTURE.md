@@ -3,8 +3,8 @@
 Fecha: 2026-11-15. Base inmutable: `1d01db54b63250ed0aacb0704a5ac16290324e32` (`prototype/ib-sprint02`, PR #19).
 Rama: `prototype/ib-s3-planet-lab`. Laboratorio aislado; no integración global, S7.5 ni merge a main.
 
-**Estado: CÓDIGO, núcleo matemático COMPILADO/EJECUTADO fuera de Unreal. Módulo UE IMPLEMENTADO SIN VALIDAR.**
-No existe una build jugable S3 verificada ni un `.umap` generado en esta entrega. Autoría, UHT/UBT, colisión, DX12, controles humanos y rendimiento requieren turno exclusivo confirmado. Que no aparezca un proceso de Unreal en un instante no demuestra que otra sesión haya cedido el turno.
+**Estado local: módulo UE COMPILADO y laboratorio EJECUTADO; aceptación/integración pendiente.**
+El turno exclusivo posterior permitió UHT/UBT, autoría del mapa, tests de contactos y persistencia y capturas DX12. El registro exacto de intentos, fallos, correcciones y pendientes está en [validación Unreal](IB_S3_UNREAL_VALIDATION.md). El PR #27 publicado conserva la entrega anterior hasta coordinar una nueva publicación. No hay paquete distribuible ni aceptación humana. Que no aparezca un proceso de Unreal en un instante no demuestra que otra sesión haya cedido el turno.
 
 ## Qué se reutiliza y por qué hay código nuevo
 
@@ -45,7 +45,7 @@ Los hubs instancian 169 losas curvadas, dos calles cruzadas abiertas, pad centra
 
 La preparación de gravedad/límites se ejecuta **antes de CMC::TickComponent**, con dependencia explícita del Tick del planeta. El límite de subpaso incluye aceleración. `flightStep` comparte la integración de ascenso/curvatura con la suite nativa; aceleración y velocidad se transportan entre subpasos. Se comprueba el segmento completo contra la envolvente de cada ciudad pendiente antes de mover, incluyendo extensión de cápsula; una retirada desde dentro sigue permitida. Detener por esa barrera muestra el motivo y no simula un collider listo.
 
-Caminar, gravedad, cápsula rotada y esfera Chaos de gran radio aún necesitan ensayo de motor. La exactitud matemática no certifica contactos ni penetración. El cap cercano se aproxima por triángulos: a R=25 km su error máximo de arista medido es 2,1973 cm, frente a 376,4483 cm de la malla orbital. A R=90 km esos errores escalan; la colisión sigue siendo analítica. Transición LOD, sombreado y horizonte deben revisarse visualmente antes de aceptación.
+Caminar, gravedad, cápsula rotada y esfera Chaos se probaron en cuatro hubs y ambos polos con caídas reales CMC y marcha tras giro; véanse logs y límites del fixture. La exactitud matemática por sí sola no certifica contactos. El cap cercano se aproxima por triángulos: a R=25 km su error máximo de arista medido es 2,1973 cm, frente a 376,4483 cm de la malla orbital. A R=90 km esos errores escalan; la colisión sigue siendo analítica. Hay capturas reales de suelo/aire/órbita, todavía sin aceptación artística ni revisión de todas las transiciones LOD.
 
 ## Residencia, precarga y persistencia
 
@@ -53,7 +53,7 @@ Hay un único ActiveCity; ciudades próximas pueden tener colisión precargada, 
 
 Selección incluye distancia geodésica y altura, histéresis de 400 m y revisión a 10 Hz. Antes de entrar se comprueba estado físico de calles, pad y edificios. Si no está listo, velocidad admisible deriva del presupuesto de frenada; no se permite fingir collider cargado. Esta primera implementación crea hubs pequeños sincrónicamente con componentes nativos y espera su estado físico cuando es diferido. No equivale a streaming asíncrono de paquetes urbanos reales ni garantiza ausencia de hitches: la sustitución por cargas/celdas preautorizadas se hará tras medir.
 
-La comprobación actual revisa FBodyInstance de cada instancia y pad, además del cuerpo planetario. La carga de USaveGame valida poses e identidad contra defaults del manifiesto en un candidato y solo aplica el conjunto completo al terminar. Estado vivo inválido suspende guardado/descarga y conserva el último delta válido. Contactos/query real, carga diferida y reentradas siguen pendientes de motor.
+La comprobación actual revisa FBodyInstance de cada instancia y pad, además del cuerpo planetario. La carga de USaveGame valida poses e identidad contra defaults del manifiesto en un candidato y solo aplica el conjunto completo al terminar. Estado vivo inválido suspende guardado/descarga y conserva el último delta válido. Query/contactos, residencia y reinicio real ya tienen pruebas de motor; falta carga asíncrona de contenido urbano grande y fallo diferido inyectado.
 
 Solo los props a menos de 1.200 m del jugador simulan; salir captura delta y destruye el actor, entrar rehidrata una sola instancia por clave. La selección usa la posición global guardada del objeto, no su ciudad de origen; un objeto movido a otra celda no vuelve a aparecer en su punto original. Se mantienen 12 registros representativos iniciales, no árboles/edificios completos. La esfera global no simula fragmentos lejanos. Un objeto descargado queda congelado, no resuelve una trayectoria balística fuera de burbuja.
 
@@ -98,9 +98,9 @@ El guard comprueba procesos y un mutex cooperativo; no sustituye coordinación c
 
 `ImpactBeyond.S3.Manifest` prepara pruebas de novena ciudad/radio 90 km/IDs duplicados. `ImpactBeyond.S3.RuntimeResidency` prepara trazas de suelo en cuatro hubs, 10 descargas/reentradas, persistencia de muro/auto, unicidad y lectura de un archivo USaveGame de prueba con nombre GUID. Usa colocación de fixtures y **no cuenta como vuelo continuo, aterrizajes, reinicio completo del juego ni rendimiento**. El archivo temporal de QA es el único save que elimina.
 
-`ImpactBeyond.S3.SaveValidation` prepara archivos de prueba con pose, identidad, duplicados y revisión inválidos; debe verificar rechazo completo, conservación del estado anterior y bloqueo de sobrescritura. Tampoco se ejecutó. Las suites nativas actuales suman **436.423 aserciones PASS** (336.251 Core + 100.172 Review); no sustituyen ninguno de estos tests de motor.
+`ImpactBeyond.S3.SaveValidation` prueba archivos con pose, identidad, duplicados y revisión inválidos, rechazo completo, conservación del estado anterior y bloqueo de sobrescritura. Manifest, RuntimeResidency y SaveValidation pasaron en Unreal. Las suites nativas suman **436.423 aserciones PASS** (336.251 Core + 100.172 Review); no se suman ni confunden con tests de motor.
 
-Después faltan: cuatro aterrizajes CMC; suelo/aire/giros en ecuador y ambos polos; cinco cruces físicos; 10 retornos con los tres objetos alterados y reinicio real; minimapa/mapa en tierra/aire/dateline/polos; 320 m/s con freno y fallo de precarga; vuelta continua ≥1 (roadmap general pide 3); empaquetado Win64 DX12; 1080p con audio, FPS/p95/p99/VRAM; Steam Input/DualSense y aceptación humana. No simular QA independiente: el mismo agente implementó y verificó las pruebas ligeras.
+La matriz actualizada de Contacts, RestartWrite/Verify, VisualEvidence, FlightReentry y Circumnavigation esta en el documento de validacion. Permanecen pendientes empaquetado Win64 DX12; 1080p con audio, FPS/p95/p99/VRAM; Steam Input/DualSense y aceptacion humana, entre los limites especificos alli indicados. El roadmap general pide tres vueltas. El mismo agente implementa y verifica; no es QA independiente.
 
 ## Integración, procedencia y rollback
 

@@ -81,6 +81,23 @@ def import_mesh(path, name):
     return mesh
 
 
+def configure_lighting(sun, sky):
+    # A scene capture at the planet center sees its interior. Use an installed engine
+    # ambient cubemap for this technical lab; references only, no copied engine asset bytes.
+    light = sun.get_component_by_class(unreal.DirectionalLightComponent)
+    light.set_mobility(unreal.ComponentMobility.MOVABLE)
+    light.set_editor_property("atmosphere_sun_light", True)
+    light.set_editor_property("intensity", 10.0)
+    sun.set_actor_rotation(unreal.MathLibrary.make_rot_from_x(unreal.Vector(-1, -0.4, -0.8)), False)
+    ambient = sky.get_component_by_class(unreal.SkyLightComponent)
+    ambient.set_mobility(unreal.ComponentMobility.MOVABLE)
+    ambient.set_editor_property("real_time_capture", False)
+    ambient.set_editor_property("source_type", unreal.SkyLightSourceType.SLS_SPECIFIED_CUBEMAP)
+    ambient.set_editor_property("cubemap", unreal.load_asset("/Engine/MapTemplates/Sky/DaylightAmbientCubemap"))
+    ambient.set_editor_property("lower_hemisphere_is_black", False)
+    ambient.set_editor_property("intensity", 1.0)
+
+
 def main():
     if unreal.EditorAssetLibrary.does_asset_exist(MAP):
         raise RuntimeError("Existing S3 map preserved; inspect it before reauthoring")
@@ -115,13 +132,13 @@ def main():
     orientation = unreal.MathLibrary.make_rot_from_xz(unreal.Vector(0, 0, 1), unreal.Vector(1, 0, 0))
     actors.spawn_actor_from_class(unreal.PlayerStart, unreal.Vector(radius+350, 0, 0), orientation)
     sun = actors.spawn_actor_from_class(unreal.DirectionalLight, unreal.Vector(0, 0, 0), unreal.Rotator(-35, -25, 0))
-    light = sun.get_component_by_class(unreal.DirectionalLightComponent)
-    light.set_editor_property("atmosphere_sun_light", True)
-    light.set_editor_property("intensity", 10.0)
     sky = actors.spawn_actor_from_class(unreal.SkyLight, unreal.Vector(0, 0, 0))
-    sky.get_component_by_class(unreal.SkyLightComponent).set_editor_property("real_time_capture", True)
+    configure_lighting(sun, sky)
     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     world.get_world_settings().set_editor_property("default_game_mode", game_class)
+    # UE's default planar KillZ (-~10 km) would destroy a pawn at this planet's south pole.
+    # This belongs to the isolated map, not shared engine config; accommodates S9 data radii.
+    world.get_world_settings().set_editor_property("kill_z", -1000000000.0)
     if not levels.save_current_level():
         raise RuntimeError("S3 map save failed")
     unreal.EditorAssetLibrary.save_asset(data.get_path_name())
