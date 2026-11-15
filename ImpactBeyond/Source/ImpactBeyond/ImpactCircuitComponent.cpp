@@ -10,6 +10,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 namespace
@@ -130,6 +131,7 @@ void UImpactCircuitComponent::ReleaseCar(ECarState NextState)
 
 void UImpactCircuitComponent::ThrowCar()
 {
+	ChargeTime = FullChargeTime;
 	StartThrow(1.0f);
 }
 
@@ -277,7 +279,13 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 			Aim.Pitch = FMath::Clamp(FRotator::NormalizeAxis(Aim.Pitch), -35.0f, 65.0f);
 			ReleaseCar(ECarState::Thrown);
 			PrePhysicsCarVelocity = Aim.Vector() * LaunchSpeed + FVector(0, 0, 400);
-			Car->SetPhysicsLinearVelocity(PrePhysicsCarVelocity);
+			// REPIRK PhysicsGrabber: release first, then apply a mass-independent impulse and haptic pulse.
+			Car->AddImpulse(PrePhysicsCarVelocity - Car->GetPhysicsLinearVelocity(), NAME_None, true);
+			if (APlayerController* PC = Cast<APlayerController>(Hero->GetController()))
+			{
+				const float Strength = FMath::Lerp(0.15f, 0.65f, GetThrowCharge());
+				PC->PlayDynamicForceFeedback(Strength, 0.16f, true, true, true, true);
+			}
 		}
 	}
 	else if (CarState == ECarState::Thrown)

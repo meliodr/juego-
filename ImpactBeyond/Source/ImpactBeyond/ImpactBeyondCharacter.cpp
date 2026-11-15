@@ -87,6 +87,9 @@ void AImpactBeyondCharacter::BeginPlay()
 	Super::BeginPlay();
 	BaseCameraArmLength = CameraBoom->TargetArmLength;
 	BaseFieldOfView = FollowCamera->FieldOfView;
+	BaseCameraSocketOffset = CameraBoom->SocketOffset;
+	bBaseCameraLag = CameraBoom->bEnableCameraLag;
+	bBaseCameraRotationLag = CameraBoom->bEnableCameraRotationLag;
 	const UCharacterMovementComponent* Movement = GetCharacterMovement();
 	BaseGroundFriction = Movement->GroundFriction;
 	BaseBrakingFriction = Movement->BrakingFriction;
@@ -141,6 +144,7 @@ void AImpactBeyondCharacter::ToggleFlight()
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	if (Movement->IsFlying())
 	{
+		FastFlightTime = 0.0f;
 		Movement->SetMovementMode(MOVE_Falling);
 		return;
 	}
@@ -176,7 +180,11 @@ void AImpactBeyondCharacter::SetFlightLevel(int32 Level)
 		return;
 	}
 	FlightLevel = FMath::Clamp(Level, 0, FlightSpeeds.Num() - 1);
-	Movement->MaxFlySpeed = FMath::Max(1.0f, FlightSpeeds[FlightLevel]);
+	if (FlightLevel < 4)
+	{
+		FastFlightTime = 0.0f;
+		Movement->MaxFlySpeed = FMath::Max(1.0f, FlightSpeeds[FlightLevel]);
+	}
 }
 
 bool AImpactBeyondCharacter::IsFlightBrakeHeld() const
@@ -217,6 +225,19 @@ void AImpactBeyondCharacter::OnMovementModeChanged(EMovementMode PrevMovementMod
 			GripMesh->BeginFlightPoseBlend();
 		}
 		CharacterMesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	}
+}
+
+void AImpactBeyondCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
+	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	// ManOfSteel UFlight::OnHit and Land: ground-facing contacts end a diving flight.
+	if (bSelfMoved && MyComp == GetCapsuleComponent() && Movement->IsFlying() && FlightLevel >= 3
+		&& Movement->Velocity.Z < -200.0f && Hit.ImpactNormal.Z > 0.7f && Movement->IsWalkable(Hit))
+	{
+		Movement->SetMovementMode(MOVE_Walking);
 	}
 }
 
@@ -309,6 +330,22 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	UpdateGroundMovement(DeltaSeconds, PlayerController);
+	const bool bFastFlight = Movement->IsFlying() && FlightLevel >= 3;
+	const bool bFastFlightCamera = bFastFlight && Circuit->GetGripWeight() < 0.1f;
+	// ManOfSteel UFlight::SetCamLag, enabled for the high-speed profile.
+	CameraBoom->bEnableCameraLag = bFastFlightCamera || bBaseCameraLag;
+	CameraBoom->bEnableCameraRotationLag = bFastFlightCamera || bBaseCameraRotationLag;
+	const FVector FlightSocketOffset(0.0f, 0.0f, 20.0f);
+	CameraBoom->SocketOffset = FMath::VInterpTo(CameraBoom->SocketOffset,
+		BaseCameraSocketOffset + (bFastFlightCamera ? FlightSocketOffset : FVector::ZeroVector), DeltaSeconds, 8.0f);
+	if (bFastFlight && FlightLevel >= 4)
+	{
+		// ManOfSteel UFlight::CheckFlightTime, used to extend level four without a second launch.
+		FastFlightTime += DeltaSeconds;
+		const float FastFlightTimeMapped = FMath::GetMappedRangeValueClamped(
+			FVector2D(0.0, 3.0), FVector2D(0.0, 1.0), FastFlightTime);
+		Movement->MaxFlySpeed = FMath::Lerp(FlightSpeeds[3], FlightSpeeds[FlightLevel], FastFlightTimeMapped);
+	}
 	CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength,
 		BaseCameraArmLength + 175.0f * Circuit->GetGripWeight(), DeltaSeconds, 4.0f);
 	TakeoffRemaining = FMath::Max(0.0f, TakeoffRemaining - DeltaSeconds);
@@ -334,7 +371,8 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 	}
 
 	const bool bBraking = IsFlightBrakeHeld();
-	Movement->BrakingDecelerationFlying = bBraking ? 4200.0f : (TakeoffRemaining > 0.0f ? 500.0f : 1400.0f);
+	Movement->BrakingDecelerationFlying = bBraking ? (bFastFlight ? 9000.0f : 4200.0f)
+		: (TakeoffRemaining > 0.0f ? 500.0f : 1400.0f);
 	if (bBraking)
 	{
 		ConsumeMovementInputVector();
@@ -378,7 +416,7 @@ void AImpactBeyondCharacter::UpdateGroundMovement(float DeltaSeconds, const APla
 	const float GroundSpeed = Movement->Velocity.Size2D();
 	const bool bFastGroundMovement = bGrounded && (bSprinting || GroundSpeed > RunSpeed + 30.0f);
 	Movement->MaxWalkSpeed = bSprinting ? SprintSpeed : (bWalking ? WalkSpeed : RunSpeed);
-	Movement->MaxAcceleration = Movement->IsFlying() ? 3200.0f + 1150.0f * FlightLevel
+	Movement->MaxAcceleration = Movement->IsFlying() ? 4096.0f + 1150.0f * FlightLevel
 		: (bFastGroundMovement ? 2600.0f : BaseGroundAcceleration);
 	Movement->GroundFriction = bFastGroundMovement ? 3.0f : BaseGroundFriction;
 	Movement->BrakingDecelerationWalking = bFastGroundMovement ? 2200.0f : BaseGroundBraking;
@@ -424,7 +462,9 @@ void AImpactBeyondCharacter::DoMove(float Right, float Forward)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		// Superman::MoveCharacter steers the high-speed profile along the camera pitch.
+		const bool bCameraSteering = GetCharacterMovement()->IsFlying() && FlightLevel >= 3;
+		const FVector ForwardDirection = bCameraSteering ? Rotation.Vector() : YawRotation.Vector();
 
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);

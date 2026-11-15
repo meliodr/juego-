@@ -65,7 +65,7 @@ protected:
 
 	/** Maximum speed of each flight level in centimeters per second. */
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight")
-	TArray<float> FlightSpeeds = {900.0f, 1800.0f, 4400.0f};
+	TArray<float> FlightSpeeds = {900.0f, 1800.0f, 4400.0f, 7200.0f, 10500.0f};
 
 public:
 
@@ -79,6 +79,9 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;
+	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp,
+		bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse,
+		const FHitResult& Hit) override;
 
 protected:
 
@@ -122,6 +125,10 @@ private:
 
 	float BaseCameraArmLength = 400.0f;
 	float BaseFieldOfView = 90.0f;
+	FVector BaseCameraSocketOffset = FVector::ZeroVector;
+	bool bBaseCameraLag = false;
+	bool bBaseCameraRotationLag = false;
+	float FastFlightTime = 0.0f;
 	float BaseGroundFriction = 0.0f;
 	float BaseBrakingFriction = 0.0f;
 	float BaseGroundAcceleration = 0.0f;

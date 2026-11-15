@@ -6,6 +6,14 @@
 
 El vuelo adapta el cálculo de inclinación por trayectoria y velocidad angular de [ManOfSteel, UFlight](https://github.com/ProdiG66/ManOfSteel/blob/d107fd72606f33fc7062e2e473bfab330ee403ea/Source/ManOfSteel/Private/Components/Flight.cpp). Se conserva la [licencia MIT del donante](LICENSE-ManOfSteel.txt). La cámara, el control del personaje y las animaciones usan la plantilla que ya estaba integrada.
 
+## Recursos integrados
+
+- **ManOfSteel, `d808f32`.** Se portaron partes de `UFlight::SetCamLag`, `CheckFlightTime`, `OnHit` y `ASuperman::MoveCharacter` para los niveles 4 y 5. El nivel 4 llega a 72 m/s y el 5 aumenta ese límite progresivamente hasta 105 m/s en tres segundos. Se seleccionan con E/R1 y se bajan con Q/L1. Frenar con X/Cuadrado conserva el control del personaje.
+- **REPIRK.** El lanzamiento usa la secuencia de liberación, impulso independiente de la masa y vibración de [`PhysicsGrabberComponent`](https://github.com/REPIRK/Modular-Mechanics-Toolkit-UE5/blob/main/Private/PhysicsGrabberComponent.cpp), con su [licencia MIT](LICENSE-REPIRK.txt). Los contactos de las manos y el barrido del chasis siguen definidos por el circuito.
+- **Kit Cidade Low Poly, `ed5ba11`.** Cuatro mallas GLB y sus materiales se importaron como recursos de Unreal y se colocaron en siete lotes. Cada instancia tiene colisión de caja para sobrevolar y aterrizar. `Tools/Import-CityDonor.py` regenera la importación apuntando `IB_CITY_DONOR` a una copia del [repositorio de kayquer](https://github.com/kayquer/kit-cidade-lowpoly/tree/ed5ba11d026ffc6c990035d117c7886b40ed3fb7). [Licencia CC0](LICENSE-CityKit.txt).
+
+Quedan por integrar las dependencias de combate, visión térmica, montajes y efectos del donante. En el Git del donante hay archivos de animación que son punteros LFS, incluido `A_Heatvision_Loop.uasset`.
+
 **Estado:** EJECUTADO para geometría y colisión automatizada. Aceptación jugable pendiente.
 **Base:** `b65f9a6` de `prototype/w01-third-person-windows`. Cotas según [plano y ficha del PR #3](https://github.com/meliodr/juego-/pull/3) (`d088330`).
 

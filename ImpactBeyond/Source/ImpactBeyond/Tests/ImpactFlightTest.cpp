@@ -190,7 +190,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		if (Frame == 20) *CoastSpeed = Movement->Velocity.Size();
 	});
 	ForFrames(75, [=](int32) { Pawn->DoMove(0, 1); });
-	ForFrames(60, [=, this](int32 Frame)
+	ForFrames(80, [=, this](int32 Frame)
 	{
 		if (Frame == 0)
 		{
@@ -204,7 +204,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			AddInfo(FString::Printf(TEXT("After 20 frames: coast %.1f, brake %.1f cm/s"), *CoastSpeed, BrakeSpeed));
 			TestTrue(TEXT("Brake beats coasting with forward held"), BrakeSpeed + 200 < *CoastSpeed);
 		}
-		if (Frame == 59)
+		if (Frame == 79)
 		{
 			TestTrue(TEXT("Brake reaches hover"), Movement->IsFlying() && Movement->Velocity.Size() < 5);
 			Key(EKeys::X, false);
@@ -368,6 +368,26 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			Key(EKeys::LeftShift, false);
 			(*Wall)->Destroy();
 		}
+	});
+	ForFrames(240, [=, this](int32 Frame)
+	{
+		if (Frame == 0)
+		{
+			Movement->StopMovementImmediately();
+			Pawn->SetActorLocation(Origin + FVector(0, 0, 400));
+			PC->SetControlRotation(FRotator(0.0, 0.0, 0.0));
+			Key(EKeys::F, true);
+		}
+		if (Frame == 1) { Key(EKeys::F, false); }
+		if (Frame == 4 || Frame == 8 || Frame == 12 || Frame == 60) { Key(EKeys::E, true); }
+		if (Frame == 5 || Frame == 9 || Frame == 13 || Frame == 61) { Key(EKeys::E, false); }
+		if (Frame == 59) { TestEqual(TEXT("Level four cap"), Movement->MaxFlySpeed, 7200.0f); }
+		if (Frame == 63)
+		{
+			TestTrue(TEXT("Level five extends level four without jumping to maximum"),
+				Movement->MaxFlySpeed > 7200.0f && Movement->MaxFlySpeed < 7500.0f);
+		}
+		if (Frame == 239) { TestTrue(TEXT("Level five approaches its full speed"), Movement->MaxFlySpeed >= 10450.0f); }
 	});
 	Once([=]()
 	{
