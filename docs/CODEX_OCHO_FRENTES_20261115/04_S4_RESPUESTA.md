@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 04 — S4 · policía y tanque, respuesta no letal
 
-**Modelo sugerido, no seleccionado:** Codex C++/IA de comportamiento, razonamiento High; Extra High si aparecen interacciones entre damage y Character.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6.1 Sol · Extra High (si existe en Codex); IA/daño y recuperación. Alternativa: modelo Codex más capaz con Extra High.
 
 **Worktree Windows aislado:** `../impact-wave8-s4-response` · **rama exclusiva:** `prototype/ib-wave8-s4-response`.
 
