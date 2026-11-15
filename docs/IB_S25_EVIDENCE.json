@@ -2,21 +2,30 @@
   "date": "2026-11-15",
   "base_commit": "1d01db54b63250ed0aacb0704a5ac16290324e32",
   "branch": "prototype/ib-s25-realism-lab",
-  "status": "CODE_AND_LIGHTWEIGHT_TESTS_ONLY",
+  "status": "EDITOR_STARTUP_VERIFIED_VISUAL_ACCESS_BLOCKED",
   "cost_rd": 0,
-  "editor_launched": false,
+  "editor_launched": true,
   "cook_launched": false,
-  "plugins_installed_or_activated": false,
   "map_authored": false,
   "screenshots_produced": 0,
   "performance_samples_produced": 0,
   "realism_accepted": false,
-  "engine_metadata": {"version": "5.8.4", "changelist": 58902052, "source": "installed Engine/Build/Build.version"},
-  "model_metadata": {"terra_in_local_cache": true, "active_model_and_effort": "NOT_VERIFIED_FROM_CACHE", "configuration_changed": false},
+  "engine_metadata": {
+    "version": "5.8.4",
+    "changelist": 58902052,
+    "source": "installed Engine/Build/Build.version"
+  },
+  "model_metadata": {
+    "terra_in_local_cache": true,
+    "active_model_and_effort": "NOT_VERIFIED_FROM_CACHE",
+    "configuration_changed": false
+  },
   "original_checkout": {
     "head": "1d01db54b63250ed0aacb0704a5ac16290324e32",
     "tracked_changes_at_audit": 0,
-    "existing_untracked": ["ImpactBeyond 5.8/"],
+    "existing_untracked": [
+      "ImpactBeyond 5.8/"
+    ],
     "original_map_blob": "019a949c265fb5cc4718054ef7f968aa0006fb76",
     "frozen_base_map_blob": "019a949c265fb5cc4718054ef7f968aa0006fb76",
     "map_matches_frozen_base": true
@@ -36,16 +45,31 @@
     "license": "CC0-1.0",
     "files": 6,
     "bytes": 44243757,
-    "resolution_each": [2048, 2048],
+    "resolution_each": [
+      2048,
+      2048
+    ],
     "verification": "SHA256_AND_HEADER_DIMENSIONS_PASS",
     "manifest": "Tools/IBS25_sources/manifest.json",
     "unreal_import": "PENDING",
     "binary_images_published_by_this_pr": false
   },
   "local_dependency_inventory": [
-    {"path": "Content/IB_Donors/UrbanFacades", "files": 24, "bytes": 24829802},
-    {"path": "Content/Car", "files": 8, "bytes": 11945721},
-    {"path": "Content/IB_C00/Interiors", "files": 1, "bytes": 15580}
+    {
+      "path": "Content/IB_Donors/UrbanFacades",
+      "files": 24,
+      "bytes": 24829802
+    },
+    {
+      "path": "Content/Car",
+      "files": 8,
+      "bytes": 11945721
+    },
+    {
+      "path": "Content/IB_C00/Interiors",
+      "files": 1,
+      "bytes": 15580
+    }
   ],
   "storage": {
     "volume": "C:",
@@ -56,19 +80,35 @@
     "note": "Volume-wide variation includes concurrent work; not attributed to this task. No cleanup of personal/cache content."
   },
   "tests": [
-    {"command": "python -B Tools/IBS25_test.py", "result": "PASS", "tests": 11, "unreal_executed": false},
-    {"check": "AST parse six IBS25 Python files", "result": "PASS"},
-    {"check": "PowerShell parser for IBS25_benchmark.ps1", "result": "PASS"},
-    {"check": "IBS25_benchmark.ps1 command-only variant A", "result": "PASS_NO_LAUNCH"},
-    {"check": "git diff --check", "result": "PASS"}
+    {
+      "command": "python -B Tools/IBS25_test.py",
+      "result": "PASS",
+      "tests": 11,
+      "unreal_executed": false
+    },
+    {
+      "check": "AST parse six IBS25 Python files",
+      "result": "PASS"
+    },
+    {
+      "check": "PowerShell parser for IBS25_benchmark.ps1",
+      "result": "PASS"
+    },
+    {
+      "check": "IBS25_benchmark.ps1 command-only variant A",
+      "result": "PASS_NO_LAUNCH"
+    },
+    {
+      "check": "git diff --check",
+      "result": "PASS"
+    }
   ],
   "corrected_test_issue": "Initial tests failed writing to the sandbox virtual Temp. Test fixtures now use Tools/IBS25_test_work, without changing permissions.",
   "review": "Same agent implemented and reviewed; no independent QA claimed.",
   "pending": [
-    "Coordinated exclusive Unreal editor turn",
-    "Authorized real vegetation mesh and provenance",
-    "Local donor dependencies and compatible editor module in isolated project",
-    "Unreal API execution, OBJ import axis/scale, collision and second-run idempotence",
+    "Coordinated editor restart with keep-alive fix after visual access approval",
+    "Unreal visual access approval when requested; previous request expired",
+    "Unreal API execution, real tree reduction, OBJ import axis/scale, collision and second-run idempotence",
     "Five PNGs and City Sample/reference visual review",
     "Visible DX12/audio A/B FPS, p95/p99, GPU memory and streaming",
     "Human acceptance of realism"
@@ -80,6 +120,49 @@
     "draft_pr": "NOT_CREATED_LOCAL_BODY_PREPARED",
     "target": "https://github.com/meliodr/juego- : prototype/ib-s25-realism-lab",
     "reason": "Automatic approval review requires explicit user authorization to publish this payload to the public repository. One reevaluation after reading relevant user history was also denied.",
-    "next_action": "Obtain explicit publication authorization; do not bypass via connector or alternate transport."
+    "next_action": "Do not retry push or public PR: parent instruction remains in force."
+  },
+  "plugins_installed": false,
+  "plugin_activation": "PythonScriptPlugin and EditorScriptingUtilities requested via launch arguments only; no project/config changes",
+  "recovery_check": {
+    "utc": "2026-11-15T15:25:16.217046+00:00",
+    "host_process_query": "Win32_Process, unsandboxed read-only",
+    "pid_26968_present": false,
+    "unreal_editor_cook_build_processes_found": 0,
+    "editor_turn": "RELEASED_AT_CHECK_NO_NEW_LAUNCH",
+    "receipt_copy": "CONFIRMED_IDENTICAL_TO_ORIGINAL",
+    "receipt_sha256": "3CF83E61434EB739C00E713FF41BB395FCD178BE20DE3EDF484410773FB3DF0E",
+    "backup": "Tools/IBS25_recovery/20261115T112415",
+    "tracked_diff_before_recovery": "EMPTY",
+    "pending_python_ast": "PASS_2_FILES",
+    "visual_access": "Previous unrealeditor approval expired; no grant confirmed, no retry or alternate UI access"
+  },
+  "vegetation_download": {
+    "asset": "island_tree_01",
+    "source": "https://polyhaven.com/a/island_tree_01",
+    "license": "CC0-1.0",
+    "files": 11,
+    "bytes": 66337268,
+    "receipt": "Tools/IBS25_sources/tree/receipt.json",
+    "unreal_import": "NOT_EXECUTED",
+    "lod_reduction": "PREPARED_NOT_VALIDATED",
+    "lod0_triangles": 1599403
+  },
+  "editor_validation": {
+    "engine_initialized": true,
+    "dx12_adapter": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "audio_mixer_started": true,
+    "python_queue_ready": true,
+    "imports_executed": false,
+    "exit_code": 0,
+    "exit_reason": "ExecutePythonScript default queues QUIT_EDITOR after script return",
+    "log_local": "Tools/IBS25_jobs/editor-resume.log",
+    "visual_approval": "RENEWED_REQUEST_TIMED_OUT_NO_GRANT",
+    "keepalive_fix": "Added native unreal.EditorPythonScripting.set_keep_python_script_alive(True); source verified, not yet executed",
+    "host_check_utc": "2026-11-15T16:09:53.011956+00:00",
+    "unreal_processes_found": 0,
+    "coordination_mutex": "FREE",
+    "pid_reused": "24592 now belongs to Edge; no process stopped",
+    "config_autowrite": "Editor startup normalized hardware settings and generated plugin settings. Backed up locally and restored DefaultEngine.ini exactly from HEAD; git diff verified empty."
   }
 }
