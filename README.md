@@ -1,5 +1,12 @@
 # IMPACT: BEYOND
 
+## Fab: selección y biblioteca — 15/11/2026
+
+**[Selección activa de Fab](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo CSV para Codex, 52 fichas públicas](docs/FAB_CATALOGO_MAESTRO.csv)** · [Lote 01](docs/FAB_AUDITORIA_LOTE01_2026-11-15.md) · [Lote 02](docs/FAB_AUDITORIA_LOTE02_2026-11-15.md).
+
+**Criba actual:** 8 SELECCIONAR, 5 PROBAR, 27 RESERVAR y 12 DESCARTAR. Todos los estados de **Mi biblioteca**, instalación y pruebas UE5.8 están SIN VERIFICAR; no asumir que el usuario reclamó o no reclamó paquetes. No entrenaremos IA. Una revisión periódica cada tres días, a partir del 18/11/2026, intentará actualizar el catálogo y registrar nuevos commits, sin comprar/descargar productos.
+
+
 > **Regla de desarrollo: reutilizar lo más que se pueda y crear lo mínimo que se pueda.** Primero buscar y verificar herramientas, modelos, animaciones y código existentes; configurar y adaptar antes de desarrollar desde cero. Crear solo lo indispensable para una experiencia estable y divertida. Detalles obligatorios en [AGENTS.md](AGENTS.md).
 
 ## Auditoría Fab — primer lote 2026-11-15
