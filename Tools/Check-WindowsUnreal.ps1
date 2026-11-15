@@ -138,7 +138,7 @@ $gitAvailable = $null -ne (Get-Command git -ErrorAction SilentlyContinue)
 $gitChanges = $null
 if ($gitAvailable -and (Folder-Exists (Join-Path $repoRoot '.git'))) {
     $gitChanges = Read-Safely {
-        @(& git -C $repoRoot status --porcelain 2>$null).Count
+        @(& git --no-optional-locks -C $repoRoot status --porcelain 2>$null).Count
     }
 }
 
