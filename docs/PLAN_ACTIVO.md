@@ -2,6 +2,10 @@
 
 **Principio rector: «Reutilizar lo más que se pueda y crear lo mínimo que se pueda».** Cada ticket debe indicar el recurso existente elegido (motor, Fab, código o asset autorizado), el mínimo trabajo propio necesario y por qué no puede resolverse enteramente reutilizando. Reutilizar no exime de verificar permisos, compatibilidad, estabilidad y calidad. Ver [AGENTS.md](../AGENTS.md).
 
+## Fab — reutilización por lotes (2026-11-15)
+
+El [lote 01 de auditoría Fab](FAB_AUDITORIA_LOTE01_2026-11-15.md) identifica 25 fichas que muestran 'Free', 3 ofertas con fecha límite y 4 precios no confirmados. Es información pública: no presume biblioteca del usuario, ni descarga, instalación o prueba UE5.8. Antes de buscar una mecánica desde cero, mirar la lista, comprobar la ficha/NoAI/licencia y seleccionar UN candidato. Mantener W00/W01 y locomoción como primeros gates; no importar cientos de assets por anticipación.
+
 ## Selección de plugins por fase, 2026-11-15
 
 [PLUGIN_SELECTION_V14.md](PLUGIN_SELECTION_V14.md) gobierna qué plugins del motor y externos pueden evaluarse y cuándo. Enhanced Input desde el inicio; animación (IK/Control Rig), Niagara, Chaos/Fracture y PCG conforme aparezca cada necesidad. PCGEx 5.8 MIT y Realtime Destructible Mesh Free/Fab solo experimentos aislados, no dependencias instaladas. RMC Core MIT en reserva; MCP editor experimental y opcional. No alterar arranque IB-W00/IB-W01, presupuesto RD$0 o restricción de un jugador offline. Código y prueba local aún inexistentes.
