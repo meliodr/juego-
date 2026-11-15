@@ -2,6 +2,7 @@
 
 #include "ImpactBeyondCharacter.h"
 #include "ImpactCircuitComponent.h"
+#include "ImpactGripMesh.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/AnimSequence.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -20,15 +21,19 @@
 #include "InputActionValue.h"
 #include "ImpactBeyond.h"
 
-AImpactBeyondCharacter::AImpactBeyondCharacter()
+AImpactBeyondCharacter::AImpactBeyondCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UImpactGripMesh>(ACharacter::MeshComponentName))
 {
 	Circuit = CreateDefaultSubobject<UImpactCircuitComponent>(TEXT("Circuit"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> HoverAsset(
 		TEXT("/Game/IB_Flight/A_FlightHover.A_FlightHover"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> CruiseAsset(
 		TEXT("/Game/IB_Flight/A_FlightCruise.A_FlightCruise"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> CarryAsset(
+		TEXT("/Game/IB_Flight/A_FlightCarry.A_FlightCarry"));
 	HoverPose = HoverAsset.Object;
 	TravelPose = CruiseAsset.Object;
+	CarryPose = CarryAsset.Object;
 
 	PrimaryActorTick.bCanEverTick = true;
 	// Set size for collision capsule
@@ -66,6 +71,16 @@ AImpactBeyondCharacter::AImpactBeyondCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+}
+
+void AImpactBeyondCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	BaseCameraArmLength = CameraBoom->TargetArmLength;
+	if (UImpactGripMesh* GripMesh = Cast<UImpactGripMesh>(GetMesh()))
+	{
+		GripMesh->SetCircuit(Circuit);
+	}
 }
 
 void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -173,6 +188,10 @@ void AImpactBeyondCharacter::OnMovementModeChanged(EMovementMode PrevMovementMod
 	{
 		bPresentingFlight = false;
 		CharacterMesh->SetRelativeTransform(GroundMeshTransform);
+		if (UImpactGripMesh* GripMesh = Cast<UImpactGripMesh>(CharacterMesh))
+		{
+			GripMesh->BeginFlightPoseBlend();
+		}
 		CharacterMesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	}
 }
@@ -182,13 +201,19 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	USkeletalMeshComponent* CharacterMesh = GetMesh();
 	const FVector Velocity = GetCharacterMovement()->Velocity;
 	const float HorizontalSpeed = Velocity.Size2D();
+	const float GripWeight = Circuit->GetGripWeight();
 	// Hysteresis prevents pose flicker at the boundary between hover and travel.
 	const bool bTravel = HorizontalSpeed >= (bUsingTravelPose ? 120.0f : 200.0f);
 	bUsingTravelPose = bTravel;
-	UAnimSequence* FlightAnimation = bTravel ? TravelPose.Get() : HoverPose.Get();
+	UAnimSequence* FlightAnimation = GripWeight > 0.1f && CarryPose ? CarryPose.Get()
+		: (bTravel ? TravelPose.Get() : HoverPose.Get());
 	UAnimSingleNodeInstance* AnimationInstance = CharacterMesh->GetSingleNodeInstance();
 	if (!AnimationInstance || AnimationInstance->GetCurrentAsset() != FlightAnimation)
 	{
+		if (UImpactGripMesh* GripMesh = Cast<UImpactGripMesh>(CharacterMesh))
+		{
+			GripMesh->BeginFlightPoseBlend();
+		}
 		CharacterMesh->PlayAnimation(FlightAnimation, true);
 	}
 	CharacterMesh->SetPlayRate(FMath::GetMappedRangeValueClamped(
@@ -204,8 +229,9 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	// Pitch up slightly during a climb and down during a dive, even without forward input.
 	const float VerticalPitch = FMath::Clamp(Velocity.Z / 60.0f, -15.0f, 15.0f);
 	const FVector FacingRight = FRotationMatrix(FRotator(0.0f, FlightFacing.Yaw, 0.0f)).GetUnitAxis(EAxis::Y);
-	TargetFacing.Pitch = VerticalPitch - Lean;
-	TargetFacing.Roll = FMath::Clamp(FVector::DotProduct(Velocity, FacingRight) / 40.0f, -22.0f, 22.0f);
+	TargetFacing.Pitch = FMath::Lerp(VerticalPitch - Lean, FMath::Clamp(VerticalPitch, -6.0f, 6.0f), GripWeight);
+	TargetFacing.Roll = FMath::Clamp(FVector::DotProduct(Velocity, FacingRight) / 40.0f, -22.0f, 22.0f)
+		* FMath::Lerp(1.0f, 0.28f, GripWeight);
 	FlightFacing = FMath::RInterpTo(FlightFacing, TargetFacing, DeltaSeconds, 6.0f);
 
 	// Rotate the mesh about the capsule center, retaining the mannequin's template offset.
@@ -217,6 +243,8 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength,
+		BaseCameraArmLength + 175.0f * Circuit->GetGripWeight(), DeltaSeconds, 4.0f);
 	if (bPresentingFlight)
 	{
 		UpdateFlightPresentation(DeltaSeconds);

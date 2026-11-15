@@ -318,7 +318,8 @@ bool FImpactCircuitTest::RunTest(const FString& Parameters)
 		return false;
 	}
 	const FVector InitialCarLocation = Car->GetComponentLocation();
-	Pawn->SetActorLocation(FVector(InitialCarLocation.X, InitialCarLocation.Y - 500.0, 98.0), false, nullptr, ETeleportType::TeleportPhysics);
+	Pawn->SetActorLocationAndRotation(FVector(InitialCarLocation.X, InitialCarLocation.Y - 320.0, 98.0),
+		FRotator(0.0, 90.0, 0.0), false, nullptr, ETeleportType::TeleportPhysics);
 	PC->SetControlRotation(FRotator(0.0, 90.0, 0.0));
 	Circuit->ToggleGrab();
 	TestFalse(TEXT("Grab takes the car out of rigid simulation"), Car->IsSimulatingPhysics());
@@ -328,14 +329,19 @@ bool FImpactCircuitTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FFlightStep([this, Circuit, Car, Panel, World, Frame = 0]() mutable
 	{
 		++Frame;
-		if (Frame == 12)
+		if (Frame == 50)
 		{
 			TestTrue(TEXT("Held car lifted above street"), Car->GetComponentLocation().Z > 150.0);
 			TestTrue(TEXT("Intact panel blocks collision"), Panel->IsCollisionEnabled());
+			FVector LeftGrip, RightGrip;
+			TestTrue(TEXT("Lifting exposes two chassis contact targets"), Circuit->GetGripTargets(LeftGrip, RightGrip));
 			Circuit->ThrowCar();
+		}
+		if (Frame == 75)
+		{
 			TestTrue(TEXT("Thrown car simulates physics"), Car->IsSimulatingPhysics());
 		}
-		if (Frame < 160) { return false; }
+		if (Frame < 200) { return false; }
 		TestFalse(TEXT("Car impact disables panel collision"), Panel->IsCollisionEnabled());
 		const FVector Center = Panel->GetComponentLocation();
 		FCollisionQueryParams Query(SCENE_QUERY_STAT(ImpactCircuitOpening), false, Car->GetOwner());
@@ -377,6 +383,160 @@ bool FImpactCircuitTest::RunTest(const FString& Parameters)
 		if (++Frames < 240) { return false; }
 		AddError(TEXT("Circuit did not finish reloading after reset"));
 		return true;
+	}));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FImpactTransportCyclesTest, "ImpactBeyond.Circuit.TransportCycles",
+	EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+
+bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
+{
+	struct FState
+	{
+		TWeakObjectPtr<UWorld> LastWorld;
+		TWeakObjectPtr<AImpactBeyondCharacter> Hero;
+		TWeakObjectPtr<UImpactCircuitComponent> Circuit;
+		TWeakObjectPtr<UStaticMeshComponent> Car;
+		FVector InitialCarLocation = FVector::ZeroVector;
+		FVector AirStart = FVector::ZeroVector;
+		FVector CargoAirStart = FVector::ZeroVector;
+		int32 Completed = 0;
+		int32 Frame = 0;
+		int32 ReloadFrames = 0;
+		bool bAwaitingReload = true;
+	};
+	const auto State = MakeShared<FState>();
+	ADD_LATENT_AUTOMATION_COMMAND(FFlightStep([this, State]()
+	{
+		if (State->bAwaitingReload)
+		{
+			UWorld* World = nullptr;
+			for (const FWorldContext& Context : GEngine->GetWorldContexts())
+			{
+				UWorld* Candidate = Context.World();
+				if (Context.WorldType == EWorldType::Game && Candidate && Candidate->HasBegunPlay()
+					&& Candidate != State->LastWorld.Get())
+				{
+					World = Candidate;
+					break;
+				}
+			}
+			APlayerController* PC = World ? World->GetFirstPlayerController() : nullptr;
+			AImpactBeyondCharacter* Hero = PC ? Cast<AImpactBeyondCharacter>(PC->GetPawn()) : nullptr;
+			if (!Hero)
+			{
+				if (++State->ReloadFrames < 300) { return false; }
+				AddError(TEXT("No possessed hero appeared after circuit reload"));
+				return true;
+			}
+
+			UStaticMeshComponent* Car = nullptr;
+			UStaticMeshComponent* Panel = nullptr;
+			int32 CarCount = 0;
+			int32 PanelCount = 0;
+			for (TActorIterator<AStaticMeshActor> Actor(World); Actor; ++Actor)
+			{
+				if (Actor->ActorHasTag(TEXT("ImpactCircuitCar")))
+				{
+					Car = Actor->GetStaticMeshComponent();
+					++CarCount;
+				}
+				if (Actor->ActorHasTag(TEXT("ImpactCircuitPanel")))
+				{
+					Panel = Actor->GetStaticMeshComponent();
+					++PanelCount;
+				}
+			}
+			UImpactCircuitComponent* Circuit = Hero->FindComponentByClass<UImpactCircuitComponent>();
+			if (!TestNotNull(TEXT("Circuit on the freshly possessed hero"), Circuit)
+				|| !TestNotNull(TEXT("Tagged car in the reset world"), Car)
+				|| !TestNotNull(TEXT("Tagged panel in the reset world"), Panel))
+			{
+				return true;
+			}
+			TestEqual(TEXT("Exactly one car after reload"), CarCount, 1);
+			TestEqual(TEXT("Exactly one panel after reload"), PanelCount, 1);
+			TestTrue(TEXT("Reset restores car physics and panel collision"),
+				Car->IsSimulatingPhysics() && Panel->IsCollisionEnabled() && Panel->IsVisible());
+			if (State->Frame > 0)
+			{
+				TestTrue(TEXT("Reset restores the car near its initial location"),
+					FVector::Dist(Car->GetComponentLocation(), State->InitialCarLocation) < 20.0);
+				if (++State->Completed == 20)
+				{
+					AddInfo(TEXT("Completed 20 pickup, airborne transport and full map reload cycles"));
+					return true;
+				}
+			}
+			else
+			{
+				State->InitialCarLocation = Car->GetComponentLocation();
+			}
+
+			State->Car = Car;
+			State->Hero = Hero;
+			State->Circuit = Circuit;
+			State->LastWorld = World;
+			State->Frame = 0;
+			State->ReloadFrames = 0;
+			State->bAwaitingReload = false;
+			const FVector CarLocation = Car->GetComponentLocation();
+			Hero->SetActorLocationAndRotation(FVector(CarLocation.X, CarLocation.Y - 320.0, 98.0),
+				FRotator(0.0, 90.0, 0.0), false, nullptr, ETeleportType::TeleportPhysics);
+			PC->SetControlRotation(FRotator(0.0, 90.0, 0.0));
+			Circuit->ToggleGrab();
+			return false;
+		}
+
+		AImpactBeyondCharacter* Hero = State->Hero.Get();
+		UImpactCircuitComponent* Circuit = State->Circuit.Get();
+		UStaticMeshComponent* Car = State->Car.Get();
+		APlayerController* PC = Hero ? Cast<APlayerController>(Hero->GetController()) : nullptr;
+		if (!PC || !Circuit || !Car)
+		{
+			AddError(TEXT("Lost hero or car before requesting reset"));
+			return true;
+		}
+		const int32 Frame = ++State->Frame;
+		const int32 Level = State->Completed % 3;
+		auto Key = [PC](FKey Input, bool bHeld)
+		{
+			PC->InputKey(FInputKeyEventArgs::CreateSimulated(Input, bHeld ? IE_Pressed : IE_Released, bHeld ? 1.f : 0.f));
+		};
+		if (Frame == 50)
+		{
+			TestFalse(TEXT("Car remains held after lift"), Car->IsSimulatingPhysics());
+			TestTrue(TEXT("Lift raises the car above the hero"), Car->GetComponentLocation().Z > Hero->GetActorLocation().Z + 100.0);
+			Key(EKeys::F, true);
+		}
+		if (Frame == 51) { Key(EKeys::F, false); }
+		if (Level >= 1 && Frame == 68) { Key(EKeys::E, true); }
+		if (Level >= 1 && Frame == 69) { Key(EKeys::E, false); }
+		if (Level == 2 && Frame == 71) { Key(EKeys::Gamepad_RightShoulder, true); }
+		if (Level == 2 && Frame == 72) { Key(EKeys::Gamepad_RightShoulder, false); }
+		if (Frame == 73)
+		{
+			State->AirStart = Hero->GetActorLocation();
+			State->CargoAirStart = Car->GetComponentLocation();
+		}
+		if (Frame >= 73 && Frame < 168) { Hero->DoMove(0, 1); }
+		if (Frame == 168)
+		{
+			const auto* Movement = Hero->GetCharacterMovement();
+			const float FlightCaps[] = {900.0f, 1800.0f, 3200.0f};
+			TestTrue(TEXT("Hero flies in the selected level with the car"), Movement->IsFlying()
+				&& FMath::IsNearlyEqual(Movement->MaxFlySpeed, FlightCaps[Level], 1.0f));
+			TestTrue(TEXT("Hero and held car both moved down the street"), Hero->GetActorLocation().Y > State->AirStart.Y + 175.0
+				&& Car->GetComponentLocation().Y > State->CargoAirStart.Y + 175.0);
+			FVector LeftGrip, RightGrip;
+			TestTrue(TEXT("Transport retains two finite, distinct grip targets"), Circuit->GetGripTargets(LeftGrip, RightGrip)
+				&& !LeftGrip.ContainsNaN() && !RightGrip.ContainsNaN() && FVector::DistSquared(LeftGrip, RightGrip) > 400.0);
+			TestFalse(TEXT("Car remains held during airborne movement"), Car->IsSimulatingPhysics());
+			State->bAwaitingReload = true;
+			Circuit->ResetCircuit();
+		}
+		return false;
 	}));
 	return true;
 }

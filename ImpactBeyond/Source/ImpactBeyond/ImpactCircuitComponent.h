@@ -16,13 +16,15 @@ public:
 	void ToggleGrab();
 	void ThrowCar();
 	void ResetCircuit();
+	bool GetGripTargets(FVector& LeftWorld, FVector& RightWorld) const;
+	float GetGripWeight() const;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	enum class ECarState : uint8 { Free, Held, Thrown };
+	enum class ECarState : uint8 { Free, Lifting, Held, WindingUp, Thrown };
 
 	void ReleaseCar(ECarState NextState);
 
@@ -40,4 +42,8 @@ private:
 	TObjectPtr<UStaticMeshComponent> Panel;
 
 	ECarState CarState = ECarState::Free;
+	float PhaseTime = 0.0f;
+	float BlockedTime = 0.0f;
+	FVector LiftOffset = FVector::ZeroVector;
+	FVector ChassisExtent = FVector::ZeroVector;
 };

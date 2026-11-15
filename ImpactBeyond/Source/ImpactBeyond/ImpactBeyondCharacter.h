@@ -67,13 +67,14 @@ protected:
 public:
 
 	/** Constructor */
-	AImpactBeyondCharacter();	
+	AImpactBeyondCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
 
 	/** Initialize input action bindings */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void BeginPlay() override;
 	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;
 
 protected:
@@ -101,6 +102,10 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UAnimSequence> TravelPose;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> CarryPose;
+	float BaseCameraArmLength = 400.0f;
 
 	FTransform GroundMeshTransform;
 	FRotator FlightFacing = FRotator::ZeroRotator;
