@@ -1,0 +1,38 @@
+[
+  {
+    "channel": "basecolor",
+    "filename": "brown_mud_leaves_01_diff_1k.jpg",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_diff_1k.jpg",
+    "bytes": 1206953,
+    "sha256": "c598c555f13cd5328409fd5e2a45496a26e319e52299e3959042f1449c2f1b06",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+    "author": "Rob Tuytel",
+    "resolution": 1024
+  },
+  {
+    "channel": "normal_dx",
+    "filename": "brown_mud_leaves_01_nor_dx_1k.png",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/brown_mud_leaves_01/brown_mud_leaves_01_nor_dx_1k.png",
+    "bytes": 6108061,
+    "sha256": "3823ba3222353b372d3dc348ed1465f3df9be79508e0da891721be2c16435e89",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+    "author": "Rob Tuytel",
+    "resolution": 1024
+  },
+  {
+    "channel": "roughness",
+    "filename": "brown_mud_leaves_01_rough_1k.jpg",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_rough_1k.jpg",
+    "bytes": 644332,
+    "sha256": "9f84b7e7b5fdd2ff9798645fdec243b994fced05e543692761994b793211b5d0",
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+    "author": "Rob Tuytel",
+    "resolution": 1024
+  }
+]

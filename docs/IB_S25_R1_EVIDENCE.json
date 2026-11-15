@@ -1,0 +1,204 @@
+{
+  "date": "2026-11-15",
+  "base_commit": "1d01db54b63250ed0aacb0704a5ac16290324e32",
+  "branch": "prototype/ib-s25-realism-lab",
+  "status": "MAP_AND_FIVE_VIEWS_EXECUTED_REALISM_NOT_ACCEPTED",
+  "cost_rd": 0,
+  "editor_launched": true,
+  "cook_launched": false,
+  "map_authored": true,
+  "screenshots_produced": 25,
+  "performance_samples_produced": 0,
+  "realism_accepted": false,
+  "engine_metadata": {
+    "version": "5.8.4",
+    "changelist": 58902052,
+    "source": "installed Engine/Build/Build.version"
+  },
+  "model_metadata": {
+    "terra_in_local_cache": true,
+    "active_model_and_effort": "NOT_VERIFIED_FROM_CACHE",
+    "configuration_changed": false
+  },
+  "original_checkout": {
+    "head": "1d01db54b63250ed0aacb0704a5ac16290324e32",
+    "tracked_changes_at_audit": 0,
+    "existing_untracked": [
+      "ImpactBeyond 5.8/"
+    ],
+    "original_map_blob": "019a949c265fb5cc4718054ef7f968aa0006fb76",
+    "frozen_base_map_blob": "019a949c265fb5cc4718054ef7f968aa0006fb76",
+    "map_matches_frozen_base": true
+  },
+  "recipe_execution": {
+    "command": "python -B Tools/IBS25_recipe.py --output Tools/IBS25_generated",
+    "sha256": "276cfa49dd5632c29eab991cae99468262ab1e5a69c592e97d8689fe25513a49",
+    "files": 5,
+    "bytes": 49614,
+    "facade_instances_planned": 1288,
+    "buildings": 6,
+    "cars": 6,
+    "trees_planned_not_instantiated": 16
+  },
+  "downloads": {
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "files": 6,
+    "bytes": 44243757,
+    "resolution_each": [
+      2048,
+      2048
+    ],
+    "verification": "SHA256_AND_HEADER_DIMENSIONS_PASS",
+    "manifest": "Tools/IBS25_sources/manifest.json",
+    "unreal_import": "PASS",
+    "binary_images_published_by_this_pr": false
+  },
+  "local_dependency_inventory": [
+    {
+      "path": "Content/IB_Donors/UrbanFacades",
+      "files": 24,
+      "bytes": 24829802
+    },
+    {
+      "path": "Content/Car",
+      "files": 8,
+      "bytes": 11945721
+    },
+    {
+      "path": "Content/IB_C00/Interiors",
+      "files": 1,
+      "bytes": 15580
+    }
+  ],
+  "storage": {
+    "volume": "C:",
+    "free_bytes_initial": 149519085568,
+    "free_bytes_later": 141738618880,
+    "agreed_reserve_gib": 40,
+    "download_maximum_additional_bytes": 201326592,
+    "note": "Volume-wide variation includes concurrent work; not attributed to this task. No cleanup of personal/cache content."
+  },
+  "tests": [
+    {
+      "command": "python -B Tools/IBS25_test.py",
+      "result": "PASS",
+      "tests": 11,
+      "unreal_executed": false
+    },
+    {
+      "check": "AST parse six IBS25 Python files",
+      "result": "PASS"
+    },
+    {
+      "check": "PowerShell parser for IBS25_benchmark.ps1",
+      "result": "PASS"
+    },
+    {
+      "check": "IBS25_benchmark.ps1 command-only variant A",
+      "result": "PASS_NO_LAUNCH"
+    },
+    {
+      "check": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "check": "Current 11 lightweight tests and AST parsing 13 Python files",
+      "result": "PASS"
+    }
+  ],
+  "corrected_test_issue": "Initial tests failed writing to the sandbox virtual Temp. Test fixtures now use Tools/IBS25_test_work, without changing permissions.",
+  "review": "Same agent implemented and reviewed; no independent QA claimed.",
+  "pending": [
+    "Collision and gameplay traversal test",
+    "Visible DX12/audio A/B 1080p FPS, FrameTime p95/p99, GPU memory, shadows/streaming",
+    "City Sample visual comparison: documentation readable, official image request blocked by access challenge",
+    "Art pass for modern silhouette variety, sparse plaza/park, horizon treatment and foliage cost",
+    "Human acceptance of realism"
+  ],
+  "permission_denial_remaining": false,
+  "publication": {
+    "code_commit": "b60d888c3aa39d203f1293b9c873e29c17f15385",
+    "target": "https://github.com/meliodr/juego- : prototype/ib-s25-realism-lab",
+    "base": "prototype/ib-sprint02",
+    "authorization": "Explicit public-branch and draft-PR authorization verified on 2026-11-15",
+    "previous_attempts": "Two earlier pushes denied without execution; new relevant authorization received",
+    "snapshot": "Prepared for publication; remote outcome recorded by associated draft PR",
+    "merge_authorized": false,
+    "draft_pr": "https://github.com/meliodr/juego-/pull/25"
+  },
+  "plugins_installed": false,
+  "plugin_activation": "PythonScriptPlugin and EditorScriptingUtilities requested via launch arguments only; no project/config changes",
+  "recovery_check": {
+    "utc": "2026-11-15T15:25:16.217046+00:00",
+    "host_process_query": "Win32_Process, unsandboxed read-only",
+    "pid_26968_present": false,
+    "unreal_editor_cook_build_processes_found": 0,
+    "editor_turn": "RELEASED_AT_CHECK_NO_NEW_LAUNCH",
+    "receipt_copy": "CONFIRMED_IDENTICAL_TO_ORIGINAL",
+    "receipt_sha256": "3CF83E61434EB739C00E713FF41BB395FCD178BE20DE3EDF484410773FB3DF0E",
+    "backup": "Tools/IBS25_recovery/20261115T112415",
+    "tracked_diff_before_recovery": "EMPTY",
+    "pending_python_ast": "PASS_2_FILES",
+    "visual_access": "Previous unrealeditor approval expired; no grant confirmed, no retry or alternate UI access"
+  },
+  "vegetation_download": {
+    "asset": "island_tree_01",
+    "source": "https://polyhaven.com/a/island_tree_01",
+    "license": "CC0-1.0",
+    "files": 11,
+    "bytes": 66337268,
+    "receipt": "Tools/IBS25_sources/tree/receipt.json",
+    "unreal_import": "PASS",
+    "lod_reduction": "3 LODs generated; automatic use rejected visually because distant leaves disappear. Source LOD forced for visual review; cost pending.",
+    "lod0_triangles": 1599403
+  },
+  "editor_validation": {
+    "engine_initialized": true,
+    "dx12_adapter": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "audio_mixer_started": true,
+    "python_queue_ready": true,
+    "imports_executed": true,
+    "exit_code": 0,
+    "log_local": "Tools/IBS25_jobs/editor-visual.log",
+    "visual_approval": "GRANTED_AND_USED",
+    "keepalive_fix": "EXECUTED_PASS",
+    "host_check_utc": "2026-11-15T16:36:53.187958+00:00",
+    "unreal_processes_found": 0,
+    "coordination_mutex": "FREE",
+    "config_autowrite": "Editor startup normalized hardware settings and generated plugin settings. Backed up locally and restored DefaultEngine.ini exactly from HEAD; git diff verified empty."
+  },
+  "delivered_final_views": 5,
+  "map_delivery": {
+    "path": "ImpactBeyond/Content/IB_S25/Lvl_IB_S25_RealismLab.umap",
+    "bytes": 428032,
+    "sha256": "c036ebb027dbe99f037b8d388a66aa49f75597d799a53819cf88ef6099bf6227",
+    "dependencies": "Local generated/imported uassets excluded; regenerate with documented scripts and licensed existing donors"
+  },
+  "visual_delivery": {
+    "directory": "docs/IB_S25_IMAGES",
+    "final_run": "visual_20261115_e",
+    "final_pngs": 5,
+    "before_pngs": 1,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "bytes": 17220893,
+    "metadata": "docs/IB_S25_IMAGES/capture.json",
+    "realism_accepted": false
+  },
+  "repeat_authoring": {
+    "status": "PASS",
+    "before_actor_count": 79,
+    "after_actor_count": 79,
+    "before_instances": 1288,
+    "after_instances": 1288,
+    "before_sha256": "556d2e046597e7a6d644f17c4d5808f6b25ed92a6ad320362f72d530338aebd7",
+    "after_sha256": "556d2e046597e7a6d644f17c4d5808f6b25ed92a6ad320362f72d530338aebd7",
+    "hash_scope": "Author + lookdev: actor class/label/transforms, FOV, forced LOD, material/mesh references, HISM transforms/counts; numeric transforms rounded to 1e-6, no transient struct addresses",
+    "changed_actors": [],
+    "collision_playtest": "PENDING",
+    "performance_benchmark": "PENDING"
+  }
+}

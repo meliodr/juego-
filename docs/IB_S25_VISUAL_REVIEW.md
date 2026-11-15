@@ -1,41 +1,51 @@
-# S2.5 — evidencia visual real, no aceptación final
+# S2.5 R2 — cinco vistas comparables, QA pendiente
 
-Las imágenes son capturas sin retoque de Unreal 5.8.4. La escena contiene mallas reales de fachada, ConceptCar, árbol CC0 y superficies PBR. Sigue siendo un laboratorio austero: no se alcanzó el objetivo artístico solicitado.
+Capturas nativas sin retoque de Unreal 5.8.4. Se refinó una manzana y el parque; **no se declara alcanzado el realismo**. Revisión del mismo agente que implementó, no QA independiente. [Detalles técnicos y reproducción](IB_S25_R2_REVIEW.md).
 
-## Cambio comprobado dentro de esta sesión
+Posiciones, alturas, rotaciones y FOV coinciden con R1; EV14, sol -32/-35 y 65.000 lux. SkyLight cambia de 1 a 1,25, declarado para comparar con honestidad. [Metadatos](IB_S25_R2_IMAGES/capture.json), [hashes de PNG](IB_S25_R2_IMAGES/manifest.json).
 
-Misma cámara de avenida, FOV65, altura1,7m y sol. Antes: pintura ausente y azoteas reflejadas. Después: materiales reparados y azoteas alineadas. El antes corresponde a la primera ejecución de este laboratorio, **no a Lvl_IB_C00 ni a una captura del Sprint 2**.
+| Vista | Cambio visual observado | Limitación que persiste |
+|---|---|---|
+| Avenida | Acabados azul/arcilla, ritmos distintos, marquesinas, bancos y bordillos; siluetas/pinturas de coches conservadas | Calle vacía; fachadas secundarias repetitivas; follaje lejano escaso y sombras laterales intensas |
+| Esquina con coches | Tres fachadas: bandas claras, aletas azules y balcones de arcilla; entradas, mobiliario y coche rojo visibles | Ventanas del mismo kit, rótulos genéricos y calle todavía austera |
+| Fachada a 10 m | Cristal sin diagonales; bandas, superficie clara y sombras de marcos legibles | Vidrio oscuro sin interior aparente; se retiró el efecto defectuoso, no se reparó toda su proyección |
+| Azotea hacia centro | Parapeto, equipo/ventilador/conductos parcialmente visibles; franja negra eliminada | Equipo recortado por la cámara conservada; cubiertas secundarias vacías y fondo plano provisional |
+| Parque | Tierra con textura, caminos, alcorques, banco de lamas y luminarias; copas cercanas y sombras visibles | Poca diversidad vegetal, textura repetitiva, fuerte contraste y coste sin medir |
 
-![Antes de corregir materiales y azoteas](IB_S25_IMAGES/00_before_avenue.png)
+## 1. Avenida
 
-![Después de las correcciones](IB_S25_IMAGES/01_avenue.png)
+[Antes R1, misma cámara](IB_S25_IMAGES/01_avenue.png)
 
-## Cinco vistas revisadas
+![Avenida R2](IB_S25_R2_IMAGES/01_avenue.png)
 
-| Vista | Siluetas | Materiales | Iluminación | Coches | Vegetación |
-|---|---|---|---|---|---|
-| Avenida | Corredor legible; edificios demasiado repetidos | Asfalto y pintura visibles; poca variedad de fachada | Sombras legibles, laterales oscuros | Formas reconocibles y pintura azul/roja; un solo modelo | Copas lejanas poco densas; revisar LOD/coste |
-| Esquina | Entrada y esquina visibles; falta detalle de calle | PBR visible, predominio de un acabado | Contraste alto; revisar luz indirecta | Coche rojo ahora dentro del encuadre | Fuera del encuadre; no evaluable aquí |
-| Fachada a 10m | Marcos y molduras reales; módulos repetitivos | Pared con textura, interiores demasiado oscuros | Relieve visible; sombra/interiores por mejorar | Fuera del encuadre | Fuera del encuadre |
-| Azotea | Techos alineados; horizonte vacío y composición poco urbana | Techo reutiliza pavimento; necesita acabado propio | Distribución de sombras visible | Coches pequeños al fondo | Plaza/parque vacío; especie repetida |
-| Parque | Tronco y copa reales, sin conos/cilindros | Corteza y hojas visibles; exceso de pavimento | Contraluz y sombra de árbol visibles | Solo al fondo | LOD0 forzado provisional; falta sotobosque y diversidad |
+## 2. Esquina con coches
 
-### Esquina con coche
+[Antes R1, misma cámara](IB_S25_IMAGES/02_corner_cars.png)
 
-![Esquina](IB_S25_IMAGES/02_corner_cars.png)
+![Tres fachadas y plantas bajas](IB_S25_R2_IMAGES/02_corner_cars.png)
 
-### Fachada a 10m
+## 3. Fachada a 10 metros
 
-![Fachada](IB_S25_IMAGES/03_facade_10m.png)
+[Antes R1, misma cámara](IB_S25_IMAGES/03_facade_10m.png). [Control A/B con cristal original, antes de reconstruir la manzana](IB_S25_R2_IMAGES/07_window_glass_control.png). [Material intermedio rechazado por manchas oscuras](IB_S25_R2_IMAGES/08_rejected_shader.png).
 
-### Azotea mirando el conjunto
+![Fachada corregida R2](IB_S25_R2_IMAGES/03_facade_10m.png)
 
-![Azotea](IB_S25_IMAGES/04_rooftop.png)
+## 4. Azotea mirando el centro
 
-### Parque
+[Antes R1, misma cámara](IB_S25_IMAGES/04_rooftop.png)
 
-![Parque](IB_S25_IMAGES/05_park.png)
+![Parapeto, equipos y horizonte R2](IB_S25_R2_IMAGES/04_rooftop.png)
 
-[Transformaciones/FOV y ajustes](IB_S25_IMAGES/capture.json) · [Hashes y bytes](IB_S25_IMAGES/manifest.json) · [Repetición de autoría](IB_S25_VALIDATION.json).
+## 5. Parque
 
-La comparación visual directa contra City Sample queda pendiente: su documentación oficial fue consultada, pero no se pudo recuperar la captura enlazada por un desafío de acceso. Estas imágenes no prueban 60 FPS; no se obtuvo benchmark A/B ni aceptación artística.
+[Antes R1, misma cámara](IB_S25_IMAGES/05_park.png)
+
+![Parque con tierra, caminos y mobiliario](IB_S25_R2_IMAGES/05_park.png)
+
+## Evidencia adicional de intersección
+
+Cámara temporal cenital a 75 m/FOV65, retirada después. No pertenece a la comparación de cinco cámaras. Muestra los cuatro cruces, líneas de detención y bordillos; no prueba accesibilidad ni colisión jugable.
+
+![Cuatro pasos peatonales](IB_S25_R2_IMAGES/06_intersection_detail.png)
+
+**Separación de resultados:** autoría y capturas ejecutadas; 16 pruebas ligeras y repetición en Unreal aprobadas. Rendimiento, jugabilidad, comparación directa con City Sample y aceptación humana pendientes. RD$0. [Revisión R1 conservada](IB_S25_R1_VISUAL_REVIEW.md).

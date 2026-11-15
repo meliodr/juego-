@@ -1,0 +1,50 @@
+[
+  {
+    "file": "01_avenue.png",
+    "bytes": 3084137,
+    "sha256": "ee8e187c7f14c6ce6493632f72990d466e4d77dbf483b32c16dac446b0bffbff",
+    "source": "Tools/IBS25_evidence/visual_20261115T172250707258/01_avenue.png"
+  },
+  {
+    "file": "02_corner_cars.png",
+    "bytes": 3174102,
+    "sha256": "555297b3f2bd448cf128a19380d428c17d1b34be7d44a2bfc805ed32fc5e5412",
+    "source": "Tools/IBS25_evidence/visual_20261115T172250707258/02_corner_cars.png"
+  },
+  {
+    "file": "03_facade_10m.png",
+    "bytes": 2147397,
+    "sha256": "38c522d10c549f55c44b9f99fbadf676c956a81abd511b0d38bc8a2dd4c06b74",
+    "source": "Tools/IBS25_evidence/visual_20261115T172250707258/03_facade_10m.png"
+  },
+  {
+    "file": "04_rooftop.png",
+    "bytes": 2398946,
+    "sha256": "c62aa7eca2434da184253824391161f993fe46af71807b1e93189f521bce4f15",
+    "source": "Tools/IBS25_evidence/visual_20261115T172250707258/04_rooftop.png"
+  },
+  {
+    "file": "05_park.png",
+    "bytes": 3231796,
+    "sha256": "8ba4ceb1832adf881f1bf49db926038dd2325f0aa38b802f659e20c3bfbdb225",
+    "source": "Tools/IBS25_evidence/visual_20261115T172250707258/05_park.png"
+  },
+  {
+    "file": "06_intersection_detail.png",
+    "bytes": 2923410,
+    "sha256": "8190ba2d693bc0cad27a55d9924ef33780680bb60647a64fe8ff8b73e2d73443",
+    "source": "Tools/IBS25_evidence/intersection_20261115T172801/06_intersection_detail.png"
+  },
+  {
+    "file": "07_window_glass_control.png",
+    "bytes": 2306226,
+    "sha256": "59d4343c0ef771c236956a522e368e1bc2547e1499c8118871fe8804142d866d",
+    "source": "Tools/IBS25_evidence/window_diagnosis_r2/03_original_glass.png"
+  },
+  {
+    "file": "08_rejected_shader.png",
+    "bytes": 1952477,
+    "sha256": "9a09e7ece5035b56aee46f4f8789d4dd1a2adb838970e7764548609f3de76df2",
+    "source": "Tools/IBS25_evidence/visual_20261115T165909438156/03_facade_10m.png"
+  }
+]

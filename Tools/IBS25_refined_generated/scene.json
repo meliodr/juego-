@@ -1,0 +1,433 @@
+{
+  "schema": 1,
+  "owner": "IBS25_RealismLab_v1",
+  "base_commit": "1d01db54b63250ed0aacb0704a5ac16290324e32",
+  "map": "/Game/IB_S25/Lvl_IB_S25_RealismLab",
+  "units": "metres",
+  "seed": 25015,
+  "buildings": [
+    {
+      "id": "B1_-1",
+      "center_m": [
+        40,
+        -39
+      ],
+      "width_m": 24,
+      "depth_m": 32,
+      "stories": 5,
+      "floor_m": 3.4,
+      "base_m": 0.18
+    },
+    {
+      "id": "B1_+1",
+      "center_m": [
+        68,
+        -39
+      ],
+      "width_m": 24,
+      "depth_m": 32,
+      "stories": 7,
+      "floor_m": 3.4,
+      "base_m": 0.18
+    },
+    {
+      "id": "B2_-1",
+      "center_m": [
+        -68,
+        39
+      ],
+      "width_m": 24,
+      "depth_m": 32,
+      "stories": 6,
+      "floor_m": 3.4,
+      "base_m": 0.18
+    },
+    {
+      "id": "B2_+1",
+      "center_m": [
+        -40,
+        39
+      ],
+      "width_m": 24,
+      "depth_m": 32,
+      "stories": 8,
+      "floor_m": 3.4,
+      "base_m": 0.18
+    },
+    {
+      "id": "R2_A",
+      "center_m": [
+        -78,
+        -39
+      ],
+      "width_m": 24,
+      "depth_m": 32,
+      "stories": 6,
+      "floor_m": 3.4,
+      "base_m": 0.18,
+      "style": "Stone"
+    },
+    {
+      "id": "R2_B",
+      "center_m": [
+        -54,
+        -39
+      ],
+      "width_m": 20,
+      "depth_m": 32,
+      "stories": 8,
+      "floor_m": 3.4,
+      "base_m": 0.18,
+      "style": "Blue"
+    },
+    {
+      "id": "R2_C",
+      "center_m": [
+        -30,
+        -39
+      ],
+      "width_m": 24,
+      "depth_m": 32,
+      "stories": 5,
+      "floor_m": 3.4,
+      "base_m": 0.18,
+      "style": "Clay"
+    }
+  ],
+  "cars": [
+    {
+      "id": "Car_00",
+      "position_m": [
+        -74,
+        -7,
+        0.04
+      ],
+      "yaw": 0
+    },
+    {
+      "id": "Car_01",
+      "position_m": [
+        -44,
+        -7,
+        0.04
+      ],
+      "yaw": 0
+    },
+    {
+      "id": "Car_02",
+      "position_m": [
+        43,
+        7,
+        0.04
+      ],
+      "yaw": 180
+    },
+    {
+      "id": "Car_03",
+      "position_m": [
+        76,
+        7,
+        0.04
+      ],
+      "yaw": 180
+    },
+    {
+      "id": "Car_04",
+      "position_m": [
+        -7,
+        44,
+        0.04
+      ],
+      "yaw": 90
+    },
+    {
+      "id": "Car_05",
+      "position_m": [
+        7,
+        -45,
+        0.04
+      ],
+      "yaw": -90
+    }
+  ],
+  "trees": [
+    {
+      "id": "Tree_00",
+      "position_m": [
+        120,
+        -40,
+        0.18
+      ],
+      "yaw": 0.0,
+      "height_m": 7.0
+    },
+    {
+      "id": "Tree_01",
+      "position_m": [
+        120,
+        -16,
+        0.18
+      ],
+      "yaw": 137.5,
+      "height_m": 7.8
+    },
+    {
+      "id": "Tree_02",
+      "position_m": [
+        120,
+        16,
+        0.18
+      ],
+      "yaw": 275.0,
+      "height_m": 8.6
+    },
+    {
+      "id": "Tree_03",
+      "position_m": [
+        120,
+        40,
+        0.18
+      ],
+      "yaw": 52.5,
+      "height_m": 7.0
+    },
+    {
+      "id": "Tree_04",
+      "position_m": [
+        144,
+        -40,
+        0.18
+      ],
+      "yaw": 190.0,
+      "height_m": 7.8
+    },
+    {
+      "id": "Tree_05",
+      "position_m": [
+        144,
+        -16,
+        0.18
+      ],
+      "yaw": 327.5,
+      "height_m": 8.6
+    },
+    {
+      "id": "Tree_06",
+      "position_m": [
+        144,
+        16,
+        0.18
+      ],
+      "yaw": 105.0,
+      "height_m": 7.0
+    },
+    {
+      "id": "Tree_07",
+      "position_m": [
+        144,
+        40,
+        0.18
+      ],
+      "yaw": 242.5,
+      "height_m": 7.8
+    },
+    {
+      "id": "Tree_08",
+      "position_m": [
+        160,
+        -40,
+        0.18
+      ],
+      "yaw": 20.0,
+      "height_m": 8.6
+    },
+    {
+      "id": "Tree_09",
+      "position_m": [
+        160,
+        -16,
+        0.18
+      ],
+      "yaw": 157.5,
+      "height_m": 7.0
+    },
+    {
+      "id": "Tree_10",
+      "position_m": [
+        160,
+        16,
+        0.18
+      ],
+      "yaw": 295.0,
+      "height_m": 7.8
+    },
+    {
+      "id": "Tree_11",
+      "position_m": [
+        160,
+        40,
+        0.18
+      ],
+      "yaw": 72.5,
+      "height_m": 8.6
+    },
+    {
+      "id": "Tree_12",
+      "position_m": [
+        30,
+        57,
+        0.18
+      ],
+      "yaw": 210.0,
+      "height_m": 7.0
+    },
+    {
+      "id": "Tree_13",
+      "position_m": [
+        78,
+        57,
+        0.18
+      ],
+      "yaw": 347.5,
+      "height_m": 7.8
+    },
+    {
+      "id": "Tree_14",
+      "position_m": [
+        30,
+        21,
+        0.18
+      ],
+      "yaw": 125.0,
+      "height_m": 8.6
+    },
+    {
+      "id": "Tree_15",
+      "position_m": [
+        78,
+        21,
+        0.18
+      ],
+      "yaw": 262.5,
+      "height_m": 7.0
+    }
+  ],
+  "blocks": [
+    [
+      -54,
+      -39
+    ],
+    [
+      -54,
+      39
+    ],
+    [
+      54,
+      -39
+    ],
+    [
+      54,
+      39
+    ]
+  ],
+  "landing_plaza": {
+    "center_m": [
+      54,
+      39
+    ],
+    "clear_size_m": [
+      28,
+      24
+    ]
+  },
+  "flight_corridor": {
+    "y_min_m": -5,
+    "y_max_m": 5,
+    "z_min_m": 3
+  },
+  "sun": {
+    "pitch": -32,
+    "yaw": -35,
+    "lux": 65000
+  },
+  "exposure_ev100": 14,
+  "views": [
+    {
+      "id": "01_avenue",
+      "position_m": [
+        -92,
+        -2,
+        1.7
+      ],
+      "rotation_deg": [
+        2,
+        0,
+        0
+      ],
+      "fov": 65
+    },
+    {
+      "id": "02_corner_cars",
+      "position_m": [
+        -18,
+        1,
+        1.7
+      ],
+      "rotation_deg": [
+        3,
+        -138,
+        0
+      ],
+      "fov": 65
+    },
+    {
+      "id": "03_facade_10m",
+      "position_m": [
+        -68,
+        -13,
+        6.5
+      ],
+      "rotation_deg": [
+        0,
+        -90,
+        0
+      ],
+      "fov": 55
+    },
+    {
+      "id": "04_rooftop",
+      "position_m": [
+        -68,
+        -39,
+        34
+      ],
+      "rotation_deg": [
+        -20,
+        42,
+        0
+      ],
+      "fov": 70
+    },
+    {
+      "id": "05_park",
+      "position_m": [
+        157,
+        -52,
+        1.7
+      ],
+      "rotation_deg": [
+        5,
+        135,
+        0
+      ],
+      "fov": 65
+    }
+  ],
+  "streaming": {
+    "mode": "compact_non_WP_lab",
+    "partition_cell_m": 128,
+    "pcg_used": false,
+    "streaming_validated": false
+  },
+  "revision": "R2"
+}

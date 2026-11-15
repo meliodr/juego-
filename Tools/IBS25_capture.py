@@ -48,6 +48,7 @@ class Capture:
         self.camera = self.cameras["IBS25_"+self.view["id"]]
         self.levels.pilot_level_actor(self.camera)
         self.deadline = time.monotonic()+10
+        self.warm_ticks = 0
         self.task = None
 
     def tick(self, delta):
@@ -55,7 +56,10 @@ class Capture:
             if time.monotonic()-self.started > 300:
                 raise TimeoutError("Capture did not complete in 300 seconds")
             if self.task is None:
-                if time.monotonic() < self.deadline:
+                # Background throttling can consume wall time without rendering.
+                # Require viewport/Slate progress too before taking the screenshot.
+                self.warm_ticks += 1
+                if time.monotonic() < self.deadline or self.warm_ticks < 240:
                     return
                 self.path = self.output/(self.view["id"]+".png")
                 self.task = ue.AutomationLibrary.take_high_res_screenshot(1920,1080,str(self.path),camera=self.camera)
@@ -100,7 +104,27 @@ class Capture:
                    "map":recipe.MAP,"recipe_sha256":recipe.digest(recipe.scene()),
                    "sun_planned":recipe.scene()["sun"],"exposure_ev100_planned":14,
                    "engine":ue.SystemLibrary.get_engine_version(),"warmup_seconds_per_view":10,
+                   "minimum_warmup_slate_ticks":240,
                    "resolution":[1920,1080],"benchmark":False,"views":self.rows}
+        # R2 retains camera poses but changes the geometry recipe. Record observed
+        # lighting and revision instead of suggesting the base hash describes R2.
+        marker=self.cameras.get('IBS25_MANIFEST')
+        payload['map_revision_tags']=[str(t) for t in marker.tags] if marker else []
+        for tag in payload['map_revision_tags']:
+            if tag.startswith('IBS25Revision_R2_'):
+                payload['base_recipe_sha256']=payload['recipe_sha256']
+                payload['recipe_sha256']=tag.removeprefix('IBS25Revision_R2_')
+        sun=self.cameras.get('IBS25_Sun'); sky=self.cameras.get('IBS25_Sky')
+        exposure=self.cameras.get('IBS25_Exposure')
+        if sun:
+            rotation=sun.get_actor_rotation()
+            payload['sun_observed']={'pitch':rotation.pitch,'yaw':rotation.yaw,
+                                     'lux':sun.light_component.intensity}
+        if sky: payload['sky_intensity_observed']=sky.light_component.intensity
+        if exposure:
+            settings=exposure.get_editor_property('settings')
+            payload['exposure_observed']={'min':settings.auto_exposure_min_brightness,
+                                          'max':settings.auto_exposure_max_brightness}
         (self.output/"capture.json").write_text(json.dumps(payload,indent=2),encoding="utf-8")
         ue.log("IBS25 " + status)
 

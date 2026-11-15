@@ -1,0 +1,22 @@
+{
+  "status": "CAPTURED_NOT_ACCEPTED",
+  "position_m": [
+    0,
+    0,
+    75
+  ],
+  "rotation_deg": [
+    -90,
+    0,
+    0
+  ],
+  "fov": 65,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "supplemental": true,
+  "comparison_camera": false,
+  "temporary_camera_removed": true,
+  "benchmark": false
+}

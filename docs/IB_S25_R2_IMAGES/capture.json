@@ -1,0 +1,232 @@
+{
+  "status": "CAPTURED_NOT_VISUALLY_ACCEPTED",
+  "utc": "2026-11-15T17:23:42.602110+00:00",
+  "map": "/Game/IB_S25/Lvl_IB_S25_RealismLab",
+  "recipe_sha256": "9be7001d52d4d0a94759a957736701f1869e7ce4dcbb3d61e9356c6c4cb5f415",
+  "sun_planned": {
+    "pitch": -32,
+    "yaw": -35,
+    "lux": 65000
+  },
+  "exposure_ev100_planned": 14,
+  "engine": "5.8.4-58902052+++UE5+Release-5.8",
+  "warmup_seconds_per_view": 10,
+  "minimum_warmup_slate_ticks": 240,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "benchmark": false,
+  "views": [
+    {
+      "id": "01_avenue",
+      "position_m": [
+        -92.0,
+        -2.0,
+        1.7
+      ],
+      "rotation_deg": [
+        2.000000000000001,
+        0.0,
+        -0.0
+      ],
+      "fov": 65.0,
+      "recipe_position_m": [
+        -92,
+        -2,
+        1.7
+      ],
+      "recipe_rotation_deg": [
+        2,
+        0,
+        0
+      ],
+      "recipe_fov": 65,
+      "observed_position_cm": [
+        -9200.0,
+        -200.0,
+        170.0
+      ],
+      "observed_rotation_deg": [
+        2.000000000000001,
+        0.0,
+        -0.0
+      ],
+      "observed_fov": 65.0,
+      "file": "01_avenue.png",
+      "bytes": 3084137,
+      "visual_review": "PENDING"
+    },
+    {
+      "id": "02_corner_cars",
+      "position_m": [
+        -18.0,
+        1.0,
+        1.7
+      ],
+      "rotation_deg": [
+        3.000000000000001,
+        -138.0,
+        -0.0
+      ],
+      "fov": 65.0,
+      "recipe_position_m": [
+        -13,
+        -13,
+        1.7
+      ],
+      "recipe_rotation_deg": [
+        3,
+        -135,
+        0
+      ],
+      "recipe_fov": 60,
+      "observed_position_cm": [
+        -1800.0,
+        100.0,
+        170.0
+      ],
+      "observed_rotation_deg": [
+        3.000000000000001,
+        -138.0,
+        -0.0
+      ],
+      "observed_fov": 65.0,
+      "file": "02_corner_cars.png",
+      "bytes": 3174102,
+      "visual_review": "PENDING"
+    },
+    {
+      "id": "03_facade_10m",
+      "position_m": [
+        -68.0,
+        -13.0,
+        6.5
+      ],
+      "rotation_deg": [
+        0.0,
+        -90.00000000000001,
+        0.0
+      ],
+      "fov": 55.0,
+      "recipe_position_m": [
+        -68,
+        -13,
+        6.5
+      ],
+      "recipe_rotation_deg": [
+        0,
+        -90,
+        0
+      ],
+      "recipe_fov": 55,
+      "observed_position_cm": [
+        -6800.0,
+        -1300.0,
+        650.0
+      ],
+      "observed_rotation_deg": [
+        0.0,
+        -90.00000000000001,
+        0.0
+      ],
+      "observed_fov": 55.0,
+      "file": "03_facade_10m.png",
+      "bytes": 2147397,
+      "visual_review": "PENDING"
+    },
+    {
+      "id": "04_rooftop",
+      "position_m": [
+        -68.0,
+        -39.0,
+        34.0
+      ],
+      "rotation_deg": [
+        -19.999999999999993,
+        42.00000000000001,
+        8.461688990394199e-16
+      ],
+      "fov": 70.0,
+      "recipe_position_m": [
+        -68,
+        -39,
+        34
+      ],
+      "recipe_rotation_deg": [
+        -20,
+        42,
+        0
+      ],
+      "recipe_fov": 70,
+      "observed_position_cm": [
+        -6800.0,
+        -3900.0,
+        3400.0
+      ],
+      "observed_rotation_deg": [
+        -19.999999999999993,
+        42.00000000000001,
+        8.461688990394199e-16
+      ],
+      "observed_fov": 70.0,
+      "file": "04_rooftop.png",
+      "bytes": 2398946,
+      "visual_review": "PENDING"
+    },
+    {
+      "id": "05_park",
+      "position_m": [
+        157.0,
+        -52.0,
+        1.7
+      ],
+      "rotation_deg": [
+        4.999999999999997,
+        134.99999999999997,
+        1.9954399272777753e-16
+      ],
+      "fov": 65.0,
+      "recipe_position_m": [
+        157,
+        -52,
+        1.7
+      ],
+      "recipe_rotation_deg": [
+        5,
+        135,
+        0
+      ],
+      "recipe_fov": 65,
+      "observed_position_cm": [
+        15700.0,
+        -5200.0,
+        170.0
+      ],
+      "observed_rotation_deg": [
+        4.999999999999997,
+        134.99999999999997,
+        1.9954399272777753e-16
+      ],
+      "observed_fov": 65.0,
+      "file": "05_park.png",
+      "bytes": 3231796,
+      "visual_review": "PENDING"
+    }
+  ],
+  "map_revision_tags": [
+    "IBS25_RealismLab_v1",
+    "IBS25Revision_R2_9be7001d52d4d0a94759a957736701f1869e7ce4dcbb3d61e9356c6c4cb5f415"
+  ],
+  "base_recipe_sha256": "276cfa49dd5632c29eab991cae99468262ab1e5a69c592e97d8689fe25513a49",
+  "sun_observed": {
+    "pitch": -31.99999999999999,
+    "yaw": -34.99999999999999,
+    "lux": 65000.0
+  },
+  "sky_intensity_observed": 1.25,
+  "exposure_observed": {
+    "min": 14.0,
+    "max": 14.0
+  }
+}
