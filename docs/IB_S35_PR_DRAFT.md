@@ -3,7 +3,7 @@
 Destino previsto: `meliodr/juego-`.
 Head local: `prototype/ib-s35-interactions-lab`.
 Base solicitada: `prototype/ib-sprint02`.
-**No existe PR remoto creado por este encargo. Publicación bloqueada por revisión automática.**
+**Publicación autorizada expresamente el 2026-11-15; crear un único PR draft, sin merge.** El resultado remoto debe verificarse en GitHub; la autorización no acredita compilación Unreal.
 
 ## Descripción preparada
 
@@ -19,7 +19,7 @@ Pendiente: UHT/build Unreal; ejecución de las tres suites Automation; generaci�
 
 Ver `docs/IB_S35_CONTRACT.md`, `docs/IB_S35_ADAPTATION.md` y `docs/IB_S35_EVIDENCE.md`.
 
-## Bloqueo de publicación
+## Historial del bloqueo de publicación
 
 Acción exacta rechazada antes de ejecutar: `git push -u origin prototype/ib-s35-interactions-lab` al remoto `https://github.com/meliodr/juego-.git`.
 
@@ -27,4 +27,6 @@ Motivo devuelto por la revisión automática:
 
 > Pushing the branch publishes nonpublic project code to an external GitHub repository and creates an external commitment; the available user text does not explicitly authorize that payload and destination.
 
-Se consultó user_message_read después del rechazo. Los mensajes visibles autorizan iniciar los cuatro encargos y usar el equipo, pero no aportaron una autorización nueva específica de esta publicación. No se reintentó por CLI ni por API, y no se creó un PR sin rama remota. Hace falta aprobación explícita para publicar estos archivos de S3.5 en ese repositorio y abrir el draft contra la base indicada.
+En aquella revisión se consultó user_message_read después del rechazo. Los mensajes visibles no aportaban autorización nueva específica; no se reintentó por otra vía ni se creó un PR sin rama remota.
+
+Actualización 2026-11-15, 16:09 UTC: el usuario aprobó explícitamente subir las cuatro ramas al repositorio público meliodr/juego- y abrir PR en borrador sin fusionarlos. Se verificó la respuesta junto a la pregunta original. Antes de publicar S3.5 se comprobó que no existían rama remota ni PR duplicado, que los 30 archivos eran código/documentación propios sin assets binarios y que los cuatro commits locales no coincidían con los patrones de secretos revisados. Esta aprobación permite un nuevo intento de publicación; no autoriza saltar una nueva denegación ni hacer merge.

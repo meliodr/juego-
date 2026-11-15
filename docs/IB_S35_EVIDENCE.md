@@ -49,8 +49,10 @@ Matriz adicional obligatoria al obtener turno: repetir cargas contra pared front
 
 Decisión: **CONTINUAR en un turno exclusivo de Unreal**, corregir cualquier fallo de compilación/API/colisión y después revisar DX12/control. Mantener PR draft; no merge ni reemplazo del paquete jugable existente. El mismo agente implementó y revisó el código; no hubo QA independiente.
 
-## Publicación bloqueada
+## Historial y autorización de publicación
 
 La implementación se guardó en el commit local `bfa20140e88b734f78bafbbde1bf0b476677b7ed`. La revisión automática **rechazó antes de ejecutar** el push de `prototype/ib-s35-interactions-lab` a `meliodr/juego-`, indicando autorización insuficientemente explícita para publicar código no público en ese destino. No se reintentó ni se cambió de herramienta para publicar. PR remoto: **NO CREADO**. El cuerpo listo y el motivo exacto están en `IB_S35_PR_DRAFT.md`; se requiere autorización específica para la publicación. Un commit documental posterior registra este bloqueo sin alterar la implementación.
 
 Coordinación final recibida: el siguiente turno de Editor/Cook y compilación pesada está reservado a **S2.5** hasta que lo libere. S3.5 no tiene procesos pesados activos y no inició ninguno. La entrega permanece local y las pruebas Unreal siguen pendientes de ese relevo explícito.
+
+Actualización 2026-11-15, 16:09 UTC: autorización explícita del usuario para publicar las ramas de los cuatro laboratorios en el repositorio público meliodr/juego- y abrir sus PR draft sin merge. Se verificó con el historial de mensajes. Los 30 archivos S3.5 son texto propio; no se incorporan assets binarios, archivos de S4 ni coincidencias con los patrones de secretos revisados. La consulta previa no encontró rama remota ni PR S3.5. Se prepara un nuevo intento autorizado; su éxito y el SHA/PR publicados requieren confirmación remota. No se reejecutó Unreal ni cambiaron los pendientes técnicos.
