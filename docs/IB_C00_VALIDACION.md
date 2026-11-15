@@ -14,6 +14,12 @@ El vuelo adapta el cálculo de inclinación por trayectoria y velocidad angular 
 
 Quedan por integrar las dependencias de combate, visión térmica, montajes y efectos del donante. En el Git del donante hay archivos de animación que son punteros LFS, incluido `A_Heatvision_Loop.uasset`.
 
+## Fachadas urbanas
+
+El distrito reutiliza ventanas, portales, cornisas y revestimiento PBR del kit [Modular Urban Apartments Facade de Poly Haven](https://polyhaven.com/a/modular_urban_apartments_facade), con [licencia CC0](https://polyhaven.com/license). Se seleccionaron cuatro módulos del glTF de 1K para vestir 28 edificios. Los módulos se renderizan en cuatro grupos de instancias jerárquicas y las colisiones siguen en los volúmenes del circuito. La escenografía low poly previa se oculta en el mapa. Los cristales se importan como superficie opaca oscura.
+
+Para actualizar la colocación en el editor, ejecutar `Tools/Apply-RealisticFacades.py`. La primera importación requiere que `IB_POLY_FACADE` apunte al archivo glTF descargado con su binario y texturas. Con los módulos importados, el script reutiliza los recursos ya guardados.
+
 **Estado:** EJECUTADO para geometría y colisión automatizada. Aceptación jugable pendiente.
 **Base:** `b65f9a6` de `prototype/w01-third-person-windows`. Cotas según [plano y ficha del PR #3](https://github.com/meliodr/juego-/pull/3) (`d088330`).
 
