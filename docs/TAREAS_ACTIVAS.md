@@ -1,5 +1,12 @@
 # IMPACT: BEYOND — Cola activa de trabajo
 
+## Catálogo Fab y revisiones — 2026-11-15
+
+Leer [FAB_SELECCION_ACTIVA.md](FAB_SELECCION_ACTIVA.md) y [FAB_CATALOGO_MAESTRO.csv](FAB_CATALOGO_MAESTRO.csv) antes de elegir assets. Actualmente hay 52 entradas gratuitas públicas (8 SELECCIONAR, 5 PROBAR, 27 RESERVAR y 12 DESCARTAR), **ninguna marcada como reclamado/instalado** porque no se accedió a la cuenta privada. Se creó tarea recurrente para intentar actualizar cada 3 días desde 18/11/2026, sin compras ni entrenamiento de IA.
+
+**Tickets opcionales futuros, NO ANTES DE W00/W01:** FAB-OWNED-01 (leer Mi biblioteca con acceso real, paginar y reconciliar UUIDs con CSV; sin reclamar ni descargar), FAB-IMPORT-01 (importar solo 1 pack seleccionado en sandbox, licencia específica, notas y test UE5.8/Windows). Mantener la primera experiencia moviéndose sin necesitar ningún pack nuevo.
+
+
 ## Decisión de plugins v1.4 — no bloquea arranque
 
 Referencia: [PLUGIN_SELECTION_V14.md](PLUGIN_SELECTION_V14.md). Primero Windows/UE5.8 (IB-W00/W01); el núcleo de proyecto usará Enhanced Input y componentes del motor. **No activar plugins externos antes de comprobar C++/editor.** Experimentos condicionales:
