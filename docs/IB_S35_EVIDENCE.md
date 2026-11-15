@@ -8,6 +8,8 @@ Se consultó la rama documental `docs/roadmap-sprints-02-08-20261115` y su `PLAN
 
 ## Ejecutado
 
+La primera pasada produjo los 2.595 checks indicados abajo. La revisión local posterior S3.5/S4 amplió la suite a **2.613 aserciones** y ejecutó **280 aserciones comparativas** adicionales. Estado y divergencias en `IB_S35_S4_INTEGRATION_REVIEW.md`; hashes/resultados comparativos en `IB_S35_S4_NATIVE_RESULTS.json`. Ninguna de esas pruebas ejecutó Unreal.
+
 `Tools/IBS35_TestPolicy.ps1` compiló una única unidad C++ con MSVC 14.52.37025, C++17, `/W4 /WX`. Ejecutó el header real `IBS35Policy.h` usado por el runtime:
 
 ```text

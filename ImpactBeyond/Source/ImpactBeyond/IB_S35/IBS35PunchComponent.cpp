@@ -104,6 +104,7 @@ void UIBS35PunchComponent::TraceContact(double FromAlpha, double ToAlpha)
     if (!Hit.bBlockingHit || !Target || !Body) return;
     FIBS35DamageMessage Message;
     Message.AttackId = AttackId; Message.InstigatorId = InstigatorId; Message.TargetId = Target->TargetId;
+    Message.InstigatorActor = GetOwner(); Message.TargetPart = Body;
     Message.DamageKind = bTool ? EIBS35DamageKind::HeldTool
         : bHeavyAttack ? EIBS35DamageKind::HeavyPunch : EIBS35DamageKind::QuickPunch;
     Message.HealthDelta = -Current.Damage;

@@ -106,6 +106,7 @@ bool AIBS35Object::Release(UIBS35GripComponent* Grip, bool bLaunch, const FVecto
     if (bLaunch)
     {
         LaunchId = FGuid::NewGuid(); LaunchInstigator = Grip->InstigatorId; FlightAge = 0;
+        LaunchInstigatorActor = Grip->GetOwner();
         PrePhysicsVelocity = Velocity;
         Body->AddImpulse(Velocity * Body->GetMass()); // Physical impulse, no mass-independent flag.
     }
@@ -175,6 +176,8 @@ void AIBS35Object::OnBodyHit(UPrimitiveComponent* HitComponent, AActor* OtherAct
     if (ClosingSpeed < 200) return;
     FIBS35DamageMessage Message;
     Message.AttackId = LaunchId; Message.InstigatorId = LaunchInstigator; Message.TargetId = Target->TargetId;
+    Message.InstigatorActor = LaunchInstigatorActor;
+    Message.TargetPart = OtherComponent;
     Message.DamageKind = EIBS35DamageKind::ThrownObject;
     Message.HealthDelta = -FMath::Clamp(Body->GetMass() * ClosingSpeed * ClosingSpeed / 20000000.f, 1.f, 300.f);
     Message.Impulse = -Hit.ImpactNormal * FMath::Abs(FVector::DotProduct(NormalImpulse, Hit.ImpactNormal));

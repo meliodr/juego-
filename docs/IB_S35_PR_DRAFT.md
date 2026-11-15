@@ -11,7 +11,9 @@ El circuito actual selecciona vehículos por tags y vincula directamente el IK a
 
 Los cambios quedan únicamente en IB_S35, Tools/IBS35_* y docs/IB_S35_*. No modifica Character principal, Circuit, GripMesh, Build.cs, uproject, Config, mapas de producción ni carpetas de otros sprints. Incluye un derivado H01, notify/evento de contacto, contrato de referencia para S4 y generador de un laboratorio con nueve objetos, blanco, dos muros y carril de vuelo. El adaptador del IK existente está descrito sin aplicar.
 
-Validado: ejecutable C++17/MSVC 14.52.37025 con /W4 /WX; 2.595 aserciones del header de reglas que usa el runtime. Gate de rutas y sintaxis Python aprobado. Ninguna compra, instalación o asset binario nuevo.
+Validado: ejecutable C++17/MSVC 14.52.37025 con /W4 /WX; 2.613 aserciones del header de reglas que usa el runtime y 280 aserciones de comparación con las políticas nativas S4 leídas sin modificarlas. Gate de rutas y sintaxis Python aprobado. Ninguna compra, instalación o asset binario nuevo.
+
+La revisión S4 documenta incompatibilidades de enums, signo/semántica de daño, unidades de impulso, identidad/tiempo/dedup y agarre de piezas. S3.5 ahora conserva pieza/origen y daño solicitado, y rechaza enum/edad/salud inválidos antes del ledger. No se instaló un adaptador global ni se modificó S4; ver `IB_S35_S4_INTEGRATION_REVIEW.md`.
 
 Pendiente: UHT/build Unreal; ejecución de las tres suites Automation; generación efectiva del .umap/DataAssets; contacto de manos/poses e IK; colisiones reales y velocidades extremas; DX12 1080p/perfil y mando físico. No se obtuvo turno exclusivo coordinado de editor/build. Mantener draft y no integrar hasta esos gates.
 

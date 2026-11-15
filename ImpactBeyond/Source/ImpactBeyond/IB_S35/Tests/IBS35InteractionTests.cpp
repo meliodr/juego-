@@ -155,6 +155,20 @@ bool FIBS35PunchTests::RunTest(const FString& Parameters)
     Message.AttackId = FGuid::NewGuid(); Message.TargetId = Target->Receiver->TargetId;
     Message.HealthDelta = std::numeric_limits<float>::quiet_NaN();
     TestFalse(TEXT("NaN rejected"), Target->Receiver->Receive(Message, Target->Body));
+    Message.HealthDelta = -60;
+    Message.DamageKind = static_cast<EIBS35DamageKind>(255);
+    TestFalse(TEXT("Unknown kind rejected before dedup"), Target->Receiver->Receive(Message, Target->Body));
+    Message.DamageKind = EIBS35DamageKind::HeavyPunch; Message.AttackSeconds = -1;
+    TestFalse(TEXT("Negative attack age rejected before dedup"), Target->Receiver->Receive(Message, Target->Body));
+    Message.AttackSeconds = 0;
+    TestFalse(TEXT("Foreign body rejected"), Target->Receiver->Receive(Message, Wall->Body));
+    Message.TargetPart = Wall->Body;
+    TestFalse(TEXT("Mismatched target part rejected"), Target->Receiver->Receive(Message, Target->Body));
+    Message.TargetPart.Reset(); Target->Receiver->Health = 10;
+    TestTrue(TEXT("Rejected message did not consume ID"), Target->Receiver->Receive(Message, Target->Body));
+    TestEqual(TEXT("Requested damage preserved for structural response"), Message.RequestedHealthDelta, -60.f);
+    TestEqual(TEXT("HealthDelta remains actual loss"), Message.HealthDelta, -10.f);
+    TestTrue(TEXT("Exact contacted part survives response event"), Message.TargetPart.Get() == Target->Body.Get());
     return true;
 }
 

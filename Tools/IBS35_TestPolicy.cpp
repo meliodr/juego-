@@ -69,6 +69,22 @@ int main()
     Check(IBS35::ThrowSpeed(0,1,1300,6800) == 0 && IBS35::ThrowSpeed(NaN,1,1300,6800) == 0, "invalid mass");
     Check(IBS35::ThrowSpeed(1200,NaN,1300,6800) == 0, "invalid charge");
     Check(IBS35::ThrowSpeed(1200,1,6800,1300) == 0, "invalid speed range");
+    for (int Kind = 0; Kind <= 3; ++Kind)
+        Check(IBS35::ValidDamageRequest(Kind,3,-20,.1,100,100), "supported kind accepted");
+    Check(!IBS35::ValidDamageRequest(4,3,-20,.1,100,100), "unknown kind rejected");
+    Check(!IBS35::ValidDamageRequest(-1,3,-20,.1,100,100), "negative kind rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,-20,-.1,100,100), "negative attack age rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,20,.1,100,100), "healing request rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,NaN,.1,100,100), "nan damage rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,-20,NaN,100,100), "nan age rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,-20,.1,NaN,100), "nan health rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,-20,.1,100,NaN), "nan initial health rejected");
+    Check(!IBS35::ValidDamageRequest(0,3,-20,.1,110,100), "invalid current health rejected");
+    Check(IBS35::ValidDamageRequest(0,3,0,0,0,0), "zero health impulse-only request accepted");
+    Check(IBS35::AppliedDamageDelta(10,-60,100) == -10, "overkill reports actual health delta");
+    Check(IBS35::AppliedDamageDelta(0,-60,100) == 0, "depleted health reports zero delta");
+    Check(IBS35::AppliedDamageDelta(100,-20,100) == -20, "ordinary damage delta");
+    Check(IBS35::AppliedDamageDelta(100.f,-0.0000001f,100.f) == 0, "reported delta uses stored float precision");
     std::cout << "PASS IBS35 policy: " << Checks << " assertions; 150 lease cycles, 30 dedup attacks, 20 resets.\n"
               << "This executable does NOT test Unreal collision, physics, animation, DX12 or FPS.\n";
 }

@@ -10,6 +10,22 @@ namespace IBS35
 {
 enum class HoldState : std::uint8_t { Free, Held, Charging, Thrown };
 
+inline bool ValidDamageRequest(int Kind, int LastSupportedKind, double RequestedDelta,
+                               double AttackSeconds, double Health, double InitialHealth)
+{
+    return Kind >= 0 && Kind <= LastSupportedKind && std::isfinite(RequestedDelta) && RequestedDelta <= 0
+        && std::isfinite(AttackSeconds) && AttackSeconds >= 0 && std::isfinite(Health)
+        && std::isfinite(InitialHealth) && InitialHealth >= 0 && Health >= 0 && Health <= InitialHealth;
+}
+
+// Called only after validation; preserves requested damage separately in the UE envelope.
+template<class Scalar> inline Scalar AppliedDamageDelta(Scalar Health, Scalar RequestedDelta, Scalar InitialHealth)
+{
+    // Keep the same scalar precision as stored health: sub-ULP damage must report zero loss.
+    const Scalar Updated = std::clamp(Scalar(Health + RequestedDelta), Scalar(0), InitialHealth);
+    return Updated - Health;
+}
+
 struct Lease
 {
     HoldState State = HoldState::Free;

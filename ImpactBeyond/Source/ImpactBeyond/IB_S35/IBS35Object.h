@@ -48,6 +48,7 @@ private:
     FTransform StartTransform;
     FGuid LaunchId;
     FGuid LaunchInstigator;
+    TWeakObjectPtr<AActor> LaunchInstigatorActor;
     float FlightAge = 0;
     FVector PrePhysicsVelocity = FVector::ZeroVector;
 };

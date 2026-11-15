@@ -4,6 +4,9 @@
 #include "Engine/DataAsset.h"
 #include "IBS35Types.generated.h"
 
+class UPrimitiveComponent;
+class AActor;
+
 UENUM(BlueprintType)
 enum class EIBS35ObjectClass : uint8 { Car, Container, Pole, Rock, LoosePart };
 
@@ -49,10 +52,16 @@ struct FIBS35DamageMessage
     UPROPERTY(BlueprintReadOnly) FGuid AttackId;
     UPROPERTY(BlueprintReadOnly) EIBS35DamageKind DamageKind = EIBS35DamageKind::QuickPunch;
     UPROPERTY(BlueprintReadOnly) float HealthDelta = 0;
+    // Filled by the accepting receiver before HealthDelta is clamped to actual health loss.
+    UPROPERTY(BlueprintReadOnly) float RequestedHealthDelta = 0;
     // kg * cm / s. Physical contacts already resolved by Chaos must not apply it twice.
     UPROPERTY(BlueprintReadOnly) FVector Impulse = FVector::ZeroVector;
     UPROPERTY(BlueprintReadOnly) FGuid InstigatorId;
+    // Optional local lookup hint; GUID attribution survives destruction of the actor.
+    UPROPERTY(BlueprintReadOnly) TWeakObjectPtr<AActor> InstigatorActor;
     UPROPERTY(BlueprintReadOnly) FGuid TargetId;
+    // Exact contacted primitive for prepared-part selection. Never serialize this pointer.
+    UPROPERTY(BlueprintReadOnly) TWeakObjectPtr<UPrimitiveComponent> TargetPart;
     UPROPERTY(BlueprintReadOnly) FName DamageResponseProfile;
     UPROPERTY(BlueprintReadOnly) FVector Contact = FVector::ZeroVector;
     UPROPERTY(BlueprintReadOnly) FVector RelativeVelocity = FVector::ZeroVector;

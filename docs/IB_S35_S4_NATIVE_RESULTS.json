@@ -1,0 +1,21 @@
+{
+  "utc": "2026-11-15T11:58:15.846268+00:00",
+  "stage": "NATIVE_CONTRACT_COMPARISON_ONLY",
+  "s4_observed_branch_ref": "3b7c5c7780b454e2c80af2fce2fae8523663c3b6",
+  "s4_sha256": {
+    "IBS4Policy.h": "edb50f064e565754d3d44da08252f4521680cc4aeac194793e5de37ae8860b27",
+    "IBS4ResponseComponent.h": "b357cd34c4e9903ebfd540cd4bc1cc360bf821bdf45563fab12359423d602f1f",
+    "IBS4ResponseComponent.cpp": "a861ed6bae9edc909299f5052543ab198c5bf2d6cd572b67470a4efd76bb7fd5",
+    "IBS4PreparedTarget.h": "f12abc56e38763e4d0a68e7e77c67e7a1681a84a2da5b43173f2777e0c912ec4",
+    "IBS4PreparedTarget.cpp": "b77f15c2780bc9b8e7cfe6df6b9151f1075a21550b2a1ca632319b07683dfc30",
+    "IBS4PowerComponent.h": "1e5c4af8da2403c97529b69418649c9d1ffab771fc333dc36f52113d6675d6b9",
+    "IBS4PowerComponent.cpp": "aad18b8afd3c16e87d5262e8d664852ede409d9b6f87d274a69ed8802a252192",
+    "IBS4Threat.cpp": "6f474854288a69df5634b301fd12881a26611fa095620df7540f5db8bfdf439c"
+  },
+  "s4_sources_unchanged_during_test": true,
+  "compiler": "MSVC C++17 /W4 /WX",
+  "compiler_output": "IBS35_CompareS4.cpp",
+  "result": "PASS IBS35/S4 contract comparison: 280 assertions over actual native policy headers.\nExpected incompatibilities were reproduced; this is NOT a passing Unreal integration.",
+  "unreal_build_and_runtime": "NOT_RUN",
+  "runtime_adapter_installed": false
+}
