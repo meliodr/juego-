@@ -2,6 +2,8 @@
 
 **Fecha de diseño:** 2026-11-15 · **Estado:** PLANIFICADO (diseño documentado, no construido) · **Plataforma:** Windows / DX12 / Unreal Engine 5.8.4 objetivo · **Costo de recursos y plugins:** RD$0.
 
+**Plano gráfico asociado:** [IB_C00_MANZANA_PLANO.svg](IB_C00_MANZANA_PLANO.svg) (esquema visual de referencia; cotas oficiales en esta ficha).
+
 **Fuente de autoridad:** AGENTS.md → PLAN_ACTIVO.md → TAREAS_ACTIVAS.md → WINDOWS_INICIO_V12.md → PLUGIN_SELECTION_V14.md. La auditoría Fab es referencia, no confirma propiedad, descarga ni compatibilidad.
 
 **Única tarea de implementación activa:** IB-W00 (verificar entorno). **IB-W01** va después; este documento es preproducción para IB-C00 y NO adelanta su implementación a IB-GND00/IB-F01 ni implementa IB-P01/IB-D01. No afirmar editor operativo o resultados de pruebas sin evidencia real.
