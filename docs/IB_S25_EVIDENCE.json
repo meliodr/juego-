@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-15",
+  "base_commit": "1d01db54b63250ed0aacb0704a5ac16290324e32",
+  "branch": "prototype/ib-s25-realism-lab",
+  "status": "CODE_AND_LIGHTWEIGHT_TESTS_ONLY",
+  "cost_rd": 0,
+  "editor_launched": false,
+  "cook_launched": false,
+  "plugins_installed_or_activated": false,
+  "map_authored": false,
+  "screenshots_produced": 0,
+  "performance_samples_produced": 0,
+  "realism_accepted": false,
+  "engine_metadata": {"version": "5.8.4", "changelist": 58902052, "source": "installed Engine/Build/Build.version"},
+  "model_metadata": {"terra_in_local_cache": true, "active_model_and_effort": "NOT_VERIFIED_FROM_CACHE", "configuration_changed": false},
+  "original_checkout": {
+    "head": "1d01db54b63250ed0aacb0704a5ac16290324e32",
+    "tracked_changes_at_audit": 0,
+    "existing_untracked": ["ImpactBeyond 5.8/"],
+    "original_map_blob": "019a949c265fb5cc4718054ef7f968aa0006fb76",
+    "frozen_base_map_blob": "019a949c265fb5cc4718054ef7f968aa0006fb76",
+    "map_matches_frozen_base": true
+  },
+  "recipe_execution": {
+    "command": "python -B Tools/IBS25_recipe.py --output Tools/IBS25_generated",
+    "sha256": "276cfa49dd5632c29eab991cae99468262ab1e5a69c592e97d8689fe25513a49",
+    "files": 5,
+    "bytes": 49614,
+    "facade_instances_planned": 1288,
+    "buildings": 6,
+    "cars": 6,
+    "trees_planned_not_instantiated": 16
+  },
+  "downloads": {
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "files": 6,
+    "bytes": 44243757,
+    "resolution_each": [2048, 2048],
+    "verification": "SHA256_AND_HEADER_DIMENSIONS_PASS",
+    "manifest": "Tools/IBS25_sources/manifest.json",
+    "unreal_import": "PENDING",
+    "binary_images_published_by_this_pr": false
+  },
+  "local_dependency_inventory": [
+    {"path": "Content/IB_Donors/UrbanFacades", "files": 24, "bytes": 24829802},
+    {"path": "Content/Car", "files": 8, "bytes": 11945721},
+    {"path": "Content/IB_C00/Interiors", "files": 1, "bytes": 15580}
+  ],
+  "storage": {
+    "volume": "C:",
+    "free_bytes_initial": 149519085568,
+    "free_bytes_later": 141738618880,
+    "agreed_reserve_gib": 40,
+    "download_maximum_additional_bytes": 201326592,
+    "note": "Volume-wide variation includes concurrent work; not attributed to this task. No cleanup of personal/cache content."
+  },
+  "tests": [
+    {"command": "python -B Tools/IBS25_test.py", "result": "PASS", "tests": 11, "unreal_executed": false},
+    {"check": "AST parse six IBS25 Python files", "result": "PASS"},
+    {"check": "PowerShell parser for IBS25_benchmark.ps1", "result": "PASS"},
+    {"check": "IBS25_benchmark.ps1 command-only variant A", "result": "PASS_NO_LAUNCH"},
+    {"check": "git diff --check", "result": "PASS"}
+  ],
+  "corrected_test_issue": "Initial tests failed writing to the sandbox virtual Temp. Test fixtures now use Tools/IBS25_test_work, without changing permissions.",
+  "review": "Same agent implemented and reviewed; no independent QA claimed.",
+  "pending": [
+    "Coordinated exclusive Unreal editor turn",
+    "Authorized real vegetation mesh and provenance",
+    "Local donor dependencies and compatible editor module in isolated project",
+    "Unreal API execution, OBJ import axis/scale, collision and second-run idempotence",
+    "Five PNGs and City Sample/reference visual review",
+    "Visible DX12/audio A/B FPS, p95/p99, GPU memory and streaming",
+    "Human acceptance of realism"
+  ],
+  "permission_denial_remaining": false
+}
