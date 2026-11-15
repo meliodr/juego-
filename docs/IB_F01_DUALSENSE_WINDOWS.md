@@ -33,3 +33,7 @@ Tras la prueba, cerrar el paquete. Para revertir la configuración, eliminar el 
 **Decisión IB-F01** — CONTINUAR con la validación física. Se verificó la presencia HID y el resultado XInput del proceso de sondeo. El usuario confirmó que el mando responde en el paquete lanzado desde Steam. Queda por registrar la respuesta de cada control de la tabla.
 
 Fuentes: [Emulación de gamepad en Steam Input](https://partner.steamgames.com/doc/features/steam_controller/steam_input_gamepad_emulation_bestpractices), [acceso directo a un juego externo](https://help.steampowered.com/en/faqs/view/4B8B-9697-2338-40EC), [plugin Windows RawInput de Epic](https://dev.epicgames.com/documentation/unreal-engine/API/PluginIndex/RawInput).
+
+## Entregas de prueba desde Steam
+
+Mantener el acceso directo existente ImpactBeyond y apuntarlo al paquete que se está entregando. En Propiedades > Mando, elegir Activar Steam Input para el juego. Cerrar cualquier instancia de prueba previa antes de iniciar desde Steam y comprobar que el cliente indique En ejecución y que abra el paquete correcto. El acceso del circuito integrado se verificó usando el ejecutable en ImpactBeyond/Binaries/Win64. El iniciador de la raíz mostró un aviso de Visual C++ pese a que el runtime x64 estaba instalado. Las pruebas sin interfaz pueden seguir arrancando directamente el proceso desatendido.
