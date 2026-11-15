@@ -1,0 +1,43 @@
+{
+  "utc": "2026-11-15T11:37:48.072992+00:00",
+  "base": "1d01db54b63250ed0aacb0704a5ac16290324e32",
+  "stage": "NATIVE_POLICY_ONLY",
+  "ownership": "PASS",
+  "changed_files": [
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Automation.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4LabPawn.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4LabPawn.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4LabScene.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4LabScene.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Policy.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PowerComponent.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PowerComponent.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PreparedTarget.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PreparedTarget.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PresentationComponent.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PresentationComponent.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4ResponseComponent.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4ResponseComponent.h",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Threat.cpp",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Threat.h",
+    "Tools/IBS4_AuthorLab.py",
+    "Tools/IBS4_Check.py",
+    "Tools/IBS4_PolicyTests.cpp",
+    "Tools/IBS4_RunLab.ps1",
+    "Tools/IBS4_SummarizeCapture.py",
+    "docs/IB_S4_ASSETS_LICENSES.md",
+    "docs/IB_S4_NATIVE_RESULTS.json",
+    "docs/IB_S4_RESPONSE_LAB.md"
+  ],
+  "python_parse": [
+    "IBS4_AuthorLab.py",
+    "IBS4_Check.py",
+    "IBS4_SummarizeCapture.py"
+  ],
+  "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+  "compiler_log": "IBS4_PolicyTests.cpp\n",
+  "native_result": "PASS native policy: 1902 checks; 20 bullets, 20 spaced+rapid missiles, 60 material samples, 20 crater layouts, 10 alert sequences.\nNOT RUN: Unreal compilation, collision/physics, rendered FX/audio, gamepad, DX12 performance.",
+  "unreal_compile": "NOT_RUN",
+  "unreal_automation": "NOT_RUN",
+  "dx12_audio_gamepad": "NOT_RUN"
+}
