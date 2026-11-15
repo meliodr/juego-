@@ -37,7 +37,7 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 | 1 | IB-W00/W01 | Verificar Windows/UE 5.8.4 y ejecutar la plantilla Third Person | Ejecutor local + QA | W00 y W01 aceptados. Siguiente: IB-FLT-AUD. [Evidencia local](IB_W00_W01_VALIDACION.md) |
 | 2 | IB-FLT-AUD | Selección de código y clips sobre la base Windows validada | Auditor de recursos + integrador | ACEPTADO. [Evidencia y decisión](FLIGHT_REUSE_AUDIT_V09.md). Siguiente: IB-GND00 |
 | 3 | IB-GND00 | Caminar, correr, esprintar y saltar, antes de vuelo | Integrador de gameplay | EJECUTADO; validación manual pendiente |
-| 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación + usuario | PLANIFICADO |
+| 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación | EJECUTADO; pruebas completas pendientes |
 | 5 | IB-C00 | Una manzana y fachada de prueba; F01 | Mundo/arte técnico | PLANIFICADO |
 | 6 | IB-P01 | Agarre y lanzamiento; F01 + escenario simple | Gameplay | PLANIFICADO |
 | 7 | IB-D01 | Hueco y piezas; P01 + C00 | Gameplay/destrucción | PLANIFICADO |
