@@ -1,5 +1,12 @@
 # IMPACT: BEYOND — Plan activo de producción
 
+## Catálogo Fab seleccionado — 2026-11-15
+
+**Fuentes activas:** [FAB_SELECCION_ACTIVA.md](FAB_SELECCION_ACTIVA.md) y [FAB_CATALOGO_MAESTRO.csv](FAB_CATALOGO_MAESTRO.csv), con respaldos en lotes 01/02. 52 fichas que muestran Gratis/Free, 8 seleccionadas, 5 comparaciones, 27 reservas, 12 descartes. Ninguna propiedad de Mi biblioteca ni instalación confirmada; el inventario personal está PENDIENTE. No entrenar IA; Codex no debe alimentar assets NoAI a modelos generativos según Epic Content License §17. El uso privado no elimina las condiciones de licencia ni permite subir packs standalone.
+
+Revisión periódica creada cada tres días a ~09:00 hora de Santo Domingo, iniciando 2026-11-18; objetivo: nuevos paquetes gratuitos, cambios de precio/compatibilidad, propiedad solo con evidencia y commit GitHub verificable. Mantener prioridad W00/W01 y primer ciclo jugable: ningún catálogo grande bloquea locomoción ni vuelo. No instalar todos los productos; UNO por necesidad con test de calidad/VRAM y rollback.
+
+
 **Principio rector: «Reutilizar lo más que se pueda y crear lo mínimo que se pueda».** Cada ticket debe indicar el recurso existente elegido (motor, Fab, código o asset autorizado), el mínimo trabajo propio necesario y por qué no puede resolverse enteramente reutilizando. Reutilizar no exime de verificar permisos, compatibilidad, estabilidad y calidad. Ver [AGENTS.md](../AGENTS.md).
 
 ## Fab — reutilización por lotes (2026-11-15)
