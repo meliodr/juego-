@@ -134,6 +134,44 @@ def material(name, textures=None):
     return result
 
 
+def car_paint(index):
+    # The existing MI_CarPaint has a missing parent. Reuse its real base material
+    # through an owned instance, preserving the donor and its public provenance.
+    name = "MI_CarPaint_" + str(index % 3)
+    path = ROOT + "/Materials/" + name
+    result = ue.load_asset(path) if assets.does_asset_exist(path) else None
+    if result:
+        check(owned(result), "Foreign paint instance occupies " + path)
+    parent_path = ROOT + "/Materials/M_CarPaint_Local"
+    parent = ue.load_asset(parent_path) if assets.does_asset_exist(parent_path) else None
+    if parent:
+        check(owned(parent), "Foreign car paint base occupies " + parent_path)
+    else:
+        parent = assets.duplicate_asset("/Game/Car/Assets/M_CarPaint", parent_path)
+        check(isinstance(parent, ue.Material), "Car paint base unavailable")
+        # Original migration left two texture references at /Game/ConceptCar/Car/Assets.
+        # Repair the owned copy to existing local assets, not the donor graph.
+        missing = [n for n in ue.MaterialEditingLibrary.get_material_expressions(parent)
+                   if isinstance(n, ue.MaterialExpressionTextureSample) and not n.texture]
+        check(len(missing) == 2, "Unexpected missing car paint texture nodes")
+        for node in missing:
+            texture_name = "T_CarPaintFlakes_N" if node.sampler_type == ue.MaterialSamplerType.SAMPLERTYPE_NORMAL else "T_Smudges_R"
+            texture = ue.load_asset("/Game/Car/Assets/" + texture_name)
+            check(isinstance(texture, ue.Texture2D), "Missing car texture " + texture_name)
+            node.set_editor_property("texture", texture)
+        ue.MaterialEditingLibrary.recompile_material(parent)
+        stamp(parent)
+    if not result:
+        result = ue.AssetToolsHelpers.get_asset_tools().create_asset(
+            name, ROOT+"/Materials", ue.MaterialInstanceConstant, ue.MaterialInstanceConstantFactoryNew())
+    ue.MaterialEditingLibrary.set_material_instance_parent(result, parent)
+    colors = ((0.018,0.065,0.16,1), (0.32,0.018,0.012,1), (0.44,0.46,0.48,1))
+    ue.MaterialEditingLibrary.set_material_instance_vector_parameter_value(result, "PaintColor", ue.LinearColor(*colors[index % 3]))
+    ue.MaterialEditingLibrary.update_material_instance(result)
+    stamp(result)
+    return result
+
+
 def author(data, loaded, generated, config_hash):
     # Reruns only accept this exact recipe/dependency set and exclusively owned actors.
     tag = "IBS25Recipe_" + recipe.digest(data) + "_" + config_hash
@@ -173,6 +211,9 @@ def author(data, loaded, generated, config_hash):
     ground_materials["Roof"] = ground_materials["Paving"]
     for name in recipe.geometry(data):
         obj = actor(name, ue.StaticMeshActor)
+        # OBJ imports reflect Y into Unreal's handedness even with convert_scene=False.
+        # Recipe vertices are already authored in Unreal coordinates: undo that reflection.
+        obj.set_actor_scale3d(ue.Vector(1,-1,1))
         component = obj.static_mesh_component
         component.set_static_mesh(imported_mesh(name, generated))
         component.set_material(0, ground_materials[name])
@@ -239,6 +280,19 @@ def author(data, loaded, generated, config_hash):
             obj.set_actor_scale3d(ue.Vector(scale,scale,scale))
             c = obj.static_mesh_component
             c.set_static_mesh(mesh)
+            if kind == "tree":
+                # Tested automatic reductions erase leaf silhouettes at distance.
+                # Keep source LOD for this visual lab; performance acceptance is pending.
+                c.set_editor_property("forced_lod_model", 1)
+            if kind == "car":
+                # The existing ConceptCar mesh has five unassigned material slots.
+                # Override the lab component only; never change the donor mesh/materials.
+                names = ("M_TireRubber", "MI_CarPaint", "M_Glass", "M_Metal", "M_TireRubber")
+                check(c.get_num_materials() == len(names), "Unexpected ConceptCar material slots")
+                for index, name in enumerate(names):
+                    donor = car_paint(int(entry["id"].split("_")[-1])) if index == 1 else ue.load_asset("/Game/Car/Assets/" + name)
+                    check(isinstance(donor, ue.MaterialInterface), "Missing car material " + name)
+                    c.set_material(index, donor)
             c.set_collision_profile_name("BlockAll" if kind == "car" else "NoCollision")
             c.set_cast_shadow(True)
     sun = actor("Sun", ue.DirectionalLight)

@@ -70,7 +70,12 @@ class Capture:
             # Record observed transforms in addition to planned transforms.
             location = self.camera.get_actor_location()
             rotation = self.camera.get_actor_rotation()
-            self.rows.append({**self.view,"observed_position_cm":[location.x,location.y,location.z],
+            self.rows.append({**self.view,"recipe_position_m":self.view["position_m"],
+                              "recipe_rotation_deg":self.view["rotation_deg"],"recipe_fov":self.view["fov"],
+                              "position_m":[location.x/100,location.y/100,location.z/100],
+                              "rotation_deg":[rotation.pitch,rotation.yaw,rotation.roll],
+                              "fov":self.camera.camera_component.field_of_view,
+                              "observed_position_cm":[location.x,location.y,location.z],
                               "observed_rotation_deg":[rotation.pitch,rotation.yaw,rotation.roll],
                               "observed_fov":self.camera.camera_component.field_of_view,
                               "file":self.path.name,"bytes":len(image),"visual_review":"PENDING"})

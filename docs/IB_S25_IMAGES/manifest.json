@@ -1,0 +1,38 @@
+[
+  {
+    "file": "01_avenue.png",
+    "bytes": 3073710,
+    "sha256": "07d99921a05db89247ecc07dc3a2564bf4ebc45c35071027512932208a16437b",
+    "source": "Unmodified Unreal high-resolution screenshot"
+  },
+  {
+    "file": "02_corner_cars.png",
+    "bytes": 3120983,
+    "sha256": "ad6bec25edb08f97133d703b171d25f9a8fbce992f9a5d0ee35b1ed36eef0bb7",
+    "source": "Unmodified Unreal high-resolution screenshot"
+  },
+  {
+    "file": "03_facade_10m.png",
+    "bytes": 2316572,
+    "sha256": "13e71128da98e95ad2074cd83801151aa2bc4023b03aef3e32080126f003aeb7",
+    "source": "Unmodified Unreal high-resolution screenshot"
+  },
+  {
+    "file": "04_rooftop.png",
+    "bytes": 2651325,
+    "sha256": "0233f5db80489d48b7e797e9c18ee013e9d035ae725b4599b35c679d0ec0b724",
+    "source": "Unmodified Unreal high-resolution screenshot"
+  },
+  {
+    "file": "05_park.png",
+    "bytes": 2958753,
+    "sha256": "ce73a984485677b26673117842424959153ab8f1e7bf4c5df8f5d2af13fc9cc2",
+    "source": "Unmodified Unreal high-resolution screenshot"
+  },
+  {
+    "file": "00_before_avenue.png",
+    "bytes": 3099550,
+    "sha256": "708dcf31a6461f4fce5e742c30e367bfcd0c068c1d37570f13575ebe88146d75",
+    "source": "Same lab before this session fixes; NOT the Sprint 2 baseline"
+  }
+]

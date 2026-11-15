@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "before_actor_count": 79,
+  "after_actor_count": 79,
+  "before_instances": 1288,
+  "after_instances": 1288,
+  "before_sha256": "556d2e046597e7a6d644f17c4d5808f6b25ed92a6ad320362f72d530338aebd7",
+  "after_sha256": "556d2e046597e7a6d644f17c4d5808f6b25ed92a6ad320362f72d530338aebd7",
+  "hash_scope": "Author + lookdev: actor class/label/transforms, FOV, forced LOD, material/mesh references, HISM transforms/counts; numeric transforms rounded to 1e-6, no transient struct addresses",
+  "changed_actors": [],
+  "collision_playtest": "PENDING",
+  "performance_benchmark": "PENDING"
+}

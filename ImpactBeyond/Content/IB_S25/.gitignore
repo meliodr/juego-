@@ -1,0 +1,4 @@
+# Generated/imported dependencies remain local; publish only the authored level.
+*
+!.gitignore
+!Lvl_IB_S25_RealismLab.umap

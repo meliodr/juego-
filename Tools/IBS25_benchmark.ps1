@@ -17,6 +17,7 @@ if ($editorPath.Contains('"') -or $projectPath.Contains('"')) { throw 'Invalid a
 $scale = if ($Variant -eq 'A') { 100 } else { 83 }
 $commands = @(
     'r.VSync 0', 't.MaxFPS 0', 'r.AntiAliasingMethod 4',
+    'r.EyeAdaptation.CachedLightingPreExposure 8',
     'r.DynamicGlobalIlluminationMethod 1', 'r.ReflectionMethod 1',
     'r.Shadow.Virtual.Enable 0', 'sg.ShadowQuality 2',
     'sg.GlobalIlluminationQuality 2', 'sg.ReflectionQuality 2',
