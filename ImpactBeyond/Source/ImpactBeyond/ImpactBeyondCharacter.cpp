@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ImpactBeyondCharacter.h"
+#include "Animation/AnimSequence.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/Engine.h"
 #include "Camera/CameraComponent.h"
@@ -17,6 +20,13 @@
 
 AImpactBeyondCharacter::AImpactBeyondCharacter()
 {
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> HoverAsset(
+		TEXT("/Game/Characters/Mannequins/Anims/Unarmed/MM_Idle.MM_Idle"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> TravelAsset(
+		TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jump/MM_Fall_Loop.MM_Fall_Loop"));
+	HoverPose = HoverAsset.Object;
+	TravelPose = TravelAsset.Object;
+
 	PrimaryActorTick.bCanEverTick = true;
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -132,9 +142,73 @@ bool AImpactBeyondCharacter::IsFlightBrakeHeld() const
 		|| PlayerController->IsInputKeyDown(EKeys::Gamepad_FaceButton_Left));
 }
 
+void AImpactBeyondCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
+{
+	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
+
+	USkeletalMeshComponent* CharacterMesh = GetMesh();
+	if (GetCharacterMovement()->IsFlying())
+	{
+		// The template's ground AnimBP would feed horizontal airspeed into its gait blend.
+		if (!bPresentingFlight && CharacterMesh->GetAnimationMode() == EAnimationMode::AnimationBlueprint
+			&& HoverPose && TravelPose)
+		{
+			GroundMeshTransform = CharacterMesh->GetRelativeTransform();
+			FlightFacing = GetActorRotation();
+			bUsingTravelPose = false;
+			bPresentingFlight = true;
+			UpdateFlightPresentation(0.0f);
+		}
+	}
+	else if (bPresentingFlight)
+	{
+		bPresentingFlight = false;
+		CharacterMesh->SetRelativeTransform(GroundMeshTransform);
+		CharacterMesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	}
+}
+
+void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
+{
+	USkeletalMeshComponent* CharacterMesh = GetMesh();
+	const FVector Velocity = GetCharacterMovement()->Velocity;
+	const float HorizontalSpeed = Velocity.Size2D();
+	// Hysteresis prevents pose flicker at the boundary between hover and travel.
+	const bool bTravel = HorizontalSpeed >= (bUsingTravelPose ? 120.0f : 200.0f);
+	if (bTravel != bUsingTravelPose || CharacterMesh->GetAnimationMode() != EAnimationMode::AnimationSingleNode)
+	{
+		bUsingTravelPose = bTravel;
+		CharacterMesh->PlayAnimation(bTravel ? TravelPose.Get() : HoverPose.Get(), false);
+		CharacterMesh->Stop();
+	}
+
+	FRotator TargetFacing = FlightFacing;
+	if (bTravel)
+	{
+		TargetFacing.Yaw = Velocity.Rotation().Yaw;
+	}
+	const float Lean = FMath::GetMappedRangeValueClamped(
+		FVector2D(120.0f, 1800.0f), FVector2D(0.0f, 55.0f), HorizontalSpeed);
+	// Pitch up slightly during a climb and down during a dive, even without forward input.
+	const float VerticalPitch = FMath::Clamp(Velocity.Z / 60.0f, -15.0f, 15.0f);
+	const FVector FacingRight = FRotationMatrix(FRotator(0.0f, FlightFacing.Yaw, 0.0f)).GetUnitAxis(EAxis::Y);
+	TargetFacing.Pitch = VerticalPitch - Lean;
+	TargetFacing.Roll = FMath::Clamp(FVector::DotProduct(Velocity, FacingRight) / 40.0f, -22.0f, 22.0f);
+	FlightFacing = FMath::RInterpTo(FlightFacing, TargetFacing, DeltaSeconds, 6.0f);
+
+	// Rotate the mesh about the capsule center, retaining the mannequin's template offset.
+	const FQuat VisualRotation = GetActorQuat().Inverse() * FlightFacing.Quaternion();
+	CharacterMesh->SetRelativeLocationAndRotation(VisualRotation.RotateVector(GroundMeshTransform.GetLocation()),
+		VisualRotation * GroundMeshTransform.GetRotation());
+}
+
 void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	if (bPresentingFlight)
+	{
+		UpdateFlightPresentation(DeltaSeconds);
+	}
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (!Movement->IsFlying() || !PlayerController || !IsLocallyControlled())
