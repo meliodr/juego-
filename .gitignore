@@ -1,0 +1,26 @@
+# Unreal Engine generated output — preserve Config, Source, .uproject and legal Content.
+**/Binaries/
+**/Intermediate/
+**/Saved/
+**/DerivedDataCache/
+**/.vs/
+**/.idea/
+**/.vscode/ipch/
+**/*.sln
+**/*.suo
+**/*.sdf
+**/*.opensdf
+**/*.VC.db
+**/*.VC.opendb
+**/*.vcxproj
+**/*.vcxproj.filters
+**/*.vcxproj.user
+**/*.pdb
+**/*.obj
+**/*.log
+
+# Local diagnostics and personal settings.
+.env
+.env.*
+!.env.example
+*.local.json
