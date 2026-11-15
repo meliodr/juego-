@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 02 — S3 · cuatro ciudades y navegación esférica
 
-**Modelo sugerido, no seleccionado:** Codex C++/matemática espacial más capaz disponible, razonamiento Extra High por LWC, streaming y guardados.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6 Astra · Extra High (si existe en Codex); razonamiento geométrico, LWC y streaming. Alternativa: modelo de programación Codex más capaz con Extra High.
 
 **Worktree Windows aislado:** `../impact-wave8-s3-planet` · **rama exclusiva:** `prototype/ib-wave8-s3-planet`.
 
