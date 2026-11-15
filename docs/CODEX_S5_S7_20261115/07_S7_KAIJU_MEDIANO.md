@@ -1,0 +1,31 @@
+# Codex L07-B — S7: un kaiju mediano con piezas funcionales
+
+**Modelo sugerido:** Codex Unreal de locomoción, colisión/animación con razonamiento **Extra High**.
+**Worktree:** `../impact-l07b-kaiju` · **rama:** `prototype/ib-l07b-kaiju-lab`.
+**Escritura exclusiva:** `ImpactBeyond/Source/ImpactBeyond/IB_S7/Kaiju/**`, `ImpactBeyond/Content/IB_S7/Kaiju/**`, `Tools/IBL07B_*`, `docs/IB_L07B_*`. No cambiar robot L07-A ni mundo principal.
+
+## Identificación, seguridad y precedencia
+
+Trabaja SOLO si tienes un chat Codex realmente abierto en el PC Windows del usuario. Esta ficha en GitHub NO inicia Codex ni selecciona modelo. Repositorio: https://github.com/meliodr/juego- . **BASE DE GAMEPLAY EXACTA:** `1d01db54b63250ed0aacb0704a5ac16290324e32` (`prototype/ib-sprint02`, PR #19). **BASE DOCUMENTAL** de estos prompts: PR documental de ocho frentes; léela remotamente, NO hagas merge del branch documental en el juego. En cada ejecución relee `git status`, `git worktree list`, remotes, branches, PRs recientes y diffs de S2.5/S3/S3.5/S4, auditoría PR #21 y refinamiento PR #22. Si nuevas entregas cambiaron el contrato, adapta propuesta SIN rebase destructivo ni duplicar trabajo.
+
+**GATE ESTRICTO:** al corte 15-11-2026 10:28 AST NO hay ramas de implementación S2.5/S3/S3.5/S4 publicadas; PR #20 es una ficha CC0, PR #21 auditoría con validador Git y PR #22 ajustes documentales. No asumas que faltan trabajos locales: inspecciónalos cuando tengas acceso y registra resultados. Mientras los cuatro gates previos no estén aceptados/compatibles, limita este frente a **contrato, prototipo aislado no integrado, tests offline sin Unreal, recursos locales ya legales**, y bloquea cualquier edición del mundo canónico. No escribas `ImpactBeyondCharacter.*`, `ImpactCircuitComponent.*`, `ImpactBeyondPlayerController.*`, `ImpactBeyondGameMode.*`, `ImpactBeyond.Build.cs`, `ImpactBeyond.uproject`, `Config/**`, `IB_C00/**`, `.umap` principal, ni carpetas de otros agentes. Cualquier cambio compartido va como propuesta en docs, sin aplicarlo. Los ocho frentes usan *worktrees diferentes* nacidos del mismo SHA y **una sola sesión Unreal Editor/cook/packaging por PC en todo momento**. No borrar DDC, cachés, datos ni sobrescribir worktrees.
+
+**Licencia/presupuesto:** RD$0; primero reusar Manny, Chaos, Niagara, materiales/meshes existentes y documentación. No descargar City Sample completo, reclamar Fab, aceptar nuevas licencias, habilitar/instalar plugins, comprar ni subir archivos fuente Epic/Fab como packs sueltos al repo público. Registrar `local/propiedad/licencia/tamaño/compatibilidad`; no suministrar bytes NoAI a modelos de IA. Meta de QA **1080p DX12 visible/audio ON y 60 FPS** (p95 frame <=16.7ms orientativo, p99/VRAM/hitches reportados, no declarados sin test); Windows UE5.8.x real por comprobar en máquina. Una prueba headless, screenshot estático o script aislado NO certifica jugabilidad ni FPS.
+
+**Entrega:** rama de laboratorio exclusiva desde SHA S2; PR **draft** dirigido a `prototype/ib-sprint02`, con solo rutas permitidas. Adjunta SHA+diff, lista de clases/activos y licencias, tests PASS/FAIL/SKIPPED con evidencia real, mapa aislado sólo si correspondió acceso/turno a Unreal, dependencias para el integrador y estado explícito `SOLO_DOC / PROTOTIPO / BUILD / DX12_VERIFICADO / BLOQUEADO`. Nunca merge a `main`. La integración será serial y después de la revisión de las entregas antiguas.
+
+
+
+## Encargo ejecutable tras los gates previos
+- Lee `docs/COMBAT_ROSTER_V03.md`, `docs/CITY_DESTRUCTION_PLANETS_AUDIT_V11.md`, `docs/REFERENCES_DYNAMIC_EVENTS_V07.md`, roadmap S7; crear únicamente prueba de KAI01 «Rhazkar» aprox. **10–12m**, tamaño y nombre provisionales. Si esa silueta no encaja con el modelo legal, conservar etiqueta `KAI01` y reportar diseño pendiente, no afirmar representación final.
+- Candidato `SciFi Beast06 Bull` figura **reclamado** en documentación del roadmap; confirmar con disco/Library antes de importar, edición exacta licencia, rig, tri count, colisión y coste de memoria. Si bytes no disponibles, usar cápsulas/masas temporales para QA físico y anotar ausencia de personaje final. Prohibido redibujar/modelar criatura completa desde cero o subir binarios de Fab al Git público.
+- Contrato de **3 partes** (cabeza/placa, brazo/garra, apéndice/cola o equivalente que cuadre con el modelo) con `PartId`, `Health`, `Exposure`, `Detached`, `AbilityMask`: desprender/desactivar una parte cambia un ataque, movimiento o alcance y mantiene colisión/material. Estilo de fragmentación sin vísceras. El kaiju puede recibir daño y caer sin desarmar cada parte: combate no es un puzzle obligatorio.
+- Un encuentro pequeño en terreno preparado con 1 kaiju, señal sonora/visual previa y 2 ataques claramente telegrafiados; controlar area-of-effect, no atravesar edificios con extremidades activas, evitar golpes fuera de rango por latencia. Nunca construir un mundo nuevo para el kaiju ni conectar al director de eventos real mientras S5-B no esté listo.
+- Exponer únicamente `KaijuThreatPort`, `DetachablePartPort` y callbacks simulados a S3.5/S4; los vínculos reales a H02/H03 y rueda S7-D se harán por integrador al existir contratos y pruebas reales.
+
+## QA
+- 20 impactos dirigidos a cada una de 3 partes, 20 desprendimientos/inhabilitaciones, 20 agarres o intentos con rechazo justificado, 20 reinicios, 10 salidas/entradas de región sin perder estados o duplicar actor si S3 está listo.
+- Prueba de ataque específico por parte: antes y después cambia telegraph/ataque; lectura de cámara en tierra/vuelo alto, FOV de héroe relativo a escala; 1080p DX12 audio con 60fps objetivo, p95/p99/VRAM, comparación con robot si turno permitido.
+- Si no hay mesh/animación/rig comprobados, salida es un **contrato y un laboratorio de colisión**, nunca una entrega de kaiju terminado. No hacer afirmaciones de licencia sin comprobación local.
+
+**Integración:** S5-B director decide si aparece, S3 RegionId garantiza streaming, S4 daño, S3.5 agarre, S6 tres héroes; todos requieren evidencia previa.
