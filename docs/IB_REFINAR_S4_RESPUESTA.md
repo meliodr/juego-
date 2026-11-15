@@ -1,0 +1,26 @@
+# ENCARGO CODEX P0-03 — S4: policía y tanque no letales, física con sensación
+
+**Modelo sugerido:** Codex apto para C++/IA/física con esfuerzo EXTRA HIGH disponible, no seleccionado desde esta ficha.
+
+**Ejecución local condicionada:** actúa como un SOLO agente Codex dentro de Windows/Unreal; esta ficha publicada NO significa que el chat esté iniciado. Antes de actuar lee `git status`, ramas/worktrees actuales, PR #19 SHA `1d01db54b63250ed0aacb0704a5ac16290324e32`, las cinco fuentes PR #17 (`docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md`, cuatro `PROMPT_CODEX_*.md`) y `docs/IB_AUDITORIA_REFINAMIENTO_0956_20261115.md` en la rama documental `docs/ib-refine-evidence-20261115-0956` por lectura remota (no merge). No intentes usar el HEAD de `main` como base jugable.
+
+**Repositorio:** https://github.com/meliodr/juego- . Todas las ramas de laboratorio nuevas nacen *exactamente* del commit S2 fijo. Verifica si la rama de este encargo ya existe local/remoto antes de crearla; no resetees ni sobreescribas trabajo. En worktree propio y rama exclusiva, **no alterar** `ImpactBeyondCharacter.cpp/.h`, `ImpactCircuitComponent.cpp/.h`, `ImpactBeyondGameMode.cpp/.h`, `ImpactBeyond.Build.cs`, `ImpactBeyond.uproject`, `Config/**`, `Content/IB_C00/Lvl_IB_C00.umap`, `AGENTS.md`, `.codex/**`, `docs/PLAN_ACTIVO.md` ni paths de otros laboratorios. Cualquier conexión al juego base será **propuesta de parche en tu carpeta**, no aplicada a esos archivos. No correr dos Unreal Editor/cook simultáneos. No main merge, force push, borrado, nuevos plugins, cambios Windows/UE, compras ni reclamaciones Fab.
+
+**Entrega exigida:** PR **draft** contra `prototype/ib-sprint02`, SHA reproducible, lista de cambios por archivo, datos de licencia/archivo original/ubicación, comandos de build/test reales, capturas si se abrió UE, métricas separadas, bloqueos, regresiones y estado `DOCUMENTO|CÓDIGO|COMPILADO|HEADLESS|DX12_VISIBLE|HUMANO`. Ejecutar `Tools/IBAudit_ValidateLabs.py` del PR #21 tras incorporar la herramienta de lectura/QA de forma que no entre en el diff del laboratorio; el test es solo de propiedad y lineage. Nunca declarar PASS de editor, DX12, mando o sonido si no se midió con evidencia. Si no hay herramienta local de Unreal o permisos, dejar preparación útil y registrar qué falta. Presupuesto RD$0.
+
+**Branch:** `prototype/ib-s4-response-lab`. **Worktree:** `../impact-s4-response`. **Únicos archivos nuevos/modificados:** `ImpactBeyond/Source/ImpactBeyond/IB_S4/**`, `ImpactBeyond/Content/IB_S4/**`, `Tools/IBS4_*`, `docs/IB_S4_*`.
+
+## Decisión de producto fijada
+H01 es una fuerza superhumana, pero no totalmente invulnerable: **balas de policía humano y misiles de tanque no reducen su vida en este encuentro**, aunque el misil sí provoca impulso de desplazamiento, animación reactiva y recuperación. La policía no dispara automáticamente al ver al personaje; aparece por alertas/acciones en sandbox. Probar sin violencia a civiles. Robot, láser y destrucción son objetivos posteriores dentro del mismo lab, no un pretexto para saltarse la prueba básica.
+
+## Contrato y implementación aislados
+1. Revisar `ImpactCircuitComponent` y prompts PR17 sin escribir en el código compartido. Crear `IB_S4` con `DamageEvent{source, target, kind, HealthDelta, Impulse, timestamp, dedupId}` y perfiles configurables según blanco. Para `Target=H01` y `Kind=PoliceBullet|TankMissile`, **HealthDelta = 0** forzado por perfil; no depender de VFX para daño. Para otros enemigos, no aplicar esta inmunidad global.
+2. Policía humano de prueba que camina/advierte y dispara ante una señal de alerta deliberada, no en spawn. Necesita trace/hit claro; si solo hay mannequin Epic en repo, usarlo legalmente. Nunca afirmar «uniforme policial» si el mesh no lo demuestra.
+3. Tanque de prueba solo si hay malla legal disponible o proxy explícitamente etiquetado (no atribuirle diseño final): misil con impulso horizontal acotado, vertical limitada, ventana de recuperación controlada, colisiones y anti-stunlock. No matar a H01 ni lanzarlo al vacío de forma irreparable. Misil no debe aplicar daño de vida por error.
+4. Sin dependencia de S3.5 terminada, escribir adaptador aislado compatible con contrato de interacción del PR17, sin duplicar su API global y sin cambiar `Character`, `Circuit` ni `Build.cs`. Robot/telequinesis/láser/destrucción pueden quedar como prototipos secundarios si falta evidencia del bucle principal.
+
+## Pruebas de aceptación
+- 20 balas de policía contra H01: salud inicial/final idéntica, eventos dedup y respuesta visible opcional sin stunlock; 20 misiles: salud sin cambio, desplazamiento/reacción y regreso al control en plazo configurado, sin clipping ni desaparición. Registrar números reales, no «PASS» por pseudocódigo.
+- Una prueba de falso positivo: sin alerta, policía no dispara; una prueba de perfil a objetivo secundario que confirma que la inmunidad no se aplica globalmente; una prueba de dos impactos rápidos que no acumula incapacitación infinita.
+- Si se implementan robot, rayos, telequinesis o roturas, anexar pruebas por función y colisión al final del trabajo, separados de los gates policía/tanque. No falsear impacto visual sin mesh.
+- Captura DX12 visible con audio si editor libre; tests UHT/compilación/cook separados. PR draft en rutas propias con reporte `DOCUMENTO|CÓDIGO|COMPILADO|HEADLESS|DX12_VISIBLE|HUMANO`.
