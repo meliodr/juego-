@@ -6,6 +6,10 @@
 
 El [lote 01 de auditoría Fab](FAB_AUDITORIA_LOTE01_2026-11-15.md) identifica 25 fichas que muestran 'Free', 3 ofertas con fecha límite y 4 precios no confirmados. Es información pública: no presume biblioteca del usuario, ni descarga, instalación o prueba UE5.8. Antes de buscar una mecánica desde cero, mirar la lista, comprobar la ficha/NoAI/licencia y seleccionar UN candidato. Mantener W00/W01 y locomoción como primeros gates; no importar cientos de assets por anticipación.
 
+## Plano urbano de aceptación H01 — decisión 2026-11-15
+
+La especificación técnica de la primera manzana y la matriz de pruebas están en [IB_C00_MANZANA_PRUEBA.md](IB_C00_MANZANA_PRUEBA.md): recorrido en L con tramo de aceleración, freno, carro con colisión activa durante el agarre, fachada con hueco transitable y reset determinista. Es **diseño previo, no implementación ni prueba superada**. Se mantiene una única tarea operativa activa: IB-W00; después IB-W01 y la cola original. Geometría primitiva Unreal antes de acudir a Fab.
+
 ## Selección de plugins por fase, 2026-11-15
 
 [PLUGIN_SELECTION_V14.md](PLUGIN_SELECTION_V14.md) gobierna qué plugins del motor y externos pueden evaluarse y cuándo. Enhanced Input desde el inicio; animación (IK/Control Rig), Niagara, Chaos/Fracture y PCG conforme aparezca cada necesidad. PCGEx 5.8 MIT y Realtime Destructible Mesh Free/Fab solo experimentos aislados, no dependencias instaladas. RMC Core MIT en reserva; MCP editor experimental y opcional. No alterar arranque IB-W00/IB-W01, presupuesto RD$0 o restricción de un jugador offline. Código y prueba local aún inexistentes.
