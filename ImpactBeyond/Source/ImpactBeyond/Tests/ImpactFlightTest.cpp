@@ -66,7 +66,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Box->RegisterComponent();
 		return Actor;
 	};
-	AActor* Floor = MakeBox(Origin - FVector(0, 0, 20), FVector(24000, 8000, 20));
+	AActor* Floor = MakeBox(Origin - FVector(0, 0, 20), FVector(230000, 120000, 20));
 	const auto Wall = MakeShared<AActor*>(nullptr);
 	const FRotator OriginalView = PC->GetControlRotation();
 	const FVector OriginalLocation = Pawn->GetActorLocation();
@@ -157,7 +157,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 	{
 		const auto EarlyHeight = MakeShared<double>(0);
 		const auto CruiseHeight = MakeShared<double>(0);
-		ForFrames(240, [=, this](int32 Frame)
+		ForFrames(360, [=, this](int32 Frame)
 		{
 			if (Frame == 0 && Change.IsValid()) Key(Change, true);
 			if (Frame == 1 && Change.IsValid()) Key(Change, false);
@@ -168,8 +168,8 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 				AddInfo(FString::Printf(TEXT("Early cruise %.0f cm/s: delta Z %.2f cm"),
 					Target, Pawn->GetActorLocation().Z - *EarlyHeight));
 			}
-			if (Frame == 179) *CruiseHeight = Pawn->GetActorLocation().Z;
-			if (Frame == 239)
+			if (Frame == 299) *CruiseHeight = Pawn->GetActorLocation().Z;
+			if (Frame == 359)
 			{
 				const double Speed = Movement->Velocity.Size();
 				const double HeightChange = Pawn->GetActorLocation().Z - *CruiseHeight;
@@ -181,11 +181,37 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			}
 		});
 	};
-	SpeedStage(FKey(), 900);
-	SpeedStage(EKeys::E, 1800);
-	SpeedStage(EKeys::Gamepad_RightShoulder, 4400);
-	SpeedStage(EKeys::E, 7200);
-	SpeedStage(EKeys::Gamepad_RightShoulder, 10500);
+	SpeedStage(FKey(), 1200);
+	SpeedStage(EKeys::E, 3500);
+	SpeedStage(EKeys::Gamepad_RightShoulder, 9000);
+	SpeedStage(EKeys::B, 18000);
+	SpeedStage(EKeys::Gamepad_RightShoulder, 32000);
+
+	for (const FKey Turbo : {EKeys::LeftShift, EKeys::Gamepad_LeftThumbstick})
+	{
+		ForFrames(240, [=, this](int32 Frame)
+		{
+			if (Frame == 0) { Key(Turbo, true); }
+			Pawn->DoMove(0, 1);
+			if (Frame == 239)
+			{
+				const double Speed = Movement->Velocity.Size();
+				AddInfo(FString::Printf(TEXT("Flight turbo (%s): %.2f m/s"), *Turbo.GetDisplayName().ToString(), Speed / 100.0));
+				TestTrue(TEXT("Held turbo reaches 115% of the selected flight cap"), FMath::IsNearlyEqual(Speed, 36800.0, 80.0));
+				TestEqual(TEXT("Turbo preserves selected flight level"), Pawn->GetFlightLevel(), 5);
+				Key(Turbo, false);
+			}
+		});
+		ForFrames(240, [=, this](int32 Frame)
+		{
+			Pawn->DoMove(0, 1);
+			if (Frame == 239)
+			{
+				TestTrue(TEXT("Releasing turbo restores the selected flight cap"),
+					FMath::IsNearlyEqual(Movement->Velocity.Size(), 32000.0, 80.0));
+			}
+		});
+	}
 
 	const auto CoastSpeed = MakeShared<double>(0);
 	ForFrames(21, [=](int32 Frame)
@@ -193,11 +219,11 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		if (Frame == 20) *CoastSpeed = Movement->Velocity.Size();
 	});
 	ForFrames(75, [=](int32) { Pawn->DoMove(0, 1); });
-	ForFrames(80, [=, this](int32 Frame)
+	ForFrames(440, [=, this](int32 Frame)
 	{
 		if (Frame == 0)
 		{
-			TestTrue(TEXT("Brake comparison starts near top speed"), Movement->Velocity.Size() >= 3170);
+			TestTrue(TEXT("Brake comparison starts near top speed"), Movement->Velocity.Size() >= 31000);
 			Key(EKeys::X, true);
 		}
 		Pawn->DoMove(0, 1);
@@ -207,37 +233,44 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			AddInfo(FString::Printf(TEXT("After 20 frames: coast %.1f, brake %.1f cm/s"), *CoastSpeed, BrakeSpeed));
 			TestTrue(TEXT("Brake beats coasting with forward held"), BrakeSpeed + 200 < *CoastSpeed);
 		}
-		if (Frame == 79)
+		if (Frame == 439)
 		{
 			TestTrue(TEXT("Brake reaches hover"), Movement->IsFlying() && Movement->Velocity.Size() < 5);
 			Key(EKeys::X, false);
 		}
 	});
 
-	Once([=]() { *Wall = MakeBox(Origin + FVector(22000, 0, 800), FVector(2, 6000, 800)); });
+	Once([=]() { *Wall = MakeBox(Origin + FVector(150000, 0, 800), FVector(2, 100000, 800)); });
 
 	// Start each sweep with a straight approach long enough to reach the fifth level.
-	for (float Lateral : {0.f, 0.12f})
+	for (float Lateral : {0.f, 0.12f, -0.12f})
 	{
+		const bool bTurbo = Lateral < 0;
 		Once([=]()
 		{
 			Movement->StopMovementImmediately();
 			Pawn->SetActorLocation(Origin + FVector(3500, Lateral > 0 ? 100 : 0, 500));
+			if (bTurbo) { Key(EKeys::LeftShift, true); }
 		});
 		const auto Peak = MakeShared<double>(0);
 		const auto FurthestX = MakeShared<double>(0);
-		ForFrames(200, [=, this](int32 Frame)
+		const double ContactX = 149998 - Pawn->GetCapsuleComponent()->GetScaledCapsuleRadius();
+		ForFrames(600, [=, this](int32 Frame)
 		{
 			Pawn->DoMove(Lateral, 1);
-			*Peak = FMath::Max(*Peak, Movement->Velocity.Size());
-			*FurthestX = FMath::Max(*FurthestX, Pawn->GetActorLocation().X - Origin.X);
-			if (Frame == 199)
+			const double X = Pawn->GetActorLocation().X - Origin.X;
+			if (X < ContactX - 10.0)
 			{
-				const double ContactX = 21998 - Pawn->GetCapsuleComponent()->GetScaledCapsuleRadius();
+				*Peak = FMath::Max(*Peak, Movement->Velocity.Size());
+			}
+			*FurthestX = FMath::Max(*FurthestX, X);
+			if (Frame == 599)
+			{
 				AddInfo(FString::Printf(TEXT("Wall (lateral %.2f): peak %.1f cm/s, max x %.1f cm"),
 					Lateral, *Peak, *FurthestX));
-				TestTrue(TEXT("Reached maximum flight speed before the thin wall"), *Peak >= 10200.0);
+				TestTrue(TEXT("Reached maximum flight speed before the thin wall"), *Peak >= (bTurbo ? 36550.0 : 31750.0));
 				TestTrue(TEXT("Capsule reached wall without crossing it"), FMath::IsNearlyEqual(*FurthestX, ContactX, 5.0));
+				if (bTurbo) { Key(EKeys::LeftShift, false); }
 			}
 		});
 	}
@@ -248,11 +281,18 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Movement->StopMovementImmediately();
 		Pawn->SetActorLocation(Origin + FVector(0, 0, 500));
 	});
-	for (int32 Drop = 0; Drop < 2; ++Drop)
+	Once([=]() { Key(EKeys::Gamepad_DPad_Right, true); });
+	Once([=, this]()
 	{
-		Once([=]() { Key(EKeys::Q, true); });
-		Once([=]() { Key(EKeys::Q, false); });
-	}
+		Key(EKeys::Gamepad_DPad_Right, false);
+		TestEqual(TEXT("Gamepad toggle restores the previous control-flight level"), Pawn->GetFlightLevel(), 3);
+		Key(EKeys::E, true);
+	});
+	Once([=, this]()
+	{
+		Key(EKeys::E, false);
+		TestEqual(TEXT("Speed-increase cannot enter Travesia"), Pawn->GetFlightLevel(), 3);
+	});
 	for (int32 Change = 0; Change < 20; ++Change)
 	{
 		const bool bDown = Change % 2 == 0;
@@ -262,7 +302,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Once([=, this]()
 		{
 			Key(Input, false);
-			TestEqual(TEXT("Alternating speed selection"), Movement->MaxFlySpeed, bDown ? 1800.f : 4400.f);
+			TestEqual(TEXT("Alternating control-flight level selection"), Pawn->GetFlightLevel(), bDown ? 2 : 3);
 		});
 	}
 	Once([=]() { Key(EKeys::Gamepad_RightThumbstick, true); });
@@ -377,7 +417,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			(*Wall)->Destroy();
 		}
 	});
-	ForFrames(240, [=, this](int32 Frame)
+	ForFrames(300, [=, this](int32 Frame)
 	{
 		if (Frame == 0)
 		{
@@ -387,15 +427,23 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			Key(EKeys::F, true);
 		}
 		if (Frame == 1) { Key(EKeys::F, false); }
-		if (Frame == 4 || Frame == 8 || Frame == 12 || Frame == 60) { Key(EKeys::E, true); }
-		if (Frame == 5 || Frame == 9 || Frame == 13 || Frame == 61) { Key(EKeys::E, false); }
-		if (Frame == 59) { TestEqual(TEXT("Level four cap"), Movement->MaxFlySpeed, 7200.0f); }
+		if (Frame == 4 || Frame == 8 || Frame == 60) { Key(EKeys::E, true); }
+		if (Frame == 5 || Frame == 9 || Frame == 61) { Key(EKeys::E, false); }
+		if (Frame == 12) { Key(EKeys::Gamepad_DPad_Right, true); }
+		if (Frame == 13) { Key(EKeys::Gamepad_DPad_Right, false); }
+		if (Frame == 18) { Key(EKeys::Gamepad_LeftShoulder, true); }
+		if (Frame == 19) { Key(EKeys::Gamepad_LeftShoulder, false); }
+		if (Frame == 59)
+		{
+			TestEqual(TEXT("Speed-decrease cannot exit Travesia"), Pawn->GetFlightLevel(), 4);
+			TestEqual(TEXT("Level four cap"), Movement->MaxFlySpeed, 18000.0f);
+		}
 		if (Frame == 63)
 		{
 			TestTrue(TEXT("Level five extends level four without jumping to maximum"),
-				Movement->MaxFlySpeed > 7200.0f && Movement->MaxFlySpeed < 7500.0f);
+				Movement->MaxFlySpeed >= 18000.0f && Movement->MaxFlySpeed < 20000.0f);
 		}
-		if (Frame == 239) { TestTrue(TEXT("Level five approaches its full speed"), Movement->MaxFlySpeed >= 10450.0f); }
+		if (Frame == 299) { TestTrue(TEXT("Level five approaches its full speed"), Movement->MaxFlySpeed >= 31900.0f); }
 	});
 	for (int32 Cycle = 0; Cycle < 20; ++Cycle)
 	{
@@ -689,6 +737,113 @@ bool FImpactCircuitTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FImpactCityVehiclesTest, "ImpactBeyond.Circuit.CityVehicles",
+	EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+
+bool FImpactCityVehiclesTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = GEngine->GetCurrentPlayWorld();
+	APlayerController* PC = World ? World->GetFirstPlayerController() : nullptr;
+	AImpactBeyondCharacter* Hero = PC ? Cast<AImpactBeyondCharacter>(PC->GetPawn()) : nullptr;
+	UImpactCircuitComponent* Circuit = Hero ? Hero->FindComponentByClass<UImpactCircuitComponent>() : nullptr;
+	if (!TestNotNull(TEXT("Vehicle interaction component"), Circuit))
+	{
+		return false;
+	}
+
+	TArray<UStaticMeshComponent*> Vehicles;
+	for (TActorIterator<AStaticMeshActor> Actor(World); Actor; ++Actor)
+	{
+		if (Actor->ActorHasTag(TEXT("ImpactCircuitCar")) || Actor->ActorHasTag(TEXT("ImpactSprintVehicle")))
+		{
+			Vehicles.Add(Actor->GetStaticMeshComponent());
+		}
+	}
+	if (!TestTrue(TEXT("At least six physical city vehicles"), Vehicles.Num() >= 6))
+	{
+		return false;
+	}
+
+	UCharacterMovementComponent* Movement = Hero->GetCharacterMovement();
+	const FTransform OriginalHero = Hero->GetActorTransform();
+	const FRotator OriginalView = PC->GetControlRotation();
+	const EMovementMode OriginalMode = Movement->MovementMode;
+	for (int32 Index = 0; Index < Vehicles.Num(); ++Index)
+	{
+		UStaticMeshComponent* Vehicle = Vehicles[Index];
+		const FTransform OriginalVehicle = Vehicle->GetComponentTransform();
+		const FKey GrabKey = Index % 2 == 0 ? EKeys::G : EKeys::Gamepad_FaceButton_Right;
+		const FKey ThrowKey = Index % 2 == 0 ? EKeys::T : EKeys::Gamepad_FaceButton_Top;
+		ADD_LATENT_AUTOMATION_COMMAND(FFlightStep([=, this, Frame = 0]() mutable
+		{
+			const auto Key = [PC](FKey Input, bool bHeld)
+			{
+				PC->InputKey(FInputKeyEventArgs::CreateSimulated(Input, bHeld ? IE_Pressed : IE_Released, bHeld ? 1.f : 0.f));
+			};
+			const auto Approach = [=]()
+			{
+				const FVector Center = Vehicle->GetComponentLocation();
+				const double CenterHeight = Vehicle->Bounds.Origin.Z - Vehicle->Bounds.BoxExtent.Z
+					+ Hero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.0;
+				Movement->StopMovementImmediately();
+				Hero->SetActorLocationAndRotation(FVector(Center.X, Center.Y - 320.0, CenterHeight),
+					FRotator(0, 90, 0), false, nullptr, ETeleportType::TeleportPhysics);
+				Movement->SetMovementMode(MOVE_Walking);
+				PC->SetControlRotation(FRotator(0, 90, 0));
+			};
+			switch (Frame++)
+			{
+			case 0:
+				TestTrue(FString::Printf(TEXT("Vehicle %d starts with physics enabled and asleep"), Index + 1),
+					Vehicle->IsSimulatingPhysics() && !Vehicle->RigidBodyIsAwake());
+				Approach();
+				Key(GrabKey, true);
+				break;
+			case 1: Key(GrabKey, false); break;
+			case 55:
+				TestTrue(FString::Printf(TEXT("Vehicle %d is physically carried above H01"), Index + 1),
+					Circuit->IsCarHeld() && !Vehicle->IsSimulatingPhysics()
+					&& Vehicle->GetComponentLocation().Z > Hero->GetActorLocation().Z + 100.0);
+				Key(GrabKey, true);
+				break;
+			case 56: Key(GrabKey, false); break;
+			case 80:
+				TestTrue(FString::Printf(TEXT("Vehicle %d restores free physics on drop"), Index + 1),
+					Vehicle->IsSimulatingPhysics() && !Circuit->IsCarHeld());
+				break;
+			case 110: Approach(); Key(GrabKey, true); break;
+			case 111: Key(GrabKey, false); break;
+			case 170:
+				PC->SetControlRotation(FRotator(55, 90, 0));
+				Key(ThrowKey, true);
+				break;
+			case 220:
+				TestTrue(TEXT("Charge keeps the selected vehicle in both hands"),
+					Circuit->IsChargingThrow() && !Vehicle->IsSimulatingPhysics());
+				break;
+			case 230: Key(ThrowKey, false); break;
+			case 255:
+				TestTrue(FString::Printf(TEXT("Vehicle %d restores simulation and launches along the camera aim"), Index + 1),
+					Vehicle->IsSimulatingPhysics() && Vehicle->GetPhysicsLinearVelocity().Z > 3000.0);
+				Vehicle->SetWorldTransform(OriginalVehicle, false, nullptr, ETeleportType::TeleportPhysics);
+				Vehicle->SetPhysicsLinearVelocity(FVector::ZeroVector);
+				Vehicle->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+				Vehicle->PutAllRigidBodiesToSleep();
+				if (Index == Vehicles.Num() - 1)
+				{
+					Hero->SetActorTransform(OriginalHero, false, nullptr, ETeleportType::TeleportPhysics);
+					Movement->SetMovementMode(OriginalMode);
+					PC->SetControlRotation(OriginalView);
+					AddInfo(FString::Printf(TEXT("Verified %d city vehicles start asleep and can be lifted, dropped and launched"), Vehicles.Num()));
+				}
+				return true;
+			}
+			return false;
+		}));
+	}
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FImpactTransportCyclesTest, "ImpactBeyond.Circuit.TransportCycles",
 	EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
 
@@ -935,25 +1090,20 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			Key(EKeys::F, true);
 		}
 		if (Frame == 51) { Key(EKeys::F, false); }
-		if (Level >= 1 && Frame == 100) { Key(EKeys::E, true); }
-		if (Level >= 1 && Frame == 101) { Key(EKeys::E, false); }
-		if (Level == 2 && Frame == 103) { Key(EKeys::Gamepad_RightShoulder, true); }
-		if (Level == 2 && Frame == 104) { Key(EKeys::Gamepad_RightShoulder, false); }
 		if (Frame == 107)
 		{
 			State->AirStart = Hero->GetActorLocation();
 			State->CargoAirStart = Car->GetComponentLocation();
 		}
-		// Start braking earlier at level three so the faster run still throws from in front of the panel.
-		const int32 BrakeFrame = Level == 2 ? 171 : 202;
+		// Use the first flight level for this street-length transport and throw.
+		constexpr int32 BrakeFrame = 202;
 		if (Frame >= 107 && Frame < BrakeFrame) { Hero->DoMove(0, 1); }
 		if (Frame == BrakeFrame) { Key(EKeys::X, true); }
 		if (Frame == 202)
 		{
 			const auto* Movement = Hero->GetCharacterMovement();
-			const float FlightCaps[] = {900.0f, 1800.0f, 4400.0f};
-			TestTrue(TEXT("Hero flies in the selected level with the car"), Movement->IsFlying()
-				&& FMath::IsNearlyEqual(Movement->MaxFlySpeed, FlightCaps[Level], 1.0f));
+			TestTrue(TEXT("Hero flies in the first level with the car"), Movement->IsFlying()
+				&& Hero->GetFlightLevel() == 1 && FMath::IsNearlyEqual(Movement->MaxFlySpeed, 1200.0f, 1.0f));
 			TestTrue(TEXT("Hero and held car both moved down the street"), Hero->GetActorLocation().Y > State->AirStart.Y + 175.0
 				&& Car->GetComponentLocation().Y > State->CargoAirStart.Y + 175.0);
 			FVector LeftGrip, RightGrip;

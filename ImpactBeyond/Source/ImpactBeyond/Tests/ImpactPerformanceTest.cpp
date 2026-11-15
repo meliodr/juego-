@@ -102,8 +102,11 @@ bool FImpactPerformanceTest::RunTest(const FString& Parameters)
 			const double LapTime = Now - LapStart;
 			constexpr double Times[] = {0, 4, 9, 11, 12, 16, 16.2, 16.4, 16.6, 16.8, 17, 17.2, 17.4,
 				23, 25, 26, 28.5, 29.8, 34, 34.3, 36, 45, 51};
-			// Leave ~80 m for the fifth-tier braking run before the avenue ends at x=620 m.
-			const bool bAtAvenueBrakeMark = Stage == 13 && Hero->GetActorLocation().X >= 54000.0;
+			// Leave a stopping margin before the eastern highway ends at x=1780 m.
+			const double EastSpeed = FMath::Max(0.0, Movement->Velocity.X);
+			const double StoppingDistance = FMath::Square(EastSpeed) / (2.0 * 18000.0);
+			const bool bAtAvenueBrakeMark = Stage == 13
+				&& Hero->GetActorLocation().X + StoppingDistance >= 173000.0;
 			if (LapTime >= Times[Stage] || bAtAvenueBrakeMark)
 			{
 				switch (Stage++)
@@ -118,12 +121,16 @@ bool FImpactPerformanceTest::RunTest(const FString& Parameters)
 					Key(EKeys::SpaceBar, false); Key(EKeys::LeftShift, false);
 					CSV_EVENT_GLOBAL(TEXT("IB:Flight")); Key(EKeys::F, true); break;
 				case 5: Key(EKeys::F, false); CSV_EVENT_GLOBAL(TEXT("IB:Accelerate")); Key(EKeys::E, true); break;
-				case 6: case 8: case 10: case 12: Key(EKeys::E, false); break;
-				case 7: case 9: case 11: Key(EKeys::E, true); break;
+				case 6: case 8: Key(EKeys::E, false); break;
+				case 7: case 11: Key(EKeys::E, true); break;
+				case 9: Key(EKeys::B, true); break;
+				case 10: Key(EKeys::B, false); break;
+				case 12: Key(EKeys::E, false); Key(EKeys::LeftShift, true); break;
 				case 13:
 					CSV_EVENT_GLOBAL(TEXT("IB:Brake"));
 					Test.AddInfo(FString::Printf(TEXT("City flight speed before braking: %.2f m/s at x=%.1f m"),
 						Movement->Velocity.Size() / 100.0, Hero->GetActorLocation().X / 100.0));
+					Key(EKeys::LeftShift, false);
 					Key(EKeys::X, true);
 					break;
 				case 14: Key(EKeys::X, false); PC->SetControlRotation(FRotator(-13, 85, 0)); break;

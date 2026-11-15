@@ -29,12 +29,13 @@ void AImpactBeyondHUD::DrawHUD()
 	const float Inset = 26.0f * UIScale;
 	const float DisplayWidth = FMath::Min(Canvas->ClipX - 2.0f * Inset, 640.0f * UIScale);
 	const FString MovementStatus = Movement->IsFlying()
-		? FString::Printf(TEXT("VUELO %d  |  %.0f m/s"), Hero->GetFlightLevel(), Movement->Velocity.Size() / 100.0f)
+		? FString::Printf(TEXT("%s %d  |  %.0f m/s%s"), Hero->IsTraversal() ? TEXT("TRAVESIA") : TEXT("CRUCERO"),
+			Hero->GetFlightLevel(), Movement->Velocity.Size() / 100.0f, Hero->IsFlightTurbo() ? TEXT("  TURBO") : TEXT(""))
 		: FString::Printf(TEXT("H01  |  %.0f m/s"), Movement->Velocity.Size2D() / 100.0f);
 	const FString ActionHint = Circuit->IsCarHeld()
 		? TEXT("Mantener T / Triangulo para cargar. Suelta para lanzar.")
 		: (Movement->IsFlying() || Movement->IsFalling())
-			? TEXT("V / Cruceta arriba: impacto  |  X / Cuadrado: freno")
+			? TEXT("B / Cruceta derecha: modo  |  Shift / L3: turbo  |  X / Cuadrado: freno")
 			: TEXT("Shift / L3 + Espacio / Cruz: supersalto  |  F / R3: vuelo");
 	UFont* Font = GEngine->GetSmallFont();
 	DrawRect(FLinearColor(0.02f, 0.025f, 0.035f, 0.86f), Inset, Inset, DisplayWidth, 74.0f * UIScale);

@@ -13,6 +13,7 @@ class UInputAction;
 class UAnimSequence;
 class UImpactCircuitComponent;
 class UImpactLandingComponent;
+class UImpactFlightFeedback;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -72,7 +73,7 @@ protected:
 
 	/** Maximum speed of each flight level in centimeters per second. */
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight")
-	TArray<float> FlightSpeeds = {900.0f, 1800.0f, 4400.0f, 7200.0f, 10500.0f};
+	TArray<float> FlightSpeeds = {1200.0f, 3500.0f, 9000.0f, 18000.0f, 32000.0f};
 
 public:
 
@@ -104,10 +105,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UImpactLandingComponent> ImpactLanding;
+	UPROPERTY()
+	TObjectPtr<UImpactFlightFeedback> FlightFeedback;
 
 	void ToggleFlight();
 	void IncreaseFlightSpeed();
 	void DecreaseFlightSpeed();
+	void ToggleTraversal();
 	void SetFlightLevel(int32 Level);
 	bool IsFlightBrakeHeld() const;
 	bool IsSprintHeld() const;
@@ -139,6 +143,10 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UAnimSequence> ImpactDivePose;
+	UPROPERTY()
+	TArray<TObjectPtr<UAnimSequence>> SpeedPoses;
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> BrakePose;
 
 	float BaseCameraArmLength = 400.0f;
 	float BaseFieldOfView = 90.0f;
@@ -165,6 +173,8 @@ private:
 	bool bSuperJumpInProgress = false;
 	FTransform ImpactDiveMeshTransform;
 	int32 FlightLevel = 0;
+	int32 CruiseLevel = 0;
+	bool bTraversal = false;
 
 public:
 
@@ -194,6 +204,8 @@ public:
 
 	const UImpactCircuitComponent* GetCircuit() const { return Circuit.Get(); }
 	int32 GetFlightLevel() const { return FlightLevel + 1; }
+	bool IsTraversal() const { return bTraversal; }
+	bool IsFlightTurbo() const { return IsSprintHeld() && !IsFlightBrakeHeld(); }
 	bool CanUseImpactLanding() const;
 };
 

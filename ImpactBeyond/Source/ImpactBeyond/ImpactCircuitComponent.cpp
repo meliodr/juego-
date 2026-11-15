@@ -16,6 +16,7 @@
 namespace
 {
 	const FName CarTag(TEXT("ImpactCircuitCar"));
+	const FName VehicleTag(TEXT("ImpactSprintVehicle"));
 	const FName PanelTag(TEXT("ImpactCircuitPanel"));
 	const FName GrabbablePropTag(TEXT("ImpactLandingTarget"));
 	constexpr float GrabDistance = 380.0f;
@@ -30,6 +31,10 @@ UImpactCircuitComponent::UImpactCircuitComponent()
 	static ConstructorHelpers::FObjectFinderOptional<UStaticMesh> BackupCar(
 		TEXT("/Game/IB_Donors/Carro/carro/StaticMeshes/carro.carro"));
 	CarAppearance = ConceptCar.Get() ? ConceptCar.Get() : BackupCar.Get();
+	static ConstructorHelpers::FObjectFinderOptional<UStaticMesh> Taxi(TEXT("/Game/IB_Donors/SprintVehicles/taxi/StaticMeshes/taxi.taxi"));
+	static ConstructorHelpers::FObjectFinderOptional<UStaticMesh> Electric(TEXT("/Game/IB_Donors/SprintVehicles/carro_eletrico/StaticMeshes/carro_eletrico.carro_eletrico"));
+	TaxiAppearance = Taxi.Get();
+	ElectricAppearance = Electric.Get();
 	// The template car's tyres extend below the handhold under its chassis.
 	VehicleGripInset = ConceptCar.Get() ? 24.0f : 0.0f;
 	PrimaryComponentTick.bCanEverTick = true;
@@ -47,10 +52,25 @@ void UImpactCircuitComponent::BeginPlay()
 	}
 	for (TActorIterator<AStaticMeshActor> Actor(GetWorld()); Actor; ++Actor)
 	{
-		if (Actor->ActorHasTag(CarTag))
+		if (Actor->ActorHasTag(CarTag) || Actor->ActorHasTag(VehicleTag))
 		{
-			CircuitCar = Actor->GetStaticMeshComponent();
-			Grabbables.Add(CircuitCar);
+			UStaticMeshComponent* Chassis = Actor->GetStaticMeshComponent();
+			const bool bPrimary = Actor->ActorHasTag(CarTag);
+			if (bPrimary) { CircuitCar = Chassis; }
+			Grabbables.Add(Chassis);
+			Vehicles.Add(Chassis);
+			Chassis->SetMobility(EComponentMobility::Movable);
+			Chassis->SetCollisionProfileName(TEXT("PhysicsActor"));
+			Chassis->SetUseCCD(true);
+			Chassis->SetNotifyRigidBodyCollision(true);
+			const bool bTaxi = Actor->ActorHasTag(TEXT("ImpactVehicleTaxi"));
+			const bool bElectric = Actor->ActorHasTag(TEXT("ImpactVehicleElectric"));
+			Chassis->SetMassOverrideInKg(NAME_None, bTaxi ? 1450.0f : (bElectric ? 1650.0f : 1200.0f));
+			Chassis->OnComponentHit.AddDynamic(this, &UImpactCircuitComponent::OnCarHit);
+			Chassis->SetSimulatePhysics(true);
+			Chassis->PutAllRigidBodiesToSleep();
+			FitCarAppearance(Chassis, bTaxi && TaxiAppearance ? TaxiAppearance.Get()
+				: (bElectric && ElectricAppearance ? ElectricAppearance.Get() : CarAppearance.Get()));
 		}
 		else if (Actor->ActorHasTag(PanelTag))
 		{
@@ -68,15 +88,7 @@ void UImpactCircuitComponent::BeginPlay()
 		return;
 	}
 
-	Car->SetMobility(EComponentMobility::Movable);
-	Car->SetCollisionProfileName(TEXT("PhysicsActor"));
-	Car->SetUseCCD(true);
-	Car->SetNotifyRigidBodyCollision(true);
-	Car->SetMassOverrideInKg(NAME_None, 1200.0f);
-	Car->OnComponentHit.AddDynamic(this, &UImpactCircuitComponent::OnCarHit);
-	Car->SetSimulatePhysics(true);
 	ChassisExtent = Car->GetStaticMesh()->GetBounds().BoxExtent * Car->GetComponentScale().GetAbs();
-	FitCarAppearance();
 	AddTickPrerequisiteComponent(Hero->GetCharacterMovement());
 	Hero->GetMesh()->AddTickPrerequisiteComponent(this);
 	SetComponentTickEnabled(true);
@@ -87,32 +99,33 @@ bool UImpactCircuitComponent::IsCarHeld() const
 	return CarState == ECarState::Held || CarState == ECarState::Lifting || CarState == ECarState::WindingUp;
 }
 
-void UImpactCircuitComponent::FitCarAppearance()
+void UImpactCircuitComponent::FitCarAppearance(UStaticMeshComponent* Chassis, UStaticMesh* Appearance)
 {
-	if (!CarAppearance)
+	if (!Appearance)
 	{
 		return;
 	}
-	const FBoxSphereBounds Source = CarAppearance->GetBounds();
-	const bool bTurnVehicle = (Source.BoxExtent.X > Source.BoxExtent.Y) != (ChassisExtent.X > ChassisExtent.Y);
+	const FBoxSphereBounds Source = Appearance->GetBounds();
+	const FVector Extent = Chassis->GetStaticMesh()->GetBounds().BoxExtent * Chassis->GetComponentScale().GetAbs();
+	const bool bTurnVehicle = (Source.BoxExtent.X > Source.BoxExtent.Y) != (Extent.X > Extent.Y);
 	const FQuat Rotation = bTurnVehicle ? FQuat(FVector::UpVector, UE_HALF_PI) : FQuat::Identity;
 	const FVector TargetExtent = bTurnVehicle
-		? FVector(ChassisExtent.Y, ChassisExtent.X, ChassisExtent.Z) : ChassisExtent;
+		? FVector(Extent.Y, Extent.X, Extent.Z) : Extent;
 	const FVector Scale = TargetExtent / Source.BoxExtent;
 
-	UStaticMeshComponent* Visual = NewObject<UStaticMeshComponent>(Car->GetOwner(), TEXT("CarBodyAppearance"));
+	UStaticMeshComponent* Visual = NewObject<UStaticMeshComponent>(Chassis->GetOwner(), TEXT("CarBodyAppearance"));
 	Visual->SetMobility(EComponentMobility::Movable);
-	Visual->SetStaticMesh(CarAppearance);
+	Visual->SetStaticMesh(Appearance);
 	Visual->SetCollisionProfileName(TEXT("NoCollision"));
 	Visual->SetCanEverAffectNavigation(false);
-	Visual->SetupAttachment(Car);
+	Visual->SetupAttachment(Chassis);
 	Visual->SetAbsolute(false, false, true);
 	Visual->RegisterComponent();
-	const FQuat WorldRotation = Car->GetComponentQuat() * Rotation;
+	const FQuat WorldRotation = Chassis->GetComponentQuat() * Rotation;
 	Visual->SetWorldRotation(WorldRotation);
 	Visual->SetWorldScale3D(Scale);
-	Visual->SetWorldLocation(Car->GetComponentLocation() - WorldRotation.RotateVector(Source.Origin * Scale));
-	Car->SetVisibility(false);
+	Visual->SetWorldLocation(Chassis->GetComponentLocation() - WorldRotation.RotateVector(Source.Origin * Scale));
+	Chassis->SetVisibility(false);
 }
 
 void UImpactCircuitComponent::ToggleGrab()
@@ -132,9 +145,9 @@ void UImpactCircuitComponent::ToggleGrab()
 		return;
 	}
 	Car = Grabbable;
-	if (Car == CircuitCar)
+	if (Car == LaunchedVehicle)
 	{
-		bCircuitCarLaunched = false;
+		LaunchedVehicle = nullptr;
 	}
 	ChassisExtent = Car->GetStaticMesh()->GetBounds().BoxExtent * Car->GetComponentScale().GetAbs();
 
@@ -292,9 +305,9 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		return;
 	}
 	PhaseTime += DeltaTime;
-	if (bCircuitCarLaunched && IsValid(CircuitCar))
+	if (IsValid(LaunchedVehicle))
 	{
-		PrePhysicsCarVelocity = CircuitCar->GetPhysicsLinearVelocity();
+		PrePhysicsCarVelocity = LaunchedVehicle->GetPhysicsLinearVelocity();
 	}
 	if (bChargingThrow)
 	{
@@ -357,9 +370,9 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 			Aim.Pitch = FMath::Clamp(FRotator::NormalizeAxis(Aim.Pitch), -35.0f, 65.0f);
 			ReleaseCar(ECarState::Thrown);
 			const FVector LaunchVelocity = Aim.Vector() * LaunchSpeed + FVector(0, 0, 400);
-			if (Car == CircuitCar)
+			if (Vehicles.Contains(Car.Get()))
 			{
-				bCircuitCarLaunched = true;
+				LaunchedVehicle = Car;
 				PrePhysicsCarVelocity = LaunchVelocity;
 			}
 			// REPIRK PhysicsGrabber: release first, then apply a mass-independent impulse and haptic pulse.
@@ -376,11 +389,11 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 void UImpactCircuitComponent::OnCarHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (!bCircuitCarLaunched || !IsValid(CircuitCar) || HitComponent != CircuitCar
+	if (!IsValid(LaunchedVehicle) || HitComponent != LaunchedVehicle
 		|| !IsValid(Panel) || OtherComponent != Panel || !Panel->IsVisible()
 		// Multiple contact points can add impulses even when the car approaches slowly.
 		|| FMath::Abs(FVector::DotProduct(PrePhysicsCarVelocity, Hit.ImpactNormal)) < PanelImpactThreshold
-		|| FMath::Abs(FVector::DotProduct(NormalImpulse, Hit.ImpactNormal)) < CircuitCar->GetMass() * PanelImpactThreshold)
+		|| FMath::Abs(FVector::DotProduct(NormalImpulse, Hit.ImpactNormal)) < LaunchedVehicle->GetMass() * PanelImpactThreshold)
 	{
 		return;
 	}

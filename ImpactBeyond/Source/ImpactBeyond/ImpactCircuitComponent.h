@@ -37,7 +37,7 @@ private:
 
 	void ReleaseCar(ECarState NextState);
 	void StartThrow(float Charge);
-	void FitCarAppearance();
+	void FitCarAppearance(UStaticMeshComponent* Chassis, UStaticMesh* Appearance);
 	UStaticMeshComponent* FindGrabbable() const;
 
 	UPROPERTY(EditDefaultsOnly, Category="Circuit|Throw", meta=(ClampMin="0.1", Units="s"))
@@ -64,8 +64,15 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> CircuitCar;
+	UPROPERTY()
+	TObjectPtr<UStaticMeshComponent> LaunchedVehicle;
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> TaxiAppearance;
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> ElectricAppearance;
 
 	TArray<TWeakObjectPtr<UStaticMeshComponent>> Grabbables;
+	TArray<TWeakObjectPtr<UStaticMeshComponent>> Vehicles;
 
 	UPROPERTY()
 	TObjectPtr<UStaticMesh> CarAppearance;
@@ -80,7 +87,6 @@ private:
 	float VehicleGripInset = 0.0f;
 	float LaunchSpeed = 0.0f;
 	bool bChargingThrow = false;
-	bool bCircuitCarLaunched = false;
 	FVector PrePhysicsCarVelocity = FVector::ZeroVector;
 	FVector LiftOffset = FVector::ZeroVector;
 	FVector ChassisExtent = FVector::ZeroVector;

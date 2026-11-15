@@ -85,13 +85,37 @@ bool FImpactCaptureFrames::Update()
 	case 366: Key(EKeys::V, false); break;
 	case 382: Capture(TEXT("Descenso-impacto.png")); break;
 	case 407: Capture(TEXT("Onda-de-impacto.png")); break;
-	case 430: return true;
+	case 445:
+		Hero->GetCharacterMovement()->StopMovementImmediately();
+		Hero->SetActorLocationAndRotation(FVector(128000, 0, 2100), FRotator::ZeroRotator,
+			false, nullptr, ETeleportType::TeleportPhysics);
+		Hero->GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+		PC->SetControlRotation(FRotator(-12, 0, 0));
+		Key(EKeys::F, true);
+		break;
+	case 446: Key(EKeys::F, false); break;
+	case 450: Key(EKeys::B, true); break;
+	case 451: Key(EKeys::B, false); break;
+	case 455: Key(EKeys::E, true); break;
+	case 456: Key(EKeys::E, false); break;
+	case 530: Capture(TEXT("Sprint02-Travesia.png")); break;
+	case 565:
+		Hero->GetCharacterMovement()->StopMovementImmediately();
+		Hero->SetActorLocation(FVector(172000, 850, 2150), false, nullptr, ETeleportType::TeleportPhysics);
+		PC->SetControlRotation(FRotator(-11, -17, 0));
+		break;
+	case 590: Capture(TEXT("Sprint02-Costa.png")); break;
+	case 605: return true;
 	default: break;
 	}
 
 	if (Frame > 117 && Frame < 166)
 	{
 		Hero->AddMovementInput(FRotator(0.0, Yaw, 0.0).Vector());
+	}
+	if (Frame > 457 && Frame < 536)
+	{
+		Hero->AddMovementInput(FVector::ForwardVector);
 	}
 	return false;
 }

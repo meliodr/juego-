@@ -4,6 +4,7 @@
 #include "ImpactCircuitComponent.h"
 #include "ImpactGripMesh.h"
 #include "ImpactLandingComponent.h"
+#include "ImpactFlightFeedback.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/AnimSequence.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -28,6 +29,14 @@ AImpactBeyondCharacter::AImpactBeyondCharacter(const FObjectInitializer& ObjectI
 {
 	Circuit = CreateDefaultSubobject<UImpactCircuitComponent>(TEXT("Circuit"));
 	ImpactLanding = CreateDefaultSubobject<UImpactLandingComponent>(TEXT("ImpactLanding"));
+	FlightFeedback = CreateDefaultSubobject<UImpactFlightFeedback>(TEXT("FlightFeedback"));
+	static ConstructorHelpers::FObjectFinderOptional<UAnimSequence> Speed2(TEXT("/Game/IB_Flight/A_FlightSpeed2.A_FlightSpeed2"));
+	static ConstructorHelpers::FObjectFinderOptional<UAnimSequence> Speed3(TEXT("/Game/IB_Flight/A_FlightSpeed3.A_FlightSpeed3"));
+	static ConstructorHelpers::FObjectFinderOptional<UAnimSequence> Speed4(TEXT("/Game/IB_Flight/A_FlightSpeed4.A_FlightSpeed4"));
+	static ConstructorHelpers::FObjectFinderOptional<UAnimSequence> Speed5(TEXT("/Game/IB_Flight/A_FlightSpeed5.A_FlightSpeed5"));
+	static ConstructorHelpers::FObjectFinderOptional<UAnimSequence> Brake(TEXT("/Game/IB_Flight/A_FlightBrake.A_FlightBrake"));
+	SpeedPoses = {nullptr, Speed2.Get(), Speed3.Get(), Speed4.Get(), Speed5.Get()};
+	BrakePose = Brake.Get();
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> HoverAsset(
 		TEXT("/Game/IB_Flight/A_FlightHover.A_FlightHover"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> CruiseAsset(
@@ -84,7 +93,9 @@ AImpactBeyondCharacter::AImpactBeyondCharacter(const FObjectInitializer& ObjectI
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 	FollowCamera->PostProcessSettings.bOverride_MotionBlurAmount = true;
-	FollowCamera->PostProcessSettings.MotionBlurAmount = 0.15f;
+	FollowCamera->PostProcessSettings.MotionBlurAmount = 0.0f;
+	CameraBoom->bUseCameraLagSubstepping = true;
+	CameraBoom->CameraLagMaxDistance = 200.0f;
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
@@ -133,6 +144,8 @@ void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		PlayerInputComponent->BindKey(EKeys::Gamepad_RightShoulder, IE_Pressed, this, &AImpactBeyondCharacter::IncreaseFlightSpeed);
 		PlayerInputComponent->BindKey(EKeys::Q, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_LeftShoulder, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
+		PlayerInputComponent->BindKey(EKeys::B, IE_Pressed, this, &AImpactBeyondCharacter::ToggleTraversal);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_DPad_Right, IE_Pressed, this, &AImpactBeyondCharacter::ToggleTraversal);
 		PlayerInputComponent->BindKey(EKeys::G, IE_Pressed, this, &AImpactBeyondCharacter::ToggleCircuitGrab);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Right, IE_Pressed, this, &AImpactBeyondCharacter::ToggleCircuitGrab);
 		PlayerInputComponent->BindKey(EKeys::T, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::BeginThrowCharge);
@@ -171,6 +184,8 @@ void AImpactBeyondCharacter::ToggleFlight()
 	TakeoffRemaining = bTakingOff ? TakeoffDuration : 0.0f;
 	StopJumping();
 	Movement->SetMovementMode(MOVE_Flying);
+	bTraversal = false;
+	CruiseLevel = 0;
 	SetFlightLevel(0);
 	if (bTakingOff)
 	{
@@ -229,6 +244,20 @@ void AImpactBeyondCharacter::DecreaseFlightSpeed()
 	SetFlightLevel(FlightLevel - 1);
 }
 
+void AImpactBeyondCharacter::ToggleTraversal()
+{
+	if (!GetCharacterMovement()->IsFlying() || FlightSpeeds.Num() < 5)
+	{
+		return;
+	}
+	if (!bTraversal)
+	{
+		CruiseLevel = FlightLevel;
+	}
+	bTraversal = !bTraversal;
+	SetFlightLevel(bTraversal ? 3 : CruiseLevel);
+}
+
 void AImpactBeyondCharacter::SetFlightLevel(int32 Level)
 {
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
@@ -236,7 +265,7 @@ void AImpactBeyondCharacter::SetFlightLevel(int32 Level)
 	{
 		return;
 	}
-	FlightLevel = FMath::Clamp(Level, 0, FlightSpeeds.Num() - 1);
+	FlightLevel = FMath::Clamp(Level, bTraversal ? 3 : 0, FMath::Min(bTraversal ? 4 : 2, FlightSpeeds.Num() - 1));
 	if (FlightLevel < 4)
 	{
 		FastFlightTime = 0.0f;
@@ -329,8 +358,17 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	const bool bCarrying = GripWeight > 0.1f;
 	const bool bTakingOff = TakeoffRemaining > 0.0f;
 	UAnimSequence* LaunchPose = bCarrying ? CarryTakeoffPose.Get() : TakeoffPose.Get();
+	const bool bBrakePose = !bCarrying && IsFlightBrakeHeld() && BrakePose;
 	UAnimSequence* FlightAnimation = bCarrying && CarryPose ? CarryPose.Get()
 		: (bTravel ? TravelPose.Get() : HoverPose.Get());
+	if (!bCarrying && bTravel && SpeedPoses.IsValidIndex(FlightLevel) && SpeedPoses[FlightLevel])
+	{
+		FlightAnimation = SpeedPoses[FlightLevel].Get();
+	}
+	if (bBrakePose)
+	{
+		FlightAnimation = BrakePose.Get();
+	}
 	if (Circuit->IsPlayingThrow() && ThrowPose)
 	{
 		UpdateActionAnimation(ThrowPose.Get(), false);
@@ -341,7 +379,7 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	}
 	else
 	{
-		UpdateActionAnimation(FlightAnimation, true, FMath::GetMappedRangeValueClamped(
+		UpdateActionAnimation(FlightAnimation, !bBrakePose, bBrakePose ? 1.0f : FMath::GetMappedRangeValueClamped(
 			FVector2D(0.0f, GetCharacterMovement()->MaxFlySpeed), FVector2D(0.75f, 1.15f), HorizontalSpeed));
 	}
 
@@ -392,6 +430,8 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	UpdateGroundMovement(DeltaSeconds, PlayerController);
 	const bool bFastFlight = Movement->IsFlying() && FlightLevel >= 3;
+	const bool bTurbo = Movement->IsFlying() && IsFlightTurbo();
+	FlightFeedback->UpdateFlightFeedback(DeltaSeconds, Movement->IsFlying(), bTurbo);
 	const bool bFastFlightCamera = bFastFlight && Circuit->GetGripWeight() < 0.1f;
 	// ManOfSteel UFlight::SetCamLag, enabled for the high-speed profile.
 	CameraBoom->bEnableCameraLag = bFastFlightCamera || bBaseCameraLag;
@@ -399,16 +439,20 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 	const FVector FlightSocketOffset(0.0f, 0.0f, 20.0f);
 	CameraBoom->SocketOffset = FMath::VInterpTo(CameraBoom->SocketOffset,
 		BaseCameraSocketOffset + (bFastFlightCamera ? FlightSocketOffset : FVector::ZeroVector), DeltaSeconds, 8.0f);
-	if (bFastFlight && FlightLevel >= 4)
+	if (Movement->IsFlying() && FlightSpeeds.IsValidIndex(FlightLevel))
 	{
-		// ManOfSteel UFlight::CheckFlightTime, used to extend level four without a second launch.
-		FastFlightTime += DeltaSeconds;
-		const float FastFlightTimeMapped = FMath::GetMappedRangeValueClamped(
-			FVector2D(0.0, 3.0), FVector2D(0.0, 1.0), FastFlightTime);
-		Movement->MaxFlySpeed = FMath::Lerp(FlightSpeeds[3], FlightSpeeds[FlightLevel], FastFlightTimeMapped);
+		float TargetCap = FlightSpeeds[FlightLevel];
+		if (FlightLevel == 4)
+		{
+			// ManOfSteel UFlight::CheckFlightTime, extending level four without a second launch.
+			FastFlightTime = FMath::Min(3.0f, FastFlightTime + DeltaSeconds);
+			TargetCap = FMath::Lerp(FlightSpeeds[3], TargetCap, FastFlightTime / 3.0f);
+		}
+		Movement->MaxFlySpeed = FMath::FInterpTo(Movement->MaxFlySpeed,
+			TargetCap * (bTurbo ? 1.15f : 1.0f), DeltaSeconds, 7.0f);
 	}
 	CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength,
-		BaseCameraArmLength + 175.0f * Circuit->GetGripWeight(), DeltaSeconds, 4.0f);
+		BaseCameraArmLength + 175.0f * Circuit->GetGripWeight() + (bFastFlightCamera ? 80.0f : 0.0f), DeltaSeconds, 4.0f);
 	TakeoffRemaining = FMath::Max(0.0f, TakeoffRemaining - DeltaSeconds);
 	if (bPresentingFlight)
 	{
@@ -451,8 +495,8 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 	}
 
 	const bool bBraking = IsFlightBrakeHeld();
-	Movement->BrakingDecelerationFlying = bBraking ? (bFastFlight ? 9000.0f : 4200.0f)
-		: (TakeoffRemaining > 0.0f ? 500.0f : 1400.0f);
+	Movement->BrakingDecelerationFlying = bBraking ? (bFastFlight ? 18000.0f : 9000.0f)
+		: (TakeoffRemaining > 0.0f ? 500.0f : (bFastFlight ? 4000.0f : 1400.0f));
 	if (bBraking)
 	{
 		ConsumeMovementInputVector();
@@ -487,7 +531,7 @@ void AImpactBeyondCharacter::UpdateGroundMovement(float DeltaSeconds, const APla
 	const float GroundSpeed = Movement->Velocity.Size2D();
 	const bool bFastGroundMovement = bGrounded && (bSprinting || GroundSpeed > RunSpeed + 30.0f);
 	Movement->MaxWalkSpeed = bSprinting ? SprintSpeed : (bWalking ? WalkSpeed : RunSpeed);
-	Movement->MaxAcceleration = Movement->IsFlying() ? 4096.0f + 1150.0f * FlightLevel
+	Movement->MaxAcceleration = Movement->IsFlying() ? 4096.0f + 3600.0f * FlightLevel
 		: (bFastGroundMovement ? 2600.0f : BaseGroundAcceleration);
 	Movement->GroundFriction = bFastGroundMovement ? 3.0f : BaseGroundFriction;
 	Movement->BrakingDecelerationWalking = bFastGroundMovement ? 2200.0f : BaseGroundBraking;
@@ -498,7 +542,7 @@ void AImpactBeyondCharacter::UpdateGroundMovement(float DeltaSeconds, const APla
 	const float SpeedAlpha = bGrounded ? FMath::GetMappedRangeValueClamped(
 		FVector2D(RunSpeed, SprintSpeed), FVector2D(0.0f, 1.0f), GroundSpeed) : 0.0f;
 	const float FlightFov = Movement->IsFlying() ? FMath::GetMappedRangeValueClamped(
-		FVector2D(2400.0, 10500.0), FVector2D(0.0, 9.0), Movement->Velocity.Size()) : 0.0f;
+		FVector2D(2400.0, 32000.0), FVector2D(0.0, 13.0), Movement->Velocity.Size()) : 0.0f;
 	FollowCamera->SetFieldOfView(FMath::FInterpTo(FollowCamera->FieldOfView,
 		BaseFieldOfView + 7.0f * SpeedAlpha + FlightFov, DeltaSeconds, 3.5f));
 	GetMesh()->GlobalAnimRateScale = FMath::FInterpTo(GetMesh()->GlobalAnimRateScale,
