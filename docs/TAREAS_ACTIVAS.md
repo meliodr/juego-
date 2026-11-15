@@ -34,7 +34,7 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 
 | Orden | Ticket | Entrega / dependencia | Responsable propuesto | Estado |
 |---|---|---|---|---|
-| 1 | IB-W00/W01 | Verificar Unreal 5.8/Windows y crear base; acceso al entorno autorizado | Ejecutor local + QA | PLANIFICADO; acceso/entorno pendientes |
+| 1 | IB-W00/W01 | Verificar Windows/UE 5.8.4 y ejecutar la plantilla Third Person | Ejecutor local + QA | W00 aceptado; W01 en validación. [Evidencia local](IB_W00_W01_VALIDACION.md) |
 | 2 | IB-FLT-AUD | Subconjunto de vuelo y clips; después de L00 | Auditor de recursos + integrador | PLANIFICADO |
 | 3 | IB-GND00 | Caminar/correr/saltar, antes de vuelo | Integrador de gameplay | PLANIFICADO |
 | 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación + usuario | PLANIFICADO |

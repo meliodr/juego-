@@ -7,3 +7,4 @@
 /.vsconfig
 /*.sln
 /*.slnx
+/Build/*/FileOpenOrder/
