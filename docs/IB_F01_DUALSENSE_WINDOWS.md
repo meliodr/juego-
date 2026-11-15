@@ -9,6 +9,8 @@ Base revisada: b65f9a6. Entorno objetivo: UE 5.8.4, Win64 Development, DX12, Lvl
 - Un proceso PowerShell independiente llamó a `xinput1_4.dll!XInputGetState` para los índices 0–3. Los cuatro devolvieron 1167 (dispositivo no conectado). Steam estaba en ejecución. El resultado mide la visibilidad XInput desde el proceso de sondeo. Valve documenta que la emulación puede operar dentro del proceso de juego mediante el overlay.
 - La lógica de vuelo escucha teclas estándar de gamepad: pulsaciones R3/R1/L1, estado de Cuadrado y valores analógicos de R2/L2. L3 se consulta al procesar movimiento en suelo. Las entradas HID genéricas de RawInput por sí solas no alimentan esas consultas. Se aplaza activar el plugin experimental de Epic hasta medir la ruta de Steam.
 
+- En el lanzamiento directo del paquete F01, el usuario informó que el juego no reaccionó al mando. La prueba con Steam Input sigue pendiente.
+
 ## Prueba física pendiente
 
 1. Usar el paquete Win64 Development existente y conectar el DualSense por USB de datos. Para el primer ensayo usar un solo mando y un solo transporte.
