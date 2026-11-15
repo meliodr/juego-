@@ -4,6 +4,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -118,6 +119,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			if (Frame == 9)
 			{
 				TestTrue(TEXT("Takeoff enters flying"), Movement->IsFlying());
+				TestTrue(TEXT("Hover animation plays instead of freezing"), Pawn->GetMesh()->IsPlaying());
 				TestTrue(TEXT("Capsule rises above walking height"), Pawn->GetActorLocation().Z > Origin.Z + 115);
 				Key(EKeys::C, true);
 			}
@@ -170,6 +172,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 				AddInfo(FString::Printf(TEXT("Flight cap %.0f cm/s, measured %.1f cm/s"), Target, Speed));
 				TestTrue(TEXT("Horizontal cruise holds altitude"), FMath::Abs(HeightChange) <= 5.0);
 				TestTrue(TEXT("Flying at requested cap"), Movement->IsFlying() && FMath::IsNearlyEqual(Speed, Target, 30.0));
+				TestTrue(TEXT("Cruise animation plays instead of freezing"), Pawn->GetMesh()->IsPlaying());
 			}
 		});
 	};

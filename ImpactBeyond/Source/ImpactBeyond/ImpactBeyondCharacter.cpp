@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ImpactBeyondCharacter.h"
+#include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/AnimSequence.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
@@ -20,12 +21,10 @@
 
 AImpactBeyondCharacter::AImpactBeyondCharacter()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> HoverAsset(
-		TEXT("/Game/Characters/Mannequins/Anims/Unarmed/MM_Idle.MM_Idle"));
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> TravelAsset(
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> AirborneAsset(
 		TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jump/MM_Fall_Loop.MM_Fall_Loop"));
-	HoverPose = HoverAsset.Object;
-	TravelPose = TravelAsset.Object;
+	HoverPose = AirborneAsset.Object;
+	TravelPose = AirborneAsset.Object;
 
 	PrimaryActorTick.bCanEverTick = true;
 	// Set size for collision capsule
@@ -175,12 +174,15 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	const float HorizontalSpeed = Velocity.Size2D();
 	// Hysteresis prevents pose flicker at the boundary between hover and travel.
 	const bool bTravel = HorizontalSpeed >= (bUsingTravelPose ? 120.0f : 200.0f);
-	if (bTravel != bUsingTravelPose || CharacterMesh->GetAnimationMode() != EAnimationMode::AnimationSingleNode)
+	bUsingTravelPose = bTravel;
+	UAnimSequence* FlightAnimation = bTravel ? TravelPose.Get() : HoverPose.Get();
+	UAnimSingleNodeInstance* AnimationInstance = CharacterMesh->GetSingleNodeInstance();
+	if (!AnimationInstance || AnimationInstance->GetCurrentAsset() != FlightAnimation)
 	{
-		bUsingTravelPose = bTravel;
-		CharacterMesh->PlayAnimation(bTravel ? TravelPose.Get() : HoverPose.Get(), false);
-		CharacterMesh->Stop();
+		CharacterMesh->PlayAnimation(FlightAnimation, true);
 	}
+	CharacterMesh->SetPlayRate(FMath::GetMappedRangeValueClamped(
+		FVector2D(0.0f, 3200.0f), FVector2D(0.65f, 1.15f), HorizontalSpeed));
 
 	FRotator TargetFacing = FlightFacing;
 	if (bTravel)

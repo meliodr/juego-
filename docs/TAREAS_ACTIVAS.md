@@ -111,6 +111,8 @@ Topes iniciales de la lista editable: 9, 18 y 32 m/s. Se podrá añadir un cuart
 
 **Evidencia.** Editor y juego Win64 Development compilaron y AutomationTool completó el paquete. El ejecutable cargó Lvl_ThirdPerson en DX12 SM6. Prueba visual de teclado: despegue con F, estacionario a 0 m/s y selección del nivel 3/3. Pendientes la batería completa de frenado, aterrizaje, colisiones y la validación de eventos con DualSense físico. Windows detectó el dispositivo. Si Unreal no recibe eventos de gamepad directamente, se puede probar la ruta XInput mediante [Steam Input](https://partner.steamgames.com/doc/features/steam_controller/legacy_mode). Próxima entrega agrupada: circuito gris IB-C00, con recta, giro y recorrido repetible de vuelo y aterrizaje para validar más casos en una sola sesión.
 
+**Corrección de animación del prototipo.** El clip se detenía al entrar en vuelo y al cambiar de pose. Ahora se usa el ciclo aéreo de la plantilla en bucle, con reproducción más pausada en suspensión y más rápida en avance. La inclinación acompaña la velocidad y la animación terrestre se restaura al salir del vuelo. La prueba automatizada de Win64 incluye reproducción activa en despegue y en los tres niveles de crucero.
+
 ## IB-C00 — Calle de pruebas legible
 
 **Resultado:** una manzana con avenida, giro, callejón, distintas alturas y azoteas; fachada pequeña preparada para el futuro D01.
