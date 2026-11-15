@@ -70,6 +70,9 @@ materials = {name: required_asset(path) for name, path in {
     'water': HOTEL + 'agua',
     'wood': APARTMENTS + 'madeira',
 }.items()}
+ue.MaterialEditingLibrary.set_material_usage_override(
+    materials['hill'], ue.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES, True, True)
+assert ue.EditorAssetLibrary.save_loaded_asset(materials['hill'])
 
 
 def stage_actor(name, actor_class, center, folder, yaw=0.0):
