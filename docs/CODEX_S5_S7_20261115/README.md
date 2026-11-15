@@ -4,7 +4,7 @@
 
 ## Evidencia examinada antes de escribir
 
-- Repositorio `meliodr/juego-`: [branches](https://github.com/meliodr/juego-/branches), [pull requests](https://github.com/meliodr/juego-/pulls), [GitHub Actions](https://github.com/meliodr/juego-/actions). Cortes consultados el 15-11-2026: **23 ramas listadas, 20 PRs existentes** (después de aparecer PR #22; recuentos previos #22: 22 ramas/19 PRs), **0 ejecuciones Actions** en la API. No estaban publicadas ramas finales `prototype/ib-s25-realism-lab`, `prototype/ib-s3-planet-lab`, `prototype/ib-s35-interactions-lab`, `prototype/ib-s4-powers-lab`.
+- Repositorio `meliodr/juego-`: [branches](https://github.com/meliodr/juego-/branches), [pull requests](https://github.com/meliodr/juego-/pulls), [GitHub Actions](https://github.com/meliodr/juego-/actions). Cortes consultados el 15-11-2026: **23 ramas listadas, 20 PRs existentes** (después de aparecer PR #22; recuentos previos #22: 22 ramas/19 PRs), **0 ejecuciones Actions** en la API. No estaban publicadas ramas finales `prototype/ib-s25-realism-lab`, `prototype/ib-s3-planet-lab`, `prototype/ib-s35-interactions-lab`, `prototype/ib-s4-response-lab`.
 - [PR #19 Sprint 2](https://github.com/meliodr/juego-/pull/19): base de gameplay `1d01db54...` con vuelo/travesía/entorno costero. Sus FPS publicados de 143,94 son de **render offscreen automatizado**; NO certifican visual/humano/60FPS con audio.
 - [PR #20](https://github.com/meliodr/juego-/pull/20): ficha documental candidata CC0 de vegetación; no objeto importado.
 - [PR #21 auditoría 08:45](https://github.com/meliodr/juego-/pull/21): verificación de branches/rutas y 3/3 tests Git-only aislados; no UE/DX12.
