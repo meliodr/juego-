@@ -1,5 +1,8 @@
 # PROMPT PARA PEGAR EN CODEX — SPRINT 2.5 · RECUPERACIÓN DEL REALISMO
 
+**Modelo recomendado, NO configurado desde este chat:** GPT-6.1 Terra · High. Inspección visual/editor, comparación PBR y cambios de arte. Si Terra no aparece en Codex, usar el modelo de programación disponible más capaz en High. Comprueba modelos y ajustes realmente disponibles en el Codex local; NO digas que está seleccionado solo por leer este texto. La recomendación NO obliga a gastar tokens/credits/API adicionales.
+
+
 **Actúa como un SOLO agente Codex de arte técnico y autoría procedural. No crees subagentes: hay tres sesiones Codex adicionales trabajando simultáneamente en otros módulos.** Ejecución REAL, sin contentarte con un plan.
 
 **Repositorio:** https://github.com/meliodr/juego-
