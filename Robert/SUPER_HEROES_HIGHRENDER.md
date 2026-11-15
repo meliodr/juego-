@@ -1,4 +1,6 @@
 # Super Heroes (HighRender): análisis documental
+
+> **HISTÓRICO EXCLUIDO.** Pauta posterior de Jarry: solo buscar y presentar elementos con precio gratuito confirmado; no comprará nada. Este plugin pagado no es candidato ni recomendación vigente. Se conserva el análisis previo como registro, no para proponer su compra. Esta pauta prevalece sobre cualquier posibilidad de reconsideración descrita abajo.
 Corte: 15 de noviembre de 2026. **Referencia pagada, no seleccionada para incorporar.** IMPACT es actualmente para uso personal de Jarry, no comercial; esto no elimina condiciones de licencia. Presupuesto vigente: **RD$0**.
 
 ## Fuentes y alcance
