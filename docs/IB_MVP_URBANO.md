@@ -45,3 +45,18 @@ Los scripts de editor `Tools/Author-UrbanMVP.py`, `Tools/Author-MVPInteriors.py`
 - La prueba de vuelo verificó los cinco niveles, 20 supersaltos y 30 ciclos básicos de despegue. El apex medido de supersalto fue 15,00 m. La muestra que aterrizó sin activar vuelo recorrió 40,93 m; la muestra con transición a vuelo recorrió 32,93 m en su ensayo. La cápsula golpeó una pared de 4 cm a 105 m/s de frente y en ángulo.
 - Pasaron 20 ciclos de agarre, transporte, lanzamiento, paso y reinicio, con 10 tiros por potencia. Los ensayos de impacto repitieron 10 descensos y comprobaron empuje sobre cuerpos etiquetados con exclusión de objetos no elegibles.
 - La primera vuelta comparable del paquete, a 1920×1080 y escala interna del 100 %, midió 129,44 FPS de media, 7,73 ms por fotograma, p95 de 8,67 ms y p99 de 9,17 ms. Los dos fotogramas por encima de 50 ms ocurrieron al recargar. Es una captura automatizada DX12, sin límite de FPS y con saltos de posición de la prueba.
+
+### Rendimiento de la build final
+
+RTX 4070 Laptop, 8.188 MiB, controlador NVIDIA 621.14. Win64 Development, DX12 SM6, 1920×1080, calidad Alta y VSync desactivado. La prueba usa entradas simuladas, saltos entre segmentos del recorrido, renderizado fuera de pantalla y audio desactivado.
+
+| Muestra | FPS medio | Media | p95 | p99 |
+|---|---:|---:|---:|---:|
+| Primera vuelta, escala 100 % | 129,44 | 7,73 ms | 8,67 ms | 9,17 ms |
+| Primera vuelta, escala 83 % | 142,90 | 7,00 ms | 7,84 ms | 8,43 ms |
+| Sesión de 612,1 s, escala 83 % | 132,35 | 7,56 ms | 8,58 ms | 9,27 ms |
+| Una vuelta, escala 83 %, límite de 30 FPS | 29,96 | 33,38 ms | 33,34 ms | 33,38 ms |
+
+La sesión de 12 vueltas y reinicios registró un pico de VRAM de GPU de 2.546 MiB. Los hilos de juego y render promediaron 1,82 ms y 7,55 ms. El tiempo GPU promedió 7,09 ms. Hubo 25 cuadros por encima de 50 ms, 24 cerca del reinicio y uno durante el impacto. El máximo fue 88,14 ms. Durante la sesión no hubo sustituciones de materiales por flags de uso. Los contadores de cola de streaming de niveles fueron cero para este mapa único. Los mips de textura deseados cargaron en promedio al 99,59 %. La prueba no midió por separado el coste del material de interiores.
+
+La build arranca con calidad Alta, escala interna de 83 % y límite de 60 FPS. F2 o Cruceta izquierda alterna Rendimiento al 75 % y Alta al 100 %. El ejecutable de Steam se validó aparte en modo normal. Queda el recorrido manual con DualSense físico para aceptar sensación, cámara y presentación.
