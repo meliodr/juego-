@@ -1,0 +1,5 @@
+# Codex en IMPACT: BEYOND: un integrador principal y hasta cuatro subagentes.
+# No habilitar herramientas MCP ni modificar aprobaciones/seguridad desde este archivo.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4
