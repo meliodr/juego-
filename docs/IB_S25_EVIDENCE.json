@@ -113,14 +113,15 @@
     "Visible DX12/audio A/B FPS, p95/p99, GPU memory and streaming",
     "Human acceptance of realism"
   ],
-  "permission_denial_remaining": true,
+  "permission_denial_remaining": false,
   "publication": {
     "code_commit": "b60d888c3aa39d203f1293b9c873e29c17f15385",
-    "push": "DENIED_NOT_EXECUTED",
-    "draft_pr": "NOT_CREATED_LOCAL_BODY_PREPARED",
     "target": "https://github.com/meliodr/juego- : prototype/ib-s25-realism-lab",
-    "reason": "Automatic approval review requires explicit user authorization to publish this payload to the public repository. One reevaluation after reading relevant user history was also denied.",
-    "next_action": "Do not retry push or public PR: parent instruction remains in force."
+    "base": "prototype/ib-sprint02",
+    "authorization": "Explicit public-branch and draft-PR authorization verified on 2026-11-15",
+    "previous_attempts": "Two earlier pushes denied without execution; new relevant authorization received",
+    "snapshot": "Prepared for publication; remote outcome recorded by associated draft PR",
+    "merge_authorized": false
   },
   "plugins_installed": false,
   "plugin_activation": "PythonScriptPlugin and EditorScriptingUtilities requested via launch arguments only; no project/config changes",

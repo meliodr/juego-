@@ -1,8 +1,8 @@
 # S2.5 — laboratorio de recuperación visual
 
-Estado del 2026-11-15: **CÓDIGO y pruebas ligeras PASS; Unreal, mapa, capturas, DX12 y aceptación artística PENDIENTES.** No es una entrega fotorealista terminada ni integración global/Sprint 7.5. RD$0, sin compras, plugins nuevos, cook, cambios de seguridad o merge.
+Estado del 2026-11-15: **Código y 11 pruebas ligeras PASS; arranque de UE 5.8.4 con DX12/audio/Python verificado. Imports, mapa, capturas, benchmark y aceptación artística PENDIENTES.** No es una entrega fotorealista terminada ni integración global/Sprint 7.5. RD$0, sin compras, plugins nuevos, cook o merge.
 
-**Publicación bloqueada:** commit de código local `b60d888c3aa39d203f1293b9c873e29c17f15385`. La revisión automática rechazó el push a `meliodr/juego-` y su única reevaluación tras consultar el historial, porque exige autorización explícita para publicar este contenido en ese repositorio público. No se ejecutó el push ni se creó PR. `IB_S25_PR_BODY.md` es el texto local preparado, no un PR existente. No se intentó otro transporte para eludir el rechazo.
+**Publicación autorizada:** el propietario confirmó expresamente publicar esta rama en `meliodr/juego-` y abrir un PR en borrador sin fusionarlo. Las dos denegaciones anteriores quedan como antecedente; esta revisión prepara la publicación con la nueva autorización. Los logs, respaldos, binarios del motor y bytes de assets externos permanecen locales.
 
 Base exacta: `1d01db54b63250ed0aacb0704a5ac16290324e32`. Rama: `prototype/ib-s25-realism-lab`. Worktree: `task/impact-s25-realism`, con repositorio auxiliar `task/impact-s25-repo`; se usó la carpeta autorizada porque las raíces originales no permitían operaciones Git en el sandbox. La auditoría posterior de solo lectura confirmó el checkout original en la misma base y una carpeta no versionada `ImpactBeyond 5.8/`. No se sobrescribió. La configuración documental de [coordinación](https://github.com/meliodr/juego-/blob/docs/roadmap-sprints-02-08-20261115/docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md) se leyó sin mezclar esa rama.
 
@@ -19,10 +19,12 @@ Base exacta: `1d01db54b63250ed0aacb0704a5ac16290324e32`. Rama: `prototype/ib-s25
 | `Tools/IBS25_benchmark.ps1` | Comando revisable por defecto; lanzamiento opt-in, turno coordinado, guard de procesos, mutex cooperativo y muestreo de memoria de GPU. NO se lanzó Unreal. |
 | `Tools/IBS25_metrics.py` | FrameTime/FPS/p95/p99 de CSV reales, calentamiento explícito y rechazo de datos inválidos. Probado con datos sintéticos, no rendimiento del juego. |
 | `Tools/IBS25_test.py` | 11 pruebas ligeras PASS; no sustituyen validación de APIs Unreal/render/colisiones. |
+| `Tools/IBS25_live.py` | Cola local de scripts con alcance IBS25. Arrancó en Unreal; corrección de keep-alive revisada contra fuente instalada, aún sin ejecutar. Sin servidor ni puerto. |
+| `Tools/IBS25_stage.py` | Importación PBR/árbol CC0 y reducción LOD preparada, no ejecutada; depende de archivos locales no publicados. |
 
 La receta dispone seis edificios de 5–8 pisos en tres manzanas, cuarta manzana de plaza, parque de transición, seis ConceptCars, dieciséis posiciones para árboles reales y ruta aérea central. Fachadas con entradas y cornisas existentes; 72 paneles como máximo usan el interior mapping existente. Árboles con escala uniforme; coches ajustados uniformemente a longitud 4,5 m. No se distorsionan los coches por eje. Ninguna malla de Kit Cidade aparece en primer plano. El único Cube del adaptador es colisión invisible; no se generan árboles de cilindro/cono ni colinas esféricas. No hay costa/agua en esta variante: se eligió **transición a parque**, permitida por el encargo.
 
-La vegetación continúa bloqueada: en el Content auditado no apareció una malla real de árbol. `tree: null` es una dependencia pendiente deliberada. El generador no guarda un mapa incompleto con árboles falsos. Se ha producido código y geometría útil, **no se alcanzó el objetivo perceptual City Sample**. Requiere revisión de escala, orientaciones glTF/OBJ, juntas, colisiones, materiales y composición en el motor.
+Se descargó localmente [Island Tree 01](https://polyhaven.com/a/island_tree_01), CC0: glTF, binario y nueve texturas 1K, 11 archivos y 66.337.268 bytes; recibo local `Tools/IBS25_sources/tree/receipt.json`. La malla fuente tiene 1.599.403 triángulos: su reducción/LOD y coste deben validarse antes de usar dieciséis instancias. `tree: null` sigue siendo el valor predeterminado hasta importar una malla real. Shrub 03 queda como candidato de vegetación baja, no árbol ni recurso probado. **No se alcanzó el objetivo perceptual City Sample.**
 
 ## Reutilización, licencia y bytes
 
@@ -30,13 +32,13 @@ La vegetación continúa bloqueada: en el Content auditado no apareció una mall
 |---|---|---|
 | Fachada | Poly Haven Modular Urban Apartments Facade, cuatro módulos ya importados | City Sample Buildings solo si bytes y derechos locales están confirmados; no descargar/reclamar automáticamente. |
 | Coches | `/Game/Car/SM_AutomotiveTP_Car`, ConceptCar ya usado por el proyecto | City Sample Vehicles, pendiente de bytes/licencia; Kit Cidade solo QA/fondo, excluido de este primer plano. |
-| Vegetación | Una malla real local con procedencia/licencia registrada; falta asignación | Un árbol CC0 oficial seleccionado y probado en sesión posterior; NO sustituir por primitivas. |
+| Vegetación | Island Tree 01, CC0, descargado localmente; importación y reducción sin validar | Shrub 03, candidato CC0 de vegetación baja sin importar; no sustituye árboles. |
 | Calle/acera | [Asphalt 02](https://polyhaven.com/a/asphalt_02) (3 m) + [Concrete Pavement](https://polyhaven.com/a/concrete_pavement) (1,8 m), CC0, seis mapas 2K | Sin downgrade silencioso a material plano; la autoría falla si faltan texturas. |
 | Ventanas | `/Game/IB_C00/Interiors/M_MVP_WindowInteriors` | Mantener vidrio original en los restantes módulos; no cambiar el material donante. |
 
 Inventario local medido: `UrbanFacades`: 24 `.uasset`, **24.829.802 bytes**; `Car`: 8 `.uasset`, **11.945.721 bytes**; `Interiors`: 1 `.uasset`, **15.580 bytes**. Son dependencias del proyecto, no archivos nuevos republicados por este PR. Según [la licencia oficial de Poly Haven](https://polyhaven.com/license), sus assets son CC0 y permiten redistribución; las imágenes nuevas siguen locales por economía de repositorio. El manifiesto permite verificarlas. Los OBJ/receta son autoría mínima propia porque no se halló geometría de calle detallada reutilizable en el subconjunto local; no pretenden reemplazar edificios o vegetación por primitivas.
 
-ConceptCar: la procedencia local de plantilla se documentó en `docs/IB_MVP_URBANO.md`; este PR referencia la ruta y no añade sus bytes. City Sample completo/Buildings/Vehicles, Electric Dreams y Automotive Materials no se importaron ni se publicaron. Ningún contenido NoAI se cargó como entrada al modelo. No se afirma posesión por figurar Free en Fab. Un clone de Git **no basta** para abrir el laboratorio: faltan el `.umap` generado, la malla vegetal autorizada, imports y módulos compatibles.
+ConceptCar: la procedencia local de plantilla se documentó en `docs/IB_MVP_URBANO.md`; este PR referencia la ruta y no añade sus bytes. City Sample completo/Buildings/Vehicles, Electric Dreams y Automotive Materials no se importaron ni se publicaron. Ningún contenido NoAI se cargó como entrada al modelo. No se afirma posesión por figurar Free en Fab. Un clone de Git **no basta** para abrir el laboratorio: faltan el `.umap` generado y los imports; la fuente vegetal y los módulos compatibles solo están preparados localmente.
 
 UE instalado verificado leyendo `Build.version`: **5.8.4, CL 58902052**. Los manifiestos de Launcher consultados muestran motor/Bridge/Fab, pero no City Sample. Las raíces habituales de proyecto consultadas no confirmaron `Small_City_LVL`; esto es un inventario acotado, no prueba de ausencia en todo el disco. No se inició su descarga. Terra aparece en la caché de modelos de Codex; ni esa caché ni el prompt prueban modelo/esfuerzo activos. No se cambió configuración de modelo.
 
@@ -60,8 +62,8 @@ La receta es idempotente por contenido; aborta si encuentra un archivo generado 
 
 ## Autoría en un turno seguro de Unreal — PENDIENTE
 
-1. Coordinar un turno exclusivo. Un listado sin procesos no reserva la laptop. No se obtuvo dicho turno durante esta pasada, por lo que no se abrió editor ni cook. El launcher de benchmark exige confirmación del turno y no mata procesos ajenos.
-2. Materializar en este worktree los assets/base necesarios y módulos compatibles con UE5.8.4. Es un checkout sparse de código/documentación; no copiar carpetas completas de proyectos/cache ni tocar el checkout original. Cualquier build necesario se coordina aparte. Python/editor scripting debe estar disponible en la sesión autorizada; no se instala/activa automáticamente ningún plugin.
+1. Coordinar un nuevo turno exclusivo. El turno anterior permitió inicializar Unreal con DX12/audio/Python; la solicitud de acceso visual expiró y no se ejecutaron imports. El Editor salió con código 0 y el mutex quedó libre. `ExecutePythonScript` requiere `unreal.EditorPythonScripting.set_keep_python_script_alive(True)` para mantener la cola: corrección preparada, sin probar. El launcher de benchmark exige confirmación del turno y no mata procesos ajenos.
+2. Los assets de la base y el módulo/recibo compatible ya se materializaron en este worktree. El arranque usó PythonScriptPlugin y EditorScriptingUtilities existentes mediante argumentos de proceso. No se instalaron plugins ni se cambió el proyecto. El Editor reescribió automáticamente DefaultEngine.ini: se respaldó y restauró exactamente a HEAD. Revisar de nuevo cualquier escritura automática antes de cerrar la siguiente sesión.
 3. Ejecutar `IBS25_pbr.py` en el editor con `IBS25_IMPORT_PBR=1`. Importa únicamente a `/Game/IB_S25/Textures`, escribe `Tools/IBS25_sources/assets.json`, configura sRGB solo en color, normal DX y límite 2K. No reimporta ni sobreescribe texturas ajenas.
 4. En una copia local propia de `assets.json`, añadir `"tree": "/Game/.../MallaVegetalAutorizada"` con la licencia/inventario registrado. El archivo de ejemplo no inventa rutas Fab. Usar un árbol real con proporciones adecuadas; probar colisión de tronco si se convierte en objeto jugable (en esta autoría la vegetación decorativa no colisiona).
 5. Con editor limpio (sin mapas sin guardar), preparar variables y ejecutar el adaptador en su consola Python. `exec(compile(open(script, encoding='utf-8').read(), script, 'exec'), {'__name__':'__main__', '__file__':script})` conserva `__file__` para todos los scripts.
@@ -120,7 +122,8 @@ Ver `IB_S25_EVIDENCE.json` para evidencia de esta pasada. Revisión e implementa
 |---|---|
 | Receta/OBJ y rechazo de sobrescritura | PASS, Python local |
 | Fuente CC0, hashes y tamaño 2K | PASS, seis archivos reales |
-| Sintaxis Python y PowerShell | PASS, sin ejecutar APIs Unreal |
+| Sintaxis Python y PowerShell | PASS; autoría/captura/staging aún sin ejecutar |
+| Arranque UE 5.8.4, DX12, dispositivo de audio, cola Python | PASS en log; no certifica render artístico, audio audible ni benchmark |
 | Autoría/idempotencia UE, colisiones/transitabilidad | PENDIENTE |
 | `.umap`, 5 PNG comparadas, aceptación artística | PENDIENTE |
 | DX12/audio visible A/B, p95/p99/VRAM/streaming | PENDIENTE |
