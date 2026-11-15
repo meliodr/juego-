@@ -57,8 +57,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1", Units="cm/s"))
 	float RunSpeed = 500.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1", Units="cm/s"))
-	float SprintSpeed = 700.0f;
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1800", ClampMax="2400", Units="cm/s"))
+	float SprintSpeed = 2100.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight", meta=(ClampMin="0.3", ClampMax="0.6", Units="s"))
+	float TakeoffDuration = 0.433f;
 
 	/** Maximum speed of each flight level in centimeters per second. */
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight")
@@ -96,6 +99,8 @@ private:
 	bool IsFlightBrakeHeld() const;
 
 	void UpdateFlightPresentation(float DeltaSeconds);
+	void UpdateGroundMovement(float DeltaSeconds, const APlayerController* PlayerController);
+	void UpdateActionAnimation(UAnimSequence* Animation, bool bLoop, float Rate = 1.0f);
 
 	UPROPERTY()
 	TObjectPtr<UAnimSequence> HoverPose;
@@ -105,12 +110,30 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UAnimSequence> CarryPose;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> TakeoffPose;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> CarryTakeoffPose;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> ThrowPose;
+
 	float BaseCameraArmLength = 400.0f;
+	float BaseFieldOfView = 90.0f;
+	float BaseGroundFriction = 0.0f;
+	float BaseBrakingFriction = 0.0f;
+	float BaseGroundAcceleration = 0.0f;
+	float BaseGroundBraking = 0.0f;
+	bool bBaseSeparateBrakingFriction = false;
+	float TakeoffRemaining = 0.0f;
 
 	FTransform GroundMeshTransform;
 	FRotator FlightFacing = FRotator::ZeroRotator;
 	bool bPresentingFlight = false;
 	bool bUsingTravelPose = false;
+	bool bPlayingGroundThrow = false;
 	int32 FlightLevel = 0;
 
 public:
@@ -138,5 +161,7 @@ public:
 
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	const UImpactCircuitComponent* GetCircuit() const { return Circuit.Get(); }
 };
 

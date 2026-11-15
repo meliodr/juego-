@@ -10,10 +10,11 @@ void UImpactGripMesh::SetCircuit(UImpactCircuitComponent* InCircuit)
 	Circuit = InCircuit;
 }
 
-void UImpactGripMesh::BeginFlightPoseBlend()
+void UImpactGripMesh::BeginFlightPoseBlend(float Duration)
 {
 	PreviousPose = GetComponentSpaceTransforms();
 	BlendStart = GetWorld()->GetTimeSeconds();
+	BlendDuration = Duration;
 }
 
 void UImpactGripMesh::FinalizeBoneTransform()
@@ -24,7 +25,7 @@ void UImpactGripMesh::FinalizeBoneTransform()
 		if (!PreviousPose.IsEmpty())
 		{
 			const float Elapsed = static_cast<float>(GetWorld()->GetTimeSeconds() - BlendStart);
-			const float Alpha = FMath::SmoothStep(0.0f, 0.18f, Elapsed);
+			const float Alpha = FMath::SmoothStep(0.0f, BlendDuration, Elapsed);
 			if (Alpha >= 1.0f || Pose.Num() != PreviousPose.Num())
 			{
 				PreviousPose.Reset();

@@ -4,7 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/HUD.h"
 #include "ImpactBeyondGameMode.generated.h"
+
+UCLASS()
+class AImpactBeyondHUD : public AHUD
+{
+	GENERATED_BODY()
+
+public:
+	virtual void DrawHUD() override;
+};
 
 /**
  *  Simple GameMode for a third person game

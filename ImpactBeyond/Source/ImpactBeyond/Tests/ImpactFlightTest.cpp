@@ -109,7 +109,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 	});
 	for (int32 Cycle = 0; Cycle < 30; ++Cycle)
 	{
-		ForFrames(10, [=, this](int32 Frame)
+		ForFrames(44, [=, this](int32 Frame)
 		{
 			if (Frame == 0)
 			{
@@ -120,7 +120,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			{
 				Key(EKeys::F, false);
 			}
-			if (Frame == 9)
+			if (Frame == 43)
 			{
 				TestTrue(TEXT("Takeoff enters flying"), Movement->IsFlying());
 				TestTrue(TEXT("Hover animation plays instead of freezing"), Pawn->GetMesh()->IsPlaying());
@@ -274,6 +274,103 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 	Once([=, this]()
 	{
 		TestTrue(TEXT("Running resumes after landing"), Movement->IsMovingOnGround() && Movement->Velocity.Size2D() > 400);
+	});
+
+	for (int32 Cycle = 0; Cycle < 20; ++Cycle)
+	{
+		const FKey SprintKey = Cycle % 2 == 0 ? EKeys::LeftShift : EKeys::Gamepad_LeftThumbstick;
+		const auto TurnStart = MakeShared<FVector>();
+		const auto bObservedTakeoff = MakeShared<bool>(false);
+		ForFrames(90, [=, this](int32 Frame)
+		{
+			if (Frame == 0)
+			{
+				Movement->StopMovementImmediately();
+				Movement->SetMovementMode(MOVE_Walking);
+				Pawn->SetActorLocationAndRotation(Origin + FVector(0, 0, 98), FRotator::ZeroRotator);
+				PC->SetControlRotation(FRotator::ZeroRotator);
+				Key(SprintKey, true);
+			}
+			Pawn->DoMove(0, 1);
+			if (Frame == 89)
+			{
+				TestTrue(TEXT("Sprint reaches the requested 18–24 m/s band"),
+					Movement->IsMovingOnGround() && Movement->Velocity.X >= 1780.0 && Movement->Velocity.X <= 2420.0);
+				*TurnStart = Pawn->GetActorLocation();
+				PC->SetControlRotation(FRotator(0, 60, 0));
+			}
+		});
+		ForFrames(35, [=, this](int32 Frame)
+		{
+			Pawn->DoMove(0, 1);
+			if (Frame == 34)
+			{
+				TestTrue(TEXT("Sprint changes heading without leaving the floor"), Movement->IsMovingOnGround()
+					&& Pawn->GetActorLocation().Y > TurnStart->Y + 150.0);
+				Key(SprintKey, false);
+			}
+		});
+		ForFrames(50, [=, this](int32 Frame)
+		{
+			if (Frame == 0)
+			{
+				TestTrue(TEXT("Sprint release does not instantaneously stop the hero"), Movement->Velocity.Size2D() > 400.0);
+			}
+			if (Frame == 49)
+			{
+				TestTrue(TEXT("Ground braking brings sprint to rest"), Movement->Velocity.Size2D() < 100.0);
+			}
+		});
+		ForFrames(32, [=](int32) { Pawn->DoMove(0, 1); });
+		ForFrames(44, [=, this](int32 Frame)
+		{
+			if (Frame == 0)
+			{
+				TestTrue(TEXT("Running takeoff starts with horizontal momentum"), Movement->Velocity.Size2D() > 350.0);
+				Key(EKeys::F, true);
+			}
+			if (Frame == 1) { Key(EKeys::F, false); }
+			Pawn->DoMove(0, 1);
+			if (!*bObservedTakeoff && Movement->IsFlying())
+			{
+				*bObservedTakeoff = true;
+				TestTrue(TEXT("Running takeoff carries forward momentum into flight"), Movement->Velocity.Size2D() > 200.0);
+			}
+			if (Frame == 43)
+			{
+				TestTrue(TEXT("Running takeoff completes within the animation window"), *bObservedTakeoff);
+			}
+		});
+	}
+	const auto GroundSprintPeak = MakeShared<double>(0.0);
+	const auto GroundSprintFurthestX = MakeShared<double>(0.0);
+	ForFrames(130, [=, this](int32 Frame)
+	{
+		if (Frame == 0)
+		{
+			AddInfo(TEXT("Verified 20 sprint, turn, brake and running takeoff cycles"));
+			Movement->StopMovementImmediately();
+			Movement->SetMovementMode(MOVE_Walking);
+			Pawn->SetActorLocationAndRotation(Origin + FVector(0, 0, 98), FRotator::ZeroRotator);
+			PC->SetControlRotation(FRotator::ZeroRotator);
+			*Wall = MakeBox(Origin + FVector(2300, 0, 200), FVector(2, 1300, 200));
+			Key(EKeys::LeftShift, true);
+		}
+		Pawn->DoMove(0, 1);
+		*GroundSprintPeak = FMath::Max(*GroundSprintPeak, Movement->Velocity.Size2D());
+		*GroundSprintFurthestX = FMath::Max(*GroundSprintFurthestX, Pawn->GetActorLocation().X - Origin.X);
+		if (Frame == 129)
+		{
+			TestTrue(TEXT("Ground wall test reaches sprint speed"), *GroundSprintPeak >= 1780.0);
+			const double ContactX = 2298.0 - Pawn->GetCapsuleComponent()->GetScaledCapsuleRadius();
+			TestTrue(TEXT("Sprint capsule reaches a thin building wall without crossing"),
+				FMath::IsNearlyEqual(*GroundSprintFurthestX, ContactX, 5.0));
+			Key(EKeys::LeftShift, false);
+			(*Wall)->Destroy();
+		}
+	});
+	Once([=]()
+	{
 		Pawn->SetActorLocationAndRotation(OriginalLocation, OriginalRotation);
 		PC->SetControlRotation(OriginalView);
 		Movement->SetMovementMode(OriginalMode);
@@ -398,9 +495,14 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 		TWeakObjectPtr<AImpactBeyondCharacter> Hero;
 		TWeakObjectPtr<UImpactCircuitComponent> Circuit;
 		TWeakObjectPtr<UStaticMeshComponent> Car;
+		TWeakObjectPtr<UStaticMeshComponent> Panel;
 		FVector InitialCarLocation = FVector::ZeroVector;
 		FVector AirStart = FVector::ZeroVector;
 		FVector CargoAirStart = FVector::ZeroVector;
+		double PeakThrowSpeed = 0.0;
+		double FurthestThrowY = 0.0;
+		double LeadingWallFace = 0.0;
+		double FurthestCargoNose = 0.0;
 		int32 Completed = 0;
 		int32 Frame = 0;
 		int32 ReloadFrames = 0;
@@ -463,9 +565,23 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			{
 				TestTrue(TEXT("Reset restores the car near its initial location"),
 					FVector::Dist(Car->GetComponentLocation(), State->InitialCarLocation) < 20.0);
-				if (++State->Completed == 20)
+				++State->Completed;
+				if (State->Completed == 20)
 				{
-					AddInfo(TEXT("Completed 20 pickup, airborne transport and full map reload cycles"));
+					AddInfo(TEXT("Completed 20 pickup, airborne transport, throw, passage and full map reload cycles"));
+				}
+				if (State->Completed == 50)
+				{
+					AddInfo(TEXT("Completed 10 low, 10 medium and 10 high charged throws"));
+				}
+				if (State->Completed == 51)
+				{
+					TestTrue(TEXT("Reset clears the pending throw charge"),
+						!Circuit->IsChargingThrow() && FMath::IsNearlyZero(Circuit->GetThrowCharge()));
+					AddInfo(TEXT("Verified that a reset cancels an active charge"));
+				}
+				if (State->Completed == 52)
+				{
 					return true;
 				}
 			}
@@ -475,12 +591,24 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			}
 
 			State->Car = Car;
+			State->Panel = Panel;
 			State->Hero = Hero;
 			State->Circuit = Circuit;
 			State->LastWorld = World;
 			State->Frame = 0;
 			State->ReloadFrames = 0;
+			State->PeakThrowSpeed = 0.0;
+			State->FurthestThrowY = 0.0;
 			State->bAwaitingReload = false;
+			if (State->Completed >= 20)
+			{
+				// A short approach makes even a tap-strength throw contact the panel.
+				const FVector PanelCenter = Panel->GetComponentLocation();
+				Car->SetPhysicsLinearVelocity(FVector::ZeroVector);
+				Car->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+				Car->SetWorldLocation(FVector(PanelCenter.X, PanelCenter.Y - 1000.0, State->InitialCarLocation.Z),
+					false, nullptr, ETeleportType::TeleportPhysics);
+			}
 			const FVector CarLocation = Car->GetComponentLocation();
 			Hero->SetActorLocationAndRotation(FVector(CarLocation.X, CarLocation.Y - 320.0, 98.0),
 				FRotator(0.0, 90.0, 0.0), false, nullptr, ETeleportType::TeleportPhysics);
@@ -492,8 +620,9 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 		AImpactBeyondCharacter* Hero = State->Hero.Get();
 		UImpactCircuitComponent* Circuit = State->Circuit.Get();
 		UStaticMeshComponent* Car = State->Car.Get();
+		UStaticMeshComponent* Panel = State->Panel.Get();
 		APlayerController* PC = Hero ? Cast<APlayerController>(Hero->GetController()) : nullptr;
-		if (!PC || !Circuit || !Car)
+		if (!PC || !Circuit || !Car || !Panel)
 		{
 			AddError(TEXT("Lost hero or car before requesting reset"));
 			return true;
@@ -504,6 +633,96 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 		{
 			PC->InputKey(FInputKeyEventArgs::CreateSimulated(Input, bHeld ? IE_Pressed : IE_Released, bHeld ? 1.f : 0.f));
 		};
+		if (State->Completed == 51)
+		{
+			if (Frame == 50)
+			{
+				// An overhang intersects the carried box but clears the hero's capsule.
+				AActor* Wall = Hero->GetWorld()->SpawnActor<AActor>();
+				if (!TestNotNull(TEXT("Cargo overhang fixture"), Wall)) { return true; }
+				UBoxComponent* Box = NewObject<UBoxComponent>(Wall);
+				Wall->SetRootComponent(Box);
+				Box->InitBoxExtent(FVector(400.0, 4.0, 80.0));
+				Box->SetCollisionProfileName(TEXT("BlockAll"));
+				State->LeadingWallFace = Car->Bounds.Origin.Y + Car->Bounds.BoxExtent.Y + 80.0;
+				Wall->SetActorLocation(FVector(Car->Bounds.Origin.X, State->LeadingWallFace + 4.0, 285.0));
+				Box->RegisterComponent();
+				State->AirStart = Hero->GetActorLocation();
+			}
+			if (Frame > 50 && Frame < 100)
+			{
+				Hero->DoMove(0, 1);
+				if (!Car->IsSimulatingPhysics())
+				{
+					State->FurthestCargoNose = FMath::Max(State->FurthestCargoNose,
+						Car->Bounds.Origin.Y + Car->Bounds.BoxExtent.Y);
+				}
+			}
+			if (Frame == 100)
+			{
+				TestTrue(TEXT("Hero capsule clears the cargo-only obstruction"), Hero->GetActorLocation().Y > State->AirStart.Y + 125.0);
+				TestTrue(TEXT("Independent cargo sweep reaches the overhang without crossing"),
+					FMath::IsNearlyEqual(State->FurthestCargoNose, State->LeadingWallFace, 8.0));
+				State->bAwaitingReload = true;
+				Circuit->ResetCircuit();
+			}
+			return false;
+		}
+		if (State->Completed >= 20)
+		{
+			const FKey ThrowKey = State->Completed % 2 == 0 ? EKeys::T : EKeys::Gamepad_FaceButton_Top;
+			const int32 HoldFrames[] = {3, 27, 60};
+			const int32 ReleaseFrame = 50 + HoldFrames[Level];
+			if (Frame == 50)
+			{
+				TestFalse(TEXT("Charged throw begins with the car held"), Car->IsSimulatingPhysics());
+				Key(ThrowKey, true);
+			}
+			if (State->Completed == 50)
+			{
+				if (Frame == 55)
+				{
+					TestTrue(TEXT("An active charge does not release the car"),
+						Circuit->IsChargingThrow() && !Car->IsSimulatingPhysics());
+					State->bAwaitingReload = true;
+					Circuit->ResetCircuit();
+				}
+				return false;
+			}
+			if (Frame == ReleaseFrame)
+			{
+				TestFalse(TEXT("Holding the throw action keeps the car held"), Car->IsSimulatingPhysics());
+				Key(ThrowKey, false);
+			}
+			if (Frame > ReleaseFrame && Car->IsSimulatingPhysics())
+			{
+				State->PeakThrowSpeed = FMath::Max(State->PeakThrowSpeed, Car->GetPhysicsLinearVelocity().Y);
+				State->FurthestThrowY = FMath::Max(State->FurthestThrowY, Car->GetComponentLocation().Y);
+			}
+			if (Frame == ReleaseFrame + 105)
+			{
+				const double MinimumSpeeds[] = {1050.0, 3000.0, 5600.0};
+				const double MaximumSpeeds[] = {1980.0, 5250.0, 7250.0};
+				AddInfo(FString::Printf(TEXT("Charge tier %d measured peak forward speed %.1f cm/s"), Level + 1, State->PeakThrowSpeed));
+				TestTrue(TEXT("Measured charge speed falls in the expected band"),
+					State->PeakThrowSpeed >= MinimumSpeeds[Level] && State->PeakThrowSpeed <= MaximumSpeeds[Level]);
+				if (Level == 0)
+				{
+					const double PanelGap = Panel->GetComponentLocation().Y - State->FurthestThrowY;
+					AddInfo(FString::Printf(TEXT("Low throw reached within %.1f cm of panel center; collision enabled: %s"),
+						PanelGap, Panel->IsCollisionEnabled() ? TEXT("yes") : TEXT("no")));
+					TestTrue(TEXT("Low throw reaches the panel"), PanelGap <= 300.0);
+					TestTrue(TEXT("Low throw leaves the panel intact"), Panel->IsCollisionEnabled());
+				}
+				if (Level == 2)
+				{
+					TestFalse(TEXT("High charged throw opens the panel"), Panel->IsCollisionEnabled());
+				}
+				State->bAwaitingReload = true;
+				Circuit->ResetCircuit();
+			}
+			return false;
+		}
 		if (Frame == 50)
 		{
 			TestFalse(TEXT("Car remains held after lift"), Car->IsSimulatingPhysics());
@@ -511,17 +730,17 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			Key(EKeys::F, true);
 		}
 		if (Frame == 51) { Key(EKeys::F, false); }
-		if (Level >= 1 && Frame == 68) { Key(EKeys::E, true); }
-		if (Level >= 1 && Frame == 69) { Key(EKeys::E, false); }
-		if (Level == 2 && Frame == 71) { Key(EKeys::Gamepad_RightShoulder, true); }
-		if (Level == 2 && Frame == 72) { Key(EKeys::Gamepad_RightShoulder, false); }
-		if (Frame == 73)
+		if (Level >= 1 && Frame == 100) { Key(EKeys::E, true); }
+		if (Level >= 1 && Frame == 101) { Key(EKeys::E, false); }
+		if (Level == 2 && Frame == 103) { Key(EKeys::Gamepad_RightShoulder, true); }
+		if (Level == 2 && Frame == 104) { Key(EKeys::Gamepad_RightShoulder, false); }
+		if (Frame == 107)
 		{
 			State->AirStart = Hero->GetActorLocation();
 			State->CargoAirStart = Car->GetComponentLocation();
 		}
-		if (Frame >= 73 && Frame < 168) { Hero->DoMove(0, 1); }
-		if (Frame == 168)
+		if (Frame >= 107 && Frame < 202) { Hero->DoMove(0, 1); }
+		if (Frame == 202)
 		{
 			const auto* Movement = Hero->GetCharacterMovement();
 			const float FlightCaps[] = {900.0f, 1800.0f, 3200.0f};
@@ -533,6 +752,28 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			TestTrue(TEXT("Transport retains two finite, distinct grip targets"), Circuit->GetGripTargets(LeftGrip, RightGrip)
 				&& !LeftGrip.ContainsNaN() && !RightGrip.ContainsNaN() && FVector::DistSquared(LeftGrip, RightGrip) > 400.0);
 			TestFalse(TEXT("Car remains held during airborne movement"), Car->IsSimulatingPhysics());
+			Key(EKeys::X, true);
+		}
+		if (Frame == 254)
+		{
+			Key(EKeys::X, false);
+			Circuit->ThrowCar();
+		}
+		if (Frame == 279)
+		{
+			TestTrue(TEXT("Throw after braking restores physical simulation"), Car->IsSimulatingPhysics());
+		}
+		const FVector PanelCenter = Panel->GetComponentLocation();
+		if (Frame == 350)
+		{
+			TestFalse(TEXT("Airborne throw opens the panel"), Panel->IsCollisionEnabled());
+			Hero->GetCharacterMovement()->StopMovementImmediately();
+			Hero->SetActorLocation(FVector(PanelCenter.X, PanelCenter.Y - 300.0, 115.0), false, nullptr, ETeleportType::TeleportPhysics);
+		}
+		if (Frame > 350 && Frame < 435) { Hero->DoMove(0, 1); }
+		if (Frame == 435)
+		{
+			TestTrue(TEXT("Hero travelled through the opened panel"), Hero->GetActorLocation().Y > PanelCenter.Y + 125.0);
 			State->bAwaitingReload = true;
 			Circuit->ResetCircuit();
 		}

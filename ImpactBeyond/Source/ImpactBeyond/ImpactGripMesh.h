@@ -12,7 +12,7 @@ class UImpactGripMesh : public USkeletalMeshComponent
 
 public:
 	void SetCircuit(UImpactCircuitComponent* InCircuit);
-	void BeginFlightPoseBlend();
+	void BeginFlightPoseBlend(float Duration = 0.18f);
 	virtual void FinalizeBoneTransform() override;
 
 private:
@@ -22,5 +22,6 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<UImpactCircuitComponent> Circuit;
 	TArray<FTransform> PreviousPose;
-	float BlendStart = 0.0f;
+	double BlendStart = 0.0;
+	float BlendDuration = 0.18f;
 };

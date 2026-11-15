@@ -18,8 +18,7 @@ namespace
 	const FName PanelTag(TEXT("ImpactCircuitPanel"));
 	constexpr float GrabDistance = 380.0f;
 	constexpr float LiftDuration = 0.55f;
-	constexpr float ThrowReleaseTime = 0.25f;
-	constexpr float ThrowSpeed = 6800.0f;
+	constexpr float ThrowFollowThrough = 0.18f;
 }
 
 UImpactCircuitComponent::UImpactCircuitComponent()
@@ -113,16 +112,53 @@ void UImpactCircuitComponent::ReleaseCar(ECarState NextState)
 	Hero->GetCapsuleComponent()->IgnoreActorWhenMoving(Car->GetOwner(), false);
 	CarState = NextState;
 	PhaseTime = 0.0f;
+	bChargingThrow = false;
 	Car->SetSimulatePhysics(true);
 	Car->WakeAllRigidBodies();
 }
 
 void UImpactCircuitComponent::ThrowCar()
 {
+	StartThrow(1.0f);
+}
+
+void UImpactCircuitComponent::BeginThrowCharge()
+{
+	if (CarState == ECarState::Held && !bChargingThrow)
+	{
+		ChargeTime = 0.0f;
+		bChargingThrow = true;
+	}
+}
+
+void UImpactCircuitComponent::ReleaseThrowCharge()
+{
+	if (bChargingThrow)
+	{
+		bChargingThrow = false;
+		StartThrow(GetThrowCharge());
+	}
+}
+
+float UImpactCircuitComponent::GetThrowCharge() const
+{
+	return FMath::Clamp(ChargeTime / FullChargeTime, 0.0f, 1.0f);
+}
+
+bool UImpactCircuitComponent::IsPlayingThrow() const
+{
+	return CarState == ECarState::WindingUp
+		|| (CarState == ECarState::Thrown && PhaseTime < ThrowFollowThrough);
+}
+
+void UImpactCircuitComponent::StartThrow(float Charge)
+{
 	if (!IsValid(Car) || CarState != ECarState::Held || !Hero->GetController())
 	{
 		return;
 	}
+	bChargingThrow = false;
+	LaunchSpeed = FMath::Lerp(MinimumThrowSpeed, FMath::Max(MinimumThrowSpeed, MaximumThrowSpeed), Charge);
 	CarState = ECarState::WindingUp;
 	PhaseTime = 0.0f;
 }
@@ -137,7 +173,7 @@ float UImpactCircuitComponent::GetGripWeight() const
 	case ECarState::WindingUp:
 		return 1.0f;
 	case ECarState::Thrown:
-		return 1.0f - FMath::SmoothStep(0.0f, 0.22f, PhaseTime);
+		return 1.0f - FMath::SmoothStep(0.0f, ThrowFollowThrough, PhaseTime);
 	default:
 		return 0.0f;
 	}
@@ -180,6 +216,10 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		return;
 	}
 	PhaseTime += DeltaTime;
+	if (bChargingThrow)
+	{
+		ChargeTime = FMath::Min(ChargeTime + DeltaTime, FullChargeTime);
+	}
 	if (CarState == ECarState::Held || CarState == ECarState::Lifting || CarState == ECarState::WindingUp)
 	{
 		const FVector Current = Car->GetComponentLocation();
@@ -196,9 +236,13 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		}
 		else if (CarState == ECarState::WindingUp)
 		{
-			const float Load = FMath::SmoothStep(0.0f, 0.13f, PhaseTime);
-			const float Push = FMath::SmoothStep(0.13f, ThrowReleaseTime, PhaseTime);
+			const float Load = FMath::SmoothStep(0.0f, 0.085f, PhaseTime);
+			const float Push = FMath::SmoothStep(0.085f, ThrowReleaseTime, PhaseTime);
 			Target += Forward * (-25.0f * Load + 58.0f * Push) + FVector(0, 0, -18.0f * Load + 28.0f * Push);
+		}
+		else if (bChargingThrow)
+		{
+			Target -= Forward * (14.0f * GetThrowCharge());
 		}
 		// The car's actual box sweeps against the world independently of the hero's capsule.
 		FHitResult Obstruction;
@@ -218,14 +262,19 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 			FRotator Aim = Hero->GetControlRotation();
 			Aim.Pitch = FMath::Clamp(FRotator::NormalizeAxis(Aim.Pitch), -35.0f, 65.0f);
 			ReleaseCar(ECarState::Thrown);
-			Car->SetPhysicsLinearVelocity(Aim.Vector() * ThrowSpeed + FVector(0, 0, 400));
+			PrePhysicsCarVelocity = Aim.Vector() * LaunchSpeed + FVector(0, 0, 400);
+			Car->SetPhysicsLinearVelocity(PrePhysicsCarVelocity);
 		}
+	}
+	else if (CarState == ECarState::Thrown)
+	{
+		PrePhysicsCarVelocity = Car->GetPhysicsLinearVelocity();
 	}
 
 #if !UE_BUILD_SHIPPING
 	if (GEngine && Hero->IsLocallyControlled())
 	{
-		const TCHAR* Hint = CarState == ECarState::Held ? TEXT("CARRO SUJETO | G/Circulo: soltar | T/Triangulo: lanzar")
+		const TCHAR* Hint = CarState == ECarState::Held ? TEXT("CARRO SUJETO | G/Circulo: soltar | Mantener T/Triangulo: cargar")
 			: TEXT("G/Circulo: agarrar carro | R/Cruceta abajo: reiniciar");
 		GEngine->AddOnScreenDebugMessage(1042, 0.1f, FColor::White, Hint);
 	}
@@ -235,13 +284,14 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 void UImpactCircuitComponent::OnCarHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (CarState != ECarState::Thrown || !IsValid(Panel) || OtherComponent != Panel
-		|| NormalImpulse.Size() < Car->GetMass() * 420.0f)
+	if (CarState != ECarState::Thrown || !IsValid(Panel) || OtherComponent != Panel || !Panel->IsVisible()
+		// Multiple contact points can add impulses even when the car approaches slowly.
+		|| FMath::Abs(FVector::DotProduct(PrePhysicsCarVelocity, Hit.ImpactNormal)) < PanelImpactThreshold
+		|| FMath::Abs(FVector::DotProduct(NormalImpulse, Hit.ImpactNormal)) < Car->GetMass() * PanelImpactThreshold)
 	{
 		return;
 	}
 
-	CarState = ECarState::Free;
 	Panel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Panel->SetVisibility(false);
 
@@ -269,6 +319,7 @@ void UImpactCircuitComponent::OnCarHit(UPrimitiveComponent* HitComponent, AActor
 
 void UImpactCircuitComponent::ResetCircuit()
 {
+	bChargingThrow = false;
 	if (IsValid(Car))
 	{
 		UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this)));
