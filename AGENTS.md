@@ -24,6 +24,30 @@ Antes de implementar cualquier mecánica, personaje, animación, mapa, material,
 Esta regla manda para Codex, Robert cuando tenga acceso, y cualquier colaborador futuro. **La prioridad no es producir más código ni más assets: es obtener más juego funcional con el mínimo trabajo nuevo.**
 
 
+## Decisión del usuario 2026-11-15 — reutilizar de verdad y hasta cinco agentes Codex
+
+El usuario autoriza **hasta cinco agentes concurrentes** para acelerar IMPACT: BEYOND, pero no obliga a usar cinco si las tareas no se pueden aislar. Las tareas de construcción siguen orientadas al **mínimo código original necesario**. Reutilizar Unreal es reutilizar: CMC, Enhanced Input, Physics Handle, Chaos y plantillas son recursos existentes; no se debe sustituir una solución nativa probada solo para copiar una biblioteca externa. Por otro lado, crear a mano grandes sistemas, modelos y ciclos de animación cuando existe un paquete legal, disponible y más barato de integrar **viola la intención del usuario**.
+
+### Regla de decisión de reutilización verificable (antes de codificar cada mecánica)
+
+1. Revisar funcionalidad de Unreal 5.8.4, assets y código ya presentes en `ImpactBeyond/`, `docs/FAB_SELECCION_ACTIVA.md`, `docs/FAB_INVENTARIO_PERSONAL.md` (si está aprobado/integrado), `docs/FAB_CATALOGO_MAESTRO.csv` y las auditorías específicas. Elegir **un candidato principal y un respaldo**, no docenas de opciones.
+2. Documentar en ficha breve: necesidad jugable, opción reutilizable elegida, derechos/versión/archivos disponibles, dependencias, riesgo de importación, comparación con alternativa nativa, código propio imprescindible y prueba de aceptación. Si ya existe una solución funcional en el motor, basta justificar configuración/adaptación.
+3. **Prueba pequeña antes de integrar**: usar componente o ejemplo nativo primero; solo usar terceros si tienen licencia/edición/compatibilidad comprobadas y autorización necesaria. No reclamar, descargar, importar Fab ni instalar plugins nuevos automáticamente; no enviar assets etiquetados NoAI a IA generativa.
+4. Si el candidato aumenta la dependencia o tarda más que una adaptación nativa mínima, descartarlo y usar el respaldo. Ninguna búsqueda infinita: detener exploración al encontrar una solución que pase el gate.
+5. Antes de iniciar una segunda funcionalidad, conseguir una **build que cierre el bucle jugable del ticket**, no acumular subsistemas de muestra ni 5 ramas de gameplay inconexas.
+
+### Cinco responsabilidades paralelas sin conflictos
+
+- **A1 Integrador y dueño de la build:** única persona/agente que modifica el personaje principal, mapa jugable definitivo y rama de integración; compila, prueba, decide adopción y fusiona contribuciones en una rama segura. **Nunca fusionar a main sin autorización.**
+- **A2 Mecánicas/reutilización:** audita/ensaya agarre, transporte barrido y destrucción con Physics Handle/Chaos y REPIRK/PlotBuilder solo cuando exista código reutilizable verificable. Trabajo en su carpeta/branch/laboratorio aislado; entrega selección y pruebas; no edita el personaje/mapa principal.
+- **A3 Animación:** compara clips y retarget sobre rig único, identifica poses de vuelo, freno, agarre y lanzamiento; usa material local/permitido y prototipos aislados, no cambia el código de locomoción ni hace importaciones sin autorización.
+- **A4 Mundo/arte técnico:** prepara candidatos de vehículo/fachadas, proxies, presupuesto de VRAM/colisión, lista exacta de recursos/requisitos. No edita simultáneamente `Lvl_IB_C00.umap` ni añade City Sample completo.
+- **A5 QA/perfil:** prueba contra el HEAD integrado, automatiza regresiones, recopila logs, frame time/VRAM y reproduce fallos de control. No corrige directamente en los archivos que usa A1; abre incidencias o patch separado cuando se le asigna.
+
+**Una única tarea funcional de implementación en integración** (p.ej. IB-F01 hasta validarse; luego IB-P01, luego IB-D01). Los otros agentes pueden auditar, construir experimentos aislados, seleccionar/retarget clips o hacer QA sin crear una segunda ruta de producción. Un solo dueño por archivo `.umap`, `.uasset` o C++ durante cada ventana de integración. Agentes se coordinan mediante resumen de contratos, rutas permitidas, hashes, pruebas, límites y rollback, no tocando el mismo árbol de trabajo. Si no existe mecanismo real para subagentes Codex, no afirmar que están ejecutándose; escribir encargos autocontenidos y continuar con un integrador.
+
+**Prioridad inmediata tras el trabajo de vuelo en curso:** cerrar calidad visual y control IB-F01; después **IB-P01** carro transportado con colisión mundial y **IB-D01** panel Chaos/restauración, usando la manzana existente. H02/H03, kaijus, gran ciudad y espacio siguen fuera. El usuario elige sensación y decisiones creativas; las rutinas reversibles las decide el integrador.
+
 ## Plugins: decisiones activas 2026-11-15
 
 Leer **docs/PLUGIN_SELECTION_V14.md** antes de instalar o activar cualquier plugin del motor o tercero. Selección nativa por fase: Enhanced Input → IK Rig/Control Rig al importar clips → Niagara al añadir VFX → Chaos/Fracture al probar pared → PCG al distribuir ciudad; Motion Warping, StateTree/SmartObjects y GAS solo si un ticket posterior lo justifica. Unreal MCP/AllToolsets editor EXPERIMENTAL, solo local y sin servidor en build distribuible. Externos en sandbox: PCGEx MIT rama 5.8 para grafos/parcelas después de PCG nativo; Realtime Destructible Mesh gratuito Fab Standard para comparar huecos frente a Chaos; Realtime Mesh Component Core MIT reservado para malla runtime. NO instalar ningún externo hoy sin proyecto/compilación y prueba, no habilitar suite completa por curiosidad, no adquirir Fab automáticamente ni copiar sus binarios a GitHub. Cooperativo permanece aplazado. Mantener siempre una opción nativa de respaldo.
