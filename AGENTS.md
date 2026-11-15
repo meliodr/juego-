@@ -1,5 +1,11 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Decisión de plataforma vigente — Windows, 2026-11-15
+
+**El usuario cambió de Linux a Windows como plataforma principal y acaba de mostrar Unreal Engine 5.8 instalándose en Epic Games Launcher.** Quixel Bridge y Fab UE Plugin están en cola; no afirmar que están listos. Leer docs/WINDOWS_INICIO_V12.md antes de ejecutar cualquier gate. La primera tarea es **IB-W00** (verificar editor y toolchain Windows), seguida de IB-W01 (crear proyecto). En el plan histórico, toda instrucción de «debe compilar en Linux», «Vulkan como primer renderer», «L00» o «primer ejecutable Linux» queda pospuesta. Windows y DX12 son la ruta de referencia; Linux solo port futuro. 
+La instalación visualizada no confirma que el editor se haya iniciado ni Visual Studio/MSVC instalado. Para UE 5.8, VS 2022 v17.14 o VS 2026, MSVC/Windows SDK compatibles; comprobar antes de crear proyecto C++ y no instalar ni cambiar herramientas sin autorización. Cooperativo continúa extremadamente lejano, fuera del plan activo.
+
+
 ## Fuentes de verdad y estado
 
 1. Leer `docs/PLAN_ACTIVO.md` y el ticket correspondiente de `docs/TAREAS_ACTIVAS.md`.
@@ -10,7 +16,7 @@ Estado a 2026-11-14: repositorio de planificación y skills. En la revisión de 
 
 ## Alcance y decisiones firmes
 
-- Sandbox individual, offline, Linux nativo y compras de assets/plugins RD$0. El cooperativo es MUY LEJANO: no N0/N1, LAN, RPC, replicación, servidor, lobby, EOS, matchmaking ni tests de latencia actuales.
+- Sandbox individual, offline, Windows como plataforma principal y compras de assets/plugins RD$0. El cooperativo es MUY LEJANO: no N0/N1, LAN, RPC, replicación, servidor, lobby, EOS, matchmaking ni tests de latencia actuales.
 - Prioridad: caminar/correr/saltar y volar con un mismo personaje; luego agarrar/lanzar, destruir con huecos reales, combatir y repetir. No comenzar por planeta, campaña, gran ciudad o infraestructura online.
 - Vuelo libre sin combustible ni poderes bloqueados por karma. Movimiento responsivo, cámara legible y configuraciones de efectos/accesibilidad. Las animaciones acompañan al movimiento; no lo sustituyen con teletransportes ocultos.
 - H01 fuerza; H02 genio cósmico masculino esmeralda del concepto aprobado, sin fruta del diablo ni traje/icono de Linterna Verde; H03 teletransporte. H01/H02/H03 son IDs internos. No usar VECTOR o PRISMA como nombres de héroes ni recuperar al enemigo constructor genérico. No confundir arte 2D con modelo riggeado listo.
@@ -20,7 +26,7 @@ Estado a 2026-11-14: repositorio de planificación y skills. En la revisión de 
 
 ## Entorno conocido y límites de acceso
 
-Hardware reportado: **64 GB RAM, RTX 4070 de 8 GB VRAM**. Inspeccionar CPU, modelo exacto de GPU, distribución, driver/Vulkan, SSD/espacio y motor/toolchain. No repetir la pregunta de RAM/GPU ni confundir el contenedor del chat con la máquina del usuario.
+Hardware reportado: **64 GB RAM, RTX 4070 de 8 GB VRAM**. Inspeccionar CPU, modelo exacto de GPU, versión de Windows, driver/DirectX 12, SSD/espacio y motor/toolchain Windows (Visual Studio/MSVC/SDK). No repetir la pregunta de RAM/GPU ni confundir el contenedor del chat con la máquina del usuario.
 
 Motor/parche y toolchain se fijan al pasar IB-L00, no por una versión citada en documentación cambiante. No actualizar a Preview ni modificar driver/distribución sin autorización. Unreal MCP es opcional y debe comprobarse en el editor local; no exponerlo a Internet ni convertirlo en dependencia del ejecutable.
 
@@ -31,7 +37,7 @@ Robert es el Dot del usuario, no una herramienta cuya conexión o ejecución deb
 - Una tarea de implementación activa. Auditoría paralela solo sin modificar los mismos archivos. Un responsable de integración; no editar simultáneamente el mismo Blueprint/mapa.
 - Trabajar en rama/checkpoint seguro y revisar cambios previos. No force-push, resets destructivos, sobrescritura de trabajo ajeno, cambios en otros repositorios o merges no autorizados.
 - Antes: objetivo, archivos permitidos, dependencia, procedencia, prueba, límite y rollback. Después: commit, resultado observado, evidencia, problemas y siguiente decisión.
-- Primera tarea operativa: IB-L00. Luego FLT-AUD/GND00/F01 → C00/P01/D01 → E01/S01. Consultar la cola; no abrir trabajos de planetas por iniciativa propia.
+- Primera tarea operativa: IB-W00 y después IB-W01. Luego FLT-AUD/GND00/F01 → C00/P01/D01 → E01/S01. Consultar la cola; no abrir trabajos de planetas por iniciativa propia.
 - No añadir otra versión de plan encima de esta guía. Actualizar el plan activo y su cola, preservando decisiones y registrando cambios. Git conserva el historial previo de README/AGENTS.
 
 ## Reutilizar antes de crear
@@ -69,6 +75,6 @@ Si una skill histórica menciona red, aplicar el alcance offline actual y omitir
 
 ## Evidencia y cierre
 
-Estados: PLANIFICADO, EN CURSO, IMPLEMENTADO SIN VALIDAR, COMPILADO, EJECUTADO, ACEPTADO o BLOQUEADO. No inventar porcentajes, benchmarks ni tests. Un build sin render no valida Vulkan, cámara, arte o diversión. Un vídeo ajeno tampoco.
+Estados: PLANIFICADO, EN CURSO, IMPLEMENTADO SIN VALIDAR, COMPILADO, EJECUTADO, ACEPTADO o BLOQUEADO. No inventar porcentajes, benchmarks ni tests. Un build sin render no valida DX12, cámara, arte o diversión. Un vídeo ajeno tampoco.
 
 Registrar versiones reales, instrucciones, mapa, resultados/fallos, logs, capturas cuando sean pertinentes y rendimiento con hardware/resolución/calidad. Separar primera ejecución del recorrido repetido. Meta 1080p/60 FPS configurable, no garantía para el equipo. Conservar build anterior jugable. El usuario evalúa control/potencia/deseo de repetir; no sustituirlo por una afirmación de IA.
