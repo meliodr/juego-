@@ -1,6 +1,6 @@
-# PR draft preparado localmente — NO PUBLICADO
+# PR de borrador — texto y validación S4
 
-Destino previsto: `meliodr/juego-`, base `prototype/ib-sprint02`, head `prototype/ib-s4-response-lab`, `draft=true`. Commit inicial de implementación local: `c46d18bb6b67f95bd4fbeede85636356d12f0ec5`; revisión posterior descrita en `docs/IB_S4_STATIC_REVIEW.md`. El HEAD de la rama identifica la entrega local actual. No se ha creado una URL de PR.
+Destino autorizado: repositorio público `meliodr/juego-`, base `prototype/ib-sprint02`, head `prototype/ib-s4-response-lab`, `draft=true`, sin merge. Commit inicial de implementación: `c46d18bb6b67f95bd4fbeede85636356d12f0ec5`; revisión confirmada en `e19dfebbdfeca2b44211924f6dd078f036f7423e` y descrita en `docs/IB_S4_STATIC_REVIEW.md`. El HEAD de la rama identifica la entrega actual. Este archivo conserva el texto y la evidencia técnica; el estado remoto del PR se verifica en GitHub.
 
 ## Título
 
@@ -20,8 +20,10 @@ La revisión separa daño solicitado de pérdida real de HP, rechaza la resurrec
 
 Reproducción y matriz: `docs/IB_S4_RESPONSE_LAB.md`. Resultado de revisión con hashes: `docs/IB_S4_REVIEW_NATIVE_RESULTS.json`; resultado inicial histórico: `docs/IB_S4_NATIVE_RESULTS.json` (1.902 comprobaciones). Inventario/licencias: `docs/IB_S4_ASSETS_LICENSES.md`. Mapa previsto: `/Game/IB_S4/Lvl_IB_S4_Response`, generador `Tools/IBS4_AuthorLab.py` (todavía no ejecutado).
 
-## Bloqueo de publicación
+## Autorización de publicación y antecedente
 
 La llamada `git push -u origin prototype/ib-s4-response-lab` fue **RECHAZADA antes de ejecución** por revisión automática. Razón comunicada: publicación externa a remoto GitHub considerado no verificado; no consideró acreditadas la autorización explícita del payload ni titularidad/privacidad del repositorio a partir del pedido de enviar prompts. El encargo delegado sí solicitaba PR draft, pero el control automático no aceptó esa evidencia como suficiente.
 
-Se consultó el historial visible mediante `user_message_read`; no había nueva autorización relevante. Conforme a la instrucción posterior de coordinación, **no se reintentó ni se cambió de método**. No se creó rama/commit/PR por API para eludir el bloqueo. Hace falta autorización verificable para publicar esta rama y estos archivos antes de continuar esa acción. El trabajo local y las pruebas permanecen disponibles.
+En ese momento se consultó el historial visible mediante `user_message_read`; no había nueva autorización relevante y se detuvo la publicación sin cambiar de método. Posteriormente, el 2026-11-15 a las 16:09:59 UTC, Jarry autorizó expresamente subir las ramas S2.5/S3/S3.5/S4 al repositorio público y abrir sus PR en borrador, sin fusionarlos. La aprobación y su pregunta explícita se verificaron mediante lectura del historial. También se verificaron la cuenta conectada `meliodr`, la visibilidad pública del repositorio y el permiso de escritura. Esta evidencia nueva permite un nuevo intento normal de publicación de S4; no autoriza force push, merge, cambios de permisos ni omitir la revisión automática.
+
+La publicación comprende exclusivamente código, scripts y documentación propios de S4. No incorpora bytes de assets de terceros ni contenido de otros laboratorios. Las limitaciones Unreal, visuales y físicas del cuerpo propuesto siguen vigentes después de publicar.
