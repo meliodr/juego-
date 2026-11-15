@@ -1,5 +1,11 @@
 # IB-C00 — Validación de la manzana gris
 
+## Ampliación para vuelo
+
+`Tools/Extend-IB-C00.py` amplía el pavimento hasta X=620 m y reutiliza geometría y materiales de Third Person para añadir una avenida de 26 m, una transversal de 30 m, una plaza, dos pasos elevados y edificios de hasta 78 m. Los actores del recorrido de agarre y destrucción conservan sus posiciones. El escenario sigue en fase de geometría de prueba.
+
+El vuelo adapta el cálculo de inclinación por trayectoria y velocidad angular de [ManOfSteel, UFlight](https://github.com/ProdiG66/ManOfSteel/blob/d107fd72606f33fc7062e2e473bfab330ee403ea/Source/ManOfSteel/Private/Components/Flight.cpp). Se conserva la [licencia MIT del donante](LICENSE-ManOfSteel.txt). La cámara, el control del personaje y las animaciones usan la plantilla que ya estaba integrada.
+
 **Estado:** EJECUTADO para geometría y colisión automatizada. Aceptación jugable pendiente.
 **Base:** `b65f9a6` de `prototype/w01-third-person-windows`. Cotas según [plano y ficha del PR #3](https://github.com/meliodr/juego-/pull/3) (`d088330`).
 

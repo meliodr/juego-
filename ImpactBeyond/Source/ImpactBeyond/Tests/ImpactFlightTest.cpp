@@ -182,7 +182,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 	};
 	SpeedStage(FKey(), 900);
 	SpeedStage(EKeys::E, 1800);
-	SpeedStage(EKeys::Gamepad_RightShoulder, 3200);
+	SpeedStage(EKeys::Gamepad_RightShoulder, 4400);
 
 	const auto CoastSpeed = MakeShared<double>(0);
 	ForFrames(21, [=](int32 Frame)
@@ -254,7 +254,7 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Once([=, this]()
 		{
 			Key(Input, false);
-			TestEqual(TEXT("Alternating speed selection"), Movement->MaxFlySpeed, bDown ? 1800.f : 3200.f);
+			TestEqual(TEXT("Alternating speed selection"), Movement->MaxFlySpeed, bDown ? 1800.f : 4400.f);
 		});
 	}
 	Once([=]() { Key(EKeys::Gamepad_RightThumbstick, true); });
@@ -739,11 +739,14 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			State->AirStart = Hero->GetActorLocation();
 			State->CargoAirStart = Car->GetComponentLocation();
 		}
-		if (Frame >= 107 && Frame < 202) { Hero->DoMove(0, 1); }
+		// Start braking earlier at level three so the faster run still throws from in front of the panel.
+		const int32 BrakeFrame = Level == 2 ? 171 : 202;
+		if (Frame >= 107 && Frame < BrakeFrame) { Hero->DoMove(0, 1); }
+		if (Frame == BrakeFrame) { Key(EKeys::X, true); }
 		if (Frame == 202)
 		{
 			const auto* Movement = Hero->GetCharacterMovement();
-			const float FlightCaps[] = {900.0f, 1800.0f, 3200.0f};
+			const float FlightCaps[] = {900.0f, 1800.0f, 4400.0f};
 			TestTrue(TEXT("Hero flies in the selected level with the car"), Movement->IsFlying()
 				&& FMath::IsNearlyEqual(Movement->MaxFlySpeed, FlightCaps[Level], 1.0f));
 			TestTrue(TEXT("Hero and held car both moved down the street"), Hero->GetActorLocation().Y > State->AirStart.Y + 175.0
@@ -752,7 +755,6 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 			TestTrue(TEXT("Transport retains two finite, distinct grip targets"), Circuit->GetGripTargets(LeftGrip, RightGrip)
 				&& !LeftGrip.ContainsNaN() && !RightGrip.ContainsNaN() && FVector::DistSquared(LeftGrip, RightGrip) > 400.0);
 			TestFalse(TEXT("Car remains held during airborne movement"), Car->IsSimulatingPhysics());
-			Key(EKeys::X, true);
 		}
 		if (Frame == 254)
 		{

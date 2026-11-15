@@ -198,6 +198,8 @@ void AImpactBeyondCharacter::OnMovementModeChanged(EMovementMode PrevMovementMod
 		{
 			GroundMeshTransform = CharacterMesh->GetRelativeTransform();
 			FlightFacing = GetActorRotation();
+			PreviousTravelYaw = FlightFacing.Yaw;
+			FlightBank = 0.0f;
 			bUsingTravelPose = false;
 			bPresentingFlight = true;
 			bPlayingGroundThrow = false;
@@ -258,13 +260,18 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	else
 	{
 		UpdateActionAnimation(FlightAnimation, true, FMath::GetMappedRangeValueClamped(
-			FVector2D(0.0f, 3200.0f), FVector2D(0.75f, 1.15f), HorizontalSpeed));
+			FVector2D(0.0f, GetCharacterMovement()->MaxFlySpeed), FVector2D(0.75f, 1.15f), HorizontalSpeed));
 	}
 
+	const FRotator TravelDirection = Velocity.Rotation();
 	FRotator TargetFacing = FlightFacing;
 	if (bTravel)
 	{
-		TargetFacing.Yaw = Velocity.Rotation().Yaw;
+		TargetFacing.Yaw = TravelDirection.Yaw;
+	}
+	if (bCarrying)
+	{
+		TargetFacing.Yaw = GetActorRotation().Yaw;
 	}
 	float Lean = FMath::GetMappedRangeValueClamped(
 		FVector2D(180.0f, 1500.0f), FVector2D(0.0f, 65.0f), HorizontalSpeed);
@@ -276,13 +283,19 @@ void AImpactBeyondCharacter::UpdateFlightPresentation(float DeltaSeconds)
 	{
 		Lean *= 0.2f;
 	}
-	// Pitch up slightly during a climb and down during a dive, even without forward input.
-	const float VerticalPitch = FMath::Clamp(Velocity.Z / 60.0f, -15.0f, 15.0f);
-	const FVector FacingRight = FRotationMatrix(FRotator(0.0f, FlightFacing.Yaw, 0.0f)).GetUnitAxis(EAxis::Y);
-	TargetFacing.Pitch = FMath::Lerp(VerticalPitch - Lean, FMath::Clamp(VerticalPitch, -6.0f, 6.0f), GripWeight);
-	TargetFacing.Roll = FMath::Clamp(FVector::DotProduct(Velocity, FacingRight) / 40.0f, -22.0f, 22.0f)
-		* FMath::Lerp(1.0f, 0.28f, GripWeight);
-	FlightFacing = FMath::RInterpTo(FlightFacing, TargetFacing, DeltaSeconds, 6.0f);
+	// Use the trajectory pitch and filtered turn rate, following ManOfSteel's UFlight.
+	const float VerticalBlend = FMath::SmoothStep(70.0, 600.0, Velocity.Size());
+	const float TrajectoryPitch = FMath::ClampAngle(TravelDirection.Pitch, -85.0f, 85.0f);
+	const float BodyPitch = FMath::Clamp(TrajectoryPitch * VerticalBlend - Lean, -85.0f, 35.0f);
+	TargetFacing.Pitch = FMath::Lerp(BodyPitch, 0.0f, GripWeight);
+	const float TurnRate = bTravel && DeltaSeconds > UE_SMALL_NUMBER
+		? FMath::FindDeltaAngleDegrees(PreviousTravelYaw, TravelDirection.Yaw) / DeltaSeconds : 0.0f;
+	PreviousTravelYaw = bTravel ? TravelDirection.Yaw : TargetFacing.Yaw;
+	FlightBank = FMath::FInterpTo(FlightBank, FMath::Clamp(TurnRate / 180.0f, -1.0f, 1.0f), DeltaSeconds, 5.0f);
+	TargetFacing.Roll = -28.0f * FlightBank * (1.0f - GripWeight);
+	FlightFacing = FMath::RInterpTo(FlightFacing, TargetFacing, DeltaSeconds, 9.0f);
+	FlightFacing.Yaw = FMath::Lerp(FlightFacing.Yaw,
+		FlightFacing.Yaw + FMath::FindDeltaAngleDegrees(FlightFacing.Yaw, TargetFacing.Yaw), GripWeight);
 
 	// Rotate the mesh about the capsule center, retaining the mannequin's template offset.
 	const FQuat VisualRotation = GetActorQuat().Inverse() * FlightFacing.Quaternion();
@@ -365,7 +378,8 @@ void AImpactBeyondCharacter::UpdateGroundMovement(float DeltaSeconds, const APla
 	const float GroundSpeed = Movement->Velocity.Size2D();
 	const bool bFastGroundMovement = bGrounded && (bSprinting || GroundSpeed > RunSpeed + 30.0f);
 	Movement->MaxWalkSpeed = bSprinting ? SprintSpeed : (bWalking ? WalkSpeed : RunSpeed);
-	Movement->MaxAcceleration = bFastGroundMovement ? 2600.0f : BaseGroundAcceleration;
+	Movement->MaxAcceleration = Movement->IsFlying() ? 3200.0f + 1150.0f * FlightLevel
+		: (bFastGroundMovement ? 2600.0f : BaseGroundAcceleration);
 	Movement->GroundFriction = bFastGroundMovement ? 3.0f : BaseGroundFriction;
 	Movement->BrakingDecelerationWalking = bFastGroundMovement ? 2200.0f : BaseGroundBraking;
 	Movement->bUseSeparateBrakingFriction = bFastGroundMovement || bBaseSeparateBrakingFriction;

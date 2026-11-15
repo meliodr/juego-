@@ -70,4 +70,7 @@ private:
 	FVector PrePhysicsCarVelocity = FVector::ZeroVector;
 	FVector LiftOffset = FVector::ZeroVector;
 	FVector ChassisExtent = FVector::ZeroVector;
+	FQuat CarCarryRotationOffset = FQuat::Identity;
+	FVector LeftChassisGrip = FVector::ZeroVector;
+	FVector RightChassisGrip = FVector::ZeroVector;
 };

@@ -41,4 +41,8 @@ for x in (172.5,180,187.5):
         trace((x,121,z),(x,155,z))
 for x,y in ((10,0),(130,0),(180,0),(180,40),(180,145)):
     trace((x,y,1.5),(x,y,0.5),"Suelo 240 x 195 m")
+trace((10,0,2),(610,0,2))
+trace((403,0,2),(403,160,2))
+trace((403,0,33),(403,75,33),"Distrito - puente sobre la transversal")
+trace((582,190,90),(582,190,76),"Distrito - azotea 12")
 ue.log("IB-C00 BOUNDS AND CAPSULE SWEEPS PASS")

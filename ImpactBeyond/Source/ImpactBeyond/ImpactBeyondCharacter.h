@@ -65,7 +65,7 @@ protected:
 
 	/** Maximum speed of each flight level in centimeters per second. */
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight")
-	TArray<float> FlightSpeeds = {900.0f, 1800.0f, 3200.0f};
+	TArray<float> FlightSpeeds = {900.0f, 1800.0f, 4400.0f};
 
 public:
 
@@ -131,6 +131,8 @@ private:
 
 	FTransform GroundMeshTransform;
 	FRotator FlightFacing = FRotator::ZeroRotator;
+	float PreviousTravelYaw = 0.0f;
+	float FlightBank = 0.0f;
 	bool bPresentingFlight = false;
 	bool bUsingTravelPose = false;
 	bool bPlayingGroundThrow = false;

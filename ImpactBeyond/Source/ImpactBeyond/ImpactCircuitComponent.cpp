@@ -101,6 +101,17 @@ void UImpactCircuitComponent::ToggleGrab()
 		Hero->SetActorRotation(FRotator(0, TowardCar.Rotation().Yaw, 0));
 	}
 	LiftOffset = Car->GetComponentLocation() - Hero->GetActorLocation();
+	CarCarryRotationOffset = Hero->GetActorQuat().Inverse() * Car->GetComponentQuat();
+	const auto MakeGrip = [this](float Side)
+	{
+		FVector Point = CarCarryRotationOffset.UnrotateVector(FVector(-10.0f, Side * 30.0f, 0.0f));
+		Point.X = FMath::Clamp(Point.X, -ChassisExtent.X + 5.0, ChassisExtent.X - 5.0);
+		Point.Y = FMath::Clamp(Point.Y, -ChassisExtent.Y + 5.0, ChassisExtent.Y - 5.0);
+		Point.Z = -ChassisExtent.Z - 3.0;
+		return Point;
+	};
+	LeftChassisGrip = MakeGrip(-1.0f);
+	RightChassisGrip = MakeGrip(1.0f);
 	PhaseTime = 0.0f;
 	BlockedTime = 0.0f;
 	CarState = ECarState::Lifting;
@@ -193,18 +204,8 @@ bool UImpactCircuitComponent::GetGripTargets(FVector& LeftWorld, FVector& RightW
 		return true;
 	}
 	const FTransform CarTransform(Car->GetComponentQuat(), Car->GetComponentLocation());
-	const auto Grip = [&](float Side)
-	{
-		const FVector AtShoulder = Hero->GetActorLocation() + Hero->GetActorForwardVector() * 25.0f
-			+ Hero->GetActorRightVector() * Side * 30.0f;
-		FVector Local = CarTransform.InverseTransformPosition(AtShoulder);
-		Local.X = FMath::Clamp(Local.X, -ChassisExtent.X + 5.0, ChassisExtent.X - 5.0);
-		Local.Y = FMath::Clamp(Local.Y, -ChassisExtent.Y + 5.0, ChassisExtent.Y - 5.0);
-		Local.Z = -ChassisExtent.Z - 3.0;
-		return CarTransform.TransformPosition(Local);
-	};
-	LeftWorld = Grip(-1.0f);
-	RightWorld = Grip(1.0f);
+	LeftWorld = CarTransform.TransformPosition(LeftChassisGrip);
+	RightWorld = CarTransform.TransformPosition(RightChassisGrip);
 	return true;
 }
 
@@ -247,6 +248,19 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		// The car's actual box sweeps against the world independently of the hero's capsule.
 		FHitResult Obstruction;
 		Car->MoveComponent(Target - Current, Car->GetComponentQuat(), true, &Obstruction);
+		const FQuat CarryRotation = Hero->GetActorQuat() * CarCarryRotationOffset;
+		if (CarState != ECarState::Lifting && !Car->GetComponentQuat().Equals(CarryRotation, 0.001f))
+		{
+			// MoveComponent sweeps translation only. Check the rotated chassis before accepting a turn.
+			FCollisionQueryParams Query(SCENE_QUERY_STAT(ImpactCircuitCarryTurn), false, Hero);
+			Query.AddIgnoredActor(Car->GetOwner());
+			const FQuat NextRotation = FMath::QInterpTo(Car->GetComponentQuat(), CarryRotation, DeltaTime, 22.0f);
+			if (!GetWorld()->OverlapBlockingTestByChannel(Car->GetComponentLocation(), NextRotation,
+				Car->GetCollisionObjectType(), FCollisionShape::MakeBox(ChassisExtent), Query))
+			{
+				Car->MoveComponent(FVector::ZeroVector, NextRotation, false);
+			}
+		}
 		const bool bOutOfReach = FVector::DistSquared(Car->GetComponentLocation(), CarryTarget) > FMath::Square(115.0f);
 		BlockedTime = Obstruction.bBlockingHit && bOutOfReach ? BlockedTime + DeltaTime : 0.0f;
 		if (BlockedTime > 0.22f || (CarState != ECarState::Lifting && bOutOfReach))
