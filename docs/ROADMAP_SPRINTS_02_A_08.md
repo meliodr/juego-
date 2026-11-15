@@ -78,9 +78,15 @@ Ciudad → altura orbital → regreso a **misma región y estados**. Después la
 
 **Decisión explícita:** menú de pausa completo con continuar, mapa, poderes, controles, opciones gráficas/audio/cámara/accesibilidad, guardado/carga seguro cuando esté validado, reinicio de zona con confirmación y salida. Pausa congela correctamente mundo/física/eventos/tiempo y al reanudar no dispara acciones mantenidas. Reutilizar UMG; evaluar CommonUI y UltimateUI MIT en sandbox con autorización, sin migrar todo por defecto. [Ficha S8](DIRECCION_SANDBOX_S08_S10_S15.md).
 
-## Sprint 9 — Reserva de integración
+## Sprint 9 — EXPANSIÓN DEL PLANETA: ocho ciudades mayores y biomas extensos
 
-Alcance no cerrado por el usuario. Propuesta: estabilizar viajes, guardados y menús antes de ampliar. No inventar entregables obligatorios ni nuevas localizaciones sin decisión posterior.
+**Decisión explícita del usuario, 2026-11-15:** Sprint 3 entrega cuatro ciudades, y Sprint 9 las amplía y **añade otras cuatro**: ocho ciudades grandes en el mismo planeta, con espacios naturales extensos, regiones verdes variadas y una arquitectura que permita ampliar el mundo sin reescribir el movimiento o la generación de ciudades. [Especificación y análisis de 10 juegos de referencia](SPRINT09_OCHO_CIUDADES_Y_BIOMAS.md).
+
+**Objetivo de ensayo, no capacidad confirmada:** huellas metropolitanas de 8–12 km² para dos ciudades, 5–8 km² para otras dos y 3–6 km² para cuatro regionales; total 38–64 km² de huella urbana, de los que solo los centros/landmarks son altamente curados y el resto se genera con recetas reutilizables. Las ocho tendrán áreas transitables, colisiones/props y acciones locales. En cada núcleo se distinguen barrios y fondos/HLOD decorativos.
+
+**Naturaleza:** probar un planeta de radio mayor (60–90 km frente al escenario previo de 25 km, decisión final tras medir curvatura y tiempos), con océanos, bosques, praderas, montañas, desiertos, humedales y campo. Corredores verdes de 10–40 km, cinturones periurbanos de 2–5 km y regiones destacadas para exploración. Biomas con semillas/condiciones ambientales, no billones de actores activos. World Partition/HLOD/PCG y vegetación instanciada se usarán donde funcionen, bajo gestor esférico y marcos locales: World Partition no proporciona por sí solo un planeta esférico.
+
+**QA:** ocho entradas/salidas a velocidad alta, circunnavegaciones, persistencia de daños y mapa, regiones naturales, prueba de ampliación con ciudad 9 de laboratorio, y 1080p/60FPS objetivo con pruebas reales de Steam Input/audio/DX12. No iniciar hasta cerrar y verificar dependencias S3–S8; no añadir planeta nuevo, sprints 10/15 conservan identidad y aliados.
 
 ## Sprint 10 — Identidad propia, lore ambiental y sociedad
 
