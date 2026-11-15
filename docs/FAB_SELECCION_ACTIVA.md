@@ -1,5 +1,20 @@
 # Selección activa Fab — lote 03, 2026-11-15
 
+## Decisión vigente: elegir recursos por necesidad
+
+El cribado masivo se cierra con 1,681 tarjetas registradas. Los objetivos de volumen quedan cancelados por decisión del usuario. El Top 20 se conserva como referencia histórica y la tabla siguiente gobierna la selección para el prototipo actual. Presupuesto RD$0. La selección documental conserva el requisito de autorización para reclamar, descargar o instalar.
+
+| Necesidad actual | Recurso elegido | Criterio para usarlo |
+|---|---|---|
+| Sprint rápido | Game Animation Sample, un clip de sprint compatible con el maniquí si está disponible | Revisar el clip y probar el cambio de carrera a sprint sin deslizamiento. Mantener el controlador actual. |
+| Inicio de vuelo | Mano de obra sobre el maniquí y la pose de vuelo actual | Hacer una transición breve de impulso a vuelo, con y sin carro. El Free Animation Set queda como donante de poses aéreas si hace falta. |
+| Carro provisional | Vehicle Variety Pack, un solo coche para reemplazar la malla visible | Preservar agarre, masa y colisión de referencia. Comprobar lanzamiento, apertura del panel y reinicio. |
+| Potencia del lanzamiento | Mecánica del prototipo | Probar toque para lanzamiento normal y mantener para cargar. Verificar que las fuerzas baja y alta produzcan resultados distintos. |
+| Impacto del carro | METALLIC, un sonido de impacto | Aplicar cuando el choque necesite feedback y comprobar que cada impacto se escucha una vez. |
+| Calle y fachada | Cartoon City Free, en reserva | Evaluar una calle y una fachada cuando toque vestir la manzana. Conservar el panel funcional actual. |
+
+Los materiales urbanos con migración pendiente y los recursos de robots, kaijus y espacio quedan como referencia. Reabrir Fab cuando una tarea tenga una carencia concreta que la biblioteca y el catálogo auditado no cubran. Verificar precio, licencia, versión y resultado en el prototipo antes de adoptar el recurso.
+
 **64 UUID auditados: 52 anteriores + 6 reclamados nuevos + 6 candidatos nuevos.** 7 reclamados; 3 SELECCIONAR,12 PROBAR,34 RESERVAR,15 DESCARTAR. Biblioteca actual completa; búsqueda del catálogo público parcial. Se conserva el catálogo previo en FAB_CATALOGO_ANTES_LOTE03.csv y la selección previa en FAB_SELECCION_ANTES_LOTE03.md. Este documento sustituye sus decisiones de Fab, sin alterar E0–E6 ni IB-W00/W01.
 
 SELECCIONAR es una recomendación documental, nunca autorización para reclamar/descargar/instalar. Compatibilidad declarada no certifica UE5.8.4 ni nuestra build. No IA en entrenamiento/runtime; no enviar assets NoAI a generadores. Presupuesto RD$0.
