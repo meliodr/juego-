@@ -49,6 +49,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
 
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1", Units="cm/s"))
+	float WalkSpeed = 220.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1", Units="cm/s"))
+	float RunSpeed = 500.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1", Units="cm/s"))
+	float SprintSpeed = 700.0f;
+
 public:
 
 	/** Constructor */

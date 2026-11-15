@@ -82,6 +82,10 @@ No hay tickets de red activos. N0/N1/N02 y otros requisitos multijugador de docu
 
 **Aceptación:** 30 ciclos caminar→correr→parar→girar y pruebas de rampas/esquinas/azoteas; sin entradas atascadas al perder foco. Paquete Linux y captura del movimiento. Deslizamiento de pies o cámara brusca se registra y corrige antes de ampliar contenido.
 
+**Evidencia Windows — 2026-11-15.** Implementado en ImpactBeyondCharacter sobre el CMC, las acciones Enhanced Input y las animaciones del Third Person. WASD corre (500 cm/s), Ctrl izquierdo + movimiento camina (220 cm/s) y Shift izquierdo + movimiento esprinta (700 cm/s). Si se presionan ambos, prevalece esprintar. Son límites editables en el Blueprint del personaje. El modificador se consulta al procesar movimiento y solo aplica en suelo. La configuración existente de Unreal limpia las teclas al perder el foco.
+
+**Prueba del paquete.** Compilaron Editor y Game Win64 Development. AutomationTool completó el empaquetado y el ejecutable cargó Lvl_ThirdPerson en DX12 SM6. Las inyecciones de teclas mediante la consola de Enhanced Input registraron 220 → 500 → 700 → 500 cm/s como límites del CMC. En la serie repetida se registraron 32 pares consecutivos 220 → 500; se enviaron también entradas de parada y giro, sin instrumentar giro ni calidad visual en cada ciclo. La serie tuvo una lectura incompleta que se repitió. Los ensayos de foco, rampas y esquinas con teclado físico y la sensación del sprint siguen pendientes. Usar Win64 conforme al plan vigente. No iniciar IB-F01 hasta cerrar la validación.
+
 ## IB-F01 — Vuelo y transición continua
 
 **Resultado:** despegue, estacionario, aceleración/boost, giro, freno, descenso, aterrizaje y recuperación; correr→saltar→volar→aterrizar→correr sin cambiar personaje.

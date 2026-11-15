@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/PlayerController.h"
+#include "InputCoreTypes.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -30,7 +32,7 @@ AImpactBeyondCharacter::AImpactBeyondCharacter()
 	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = 500.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -94,6 +96,24 @@ void AImpactBeyondCharacter::DoMove(float Right, float Forward)
 {
 	if (GetController() != nullptr)
 	{
+		// Read held modifiers when processing movement so a missed release cannot latch a gait.
+		UCharacterMovementComponent* Movement = GetCharacterMovement();
+		Movement->MaxWalkSpeed = RunSpeed;
+		if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+		{
+			if (Movement->IsMovingOnGround())
+			{
+				if (PlayerController->IsInputKeyDown(EKeys::LeftShift))
+				{
+					Movement->MaxWalkSpeed = SprintSpeed;
+				}
+				else if (PlayerController->IsInputKeyDown(EKeys::LeftControl))
+				{
+					Movement->MaxWalkSpeed = WalkSpeed;
+				}
+			}
+		}
+
 		// find out which way is forward
 		const FRotator Rotation = GetController()->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
