@@ -1,38 +1,39 @@
-# IMPACT: BEYOND — Arranque en Windows
+# IMPACT: BEYOND — Comprobación rápida de Windows
 
-Actualizado: 2026-11-15. Plataforma principal y primer ejecutable: **Windows/Win64, un jugador offline**. Linux queda como posible destino posterior, sin bloquear ninguna entrega. Esta decisión sustituye las condiciones de plataforma Linux de PLAN_ACTIVO, TAREAS_ACTIVAS y skills anteriores; no cambia el alcance jugable ni reactiva cooperativo.
+2026-11-15. Complemento de [WINDOWS_INICIO_V12.md](WINDOWS_INICIO_V12.md), que conserva los tickets vigentes: **W00 = editor y herramientas; W01 = proyecto C++; W02–W04 = movimiento y vuelo**. Este checklist no crea otra secuencia ni reemplaza ese plan. Windows/Win64 primero; Linux y cooperativo aplazados.
 
-## Evidencia y acceso
+## Evidencia actual
 
-El usuario mostró Epic Games Launcher con Unreal Engine **5.8 instalándose**, y Quixel Bridge/Fab UE Plugin en cola. Esa captura no demuestra instalación terminada, apertura del editor, existencia de MSVC/SDK ni compilación exitosa. No fijar parche de UE por inferencia. Hardware declarado: 64 GB RAM, RTX 4070 de 8 GB VRAM; verificar CPU, modelo exacto, drivers y SSD en el entorno real.
+La captura proporcionada muestra Unreal Engine 5.8 instalándose y Fab/Quixel Bridge en cola. No acredita instalación terminada, compilador disponible, editor abierto ni build. Hardware declarado: 64 GB RAM y RTX 4070 8 GB VRAM. El acceso local no quedó habilitado; esta preparación en GitHub no es ejecución en la PC y no equivale a tarea enviada a Robert.
 
-El intento de habilitar ejecución local no se aceptó. No hay acceso a la computadora confirmado desde este chat. La preparación en GitHub sí puede continuar; no afirmar que se abrió Unreal o que Robert/Codex ya recibió y ejecutó la tarea.
+## W00 — Lo primero que comprobar
 
-## IB-W00 — Reemplaza IB-L00 en la cola activa
+- Epic Launcher: UE5.8 listo para iniciar y editor capaz de abrir. Registrar parche real; no inferirlo ni cambiar a Preview.
+- Visual Studio Installer: versión y cargas ya instaladas. UE5.8 admite **VS2022 17.14+** y **VS2026 18.0+**, según Epic. No instalar dos versiones por costumbre.
+- Cargas/componentes: **Desarrollo de juegos con C++**, herramientas de escritorio/MSVC x64-x86 compatibles y Windows SDK. Visual Studio Tools for Unreal Engine es la integración aconsejada. Epic lista para UE5.8 SDK mínimo 10.0.22621.0 y predeterminado 10.0.26100.0. Verificar el compilador con UnrealBuildTool, no solo la presencia de la aplicación.
+- Registrar CPU, GPU exacta, Windows/driver, SSD/espacio y ruta del motor mediante revisión local autorizada. No repetir preguntas de RAM/GPU ya contestadas ni modificar drivers automáticamente.
 
-**Resultado:** crear, compilar y ejecutar un proyecto mínimo Third Person C++ en Windows, y después empaquetarlo como Win64. Ninguna mecánica propia se considera implementada por completar el arranque.
+## W01 — Proyecto mínimo
 
-1. Confirmar que Unreal 5.8 aparece listo para iniciar y que el editor abre. Registrar versión/parche real; no cambiar a Preview.
-2. Revisar Visual Studio Installer y herramientas existentes antes de instalar otra versión. Para UE5.8, Epic documenta VS2022 17.14 o superior, y VS2026 18.0 o superior. Si no existe instalación compatible, preferir Community estable compatible; no instalar ambas por costumbre.
-3. Revisar las cargas **Desarrollo de juegos con C++** y **Desarrollo para el escritorio con C++**, MSVC x64/x86, Windows SDK compatible y Visual Studio Tools for Unreal Engine. Epic lista SDK mínimo 10.0.22621.0 y recomienda 10.0.26100 o posterior para 5.8. Contrastar los componentes elegidos con la instalación real y su UnrealBuildTool; no dar toolchain por listo porque Visual Studio abra.
-4. Confirmar checkout de meliodr/juego-, rama y cambios locales. No sobrescribir otro proyecto. Ubicación propuesta: `<checkout>/Game/ImpactBeyond/ImpactBeyond.uproject`.
-5. En el selector del editor: Games/Juegos → Third Person → C++ → Desktop. Nombre `ImpactBeyond`. Para esta prueba usar variante básica, calidad Scalable si se ofrece, sin ray tracing y sin contenido adicional que no haga falta. Son decisiones de alcance, no requisitos de Epic. Si una opción no existe en esa versión, documentar lo mostrado sin inventar botones.
-6. Crear y compilar. Abrir el mapa de prueba y Play: verificar desplazamiento, salto, cámara y colisiones. La caminata lenta, sprint y vuelo propios llegan en GND00/F01 después de validar la base; no afirmar que ya están hechos por usar la plantilla.
-7. Empaquetar Development/Win64 y abrir fuera del editor. Registrar ruta local solo en evidencia privada cuando contenga datos personales, logs relevantes, versiones y resultado. No subir Binaries/Intermediate/Saved/DerivedDataCache ni archivos del motor al repo.
+Confirmar checkout y cambios locales antes de crear archivos. Ubicación propuesta: `<checkout>/Game/ImpactBeyond/ImpactBeyond.uproject`.
 
-**Quixel Bridge y Fab:** no son condiciones de aceptación de esta primera prueba. No descargar City Sample, planetas, plugins de terceros ni bibliotecas completas todavía. No cancelar instalaciones ni cambiar drivers por cuenta propia.
+Configuración propuesta del selector: **Games/Juegos → Third Person → C++ → Desktop**, nombre **ImpactBeyond**, variante básica para comprobar arranque, calidad Scalable si se ofrece, sin ray tracing inicialmente. No inventar opciones ausentes en la versión instalada. Son elecciones de nuestro prototipo, no requisitos universales del motor.
 
-**Siguiente orden:** W00 → FLT-AUD/GND00 → F01 movimiento suelo-aire → C00/P01/D01 → E01/S01. Pruebas visuales y rendimiento se realizan en Windows/Win64; DirectX se verifica en el equipo, sin exigir Vulkan. Meta 1080p/60 FPS ajustable, no resultado medido. Cooperativo continúa muy lejano.
+Con toolchain listo: crear y compilar; Play para comprobar movimiento base, salto, cámara y colisión; después empaquetar Development/Win64 y abrir fuera del editor. Caminar lento, sprint y vuelo propio se añaden en las siguientes tareas, no quedan implementados por generar la plantilla.
 
-## Cierre honesto
+Si C++ está bloqueado, una prueba Blueprint puede verificar editor/entrada, pero **no aprueba W01 ni demuestra compilación C++**. Registrar el bloqueo preciso.
 
-Estados: preparación del repositorio, instalación observada en captura, instalación confirmada, editor abierto, compilado, ejecutado y empaquetado son evidencias distintas. En esta actualización solo se completó la preparación documental. Si falta acceso, compilador o SDK, indicar el bloqueo exacto; no convertirlo en una tarea completada.
+Fab y Quixel Bridge no son condiciones de aceptación de esta primera prueba. No importar City Sample, ManOfSteel entero, planetas ni librerías completas. No cancelar colas, instalar programas o cambiar configuración global sin autorización.
 
-## Fuentes oficiales consultadas el 2026-11-15
+## Resultado que se exige
 
-- Epic, compatibilidad Visual Studio/UE y componentes: https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine
-- Epic, notas UE5.8, Platform SDK Upgrades: https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-release-notes?lang=en-US
-- Microsoft, instalación Visual Studio Tools para Unreal: https://learn.microsoft.com/es-es/visualstudio/gamedev/unreal/get-started/vs-tools-unreal-install
-- Epic, selector y creación de proyecto: https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-a-new-project-in-unreal-engine
+Distinguir instalación observada, instalación confirmada, editor abierto, compilación y ejecución. Reportar versiones, comandos, errores, captura y pruebas reales. No subir datos personales, motor, Binaries, Intermediate, Saved o DerivedDataCache al repo. No afirmar FPS sin hardware/resolución/perfil medidos.
 
-Las páginas genéricas pueden mostrar el motor más reciente en su encabezado; usar la fila y documentación correspondientes a 5.8 y confirmar el toolchain en el build real.
+## Fuentes consultadas el 2026-11-15
+
+- Epic, Visual Studio: https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine
+- Epic, UE5.8 Platform SDK Upgrades: https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-release-notes?lang=en-US
+- Microsoft, carga e integración: https://learn.microsoft.com/es-es/visualstudio/gamedev/unreal/get-started/vs-tools-unreal-install
+- Epic, selector de proyectos: https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-a-new-project-in-unreal-engine
+
+Consultar la fila/documentación de UE5.8 aunque una página genérica tenga encabezado de otra versión. Ninguna de estas fuentes confirma instalaciones en el equipo del usuario.
