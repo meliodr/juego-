@@ -18,6 +18,10 @@ H01: ciudad compacta, supersprint y supersalto, vuelo/boost/frenado/takeoff, cog
 
 ## Sprint 2 — Periferia y contratos de planeta
 
+**Sprint 2 tiene ficha operativa ampliada:** [SPRINT02_FEEL_WORLD.md](SPRINT02_FEEL_WORLD.md). Prioriza el nuevo control Shift/L3 para turbo aéreo, botón separado de Travesía, cinco siluetas de vuelo, velocidad máxima de ensayo mayor, cámara/viento/impacto, más coches reutilizados, costa/naturaleza/agua y objetivo real de 1080p/60 FPS; conserva periféria y contratos del planeta. Valores de velocidad son metas de prueba, no resultados. No iniciar mientras Sprint 1 esté en ejecución.
+
+
+
 Llevar la ciudad a periferia (carreteras, costa, montañas y terreno de fondo) con **regiones** y terreno simplificado. Preparar `BodyId`, `RegionId`, coordenadas globales de doble precisión / marco tangente local (arriba, gravedad y cámara), persistencia de objetos y muros por región y precarga predictiva delante del vuelo. Probar en **laboratorio aislado** una superficie curva con CharacterMovement y colisión, antes de trasladar la ciudad a un planeta. Reutilizar SkyAtmosphere, streaming, HLOD y código auditado (Ephemera solo si permiso, bytes y compatibilidad UE5.8.4 verdaderamente verificados). Si la tecnología de esfera bloquea, mantener MVP urbano jugable y laboratorio separado; no falsear un planeta con teleport de extremos.
 
 **Aceptación:** salir de la ciudad, cruzar al menos una región no urbana con colisión, regresar sin pérdida de estado; horizonte lejano coherente y logs de carga/VRAM/errores.
