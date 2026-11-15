@@ -1,5 +1,10 @@
 # IMPACT: BEYOND — Plan activo de producción
 
+## Selección de plugins por fase, 2026-11-15
+
+[PLUGIN_SELECTION_V14.md](PLUGIN_SELECTION_V14.md) gobierna qué plugins del motor y externos pueden evaluarse y cuándo. Enhanced Input desde el inicio; animación (IK/Control Rig), Niagara, Chaos/Fracture y PCG conforme aparezca cada necesidad. PCGEx 5.8 MIT y Realtime Destructible Mesh Free/Fab solo experimentos aislados, no dependencias instaladas. RMC Core MIT en reserva; MCP editor experimental y opcional. No alterar arranque IB-W00/IB-W01, presupuesto RD$0 o restricción de un jugador offline. Código y prueba local aún inexistentes.
+
+
 ## Actualización de plataforma 2026-11-15 — prioritaria
 
 El usuario decidió **Windows como plataforma principal**, con Unreal Engine 5.8 instalándose en Epic Games Launcher según su captura. Fab UE Plugin y Quixel Bridge todavía estaban en cola en ese momento. **Ninguna instalación completada, primer arranque, compilación o juego han sido verificados.** Referencia operativa: [WINDOWS_INICIO_V12.md](WINDOWS_INICIO_V12.md). La nueva cola comienza en **IB-W00 -> IB-W01**, no IB-L00; las descripciones anteriores de build Linux/Vulkan quedan suspendidas hasta eventual port. Render inicial DX12 y juego Windows. Se mantiene objetivo un jugador offline, compra de assets RD$0 y cooperativo muy lejano. 
