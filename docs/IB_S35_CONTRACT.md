@@ -1,0 +1,31 @@
+# S3.5 — contrato de referencia del laboratorio
+
+Estado: **CÓDIGO; integración Unreal pendiente de compilación y ejecución**. Base fija `1d01db54b63250ed0aacb0704a5ac16290324e32`. No es contrato global ni una dependencia que S4 deba incluir hoy.
+
+Implementación: `ImpactBeyond/Source/ImpactBeyond/IB_S35/IBS35Types.h`, `IBS35ReceiverComponent.*` y reglas compartidas `IBS35Policy.h`.
+
+| Campo | Semántica y unidades |
+|---|---|
+| `AttackId` | FGuid nuevo por ataque o lanzamiento. Todos sus contactos conservan el mismo ID. |
+| `DamageKind` | QuickPunch, HeavyPunch, HeldTool, ThrownObject. El integrador reconciliará otros tipos de S4. |
+| `HealthDelta` | Solicitud finita <= 0; el receptor la reemplaza por el delta realmente aplicado al limitar salud a [0, InitialHealth]. 0 admite empuje sin daño. |
+| `Impulse` | Vector kg·cm/s, espacio mundo. Golpes limitados por masa del blanco × MaxDeltaSpeed. |
+| `InstigatorId` | FGuid del portador/origen del ataque, válido durante la sesión offline. No atribuir automáticamente al jugador eventos de otro origen. |
+| `TargetId` | FGuid de la vida actual del receptor. Un ResetReceiver genera otro ID. No es un ID persistente de guardado. |
+| `DamageResponseProfile` | FName resuelto por el receptor, no por el atacante. El laboratorio ofrece salud y límite de empuje; no implementa reglas policiales. |
+| `Contact`, `RelativeVelocity` | Punto mundial cm y velocidad relativa cm/s. La curva de puño es una estimación reproducible; el lanzamiento toma velocidad pre-física. |
+| `SurfaceMaterial` | Nombre del physical material si el hit lo proporciona; None se registra explícitamente cuando falta. |
+| `AttackSeconds`, `bAirborne` | Tiempo desde inicio del ataque y estado aéreo del emisor del puño. Un objeto lanzado no se clasifica como un personaje aéreo. |
+| `bPhysicsResolved` | True para choque ya resuelto por Chaos: registrar daño, **no aplicar otro impulso**. |
+
+`Receive(Message, Body)` devuelve false si el mensaje es inválido, pertenece a otra vida, ya se recibió ese AttackId o se agotó el historial. En éxito modifica Message con perfil/delta/impulso resueltos y publica OnDamage. El emisor de puño publica OnHit con ese mismo mensaje resuelto. La deduplicación vive en el receptor, por tanto varios colliders del mismo actor no multiplican el daño. Debe haber **un receptor por blanco lógico**.
+
+El historial conserva hasta 4.096 ataques por vida. No expulsa IDs antiguos: al llenarse rechaza nuevos impactos hasta un reset explícito, para impedir replays por rotación de caché. Es un límite del laboratorio que exige decisión de integración para una sesión larga. Los resets completos también cancelan ataques/lanzamientos; reiniciar únicamente un blanco no es un reset del mundo.
+
+Los valores de daño son tuning provisional, no un modelo estructural: golpe rápido 20, pesado 60; impacto lanzado depende de masa y velocidad normal, limitado a 300. Material y velocidad viajan en el mensaje para la respuesta S4, pero no se inventa una tabla universal de resistencia. Los muros del laboratorio son sólidos y receptores; no simulan destrucción ni prometen huecos.
+
+## Adaptación S4 sin dependencia cruzada
+
+S4 conserva su adaptador temporal bajo IB_S4. Copiar semántica, no añadir un include a un header ausente en su snapshot. El integrador decidirá nombre global, identidad persistente, vida/epoch, unidades y receptor único antes de conectar ambos laboratorios. Para policía/misil contra H01, el adaptador deberá conservar HealthDelta=0 y su política de reacción/recuperación propia. S3.5 no modifica invulnerabilidad de H01.
+
+Pruebas: `ImpactBeyond.S35.PunchAndContract` verifica daño único, replay, vida anterior, NaN y bloqueo por muro; `ThrowsPhysical` verifica 10 lanzamientos por Car/Container/Rock usando frames reales. **Estas pruebas Unreal están preparadas, no ejecutadas.** El ejecutable ligero prueba la misma Lease, HitLedger, ThrowSpeed y AttackTiming, sin simular Chaos.
