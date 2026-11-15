@@ -13,6 +13,8 @@ Corte: 15 de noviembre de 2026. Documentación solicitada por Jarry, organizada 
 
 5. [Fuentes adicionales y límites de uso personal](FUENTES_ADICIONALES.md)
 
+6. [Super Heroes de HighRender: referencia pagada y límites](SUPER_HEROES_HIGHRENDER.md)
+
 ## Decisiones actuales de Jarry
 - Fab de Epic será la fuente de recursos gratuitos, con presupuesto RD$0 y licencia/NoAI comprobados por recurso. No supone instalar todos los candidatos; prevalece sobre selecciones generales anteriores.
 - IMPACT es actualmente para jugarlo él personalmente, no para comercializarlo. Esto no autoriza extraer cualquier contenido ni redistribuir recursos. Distinguir material solo para uso personal de material distribuible. Una futura publicación, colaboración con entrega de assets o comercialización requerirá revisar de nuevo las licencias.
