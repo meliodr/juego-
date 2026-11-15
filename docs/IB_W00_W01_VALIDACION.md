@@ -16,7 +16,7 @@ Se revisó y ejecutó el script de solo lectura del PR #2 (59a12c3). El inventar
 
 Requisitos de referencia de Epic: [Unreal Engine 5.8 Release Notes](https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-8-release-notes).
 
-## IB-W01 · En validación
+## IB-W01 · Aceptado el 15 de noviembre de 2026
 
 Proyecto `ImpactBeyond/ImpactBeyond.uproject`, creado desde el asistente Third Person de Epic en C++, Desktop y variante Ninguna. Se conservan los ejemplos de variantes que genera la edición C++ de la plantilla. El mapa de arranque sigue siendo Third Person. Se reutilizan sus acciones Enhanced Input, cámara, colisión y maniquí, y la configuración DX12 Desktop de la plantilla.
 
@@ -27,3 +27,9 @@ Los ejemplos suministrados en Templates se documentan bajo las secciones 1 y 5(b
 ### Compilación y empaquetado
 
 Unreal Build Tool terminó con código 0 para `ImpactBeyondEditor Win64 Development` e `ImpactBeyond Win64 Development`. El empaquetado usa AutomationTool (`BuildCookRun`, Win64 Development, mapa `/Game/ThirdPerson/Lvl_ThirdPerson`, Pak/IoStore). Los binarios y registros de máquina quedan fuera del repositorio.
+
+AutomationTool completó compilación, preparación del mapa, stage, paquete y archivo Win64 con código 0. El paquete Development ocupa 1,02 GiB. El ejecutable arrancó fuera del editor y cargó Lvl_ThirdPerson con D3D12 SM6 en la RTX 4070. El editor también mostró el mapa en Play-in-Editor y su verificación de mapa devolvió 0 errores y 0 advertencias.
+
+**Prueba visual del ejecutable:** Espacio produjo salto y aterrizaje. El ratón giró la cámara. Con W el personaje dejó la plataforma inicial, avanzó hacia el muro y quedó bloqueado por él al repetir entrada. Para facilitar las pulsaciones breves de la herramienta se usó temporalmente `slomo 10` en el tramo de desplazamiento y choque, y luego se restauró `slomo 1`. No se midió rendimiento ni se evaluó la sensación de control.
+
+Se usaron los componentes existentes. El aviso de red de Windows no impidió verificar el juego local. Para reproducir, ejecutar el paquete Win64 Development desde su carpeta completa (no mover el exe por separado).
