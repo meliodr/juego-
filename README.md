@@ -1,5 +1,7 @@
 # IMPACT: BEYOND
 
+> **Regla de desarrollo: reutilizar lo más que se pueda y crear lo mínimo que se pueda.** Primero buscar y verificar herramientas, modelos, animaciones y código existentes; configurar y adaptar antes de desarrollar desde cero. Crear solo lo indispensable para una experiencia estable y divertida. Detalles obligatorios en [AGENTS.md](AGENTS.md).
+
 ## Plugins seleccionados — v1.4
 
 **[Ver selección y pruebas de plugins para UE5.8](docs/PLUGIN_SELECTION_V14.md)**. Se usarán herramientas incluidas (Enhanced Input, IK Rig/Control Rig, Niagara, Chaos/Fracture y PCG), activadas por fase. Unreal MCP + AllToolsets será un experimento local de automatización cuando editor y agente funcionen. Externos elegidos para pruebas, no instalaciones actuales: PCGEx MIT rama 5.8, Realtime Destructible Mesh Free (Fab Standard) y Realtime Mesh Component Core MIT como reserva. **Ninguno se ha instalado ni probado en el equipo del usuario.** Primera tarea sigue IB-W00/W01: Windows/Unreal 5.8.
