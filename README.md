@@ -1,8 +1,11 @@
 # IMPACT: BEYOND
 
-Sandbox 3D de superhumanos para **Linux nativo y un jugador offline**. Caminar, correr, volar, combatir, agarrar y lanzar objetos/personajes, y destruir partes del entorno. Presupuesto de compras de assets/plugins: **RD$0**. Reutilización primero.
+Sandbox 3D de superhumanos para **Windows como plataforma principal y un jugador offline**. Caminar, correr, volar, combatir, agarrar y lanzar objetos/personajes, y destruir partes del entorno. Presupuesto de compras de assets/plugins: **RD$0**. Reutilización primero.
 
 ## Empezar aquí
+
+**Actualización de plataforma (15 de noviembre de 2026):** [Inicio en Windows con Unreal Engine 5.8](docs/WINDOWS_INICIO_V12.md). La instalación del motor aparece en curso en la captura del usuario; Fab/Quixel Bridge siguen en cola. Ningún ejecutable o proyecto Unreal se ha validado todavía. Linux es posible destino futuro, no requisito de inicio.
+
 
 - **[Plan activo de producción](docs/PLAN_ACTIVO.md)**: alcance, arquitectura, selección de donantes, entregas, roles, riesgos y criterios de prueba.
 - **[Cola activa de tareas](docs/TAREAS_ACTIVAS.md)**: primer encargo IB-L00 y fichas ordenadas hasta el sandbox jugable.
@@ -14,9 +17,9 @@ Estos documentos sustituyen el orden de trabajo de los planes versionados anteri
 
 El repositorio contiene planificación, auditorías y procedimientos; **todavía no contiene un proyecto Unreal jugable ni evidencia de compilación/ejecución en el equipo del usuario**. La revisión del árbol previa a esta consolidación fue sobre el commit `b060bc7cc6fe828405463e02bf7df1a637f10330`.
 
-Hardware reportado: **64 GB RAM y RTX 4070 con 8 GB VRAM**. CPU, distribución, driver/Vulkan, almacenamiento y motor/toolchain pendientes de inspección local. No hay acceso a esa máquina confirmado en esta documentación.
+Hardware reportado: **64 GB RAM y RTX 4070 con 8 GB VRAM**. CPU, driver, DirectX 12, Visual Studio/MSVC/Windows SDK, almacenamiento y motor/toolchain pendientes de verificación local. No hay acceso a esa máquina confirmado en esta documentación.
 
-**Próximo trabajo operativo: IB-L00 — inspeccionar el entorno autorizado y obtener un ejecutable base Linux.** Es una tarea preparada, no ejecutada ni enviada a Robert automáticamente. La planificación no autoriza instalaciones o cambios de sistema por sí sola.
+**Próximo trabajo operativo: IB-W00 — confirmar instalación y herramientas de Unreal Engine 5.8 en Windows; después IB-W01 para crear un proyecto base.** Es una tarea preparada, no ejecutada ni enviada a Robert automáticamente. La planificación no autoriza instalaciones o cambios de sistema por sí sola.
 
 ## Primera experiencia que construiremos
 
@@ -43,7 +46,7 @@ Ciudad vertical destructible por regiones en un planeta pequeño, salida a órbi
 | Rotura/soporte | Chaos y comparación acotada con PlotBuilder | Paneles/colapso preparado |
 | Espacio | Ephemera aislado, Cosmic Architect como alternativa | Esfera visible y regiones locales |
 
-Cada donante exige verificar revisión, archivos completos, permisos, compilación y prueba Linux. Nada se considera funcional por un README, una demo ajena o la presencia de una licencia. No importar frameworks completos por acumulación.
+Cada donante exige verificar revisión, archivos completos, permisos, compilación y prueba en Windows. Nada se considera funcional por un README, una demo ajena o la presencia de una licencia. No importar frameworks completos por acumulación.
 
 ## Investigación por tema
 
