@@ -5,6 +5,7 @@
 
 class ACharacter;
 class UStaticMeshComponent;
+class UStaticMesh;
 
 UCLASS()
 class UImpactCircuitComponent : public UActorComponent
@@ -23,6 +24,7 @@ public:
 	bool IsChargingThrow() const { return bChargingThrow; }
 	float GetThrowCharge() const;
 	bool IsPlayingThrow() const;
+	bool IsCarHeld() const;
 
 	static constexpr float ThrowReleaseTime = 0.18f;
 
@@ -35,6 +37,8 @@ private:
 
 	void ReleaseCar(ECarState NextState);
 	void StartThrow(float Charge);
+	void FitCarAppearance();
+	UStaticMeshComponent* FindGrabbable() const;
 
 	UPROPERTY(EditDefaultsOnly, Category="Circuit|Throw", meta=(ClampMin="0.1", Units="s"))
 	float FullChargeTime = 0.9f;
@@ -59,14 +63,24 @@ private:
 	TObjectPtr<UStaticMeshComponent> Car;
 
 	UPROPERTY()
+	TObjectPtr<UStaticMeshComponent> CircuitCar;
+
+	TArray<TWeakObjectPtr<UStaticMeshComponent>> Grabbables;
+
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> CarAppearance;
+
+	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> Panel;
 
 	ECarState CarState = ECarState::Free;
 	float PhaseTime = 0.0f;
 	float BlockedTime = 0.0f;
 	float ChargeTime = 0.0f;
+	float VehicleGripInset = 0.0f;
 	float LaunchSpeed = 0.0f;
 	bool bChargingThrow = false;
+	bool bCircuitCarLaunched = false;
 	FVector PrePhysicsCarVelocity = FVector::ZeroVector;
 	FVector LiftOffset = FVector::ZeroVector;
 	FVector ChassisExtent = FVector::ZeroVector;

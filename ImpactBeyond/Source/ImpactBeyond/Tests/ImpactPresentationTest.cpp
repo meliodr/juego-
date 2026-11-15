@@ -74,7 +74,18 @@ bool FImpactCaptureFrames::Update()
 	case 328: Capture(TEXT("Potencia-alta.png")); break;
 	case 338: Key(EKeys::T, false); break;
 	case 349: Capture(TEXT("Lanzamiento.png")); break;
-	case 365: return true;
+	case 365:
+		Hero->GetCharacterMovement()->StopMovementImmediately();
+		Hero->SetActorLocationAndRotation(FVector(52000.0, 13000.0, 1400.0), FRotator(0, 90, 0),
+			false, nullptr, ETeleportType::TeleportPhysics);
+		Hero->GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+		PC->SetControlRotation(FRotator(-24.0, 90.0, 0.0));
+		Key(EKeys::V, true);
+		break;
+	case 366: Key(EKeys::V, false); break;
+	case 382: Capture(TEXT("Descenso-impacto.png")); break;
+	case 407: Capture(TEXT("Onda-de-impacto.png")); break;
+	case 430: return true;
 	default: break;
 	}
 

@@ -5,6 +5,7 @@
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "ImpactBeyondCharacter.h"
 #include "ImpactCircuitComponent.h"
 
@@ -18,7 +19,30 @@ void AImpactBeyondHUD::DrawHUD()
 	Super::DrawHUD();
 	const AImpactBeyondCharacter* Hero = PlayerOwner ? Cast<AImpactBeyondCharacter>(PlayerOwner->GetPawn()) : nullptr;
 	const UImpactCircuitComponent* Circuit = Hero ? Hero->GetCircuit() : nullptr;
-	if (!Canvas || !Circuit || !Circuit->IsChargingThrow())
+	if (!Canvas || !Circuit || !GEngine)
+	{
+		return;
+	}
+
+	const float UIScale = FMath::Clamp(Canvas->ClipY / 900.0f, 0.7f, 1.6f);
+	const UCharacterMovementComponent* Movement = Hero->GetCharacterMovement();
+	const float Inset = 26.0f * UIScale;
+	const float DisplayWidth = FMath::Min(Canvas->ClipX - 2.0f * Inset, 640.0f * UIScale);
+	const FString MovementStatus = Movement->IsFlying()
+		? FString::Printf(TEXT("VUELO %d  |  %.0f m/s"), Hero->GetFlightLevel(), Movement->Velocity.Size() / 100.0f)
+		: FString::Printf(TEXT("H01  |  %.0f m/s"), Movement->Velocity.Size2D() / 100.0f);
+	const FString ActionHint = Circuit->IsCarHeld()
+		? TEXT("Mantener T / Triangulo para cargar. Suelta para lanzar.")
+		: (Movement->IsFlying() || Movement->IsFalling())
+			? TEXT("V / Cruceta arriba: impacto  |  X / Cuadrado: freno")
+			: TEXT("Shift / L3 + Espacio / Cruz: supersalto  |  F / R3: vuelo");
+	UFont* Font = GEngine->GetSmallFont();
+	DrawRect(FLinearColor(0.02f, 0.025f, 0.035f, 0.86f), Inset, Inset, DisplayWidth, 74.0f * UIScale);
+	DrawText(MovementStatus, FLinearColor(0.43f, 0.84f, 1.0f), Inset * 1.45f, Inset + 7.0f * UIScale, Font, UIScale * 1.28f);
+	DrawText(ActionHint, FLinearColor::White, Inset * 1.45f, Inset + 32.0f * UIScale, Font, UIScale);
+	DrawText(TEXT("G / Circulo: agarre  |  R / Cruceta abajo: reinicio  |  F2 / Cruceta izq.: calidad"),
+		FLinearColor(0.79f, 0.83f, 0.87f), Inset * 1.45f, Inset + 52.0f * UIScale, Font, UIScale * 0.88f);
+	if (!Circuit->IsChargingThrow())
 	{
 		return;
 	}

@@ -12,6 +12,7 @@ class UCameraComponent;
 class UInputAction;
 class UAnimSequence;
 class UImpactCircuitComponent;
+class UImpactLandingComponent;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -60,6 +61,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1800", ClampMax="2400", Units="cm/s"))
 	float SprintSpeed = 2100.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="1200", ClampMax="1800", Units="cm"))
+	float SuperJumpHeight = 1500.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Movement|Ground", meta=(ClampMin="100", Units="cm/s"))
+	float SuperJumpMinSpeed = 1450.0f;
+
 	UPROPERTY(EditDefaultsOnly, Category="Movement|Flight", meta=(ClampMin="0.3", ClampMax="0.6", Units="s"))
 	float TakeoffDuration = 0.433f;
 
@@ -95,11 +102,18 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UImpactCircuitComponent> Circuit;
 
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UImpactLandingComponent> ImpactLanding;
+
 	void ToggleFlight();
 	void IncreaseFlightSpeed();
 	void DecreaseFlightSpeed();
 	void SetFlightLevel(int32 Level);
 	bool IsFlightBrakeHeld() const;
+	bool IsSprintHeld() const;
+	void RequestImpactLanding();
+	void ToggleCircuitGrab();
+	void TogglePerformancePreset();
 
 	void UpdateFlightPresentation(float DeltaSeconds);
 	void UpdateGroundMovement(float DeltaSeconds, const APlayerController* PlayerController);
@@ -123,6 +137,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAnimSequence> ThrowPose;
 
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> ImpactDivePose;
+
 	float BaseCameraArmLength = 400.0f;
 	float BaseFieldOfView = 90.0f;
 	FVector BaseCameraSocketOffset = FVector::ZeroVector;
@@ -133,6 +150,7 @@ private:
 	float BaseBrakingFriction = 0.0f;
 	float BaseGroundAcceleration = 0.0f;
 	float BaseGroundBraking = 0.0f;
+	float BaseAirBraking = 0.0f;
 	bool bBaseSeparateBrakingFriction = false;
 	float TakeoffRemaining = 0.0f;
 
@@ -143,6 +161,9 @@ private:
 	bool bPresentingFlight = false;
 	bool bUsingTravelPose = false;
 	bool bPlayingGroundThrow = false;
+	bool bPresentingImpactDive = false;
+	bool bSuperJumpInProgress = false;
+	FTransform ImpactDiveMeshTransform;
 	int32 FlightLevel = 0;
 
 public:
@@ -172,5 +193,7 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	const UImpactCircuitComponent* GetCircuit() const { return Circuit.Get(); }
+	int32 GetFlightLevel() const { return FlightLevel + 1; }
+	bool CanUseImpactLanding() const;
 };
 

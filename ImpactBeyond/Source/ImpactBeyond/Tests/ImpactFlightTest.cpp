@@ -9,6 +9,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "EngineUtils.h"
 #include "ImpactCircuitComponent.h"
+#include "ImpactLandingComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -183,6 +184,8 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 	SpeedStage(FKey(), 900);
 	SpeedStage(EKeys::E, 1800);
 	SpeedStage(EKeys::Gamepad_RightShoulder, 4400);
+	SpeedStage(EKeys::E, 7200);
+	SpeedStage(EKeys::Gamepad_RightShoulder, 10500);
 
 	const auto CoastSpeed = MakeShared<double>(0);
 	ForFrames(21, [=](int32 Frame)
@@ -211,15 +214,15 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		}
 	});
 
-	Once([=]() { *Wall = MakeBox(Origin + FVector(12000, 0, 800), FVector(2, 2400, 800)); });
+	Once([=]() { *Wall = MakeBox(Origin + FVector(22000, 0, 800), FVector(2, 6000, 800)); });
 
-	// Start each sweep with a straight approach long enough to reach the third level.
+	// Start each sweep with a straight approach long enough to reach the fifth level.
 	for (float Lateral : {0.f, 0.12f})
 	{
 		Once([=]()
 		{
 			Movement->StopMovementImmediately();
-			Pawn->SetActorLocation(Origin + FVector(6500, Lateral > 0 ? 100 : 0, 500));
+			Pawn->SetActorLocation(Origin + FVector(3500, Lateral > 0 ? 100 : 0, 500));
 		});
 		const auto Peak = MakeShared<double>(0);
 		const auto FurthestX = MakeShared<double>(0);
@@ -230,10 +233,10 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 			*FurthestX = FMath::Max(*FurthestX, Pawn->GetActorLocation().X - Origin.X);
 			if (Frame == 199)
 			{
-				const double ContactX = 11998 - Pawn->GetCapsuleComponent()->GetScaledCapsuleRadius();
+				const double ContactX = 21998 - Pawn->GetCapsuleComponent()->GetScaledCapsuleRadius();
 				AddInfo(FString::Printf(TEXT("Wall (lateral %.2f): peak %.1f cm/s, max x %.1f cm"),
 					Lateral, *Peak, *FurthestX));
-				TestTrue(TEXT("Reached top speed before wall"), *Peak >= 3170);
+				TestTrue(TEXT("Reached maximum flight speed before the thin wall"), *Peak >= 10200.0);
 				TestTrue(TEXT("Capsule reached wall without crossing it"), FMath::IsNearlyEqual(*FurthestX, ContactX, 5.0));
 			}
 		});
@@ -245,6 +248,11 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Movement->StopMovementImmediately();
 		Pawn->SetActorLocation(Origin + FVector(0, 0, 500));
 	});
+	for (int32 Drop = 0; Drop < 2; ++Drop)
+	{
+		Once([=]() { Key(EKeys::Q, true); });
+		Once([=]() { Key(EKeys::Q, false); });
+	}
 	for (int32 Change = 0; Change < 20; ++Change)
 	{
 		const bool bDown = Change % 2 == 0;
@@ -389,6 +397,64 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		}
 		if (Frame == 239) { TestTrue(TEXT("Level five approaches its full speed"), Movement->MaxFlySpeed >= 10450.0f); }
 	});
+	for (int32 Cycle = 0; Cycle < 20; ++Cycle)
+	{
+		const FKey SprintKey = Cycle % 2 == 0 ? EKeys::LeftShift : EKeys::Gamepad_LeftThumbstick;
+		const FKey JumpKey = Cycle % 2 == 0 ? EKeys::SpaceBar : EKeys::Gamepad_FaceButton_Bottom;
+		const FKey FlightKey = Cycle % 4 < 2 ? EKeys::F : EKeys::Gamepad_RightThumbstick;
+		const auto Start = MakeShared<FVector>();
+		const auto Peak = MakeShared<double>(0.0);
+		ForFrames(90, [=, this](int32 Frame)
+		{
+			if (Frame == 0)
+			{
+				Movement->StopMovementImmediately();
+				Pawn->SetActorLocationAndRotation(Origin + FVector(0, 0, 98), FRotator::ZeroRotator);
+				Movement->SetMovementMode(MOVE_Walking);
+				PC->SetControlRotation(FRotator::ZeroRotator);
+				Key(SprintKey, true);
+			}
+			Pawn->DoMove(0, 1);
+			if (Frame == 89)
+			{
+				TestTrue(TEXT("Supersalto begins above the sprint-speed threshold"), Movement->Velocity.X > 1600.0);
+				*Start = Pawn->GetActorLocation();
+				Key(JumpKey, true);
+			}
+		});
+		ForFrames(310, [=, this](int32 Frame)
+		{
+			if (Frame == 1) { Key(JumpKey, false); Key(SprintKey, false); }
+			if (Frame == 5)
+			{
+				TestTrue(TEXT("Supersalto produces an upward impulse without erasing forward speed"),
+					Movement->IsFalling() && Movement->Velocity.Z > 1200.0 && Movement->Velocity.X > 1300.0);
+			}
+			*Peak = FMath::Max(*Peak, Pawn->GetActorLocation().Z - Start->Z);
+			if (Cycle % 2 == 0)
+			{
+				if (Frame == 114 || Frame == 120) { Key(FlightKey, true); }
+				if (Frame == 115 || Frame == 121) { Key(FlightKey, false); }
+				if (Frame == 119) { TestTrue(TEXT("Supersalto transitions to flight in the air"), Movement->IsFlying()); }
+			}
+			if (Frame == 309)
+			{
+				const double Distance = Pawn->GetActorLocation().X - Start->X;
+				TestTrue(FString::Printf(TEXT("Supersalto reaches 12–18 m (measured %.2f m)"), *Peak / 100.0),
+					*Peak >= 1200.0 && *Peak <= 1800.0);
+				TestTrue(TEXT("Supersalto lands on the fixture"), Movement->IsMovingOnGround());
+				// Neutral air input lets falling braking gradually spend the launch momentum.
+				TestTrue(FString::Printf(TEXT("Supersalto carries forward with neutral input (measured %.2f m)"),
+					Distance / 100.0), Distance > 900.0);
+				if (Cycle < 2)
+				{
+					AddInfo(FString::Printf(TEXT("Supersalto cycle %d: apex %.2f m, forward %.2f m, movement mode %d"),
+						Cycle + 1, *Peak / 100.0, Distance / 100.0, static_cast<int32>(Movement->MovementMode.GetValue())));
+				}
+			}
+		});
+	}
+	Once([this]() { AddInfo(TEXT("Completed 20 supersaltos and landings, including 10 transitions into flight")); });
 	Once([=]()
 	{
 		Pawn->SetActorLocationAndRotation(OriginalLocation, OriginalRotation);
@@ -399,6 +465,125 @@ bool FImpactFlightTest::RunTest(const FString& Parameters)
 		Movement->Velocity = OriginalVelocity;
 		Floor->Destroy();
 	});
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FImpactLandingTest, "ImpactBeyond.Landing.Headless",
+	EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+
+bool FImpactLandingTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = GEngine->GetCurrentPlayWorld();
+	APlayerController* PC = World ? World->GetFirstPlayerController() : nullptr;
+	AImpactBeyondCharacter* Pawn = PC ? Cast<AImpactBeyondCharacter>(PC->GetPawn()) : nullptr;
+	UImpactLandingComponent* Landing = Pawn ? Pawn->FindComponentByClass<UImpactLandingComponent>() : nullptr;
+	if (!TestNotNull(TEXT("Impact landing on the possessed pawn"), Landing))
+	{
+		return false;
+	}
+
+	const FVector Center(140000, 0, 5000);
+	const FVector NearStart = Center + FVector(250, 0, 32);
+	const FVector FarStart = Center + FVector(1150, 0, 32);
+	const FVector UntaggedStart = Center + FVector(0, 250, 32);
+	const auto MakeBox = [World](const FVector& Position, const FVector& Extent, bool bPhysical)
+	{
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.ObjectFlags |= RF_Transient;
+		AActor* Actor = World->SpawnActor<AActor>(SpawnParameters);
+		UBoxComponent* Box = NewObject<UBoxComponent>(Actor);
+		Actor->SetRootComponent(Box);
+		Box->InitBoxExtent(Extent);
+		Box->SetCollisionProfileName(bPhysical ? TEXT("PhysicsActor") : TEXT("BlockAll"));
+		Actor->SetActorLocation(Position);
+		Box->RegisterComponent();
+		Box->SetSimulatePhysics(bPhysical);
+		return Box;
+	};
+	UBoxComponent* Floor = MakeBox(Center - FVector(0, 0, 20), FVector(4500, 4500, 20), false);
+	UBoxComponent* Near = MakeBox(NearStart, FVector(30), true);
+	UBoxComponent* Far = MakeBox(FarStart, FVector(30), true);
+	UBoxComponent* Untagged = MakeBox(UntaggedStart, FVector(30), true);
+	Near->ComponentTags.Add(TEXT("ImpactLandingTarget"));
+	Far->ComponentTags.Add(TEXT("ImpactLandingTarget"));
+	auto* Movement = Pawn->GetCharacterMovement();
+	const FTransform OriginalTransform = Pawn->GetActorTransform();
+	const EMovementMode OriginalMode = Movement->MovementMode;
+	const FVector OriginalVelocity = Movement->Velocity;
+	const double LandingHeight = Center.Z + Pawn->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+	const auto Key = [PC](FKey Input, bool bHeld)
+	{
+		PC->InputKey(FInputKeyEventArgs::CreateSimulated(Input, bHeld ? IE_Pressed : IE_Released, bHeld ? 1.f : 0.f));
+	};
+	const auto ResetBox = [](UBoxComponent* Box, const FVector& Position)
+	{
+		Box->SetWorldLocationAndRotation(Position, FRotator::ZeroRotator, false, nullptr, ETeleportType::TeleportPhysics);
+		Box->SetPhysicsLinearVelocity(FVector::ZeroVector);
+		Box->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+	};
+
+	const auto LastFrame = MakeShared<uint64>(MAX_uint64);
+	for (int32 Cycle = 0; Cycle < 10; ++Cycle)
+	{
+		const FKey ImpactKey = Cycle % 2 == 0 ? EKeys::V : EKeys::Gamepad_DPad_Up;
+		FAutomationTestFramework::Get().EnqueueLatentCommand(MakeShared<FFlightStep>(
+			[=, this, Frame = 0, FastestProp = 0.0]() mutable
+			{
+				if (*LastFrame == GFrameCounter)
+				{
+					return false;
+				}
+				*LastFrame = GFrameCounter;
+				switch (Frame)
+				{
+				case 0:
+					Movement->StopMovementImmediately();
+					Pawn->SetActorLocation(Center + FVector(0, 0, 550), false, nullptr, ETeleportType::TeleportPhysics);
+					Movement->SetMovementMode(Cycle % 2 == 0 ? MOVE_Flying : MOVE_Falling);
+					ResetBox(Near, NearStart);
+					ResetBox(Far, FarStart);
+					ResetBox(Untagged, UntaggedStart);
+					TestTrue(TEXT("Impact is eligible from flight or free fall"), Landing->CanStartImpact());
+					Key(ImpactKey, true);
+					break;
+				case 3:
+					Key(ImpactKey, false);
+					TestTrue(TEXT("Impact enters a fast physical dive in Falling mode"), Landing->IsImpacting()
+						&& Movement->IsFalling() && Movement->Velocity.Z <= -1800.0);
+					break;
+				case 40:
+					TestTrue(TEXT("Impact lands on the blocking floor"), Movement->IsMovingOnGround()
+						&& FMath::IsNearlyEqual(Pawn->GetActorLocation().Z, LandingHeight, 6.0));
+					TestTrue(FString::Printf(TEXT("Impact %d prop launches outward at %.0f cm/s"), Cycle + 1, FastestProp),
+						FastestProp > 200.0 && Near->GetComponentLocation().X > NearStart.X + 60.0);
+					TestTrue(TEXT("Impact ignores tagged bodies outside the radius"),
+						FVector::Dist2D(Far->GetComponentLocation(), FarStart) < 10.0);
+					TestTrue(TEXT("Impact ignores nearby bodies without the target tag"),
+						FVector::Dist2D(Untagged->GetComponentLocation(), UntaggedStart) < 10.0);
+					TestFalse(TEXT("Impact cannot restart on the floor"), Landing->CanStartImpact());
+					break;
+				}
+				FastestProp = FMath::Max(FastestProp, Near->GetPhysicsLinearVelocity().X);
+				if (++Frame < 115)
+				{
+					return false;
+				}
+				if (Cycle == 9)
+				{
+					TestFalse(TEXT("Impact has recovered after the last cycle"), Landing->IsImpacting());
+					Pawn->SetActorTransform(OriginalTransform, false, nullptr, ETeleportType::TeleportPhysics);
+					Movement->SetMovementMode(OriginalMode);
+					Movement->Velocity = OriginalVelocity;
+					for (UBoxComponent* Box : {Floor, Near, Far, Untagged})
+					{
+						Box->GetOwner()->Destroy();
+					}
+					AddInfo(TEXT("Completed 10 impact landings from five flights and five free falls; keyboard and gamepad bindings exercised"));
+				}
+				return true;
+			}));
+	}
 	return true;
 }
 

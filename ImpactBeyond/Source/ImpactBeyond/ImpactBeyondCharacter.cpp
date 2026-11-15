@@ -3,6 +3,7 @@
 #include "ImpactBeyondCharacter.h"
 #include "ImpactCircuitComponent.h"
 #include "ImpactGripMesh.h"
+#include "ImpactLandingComponent.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Animation/AnimSequence.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -12,6 +13,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/GameUserSettings.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
@@ -25,6 +27,7 @@ AImpactBeyondCharacter::AImpactBeyondCharacter(const FObjectInitializer& ObjectI
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UImpactGripMesh>(ACharacter::MeshComponentName))
 {
 	Circuit = CreateDefaultSubobject<UImpactCircuitComponent>(TEXT("Circuit"));
+	ImpactLanding = CreateDefaultSubobject<UImpactLandingComponent>(TEXT("ImpactLanding"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> HoverAsset(
 		TEXT("/Game/IB_Flight/A_FlightHover.A_FlightHover"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> CruiseAsset(
@@ -37,12 +40,15 @@ AImpactBeyondCharacter::AImpactBeyondCharacter(const FObjectInitializer& ObjectI
 		TEXT("/Game/IB_Flight/A_FlightCarryTakeoff.A_FlightCarryTakeoff"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> ThrowAsset(
 		TEXT("/Game/IB_Flight/A_FlightThrow.A_FlightThrow"));
+	static ConstructorHelpers::FObjectFinderOptional<UAnimSequence> DiveAsset(
+		TEXT("/Game/IB_Flight/A_ImpactDive.A_ImpactDive"));
 	HoverPose = HoverAsset.Object;
 	TravelPose = CruiseAsset.Object;
 	CarryPose = CarryAsset.Object;
 	TakeoffPose = TakeoffAsset.Object;
 	CarryTakeoffPose = CarryTakeoffAsset.Object;
 	ThrowPose = ThrowAsset.Object;
+	ImpactDivePose = DiveAsset.Get() ? DiveAsset.Get() : ThrowPose.Get();
 
 	PrimaryActorTick.bCanEverTick = true;
 	// Set size for collision capsule
@@ -77,6 +83,8 @@ AImpactBeyondCharacter::AImpactBeyondCharacter(const FObjectInitializer& ObjectI
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+	FollowCamera->PostProcessSettings.bOverride_MotionBlurAmount = true;
+	FollowCamera->PostProcessSettings.MotionBlurAmount = 0.15f;
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
@@ -95,6 +103,7 @@ void AImpactBeyondCharacter::BeginPlay()
 	BaseBrakingFriction = Movement->BrakingFriction;
 	BaseGroundAcceleration = Movement->MaxAcceleration;
 	BaseGroundBraking = Movement->BrakingDecelerationWalking;
+	BaseAirBraking = Movement->BrakingDecelerationFalling;
 	bBaseSeparateBrakingFriction = Movement->bUseSeparateBrakingFriction;
 	if (UImpactGripMesh* GripMesh = Cast<UImpactGripMesh>(GetMesh()))
 	{
@@ -124,14 +133,18 @@ void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 		PlayerInputComponent->BindKey(EKeys::Gamepad_RightShoulder, IE_Pressed, this, &AImpactBeyondCharacter::IncreaseFlightSpeed);
 		PlayerInputComponent->BindKey(EKeys::Q, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_LeftShoulder, IE_Pressed, this, &AImpactBeyondCharacter::DecreaseFlightSpeed);
-		PlayerInputComponent->BindKey(EKeys::G, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ToggleGrab);
-		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Right, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ToggleGrab);
+		PlayerInputComponent->BindKey(EKeys::G, IE_Pressed, this, &AImpactBeyondCharacter::ToggleCircuitGrab);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Right, IE_Pressed, this, &AImpactBeyondCharacter::ToggleCircuitGrab);
 		PlayerInputComponent->BindKey(EKeys::T, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::BeginThrowCharge);
 		PlayerInputComponent->BindKey(EKeys::T, IE_Released, Circuit.Get(), &UImpactCircuitComponent::ReleaseThrowCharge);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Top, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::BeginThrowCharge);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_FaceButton_Top, IE_Released, Circuit.Get(), &UImpactCircuitComponent::ReleaseThrowCharge);
 		PlayerInputComponent->BindKey(EKeys::R, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ResetCircuit);
 		PlayerInputComponent->BindKey(EKeys::Gamepad_DPad_Down, IE_Pressed, Circuit.Get(), &UImpactCircuitComponent::ResetCircuit);
+		PlayerInputComponent->BindKey(EKeys::V, IE_Pressed, this, &AImpactBeyondCharacter::RequestImpactLanding);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_DPad_Up, IE_Pressed, this, &AImpactBeyondCharacter::RequestImpactLanding);
+		PlayerInputComponent->BindKey(EKeys::F2, IE_Pressed, this, &AImpactBeyondCharacter::TogglePerformancePreset);
+		PlayerInputComponent->BindKey(EKeys::Gamepad_DPad_Left, IE_Pressed, this, &AImpactBeyondCharacter::TogglePerformancePreset);
 	}
 	else
 	{
@@ -141,6 +154,10 @@ void AImpactBeyondCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 void AImpactBeyondCharacter::ToggleFlight()
 {
+	if (ImpactLanding->IsImpacting())
+	{
+		return;
+	}
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	if (Movement->IsFlying())
 	{
@@ -160,6 +177,46 @@ void AImpactBeyondCharacter::ToggleFlight()
 		// Let the movement component sweep the capsule during liftoff.
 		Movement->Velocity = FVector(GroundVelocity.X, GroundVelocity.Y, 450.0f);
 	}
+}
+
+bool AImpactBeyondCharacter::CanUseImpactLanding() const
+{
+	return !Circuit->IsCarHeld() && ImpactLanding->CanStartImpact();
+}
+
+void AImpactBeyondCharacter::RequestImpactLanding()
+{
+	if (CanUseImpactLanding())
+	{
+		ImpactLanding->StartImpact();
+	}
+}
+
+void AImpactBeyondCharacter::ToggleCircuitGrab()
+{
+	if (!ImpactLanding->IsImpacting())
+	{
+		Circuit->ToggleGrab();
+	}
+}
+
+void AImpactBeyondCharacter::TogglePerformancePreset()
+{
+	if (UGameUserSettings* Settings = GEngine->GetGameUserSettings())
+	{
+		const bool bPerformance = Settings->GetOverallScalabilityLevel() != 1;
+		Settings->SetOverallScalabilityLevel(bPerformance ? 1 : 2);
+		Settings->SetResolutionScaleValueEx(bPerformance ? 75.0f : 100.0f);
+		Settings->ApplySettings(false);
+		GEngine->AddOnScreenDebugMessage(1043, 2.0f, FColor::White,
+			bPerformance ? TEXT("Calidad: Rendimiento") : TEXT("Calidad: Alta"));
+	}
+}
+
+bool AImpactBeyondCharacter::IsSprintHeld() const
+{
+	const APlayerController* PC = Cast<APlayerController>(GetController());
+	return PC && (PC->IsInputKeyDown(EKeys::LeftShift) || PC->IsInputKeyDown(EKeys::Gamepad_LeftThumbstick));
 }
 
 void AImpactBeyondCharacter::IncreaseFlightSpeed()
@@ -197,6 +254,10 @@ bool AImpactBeyondCharacter::IsFlightBrakeHeld() const
 void AImpactBeyondCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
 {
 	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
+	if (PrevMovementMode == MOVE_Falling && !GetCharacterMovement()->IsFalling())
+	{
+		bSuperJumpInProgress = false;
+	}
 
 	USkeletalMeshComponent* CharacterMesh = GetMesh();
 	if (GetCharacterMovement()->IsFlying())
@@ -353,6 +414,25 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 	{
 		UpdateFlightPresentation(DeltaSeconds);
 	}
+	else if (ImpactLanding->IsDiving() && ImpactDivePose)
+	{
+		if (!bPresentingImpactDive)
+		{
+			bPresentingImpactDive = true;
+			ImpactDiveMeshTransform = GetMesh()->GetRelativeTransform();
+		}
+		const FQuat Tilt(FVector::YAxisVector, FMath::DegreesToRadians(27.0f));
+		GetMesh()->SetRelativeLocationAndRotation(ImpactDiveMeshTransform.GetLocation(),
+			Tilt * ImpactDiveMeshTransform.GetRotation());
+		UpdateActionAnimation(ImpactDivePose.Get(), false);
+	}
+	else if (bPresentingImpactDive)
+	{
+		bPresentingImpactDive = false;
+		GetMesh()->SetRelativeTransform(ImpactDiveMeshTransform);
+		CastChecked<UImpactGripMesh>(GetMesh())->BeginFlightPoseBlend();
+		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	}
 	else if (Circuit->IsPlayingThrow() && ThrowPose)
 	{
 		bPlayingGroundThrow = true;
@@ -396,22 +476,13 @@ void AImpactBeyondCharacter::Tick(float DeltaSeconds)
 		AddMovementInput(FVector::UpVector, Up - Down);
 	}
 
-#if !UE_BUILD_SHIPPING
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(1041, 0.1f, FColor::Cyan,
-			FString::Printf(TEXT("VUELO %d/%d | %.1f m/s%s"), FlightLevel + 1, FlightSpeeds.Num(),
-				Movement->Velocity.Size() / 100.0f, bBraking ? TEXT(" | FRENO") : TEXT("")));
-	}
-#endif
 }
 
 void AImpactBeyondCharacter::UpdateGroundMovement(float DeltaSeconds, const APlayerController* PlayerController)
 {
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	const bool bGrounded = Movement->IsMovingOnGround();
-	const bool bSprinting = bGrounded && PlayerController && (PlayerController->IsInputKeyDown(EKeys::LeftShift)
-		|| PlayerController->IsInputKeyDown(EKeys::Gamepad_LeftThumbstick));
+	const bool bSprinting = bGrounded && IsSprintHeld();
 	const bool bWalking = bGrounded && PlayerController && PlayerController->IsInputKeyDown(EKeys::LeftControl);
 	const float GroundSpeed = Movement->Velocity.Size2D();
 	const bool bFastGroundMovement = bGrounded && (bSprinting || GroundSpeed > RunSpeed + 30.0f);
@@ -420,13 +491,16 @@ void AImpactBeyondCharacter::UpdateGroundMovement(float DeltaSeconds, const APla
 		: (bFastGroundMovement ? 2600.0f : BaseGroundAcceleration);
 	Movement->GroundFriction = bFastGroundMovement ? 3.0f : BaseGroundFriction;
 	Movement->BrakingDecelerationWalking = bFastGroundMovement ? 2200.0f : BaseGroundBraking;
+	Movement->BrakingDecelerationFalling = bSuperJumpInProgress ? 450.0f : BaseAirBraking;
 	Movement->bUseSeparateBrakingFriction = bFastGroundMovement || bBaseSeparateBrakingFriction;
 	Movement->BrakingFriction = bFastGroundMovement ? 0.4f : BaseBrakingFriction;
 
 	const float SpeedAlpha = bGrounded ? FMath::GetMappedRangeValueClamped(
 		FVector2D(RunSpeed, SprintSpeed), FVector2D(0.0f, 1.0f), GroundSpeed) : 0.0f;
+	const float FlightFov = Movement->IsFlying() ? FMath::GetMappedRangeValueClamped(
+		FVector2D(2400.0, 10500.0), FVector2D(0.0, 9.0), Movement->Velocity.Size()) : 0.0f;
 	FollowCamera->SetFieldOfView(FMath::FInterpTo(FollowCamera->FieldOfView,
-		BaseFieldOfView + 7.0f * SpeedAlpha, DeltaSeconds, 3.5f));
+		BaseFieldOfView + 7.0f * SpeedAlpha + FlightFov, DeltaSeconds, 3.5f));
 	GetMesh()->GlobalAnimRateScale = FMath::FInterpTo(GetMesh()->GlobalAnimRateScale,
 		1.0f + 0.85f * SpeedAlpha, DeltaSeconds, 8.0f);
 }
@@ -453,7 +527,7 @@ void AImpactBeyondCharacter::DoMove(float Right, float Forward)
 {
 	if (GetController() != nullptr)
 	{
-		if (GetCharacterMovement()->IsFlying() && IsFlightBrakeHeld())
+		if (ImpactLanding->IsImpacting() || (GetCharacterMovement()->IsFlying() && IsFlightBrakeHeld()))
 		{
 			return;
 		}
@@ -487,11 +561,21 @@ void AImpactBeyondCharacter::DoLook(float Yaw, float Pitch)
 
 void AImpactBeyondCharacter::DoJumpStart()
 {
-	// signal the character to jump
-	if (!GetCharacterMovement()->IsFlying())
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	if (Movement->IsFlying() || ImpactLanding->IsImpacting())
 	{
-		Jump();
+		return;
 	}
+	if (Movement->IsMovingOnGround() && IsSprintHeld() && !Circuit->IsCarHeld()
+		&& Movement->Velocity.SizeSquared2D() >= FMath::Square(SuperJumpMinSpeed))
+	{
+		FVector LaunchVelocity = Movement->Velocity * 0.92f;
+		LaunchVelocity.Z = FMath::Sqrt(2.0f * FMath::Abs(Movement->GetGravityZ()) * SuperJumpHeight);
+		bSuperJumpInProgress = true;
+		LaunchCharacter(LaunchVelocity, true, true);
+		return;
+	}
+	Jump();
 }
 
 void AImpactBeyondCharacter::DoJumpEnd()
