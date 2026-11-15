@@ -85,7 +85,7 @@ Usar una hoja de evidencias por ticket (fecha, commit, Windows/UE/VS, versión D
 |---|---|---|---|
 | W00-01 | IB-W00 | verificar Launcher, abrir UE5.8.4, inspeccionar GPU/DX12, CPU, SSD, VS/MSVC/SDK | editor realmente abre; DX12 se confirma en runtime y se registra toolchain o bloqueo; no deducir por un archivo instalado |
 | W01-01 | IB-W01 | crear Third Person minimal, Play, compilar C++ si toolchain listo y empaquetar Win64 | proyecto/equipo reproducible, movimiento de plantilla y exe Win64 ejecutan; si falta MSVC: BP smoke test y C++ BLOQUEADO |
-| C00-01 | IB-C00 | inspeccionar suelo/calles/medidas con regla de editor | recta 110 m, freno 50 m, esquina limpia, carro/pare diana separados 58 m, espacio tras pared ≥30 m |
+| C00-01 | IB-C00 | inspeccionar suelo/calles/medidas con regla de editor | recta 110 m, freno 50 m, esquina limpia, carro/pared diana separados 58 m, espacio tras pared ≥30 m |
 | C00-02 | IB-C00 | caminar y volar por la L, techo y esquinas | ninguna barrera oculta, suelo continuo, orientación clara, sin atraviesos por fachadas |
 | F01-01 | IB-F01 | 30 ciclos suelo→aire→freno→suelo y 20 cambios de régimen | mismo H01 con entrada recuperable, sin cámara atascada ni paredes atravesadas; registrar fallos |
 | F01-02 | IB-F01 | acelerar en recta, frenar antes del giro, repetir con velocidad de prueba documentada (propuesta 45 m/s) | frenada dentro de los 50 m previstos **si los parámetros elegidos lo permiten**; sin túnel ni pérdida de control; ajustar velocidad/deceleración si falla |
