@@ -1,5 +1,15 @@
 # IMPACT: BEYOND — Cola activa de trabajo
 
+## Decisión de plugins v1.4 — no bloquea arranque
+
+Referencia: [PLUGIN_SELECTION_V14.md](PLUGIN_SELECTION_V14.md). Primero Windows/UE5.8 (IB-W00/W01); el núcleo de proyecto usará Enhanced Input y componentes del motor. **No activar plugins externos antes de comprobar C++/editor.** Experimentos condicionales:
+- IB-PLUGIN-MCP (opcional tras W01): activar Unreal MCP/AllToolsets solo en editor local, crear cubo y guardar, verificar apagado en paquete. Si no hay agente local, NO bloquea desarrollo.
+- IB-PLUGIN-RDM (solo tras D01 baseline Chaos): comparar Realtime Destructible Mesh Free/Fab (Windows UE5.7+) frente a Chaos, 50 impactos y 20 resets, latencia de colisión y consumo; requiere términos Fab aceptados por usuario.
+- IB-PLUGIN-PCGEX (solo tras PCG ciudad): ramo UE5.8 exacto de PCGEx MIT, grafo de calles/parcelas, performance y cook en sandbox; integrar si simplifica realmente.
+- IB-PLUGIN-RMC (reserva): Realtime Mesh Component Core MIT si el proyecto requiere malla procedural propia y alternativas no funcionan. No instalar antes.
+Ningún experimento se marca ACEPTADO por documentación; versiones, licencias, build, mapa, rendimiento y rollback son obligatorios.
+
+
 ## Actualización de arranque Windows — 2026-11-15 (manda sobre la tabla histórica)
 
 Unreal Engine 5.8 está **en instalación** según screenshot; Bridge y Fab en cola. Primera tarea **IB-W00**: verificar que editor abre, CPU/GPU/DirectX 12/espacio y herramientas MSVC/SDK; después **IB-W01**: crear proyecto Third Person y generar primer ejecutable Windows. Detalles y requisitos en [WINDOWS_INICIO_V12.md](WINDOWS_INICIO_V12.md). En la tabla histórica **IB-L00 está sustituido por IB-W00/IB-W01**. El texto previo relativo a Linux/Vulkan, paquete Linux y CPU del equipo Linux se interpreta como futura portabilidad, NO primer gate. Los demás tickets mantienen orden/descripción y se validan sobre Windows. Sigue un jugador offline y nada de pruebas N0/N1. La captura no demuestra instalación completada.  
