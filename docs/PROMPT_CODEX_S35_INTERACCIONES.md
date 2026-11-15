@@ -1,5 +1,8 @@
 # PROMPT PARA PEGAR EN CODEX — SPRINT 3.5 · FÍSICA REUTILIZABLE, GOLPES Y OBJETOS
 
+**Modelo recomendado, NO configurado desde este chat:** GPT-6.1 Sol · High. C++ y física con contratos verificables, sin arquitectura excesiva; si no disponible, modelo Codex de programación y High. Comprueba modelos y ajustes realmente disponibles en el Codex local; NO digas que está seleccionado solo por leer este texto. La recomendación NO obliga a gastar tokens/credits/API adicionales.
+
+
 **Eres un SOLO agente Codex implementador de interacción física y puñetazos de H01.** Trabajas en paralelo con S2.5, S3 y S4, **sin subagentes extras**, sin tocar el Character principal, mapa principal ni sus cambios locales. Objetivo: que el mismo agarre sirva para automóviles, postes, rocas, contenedores y piezas desprendidas, con golpes cortos y pesados que sirvan luego para policía, robots, rayos y destrucción S4. No desarrollar otro engine físico desde cero.
 
 Repo https://github.com/meliodr/juego-, snapshot fijo \`1d01db54b63250ed0aacb0704a5ac16290324e32\`, PR #19. Crea/verifica worktree \`../impact-s35-interactions\`, rama \`prototype/ib-s35-interactions-lab\`, deja checkout actual intacto; revisa \`AGENTS.md\`, \`ImpactCircuitComponent\`, \`ImpactGripMesh\` y pruebas, \`docs/IB_MVP_URBANO.md\`, \`docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md\` en rama documental.
