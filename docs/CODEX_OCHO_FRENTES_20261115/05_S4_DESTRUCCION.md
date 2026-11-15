@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 05 — S4 · Chaos, cráteres y VFX acotados
 
-**Modelo sugerido, no seleccionado:** Codex Unreal Physics/Chaos, razonamiento Extra High por colisión persistente/replicabilidad de pruebas.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6 Astra · Extra High (si existe en Codex); Chaos, cráteres y colisión persistente. Alternativa: mejor Codex UE C++ disponible con Extra High.
 
 **Worktree Windows aislado:** `../impact-wave8-s4-destruction` · **rama exclusiva:** `prototype/ib-wave8-s4-destruction`.
 
