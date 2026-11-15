@@ -34,13 +34,13 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 
 | Orden | Ticket | Entrega / dependencia | Responsable propuesto | Estado |
 |---|---|---|---|---|
-| 1 | IB-W00/W01 | Verificar Unreal 5.8/Windows y crear base; acceso al entorno autorizado | Ejecutor local + QA | PLANIFICADO; acceso/entorno pendientes |
-| 2 | IB-FLT-AUD | Subconjunto de vuelo y clips; después de L00 | Auditor de recursos + integrador | PLANIFICADO |
-| 3 | IB-GND00 | Caminar/correr/saltar, antes de vuelo | Integrador de gameplay | PLANIFICADO |
-| 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación + usuario | PLANIFICADO |
+| 1 | IB-W00/W01 | Verificar Windows/UE 5.8.4 y ejecutar la plantilla Third Person | Ejecutor local + QA | W00 y W01 aceptados. Siguiente: IB-FLT-AUD. [Evidencia local](IB_W00_W01_VALIDACION.md) |
+| 2 | IB-FLT-AUD | Selección de código y clips sobre la base Windows validada | Auditor de recursos + integrador | ACEPTADO. [Evidencia y decisión](FLIGHT_REUSE_AUDIT_V09.md). Siguiente: IB-GND00 |
+| 3 | IB-GND00 | Caminar, correr, esprintar y saltar, antes de vuelo | Integrador de gameplay | EJECUTADO; validación manual pendiente |
+| 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación | EJECUTADO; pruebas completas pendientes |
 | 5 | IB-C00 | Una manzana y fachada de prueba; F01 | Mundo/arte técnico | PLANIFICADO |
-| 6 | IB-P01 | Agarre y lanzamiento; F01 + escenario simple | Gameplay | PLANIFICADO |
-| 7 | IB-D01 | Hueco y piezas; P01 + C00 | Gameplay/destrucción | PLANIFICADO |
+| 6 | IB-P01 | Agarre y lanzamiento; F01 + escenario simple | Gameplay | EJECUTADO en el carro; [prueba y pendientes](IB_CIRCUITO_JUGABLE.md) |
+| 7 | IB-D01 | Hueco y piezas; P01 + C00 | Gameplay/destrucción | EJECUTADO en un panel; [prueba y pendientes](IB_CIRCUITO_JUGABLE.md) |
 | 8 | IB-E01 | Robot modular y rival aéreo, de uno en uno; D01 | Gameplay/IA | PLANIFICADO |
 | 9 | IB-S01 | Sandbox integrado + prueba humana; anteriores | Integrador + QA + usuario | PLANIFICADO |
 
@@ -80,7 +80,11 @@ No hay tickets de red activos. N0/N1/N02 y otros requisitos multijugador de docu
 
 **Técnica propuesta:** reutilizar plantilla/animaciones accesibles; no fusionar ALS, GASP y otra locomoción. Proxies admitidos.
 
-**Aceptación:** 30 ciclos caminar→correr→parar→girar y pruebas de rampas/esquinas/azoteas; sin entradas atascadas al perder foco. Paquete Linux y captura del movimiento. Deslizamiento de pies o cámara brusca se registra y corrige antes de ampliar contenido.
+**Aceptación:** 30 ciclos caminar→correr→parar→girar y pruebas de rampas/esquinas/azoteas; sin entradas atascadas al perder foco. Paquete Win64 y captura del movimiento. Deslizamiento de pies o cámara brusca se registra y corrige antes de ampliar contenido.
+
+**Evidencia Windows — 2026-11-15.** Implementado en ImpactBeyondCharacter sobre el CMC, las acciones Enhanced Input y las animaciones del Third Person. WASD corre (500 cm/s), Ctrl izquierdo + movimiento camina (220 cm/s) y Shift izquierdo + movimiento esprinta (700 cm/s). Si se presionan ambos, prevalece esprintar. Son límites editables en el Blueprint del personaje. El modificador se consulta al procesar movimiento y solo aplica en suelo. La configuración existente de Unreal limpia las teclas al perder el foco.
+
+**Prueba del paquete.** Compilaron Editor y Game Win64 Development. AutomationTool completó el empaquetado y el ejecutable cargó Lvl_ThirdPerson en DX12 SM6. Las inyecciones de teclas mediante la consola de Enhanced Input registraron 220 → 500 → 700 → 500 cm/s como límites del CMC. En la serie repetida se registraron 32 pares consecutivos 220 → 500; se enviaron también entradas de parada y giro, sin instrumentar giro ni calidad visual en cada ciclo. La serie tuvo una lectura incompleta que se repitió. Los ensayos de foco, rampas y esquinas con teclado físico y la sensación del sprint siguen pendientes. Usar Win64 conforme al plan vigente. No iniciar IB-F01 hasta cerrar la validación.
 
 ## IB-F01 — Vuelo y transición continua
 
@@ -91,6 +95,23 @@ No hay tickets de red activos. N0/N1/N02 y otros requisitos multijugador de docu
 **Aceptación:** 30 ciclos suelo-aire-suelo, 20 cambios de régimen, esquinas y paredes delgadas a la velocidad máxima permitida en el prototipo. Recorrido de 10 minutos y prueba humana de control/velocidad/claridad. Registrar tasas de fotogramas realmente alcanzadas, no afirmar 30/60 por configuración solamente.
 
 **Límite:** no planetas, agarres ni velocidad física ilimitada. Los clips faltantes se resuelven con pocas poses, no reconstruyendo una biblioteca entera.
+
+**Implementación Windows.** El personaje cambia entre caminar, caer y volar con CharacterMovementComponent y la cápsula de la plantilla. Vuelo dirigido por la cámara en horizontal, ascenso y descenso independientes, estacionario al soltar, freno explícito y transición a suelo al bajar contra una superficie caminable. La build de desarrollo muestra nivel y velocidad real. La pose en vuelo sigue siendo provisional.
+
+| Acción | Teclado/ratón | DualSense (asignaciones de gamepad) |
+|---|---|---|
+| Moverse / cámara | WASD / ratón | Stick izquierdo / derecho |
+| Saltar / esprintar en suelo | Espacio / Shift izquierdo | Cruz / L3 |
+| Entrar o salir de vuelo | F | R3 |
+| Subir o bajar nivel | E / Q | R1 / L1 |
+| Ascender / descender | Espacio / C | R2 / L2 |
+| Freno en vuelo | X | Cuadrado |
+
+Topes iniciales de la lista editable: 9, 18 y 32 m/s. Se podrá añadir un cuarto nivel de alta velocidad. El quinto se diseñará como una extensión que parte de estar en el cuarto y vuelve a él al terminar. No se fijan aún su duración ni umbrales, pendientes de un mapa de prueba adecuado.
+
+**Evidencia.** Editor y juego Win64 Development compilaron y AutomationTool completó el paquete. El ejecutable cargó Lvl_ThirdPerson en DX12 SM6. Prueba visual de teclado: despegue con F, estacionario a 0 m/s y selección del nivel 3/3. Pendientes la batería completa de frenado, aterrizaje, colisiones y la validación de eventos con DualSense físico. Windows detectó el dispositivo. Si Unreal no recibe eventos de gamepad directamente, se puede probar la ruta XInput mediante [Steam Input](https://partner.steamgames.com/doc/features/steam_controller/legacy_mode). Próxima entrega agrupada: circuito gris IB-C00, con recta, giro y recorrido repetible de vuelo y aterrizaje para validar más casos en una sola sesión.
+
+**Corrección de animación del prototipo.** El clip se detenía al entrar en vuelo y al cambiar de pose. Ahora se usa el ciclo aéreo de la plantilla en bucle, con reproducción más pausada en suspensión y más rápida en avance. La inclinación acompaña la velocidad y la animación terrestre se restaura al salir del vuelo. La prueba automatizada de Win64 incluye reproducción activa en despegue y en los tres niveles de crucero.
 
 ## IB-C00 — Calle de pruebas legible
 

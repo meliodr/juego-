@@ -1,0 +1,10 @@
+# Unreal Engine and Visual Studio generated files
+/Binaries/
+/DerivedDataCache/
+/Intermediate/
+/Saved/
+/.vs/
+/.vsconfig
+/*.sln
+/*.slnx
+/Build/*/FileOpenOrder/

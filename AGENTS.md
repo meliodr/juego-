@@ -77,6 +77,10 @@ Una necesidad, un candidato y una alternativa nativa. Inventariar bytes, permiso
 
 ## Reglas técnicas de juego
 
+- Para cualquier sesión de prueba que se abra al usuario en Windows, actualizar el acceso existente ImpactBeyond al paquete vigente y abrirlo desde Steam. En Propiedades > Mando, exigir Activar Steam Input para este juego. Si el lanzador del paquete avisa de Visual C++ a pesar de que el runtime ya está instalado, usar el ejecutable de juego en ImpactBeyond/Binaries/Win64 y verificar el arranque real por Steam.
+
+- Diseñar cada interacción jugable con teclado/ratón y mando desde el inicio. Mantener el esquema DualSense de PlayStation 5 y comprobar los eventos de gamepad en cada entrega. Registrar aparte cualquier prueba que requiera el mando físico. Agrupar avances jugables y reservar las pruebas del usuario para sensación de control o hardware que no se pueda verificar desde el entorno.
+
 - Separar locomoción, acción y presentación. Datos editables para velocidades/daño/efectos; pocos componentes, no un framework gigante antes de jugar.
 - Barrer también el volumen del objeto transportado; no pegar un carro a las manos e ignorar su colisión.
 - Un dueño lógico por objeto, un desprendimiento por PartId y daño no duplicado por AttackId/TargetId. Restaurar estados al soltar, destruir o reiniciar. Son reglas offline, no trabajo de networking.

@@ -27,6 +27,10 @@ Actualización: 2026-11-14. Estado: **PLAN DE TRABAJO; NO IMPLEMENTACIÓN VALIDA
 
 Este es el único plan de entregas vigente. Sustituye el orden y los requisitos de cierre de los planes versionados anteriores, que se conservan como investigación. `AGENTS.md` establece reglas; `TAREAS_ACTIVAS.md` establece la cola. No hay que leer todas las versiones para comenzar una tarea.
 
+## Estado verificado de Windows — 2026-11-15
+
+IB-W00 e IB-W01 aceptados en la rama de trabajo: UE 5.8.4 arrancó con DX12, Third Person C++ compiló y el paquete Win64 ejecutó el mapa y sus controles básicos. [Evidencia local](IB_W00_W01_VALIDACION.md). IB-FLT-AUD aceptado. El [resultado del donante](FLIGHT_REUSE_AUDIT_V09.md) fija CMC y el rig de la plantilla como base. Siguiente ticket: IB-GND00.
+
 ## 1. Evidencia disponible y decisiones que no cambian
 
 En la revisión del árbol de `main`, commit `b060bc7cc6fe828405463e02bf7df1a637f10330`, se encontraron documentación y siete skills, pero no un proyecto `.uproject`, código de juego ni un ejecutable. No se ha inspeccionado aquí el Windows del usuario ni se ha ejecutado Unreal. Las anteriores auditorías de donantes se consideran antecedentes, no certificaciones de compatibilidad.
