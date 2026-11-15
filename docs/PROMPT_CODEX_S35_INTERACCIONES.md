@@ -1,0 +1,26 @@
+# PROMPT PARA PEGAR EN CODEX — SPRINT 3.5 · FÍSICA REUTILIZABLE, GOLPES Y OBJETOS
+
+**Eres un SOLO agente Codex implementador de interacción física y puñetazos de H01.** Trabajas en paralelo con S2.5, S3 y S4, **sin subagentes extras**, sin tocar el Character principal, mapa principal ni sus cambios locales. Objetivo: que el mismo agarre sirva para automóviles, postes, rocas, contenedores y piezas desprendidas, con golpes cortos y pesados que sirvan luego para policía, robots, rayos y destrucción S4. No desarrollar otro engine físico desde cero.
+
+Repo https://github.com/meliodr/juego-, snapshot fijo \`1d01db54b63250ed0aacb0704a5ac16290324e32\`, PR #19. Crea/verifica worktree \`../impact-s35-interactions\`, rama \`prototype/ib-s35-interactions-lab\`, deja checkout actual intacto; revisa \`AGENTS.md\`, \`ImpactCircuitComponent\`, \`ImpactGripMesh\` y pruebas, \`docs/IB_MVP_URBANO.md\`, \`docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md\` en rama documental.
+
+**Propiedad de escritura única:** \`ImpactBeyond/Source/ImpactBeyond/IB_S35/**\`, \`ImpactBeyond/Content/IB_S35/**\`, \`Tools/IBS35_*\`, \`docs/IB_S35_*\`. Nunca modificar \`ImpactBeyondCharacter.*\`, \`ImpactCircuitComponent.*\`, \`ImpactGripMesh.*\`, \`IB_C00/Lvl_IB_C00.umap\`, \`ImpactBeyond.Build.cs\`, \`ImpactBeyond.uproject\`, Config o carpetas S2.5/S3/S4. Para integración real, crear un adaptador o nota de patch dentro de TU carpeta sin aplicar.
+
+## Requisitos jugables
+
+1. **Agarre por perfiles de objeto**, no por tag único de carro. Crear componente pequeño y DataAssets/structs editables para clase \`Car\`, \`Container\`, \`Pole\`, \`Rock\`, \`LoosePart\` con masa, tamaño, collider, sockets/puntos de contacto y límites; reutilizar sweeps nativos, IK del proyecto, física/impulso, code de \`ImpactCircuitComponent\` y del transporte. Nunca desactivar colisión mundial del volumen sujetado. Evitar vibración y no mover carga a través de edificios con attachments no barridos. Un portador/objeto activo, transición correcta libre→agarrado→lanzado/soltado, reset/restauración.
+2. **Variación realista de vehículos**: al menos 3 categorías de coches y dos escalas de objetos; usar modelos ya instalados ConceptCar y de Kit Cidade solo para comparar física. Para arte del juego final preferir City Sample Vehicles (13 modelos, **solo si el usuario lo ha instalado/autorizado realmente**); respaldo Quaternius Cars Pack CC0 revisado legalmente. El trabajo de S2.5 es dueño de materiales/arte; tú no importas 20 coches ni vuelves a diseñar la ciudad.
+3. **Golpes H01**: golpe rápido y golpe pesado, válidos en tierra y aire, trace/sweep con daño y empuje, animation notch y contacto; reutilizar Manny/AnimBP, Game Animation Sample Epic si ya instalado; sincronizar mediante notifies si existen (si no, ensayo con curva/evento reproducible sin crear clips enteros). Los impactos usan el mismo tipo de mensaje, dedup por AttackId/TargetId y material/velocidad del objetivo. No duplicar daño por contacto múltiple.
+4. **Objetos convertidos en herramientas**: un poste golpea a un blanco, un contenedor se puede lanzar, una roca/parte desprendida golpea muro; no soltar disparando involuntariamente cuando se cancela acción. Distintos pesos afectan gesto/tamaño y lanzamiento sin perder control.
+5. **Contrato para S4**, documental y testeable: \`DamageKind\`, \`HealthDelta\`, \`Impulse\`, \`InstigatorId\`, \`TargetId\`, \`DamageResponseProfile\`. Crea la versión de referencia únicamente bajo \`IB_S35\` en C++ y descríbela en \`docs/IB_S35_CONTRACT.md\`; S4 trabaja de forma aislada con adaptador temporal y el integrador decidirá un contrato final para el juego. No supongas que el agente S4 ya puede incluir tu header.
+6. **Mapa de laboratorio propio** \`/Game/IB_S35/Lvl_IB_S35_Interactions\` con H01/derivado compatible y 5 objetos, blanco preparado, dos muros de prueba, carril de vuelo; no modificar el mapa de producción.
+
+## Pruebas y evidencia
+
+- 30 ciclos de agarre por cada clase principal cuando sea posible, al menos 20 ciclos contra pared con carga y 20 reinicios; ninguna duplicación/colisión fantasma.
+- 30 golpes en suelo/aire con registro exacto de hit, un único daño por AttackId/TargetId; posición, timing de animación, velocidad y contacto registrados.
+- 10 lanzamientos y 5 colisiones por 3 clases, barrido de caja real, masa y sin atravesar geometría al cambiar de velocidad.
+- Capturas DX12 de manos/cuerpo, objeto, golpe y lanzamiento, y profiling 1080p/60fps cuando editor esté disponible. Distinguir compilado de HEADLESS y revisión visual; no declarar aprobado por solo código.
+- **No uses simultáneamente Editor/Cook** con las otras tres sesiones en la misma laptop. Haz C++/tests/script/documento primero si alguien ya usa Editor. No compilar si build lock está ocupado; registra PENDIENTE honesto. No borrar DerivedDataCache ni builds ajenas.
+
+No descargar/reclamar Fab/instalar plugins sin autorización, presupuesto RD$0; CC0 externo gratuito solo de fuente oficial y con procedencia/licencia. Los modelos Fab no se publican sueltos en el Git público. Entrega branch/commit, PR draft contra \`prototype/ib-sprint02\`, código propio aislado, escena de prueba, documentación de adaptación de antiguo circuito, tests observados/bloqueados. **El integrador mañana** conectará a H01 tras reconciliar el mapa/artes de S2.5 y contratos S3/S4.
