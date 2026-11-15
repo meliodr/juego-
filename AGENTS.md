@@ -1,5 +1,10 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Plugins: decisiones activas 2026-11-15
+
+Leer **docs/PLUGIN_SELECTION_V14.md** antes de instalar o activar cualquier plugin del motor o tercero. Selección nativa por fase: Enhanced Input → IK Rig/Control Rig al importar clips → Niagara al añadir VFX → Chaos/Fracture al probar pared → PCG al distribuir ciudad; Motion Warping, StateTree/SmartObjects y GAS solo si un ticket posterior lo justifica. Unreal MCP/AllToolsets editor EXPERIMENTAL, solo local y sin servidor en build distribuible. Externos en sandbox: PCGEx MIT rama 5.8 para grafos/parcelas después de PCG nativo; Realtime Destructible Mesh gratuito Fab Standard para comparar huecos frente a Chaos; Realtime Mesh Component Core MIT reservado para malla runtime. NO instalar ningún externo hoy sin proyecto/compilación y prueba, no habilitar suite completa por curiosidad, no adquirir Fab automáticamente ni copiar sus binarios a GitHub. Cooperativo permanece aplazado. Mantener siempre una opción nativa de respaldo.
+
+
 ## Decisión de plataforma vigente — Windows, 2026-11-15
 
 **El usuario cambió de Linux a Windows como plataforma principal y acaba de mostrar Unreal Engine 5.8 instalándose en Epic Games Launcher.** Quixel Bridge y Fab UE Plugin están en cola; no afirmar que están listos. Leer docs/WINDOWS_INICIO_V12.md antes de ejecutar cualquier gate. La primera tarea es **IB-W00** (verificar editor y toolchain Windows), seguida de IB-W01 (crear proyecto). En el plan histórico, toda instrucción de «debe compilar en Linux», «Vulkan como primer renderer», «L00» o «primer ejecutable Linux» queda pospuesta. Windows y DX12 son la ruta de referencia; Linux solo port futuro. 
