@@ -36,7 +36,7 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 |---|---|---|---|---|
 | 1 | IB-W00/W01 | Verificar Windows/UE 5.8.4 y ejecutar la plantilla Third Person | Ejecutor local + QA | W00 y W01 aceptados. Siguiente: IB-FLT-AUD. [Evidencia local](IB_W00_W01_VALIDACION.md) |
 | 2 | IB-FLT-AUD | Selección de código y clips sobre la base Windows validada | Auditor de recursos + integrador | ACEPTADO. [Evidencia y decisión](FLIGHT_REUSE_AUDIT_V09.md). Siguiente: IB-GND00 |
-| 3 | IB-GND00 | Caminar/correr/saltar, antes de vuelo | Integrador de gameplay | PLANIFICADO |
+| 3 | IB-GND00 | Caminar, correr, esprintar y saltar, antes de vuelo | Integrador de gameplay | EJECUTADO; validación manual pendiente |
 | 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación + usuario | PLANIFICADO |
 | 5 | IB-C00 | Una manzana y fachada de prueba; F01 | Mundo/arte técnico | PLANIFICADO |
 | 6 | IB-P01 | Agarre y lanzamiento; F01 + escenario simple | Gameplay | PLANIFICADO |
@@ -80,7 +80,7 @@ No hay tickets de red activos. N0/N1/N02 y otros requisitos multijugador de docu
 
 **Técnica propuesta:** reutilizar plantilla/animaciones accesibles; no fusionar ALS, GASP y otra locomoción. Proxies admitidos.
 
-**Aceptación:** 30 ciclos caminar→correr→parar→girar y pruebas de rampas/esquinas/azoteas; sin entradas atascadas al perder foco. Paquete Linux y captura del movimiento. Deslizamiento de pies o cámara brusca se registra y corrige antes de ampliar contenido.
+**Aceptación:** 30 ciclos caminar→correr→parar→girar y pruebas de rampas/esquinas/azoteas; sin entradas atascadas al perder foco. Paquete Win64 y captura del movimiento. Deslizamiento de pies o cámara brusca se registra y corrige antes de ampliar contenido.
 
 **Evidencia Windows — 2026-11-15.** Implementado en ImpactBeyondCharacter sobre el CMC, las acciones Enhanced Input y las animaciones del Third Person. WASD corre (500 cm/s), Ctrl izquierdo + movimiento camina (220 cm/s) y Shift izquierdo + movimiento esprinta (700 cm/s). Si se presionan ambos, prevalece esprintar. Son límites editables en el Blueprint del personaje. El modificador se consulta al procesar movimiento y solo aplica en suelo. La configuración existente de Unreal limpia las teclas al perder el foco.
 
