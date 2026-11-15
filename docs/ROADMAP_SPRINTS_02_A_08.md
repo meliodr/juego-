@@ -28,6 +28,10 @@ Llevar la ciudad a periferia (carreteras, costa, montañas y terreno de fondo) c
 
 ## Sprint 3 — Planeta circunnavegable + varias ciudades + mapa/minimapa
 
+**Actualización 2026-11-15:** [Ficha detallada S3/S4/S5](SPRINTS_03_04_05_CIUDADES_PODERES_TIEMPO.md). S3 conserva cuatro ciudades y circunnavegación, pero ahora exige también **puños básicos en tierra/aire, agarre de postes/contenedores/rocas/cajas además de vehículos**, más variedad de coches, refinamiento de cámara/animaciones, ambientes planetarios y mapa/minimapa. El combate avanzado y enemigos son S4, no S3.
+
+
+
 **Objetivo:** vuelo continuo alrededor de un planeta ficticio pequeño, volver a la misma ciudad sin cambio visible instantáneo de borde; el tiempo objetivo de vuelta se decide por radio, curvatura, control y streaming **medidos**, propuesta de ensayo 8–12 min a velocidad de travesía cuando sea viable. No cargar la esfera ni todas las ciudades con física detallada simultáneamente.
 
 **Cuatro ciudades propuestas reutilizando un único kit y variaciones:**
@@ -43,11 +47,19 @@ Cada ciudad tiene **núcleo visitable con colisión**, una acción local y silue
 
 ## Sprint 4 — Destrucción y enemigos
 
+**Actualización 2026-11-15:** [Ficha detallada S3/S4/S5](SPRINTS_03_04_05_CIUDADES_PODERES_TIEMPO.md). S4 expande puñetazos a combos, uppercut y golpes aéreos; agrega **láseres y telequinesis de prototipo**, enemigos terrestres/aéreos, reacciones por material, cámara/VFX/sonido y **vuelo rasante sin cambio involuntario a correr**. Incorporar cráteres en superficies preparadas **con colisión física real**. Destrucción amplia por capas y streaming, **no afirmar que cada triángulo del planeta es arbitrariamente fracturable a 60 FPS**. H02 conserva en S6 la identidad de sus construcciones esmeralda.
+
+
+
 Ampliar a varias fachadas preparadas con fractura Chaos o paneles configurados, pero NO destrucción arbitraria de toda estructura. Medir fragmentos, colisiones de huecos y memoria; elegir un sistema principal. Robot pequeño modular primero, rival aéreo después: daño, agarre/lanzamiento, señales de ataque, evasión y recuperación. **Desarme funcional**: quitar propulsor/arma cambia el comportamiento; un único PartId por pieza; piezas importantes reutilizables. Reusar Physics/Chaos, Niagara para cosmético, robot riggueado legal y animaciones; preferir `Free Stylized Sci-Fi Scout Bot` / `Sci Fi Robot 13` tras verificación, sin asumir acceso Fab. Añadir golpe pesado / embestida H01 si la física básica lo permite.
 
 **Aceptación:** 50 impactos y 20 resets de paredes, 20 desarmes funcionales, 20 secuencias con rival, sin paredes fantasma, ataques de miembros ausentes ni softlocks.
 
 ## Sprint 5 — Ciudad reactiva
+
+**Actualización 2026-11-15:** [Ficha detallada S3/S4/S5](SPRINTS_03_04_05_CIUDADES_PODERES_TIEMPO.md). S5 añade un **ciclo de día y noche** con **36 minutos reales por día completo** (propuesta inicial, configurable 18/36/72), un único reloj solar planetario consistente entre ciudades, amanecer/atardecer, luces y ventanas nocturnas, sonido ambiental y pequeños eventos/ciudadanos. Preferir componentes de iluminación existentes y medir el coste de SkyLight/time slicing antes de habilitar plugins experimentales.
+
+
 
 Pequeño número de ciudadanos y eventos: huir/refugio, incidente de robo, alerta local diferenciada de reputación y amenaza, atribución causal correcta, modo creativo para desactivar sanciones. Reusar pocos rigs/civil, navegación/StateTree si ahora aporta, y las mismas zonas/destrucción de sprint 4; no MassCrowd masivo. Un evento activo importante como límite inicial. Verificar rendimiento durante vuelo rápido.
 
