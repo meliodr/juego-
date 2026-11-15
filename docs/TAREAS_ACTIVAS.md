@@ -1,18 +1,23 @@
 # IMPACT: BEYOND — Cola activa de trabajo
 
+## Actualización de arranque Windows — 2026-11-15 (manda sobre la tabla histórica)
+
+Unreal Engine 5.8 está **en instalación** según screenshot; Bridge y Fab en cola. Primera tarea **IB-W00**: verificar que editor abre, CPU/GPU/DirectX 12/espacio y herramientas MSVC/SDK; después **IB-W01**: crear proyecto Third Person y generar primer ejecutable Windows. Detalles y requisitos en [WINDOWS_INICIO_V12.md](WINDOWS_INICIO_V12.md). En la tabla histórica **IB-L00 está sustituido por IB-W00/IB-W01**. El texto previo relativo a Linux/Vulkan, paquete Linux y CPU del equipo Linux se interpreta como futura portabilidad, NO primer gate. Los demás tickets mantienen orden/descripción y se validan sobre Windows. Sigue un jugador offline y nada de pruebas N0/N1. La captura no demuestra instalación completada.  
+
+
 Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 
-**Estado real: ninguna tarea de juego ha comenzado ni está aceptada.** Esta es una cola documentada, no issues asignadas a agentes ni instrucciones ya enviadas a Robert. El primer bloqueo operativo es disponer del Linux real autorizado para inspeccionar y probar.
+**Estado real: ninguna tarea de juego ha comenzado ni está aceptada.** Esta es una cola documentada, no issues asignadas a agentes ni instrucciones ya enviadas a Robert. El primer bloqueo operativo es disponer del Windows real autorizado para inspeccionar y probar.
 
 ## Próxima tarea
 
-**IB-L00 — Inspección local y base reproducible.** No comenzar otro sistema antes de obtener su evidencia. Este turno autoriza planificación; no sustituye permiso para instalar motor, cambiar drivers, ejecutar terceros o acceder a la máquina.
+**IB-W00 → IB-W01 — Confirmar Windows/Unreal/compilador y crear la base reproducible.** No comenzar otro sistema antes de obtener su evidencia. Este turno autoriza planificación; no sustituye permiso para instalar motor, cambiar drivers, ejecutar terceros o acceder a la máquina.
 
 ## Orden y dependencias
 
 | Orden | Ticket | Entrega / dependencia | Responsable propuesto | Estado |
 |---|---|---|---|---|
-| 1 | IB-L00 | Base Linux; acceso al entorno autorizado | Ejecutor local + QA | PLANIFICADO; acceso/entorno pendientes |
+| 1 | IB-W00/W01 | Verificar Unreal 5.8/Windows y crear base; acceso al entorno autorizado | Ejecutor local + QA | PLANIFICADO; acceso/entorno pendientes |
 | 2 | IB-FLT-AUD | Subconjunto de vuelo y clips; después de L00 | Auditor de recursos + integrador | PLANIFICADO |
 | 3 | IB-GND00 | Caminar/correr/saltar, antes de vuelo | Integrador de gameplay | PLANIFICADO |
 | 4 | IB-F01 | Vuelo, cámara y poses; GND00 + FLT-AUD | Gameplay/animación + usuario | PLANIFICADO |
@@ -24,7 +29,7 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 
 No hay tickets de red activos. N0/N1/N02 y otros requisitos multijugador de documentos históricos están aplazados. Los nuevos IDs y los aquí conservados sustituyen el orden de las tablas antiguas.
 
-## IB-L00 — Inspección y ejecutable base
+## IB-L00 — Ficha histórica de Linux, **sustituida por IB-W00/IB-W01** (ver WINDOWS_INICIO_V12.md)
 
 **Propósito:** saber sobre qué entorno se construirá y producir una base repetible, no descargar todos los recursos.
 
