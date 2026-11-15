@@ -1,5 +1,8 @@
 # PROMPT PARA PEGAR EN CODEX — SPRINT 4 · PODER, DESTRUCCIÓN, POLICÍA Y TANQUE
 
+**Modelo recomendado, NO configurado desde este chat:** GPT-6.1 Sol · Extra High. Comportamiento IA, colisiones, daño y efectos concurrentes; si disponible Astra Extra High para diagnósticos de bugs difíciles. Comprueba modelos y ajustes realmente disponibles en el Codex local; NO digas que está seleccionado solo por leer este texto. La recomendación NO obliga a gastar tokens/credits/API adicionales.
+
+
 **Eres UN agente Codex implementador de combate/destrucción y respuestas del mundo, en LABORATORIO AISLADO.** Hay tres sesiones más: no crees subagentes ni toques personaje/planeta/mapa final. Las siguientes mecánicas deben ser jugables sobre un escenario independiente, construidas sobre física/Chaos, AnimBP, Enhanced Input y componentes del motor. El usuario desea un H01 casi invulnerable a armas humanas convencionales, pero susceptible al empuje de un misil: no inventar muerte por policías/tanques.
 
 Repo https://github.com/meliodr/juego-, base fija común \`1d01db54b63250ed0aacb0704a5ac16290324e32\`, PR #19. Worktree independiente \`../impact-s4-response\`, rama \`prototype/ib-s4-response-lab\`. Lee \`AGENTS.md\`, \`docs/COMBAT_ROSTER_V03.md\`, \`docs/SPRINTS_03_04_05_CIUDADES_PODERES_TIEMPO.md\`, \`docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md\` en rama documental. Examina clases existentes de impacto/agarre, no duplicar un motor de daño global. Los contratos S3.5 se acordarán DESPUÉS: no depender de archivos de ese agente hasta integración.
