@@ -1,5 +1,8 @@
 # PROMPT PARA PEGAR EN CODEX — SPRINT 3 · PLANETA Y CUATRO CIUDADES
 
+**Modelo recomendado, NO configurado desde este chat:** GPT-6 Astra · Extra High. Marcos esféricos, streaming, persistencia y QA numérico; si no disponible usar GPT-6.1 Sol · Extra High. Comprueba modelos y ajustes realmente disponibles en el Codex local; NO digas que está seleccionado solo por leer este texto. La recomendación NO obliga a gastar tokens/credits/API adicionales.
+
+
 **Actúa como UN agente Codex especializado en mundo esférico, regiones y navegación. No crees subagentes mientras las otras tres sesiones de Codex estén abiertas.** Implementa en laboratorio aislado, sin editar el mapa principal ni depender de que Sprint 2.5 haya terminado. Nuestro objetivo es un planeta real circunnavegable, cuatro ciudades visitables, mapa y minimapa; el realismo visual final se integrará desde S2.5 **después**, no dupliques su trabajo.
 
 Repo: https://github.com/meliodr/juego- . Base común inmutable: \`1d01db54b63250ed0aacb0704a5ac16290324e32\` de \`prototype/ib-sprint02\`, PR #19. Inspecciona HEAD/working tree; worktree \`../impact-s3-planet\`, rama \`prototype/ib-s3-planet-lab\`. Revisa \`docs/IB_SPRINT02_PLANET_LAB.md\`, \`docs/ROADMAP_SPRINTS_02_A_08.md\`, \`docs/SPRINT09_OCHO_CIUDADES_Y_BIOMAS.md\` y \`docs/PLAN_PARALELO_S25_S3_S35_S4_20261115.md\` (en rama documental). No reset ni cambio del worktree que usa Codex S2.
