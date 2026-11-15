@@ -50,3 +50,5 @@ Decisión: **CONTINUAR en un turno exclusivo de Unreal**, corregir cualquier fal
 ## Publicación bloqueada
 
 La implementación se guardó en el commit local `bfa20140e88b734f78bafbbde1bf0b476677b7ed`. La revisión automática **rechazó antes de ejecutar** el push de `prototype/ib-s35-interactions-lab` a `meliodr/juego-`, indicando autorización insuficientemente explícita para publicar código no público en ese destino. No se reintentó ni se cambió de herramienta para publicar. PR remoto: **NO CREADO**. El cuerpo listo y el motivo exacto están en `IB_S35_PR_DRAFT.md`; se requiere autorización específica para la publicación. Un commit documental posterior registra este bloqueo sin alterar la implementación.
+
+Coordinación final recibida: el siguiente turno de Editor/Cook y compilación pesada está reservado a **S2.5** hasta que lo libere. S3.5 no tiene procesos pesados activos y no inició ninguno. La entrega permanece local y las pruebas Unreal siguen pendientes de ese relevo explícito.
