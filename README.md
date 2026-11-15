@@ -1,5 +1,10 @@
 # IMPACT: BEYOND
 
+## Plugins seleccionados — v1.4
+
+**[Ver selección y pruebas de plugins para UE5.8](docs/PLUGIN_SELECTION_V14.md)**. Se usarán herramientas incluidas (Enhanced Input, IK Rig/Control Rig, Niagara, Chaos/Fracture y PCG), activadas por fase. Unreal MCP + AllToolsets será un experimento local de automatización cuando editor y agente funcionen. Externos elegidos para pruebas, no instalaciones actuales: PCGEx MIT rama 5.8, Realtime Destructible Mesh Free (Fab Standard) y Realtime Mesh Component Core MIT como reserva. **Ninguno se ha instalado ni probado en el equipo del usuario.** Primera tarea sigue IB-W00/W01: Windows/Unreal 5.8.
+
+
 Sandbox 3D de superhumanos para **Windows como plataforma principal y un jugador offline**. Caminar, correr, volar, combatir, agarrar y lanzar objetos/personajes, y destruir partes del entorno. Presupuesto de compras de assets/plugins: **RD$0**. Reutilización primero.
 
 ## Empezar aquí
