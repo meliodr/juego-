@@ -1,5 +1,20 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Regla principal e innegociable — REUTILIZAR AL MÁXIMO
+
+**«Reutilizar lo más que se pueda y crear lo mínimo que se pueda».**
+
+Antes de implementar cualquier mecánica, personaje, animación, mapa, material, efecto, sistema o herramienta:
+1. **Buscar primero lo existente:** Unreal Engine 5.8 (plantillas, componentes y plugins integrados), biblioteca Fab del usuario, assets gratuitos autorizados, y código/proyectos abiertos relevantes ya investigados.
+2. **Verificar que se pueda aprovechar:** archivos reales completos, edición gratuita, licencia por código/arte, compatibilidad Windows/UE 5.8, dependencias, calidad y coste de integración/rendimiento. No confundir un vídeo o puntero LFS con un recurso utilizable.
+3. **Preferir reutilizar → configurar → adaptar → combinar.** Crear código, modelos o animaciones nuevos **solamente para cubrir una necesidad que no resuelva adecuadamente lo disponible** o cuando adaptar resulte más costoso o inestable que una solución mínima propia.
+4. **Importar solo lo imprescindible**, no proyectos gigantes por anticipación. Elegir un candidato y un respaldo por necesidad; probar el resultado en una escena pequeña y abandonar alternativas cuando una funcione bien.
+5. **Justificar toda creación desde cero:** explicar qué se buscó, por qué no sirve, qué parte mínima se creará, cuánto añade en complejidad y cómo se probará.
+6. **Mantener calidad y derechos:** no sacrificar fluidez, control ni mantenimiento por forzar la reutilización; no copiar recursos sin permisos aunque el juego sea privado. Conservar avisos de licencia y procedencia.
+
+Esta regla manda para Codex, Robert cuando tenga acceso, y cualquier colaborador futuro. **La prioridad no es producir más código ni más assets: es obtener más juego funcional con el mínimo trabajo nuevo.**
+
+
 ## Plugins: decisiones activas 2026-11-15
 
 Leer **docs/PLUGIN_SELECTION_V14.md** antes de instalar o activar cualquier plugin del motor o tercero. Selección nativa por fase: Enhanced Input → IK Rig/Control Rig al importar clips → Niagara al añadir VFX → Chaos/Fracture al probar pared → PCG al distribuir ciudad; Motion Warping, StateTree/SmartObjects y GAS solo si un ticket posterior lo justifica. Unreal MCP/AllToolsets editor EXPERIMENTAL, solo local y sin servidor en build distribuible. Externos en sandbox: PCGEx MIT rama 5.8 para grafos/parcelas después de PCG nativo; Realtime Destructible Mesh gratuito Fab Standard para comparar huecos frente a Chaos; Realtime Mesh Component Core MIT reservado para malla runtime. NO instalar ningún externo hoy sin proyecto/compilación y prueba, no habilitar suite completa por curiosidad, no adquirir Fab automáticamente ni copiar sus binarios a GitHub. Cooperativo permanece aplazado. Mantener siempre una opción nativa de respaldo.
