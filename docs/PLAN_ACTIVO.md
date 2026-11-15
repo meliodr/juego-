@@ -1,14 +1,19 @@
 # IMPACT: BEYOND — Plan activo de producción
 
+## Actualización de plataforma 2026-11-15 — prioritaria
+
+El usuario decidió **Windows como plataforma principal**, con Unreal Engine 5.8 instalándose en Epic Games Launcher según su captura. Fab UE Plugin y Quixel Bridge todavía estaban en cola en ese momento. **Ninguna instalación completada, primer arranque, compilación o juego han sido verificados.** Referencia operativa: [WINDOWS_INICIO_V12.md](WINDOWS_INICIO_V12.md). La nueva cola comienza en **IB-W00 -> IB-W01**, no IB-L00; las descripciones anteriores de build Linux/Vulkan quedan suspendidas hasta eventual port. Render inicial DX12 y juego Windows. Se mantiene objetivo un jugador offline, compra de assets RD$0 y cooperativo muy lejano. 
+
+
 Actualización: 2026-11-14. Estado: **PLAN DE TRABAJO; NO IMPLEMENTACIÓN VALIDADA**.
 
 Este es el único plan de entregas vigente. Sustituye el orden y los requisitos de cierre de los planes versionados anteriores, que se conservan como investigación. `AGENTS.md` establece reglas; `TAREAS_ACTIVAS.md` establece la cola. No hay que leer todas las versiones para comenzar una tarea.
 
 ## 1. Evidencia disponible y decisiones que no cambian
 
-En la revisión del árbol de `main`, commit `b060bc7cc6fe828405463e02bf7df1a637f10330`, se encontraron documentación y siete skills, pero no un proyecto `.uproject`, código de juego ni un ejecutable. No se ha inspeccionado aquí el Linux del usuario ni se ha ejecutado Unreal. Las anteriores auditorías de donantes se consideran antecedentes, no certificaciones de compatibilidad.
+En la revisión del árbol de `main`, commit `b060bc7cc6fe828405463e02bf7df1a637f10330`, se encontraron documentación y siete skills, pero no un proyecto `.uproject`, código de juego ni un ejecutable. No se ha inspeccionado aquí el Windows del usuario ni se ha ejecutado Unreal. Las anteriores auditorías de donantes se consideran antecedentes, no certificaciones de compatibilidad.
 
-Decisiones del usuario: sandbox de superhumanos, sin campaña obligatoria; Linux nativo; caminar y correr además de volar; velocidad, libertad, agarres, combate y destrucción como pilares; compras de assets/plugins RD$0. Equipo reportado: 64 GB RAM y RTX 4070 con 8 GB VRAM. CPU, modelo preciso de GPU, distribución, driver, almacenamiento y Unreal instalado se verificarán sin volver a pedir RAM/GPU.
+Decisiones del usuario: sandbox de superhumanos, sin campaña obligatoria; Windows como plataforma principal; caminar y correr además de volar; velocidad, libertad, agarres, combate y destrucción como pilares; compras de assets/plugins RD$0. Equipo reportado: 64 GB RAM y RTX 4070 con 8 GB VRAM. CPU, modelo preciso de GPU, versión de Windows, driver/DirectX 12, almacenamiento, Visual Studio/MSVC/SDK y Unreal instalado se verificarán sin volver a pedir RAM/GPU.
 
 Conservar H01 de fuerza, H02 genio cósmico masculino esmeralda del concepto aceptado y H03 de teletransporte. Son identificadores, no nombres artísticos. No recuperar VECTOR/PRISMA ni al enemigo constructor genérico. Robots y kaijus pierden piezas con consecuencias; presentación sin gore explícito. Ciudadanos, alerta, karma y eventos son parte del sandbox ampliado.
 
@@ -28,7 +33,7 @@ La primera entrega integrada tendrá un héroe provisional con identidad de fuer
 
 | Entrega | Resultado observable | Condición para avanzar |
 |---|---|---|
-| E0 — Base reproducible | Proyecto mínimo Unreal que compila, se empaqueta y arranca en Linux fuera del editor | Versión/toolchain fijados, input/audio/colisión básicos y logs reales |
+| E0 — Base reproducible | Proyecto mínimo Unreal que compila, se empaqueta y arranca en Windows fuera del editor | Versión/toolchain fijados, input/audio/colisión básicos y logs reales |
 | E1 — Movimiento agradable | Un mismo personaje camina, corre, esprinta, salta, vuela, frena y aterriza; cámara y poses legibles | 30 ciclos suelo-aire-suelo; recorrido de 10 minutos; prueba humana de control |
 | E2 — Bucle físico | Carro, golpe, lanzamiento, muro perforable y escombro importante reutilizable | 30 ciclos de agarre, 50 impactos y 20 reinicios; hueco realmente transitable |
 | E3 — Sandbox urbano | Expandir de una a 2–4 manzanas; robot modular, rival aéreo, generador y reinicio; audio/efectos de impacto | Sesión jugable de 15 minutos, sin fallos críticos de control y con rendimiento registrado |
@@ -53,7 +58,7 @@ Las fichas previas documentan candidatos; antes de incorporarlos se debe revisar
 | Robots/kaiju | Un modelo autorizado animado de cada familia | Partes separadas, puntos de unión, cambio funcional y colisiones | Robot rígido modular y criatura provisional; nada de corte universal |
 | Espacio | Ephemera en laboratorio separado; Cosmic Architect como alternativa | Conexión de una región urbana con representación orbital y persistencia | Esfera visible + regiones locales; no combinar generadores completos |
 
-**Experimento de reutilización cerrado:** inventario → licencia → dependencias → mapa mínimo → compilación/empaquetado → prueba. Si falta permiso, bytes o portabilidad, documentar el bloqueo y pasar a la alternativa. Después de un intento mínimo y una corrección dirigida, una migración que crece exige decisión explícita; no encadenar arreglos sin límite.
+**Experimento de reutilización cerrado:** inventario → licencia → dependencias → mapa mínimo → compilación/empaquetado Windows → prueba. Si falta permiso, bytes o portabilidad, documentar el bloqueo y pasar a la alternativa. Después de un intento mínimo y una corrección dirigida, una migración que crece exige decisión explícita; no encadenar arreglos sin límite.
 
 Las auditorías detalladas son [vuelo](FLIGHT_REUSE_AUDIT_V09.md), [ciudades/destrucción/planetas](CITY_DESTRUCTION_PLANETS_AUDIT_V11.md) y [animaciones](ANIMATION_CHARACTER_PIPELINE_V07.md). No convertir sus afirmaciones en dependencias aceptadas sin prueba local.
 
@@ -108,7 +113,7 @@ No cerrar radio planetario, máximo de velocidad ni distancia espacial antes de 
 | Codex / implementación | Integración mínima en el entorno autorizado, compilación, pruebas y reporte. Puede desempeñar roles secuenciales; no se anuncian cuatro agentes corriendo |
 | QA / revisión separada | Reproducir aceptación, medir, registrar fallos y comparar con versión anterior. Si el mismo agente implementa y prueba, indicarlo: no fingir independencia |
 
-Herramientas seleccionadas para evaluar en entorno: Unreal Linux/Vulkan y toolchain correspondiente, C++/Blueprints, Git/GitHub, Blender para edición necesaria, componentes nativos de movimiento/Chaos/entrada/animación, PCG en expansión urbana y herramientas de perfiles/pruebas de Unreal. El acceso concreto a Codex/editor y sus límites se verifican; no se contrata API ni hay IA obligatoria durante gameplay.
+Herramientas seleccionadas para evaluar en entorno: Unreal 5.8 Windows/DX12 y toolchain MSVC/SDK correspondiente, C++/Blueprints, Git/GitHub, Blender para edición necesaria, componentes nativos de movimiento/Chaos/entrada/animación, PCG en expansión urbana y herramientas de perfiles/pruebas de Unreal. El acceso concreto a Codex/editor y sus límites se verifican; no se contrata API ni hay IA obligatoria durante gameplay.
 
 MCP es una vía opcional de automatización del editor si la instalación lo soporta. Si falla, usar código y scripts de editor documentados. No detener el prototipo intentando automatizar el 100% del editor ni exponer sus puertos.
 
@@ -126,7 +131,7 @@ Estados: **PLANIFICADO → EN CURSO → IMPLEMENTADO SIN VALIDAR → COMPILADO �
 
 ## 11. Rendimiento y prioridades de ajuste
 
-Objetivo inicial, pendiente de medir: ejecutable Linux a 1080p y calidad ajustable, aspirando a 60 FPS. El equipo reportado no garantiza ese rendimiento; verificar CPU, GPU exacta, driver, temperatura/potencia y almacenamiento. La RAM de 64 GB no sustituye los 8 GB de VRAM.
+Objetivo inicial, pendiente de medir: ejecutable Windows a 1080p y calidad ajustable, aspirando a 60 FPS. El equipo reportado no garantiza ese rendimiento; verificar CPU, GPU exacta, driver, temperatura/potencia y almacenamiento. La RAM de 64 GB no sustituye los 8 GB de VRAM.
 
 Registrar frame time medio, p95/p99, mayor tirón, CPU/GPU, memoria y conteos de cuerpos/actores. Separar primera ejecución y ruta repetida; con semilla, cámara y escenario reproducibles. Comparar además con la build base vacía antes de culpar un recurso.
 
@@ -149,7 +154,7 @@ Criterios iniciales de repetición: 30 ciclos de suelo-vuelo; 30 agarres por tip
 
 ## 13. Primer encargo y límite de este turno
 
-Primer trabajo operativo previsto: **IB-L00 — verificar el Linux real y conseguir una base empaquetada**. Seguir después la cola de `TAREAS_ACTIVAS.md`. CPU/driver/almacenamiento/instalación se obtienen mediante inspección autorizada, sin repetir preguntas ya respondidas.
+Primer trabajo operativo previsto: **IB-W00 — verificar Unreal/Windows/toolchain, seguido de IB-W01 para crear y empaquetar la base**. Seguir después la cola de `TAREAS_ACTIVAS.md`. CPU/driver/almacenamiento/instalación se obtienen mediante inspección autorizada, sin repetir preguntas ya respondidas.
 
 Con este turno se consolidan documentos y tareas. No se instala Unreal, no se clonan todos los donantes, no se ejecuta código de terceros y no se afirma que Robert recibió instrucciones. Acceso al equipo y ejecución siguen pendientes.
 
