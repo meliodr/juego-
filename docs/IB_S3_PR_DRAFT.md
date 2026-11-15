@@ -18,6 +18,7 @@ Validación ejecutada:
 - Ensayo numérico R=25 km, altura 500 m, 270 m/s: **593,411946 s**; error máximo de retorno **0,00006556 cm**. No es una vuelta jugada ni benchmark.
 - Generación OBJ propia: topología/manifold/orientación/radio PASS. Esfera 65.024 tris, cap cercano 32.768 tris; error máximo de arista del cap **2,1973 cm** a 25 km.
 - Sintaxis Python/PowerShell, guard de turno exclusivo y alcance de archivos PASS.
+- Revisión estática posterior: cinco fallos nativos reproducidos y corregidos; **100.172 aserciones adicionales PASS** sobre orientación UE, integrador de vuelo real, subpasos acelerados, límites de precarga, barrera de carga y poses persistidas. Total actual **436.423 aserciones nativas**. Manifiesto revisión 2 por corrección de coordenadas; ticks, cuerpos físicos y carga transaccional de saves reforzados. Detalle: `docs/IB_S3_STATIC_REVIEW.md`.
 
 **No listo para integrar.** UHT/UBT y autoría del `.umap` NO ejecutados: turno pesado reservado a S2.5. Pruebas de motor preparadas pero NO ejecutadas. Pendientes cuatro aterrizajes, diez retornos físicos/persistencia tras reinicio, vuelta continua, colisión real CMC, UMG visual, DX12 empaquetado, 1080p/60fps y Steam Input/DualSense. El streamer actual instancia hubs pequeños; todavía no es carga asíncrona de ciudades artísticas grandes.
 

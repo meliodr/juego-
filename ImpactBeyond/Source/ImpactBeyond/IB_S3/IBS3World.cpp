@@ -9,6 +9,7 @@
 #include "GameFramework/Pawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/RotationMatrix.h"
+#include "PhysicsEngine/BodyInstance.h"
 #include "UObject/ConstructorHelpers.h"
 
 namespace
@@ -18,6 +19,17 @@ FVector WorldUE(IBS3::V3 P) { return {P.x,P.y,P.z}; }
 FTransform Surface(FVector Center,double Radius,FVector Normal,FVector Forward,double Elevation=0)
 {
     return FTransform(FRotationMatrix::MakeFromZX(Normal,Forward).ToQuat(),Center+Normal*(Radius+Elevation));
+}
+double SafetyRadius(const FIBS3City& C)
+{
+    // The square street grid's corners extend beyond the default geographic city radius.
+    return FMath::Max(C.FootprintRadiusCm,std::hypot(50000.0,4500.0*C.BuildingHeightScale));
+}
+bool ValidDelta(const FIBS3ObjectDelta& D,const FIBS3ObjectDelta& Expected)
+{
+    return D.Key==Expected.Key && D.OriginRegionId==Expected.OriginRegionId && D.Kind==Expected.Kind && !D.CurrentRegionId.IsNone() &&
+        IBS3::validSavedPose(WorldVector(D.GlobalTransform.GetLocation()),WorldVector(D.GlobalTransform.GetScale3D()),
+            D.GlobalTransform.GetRotation().SizeSquared(),WorldVector(D.LinearVelocity),WorldVector(D.AngularVelocity));
 }
 }
 
@@ -91,8 +103,24 @@ bool AIBS3Hub::Build(const FIBS3City& City,const FVector& Center,double Radius)
     }
     FTransform Pad=Surface(Center,Radius,U,E,City.SurfaceOffsetCm+25); Pad.SetScale3D(FVector(60,60,0.5));
     LandingPad->SetWorldTransform(Pad);
-    bCollisionReady=Pavement->IsPhysicsStateCreated() && LandingPad->IsPhysicsStateCreated();
-    return bCollisionReady;
+    return RefreshCollisionReady();
+}
+bool AIBS3Hub::RefreshCollisionReady()
+{
+    bCollisionReady=false;
+    const FBodyInstance* PadBody=LandingPad->GetBodyInstance();
+    if(!PadBody || !PadBody->IsValidBodyInstance()) return false;
+    for(const UInstancedStaticMeshComponent* Instances:{Pavement.Get(),Buildings.Get()})
+    {
+        if(Instances->GetInstanceCount()==0 || !Instances->IsPhysicsStateCreated()) return false;
+        for(int32 I=0;I<Instances->GetInstanceCount();++I)
+        {
+            const FBodyInstance* Body=Instances->GetBodyInstance(NAME_None,false,I);
+            if(!Body || !Body->IsValidBodyInstance()) return false;
+        }
+    }
+    bCollisionReady=true;
+    return true;
 }
 
 AIBS3PlanetWorld::AIBS3PlanetWorld()
@@ -117,21 +145,24 @@ FVector AIBS3PlanetWorld::CityPosition(const FIBS3City& C) const
 void AIBS3PlanetWorld::BeginPlay()
 {
     Super::BeginPlay(); if(!Manifest) Manifest=NewObject<UIBS3WorldManifest>(this);
-    bValid=Manifest->Validate(Status); if(!bValid) { UE_LOG(LogTemp,Error,TEXT("IB_S3: %s"),*Status); return; }
+    bValid=Manifest->Validate(Status);
+    if(GetActorTransform().ContainsNaN() || !GetActorScale3D().Equals(FVector::OneVector) || !GetActorQuat().Equals(FQuat::Identity))
+    { bValid=false; Status=TEXT("Planet actor supports translation only: configure radius in the manifest"); }
+    if(!bValid) { UE_LOG(LogTemp,Error,TEXT("IB_S3: %s"),*Status); return; }
     GroundCollision->SetSphereRadius(Manifest->RadiusCm);
     PlanetProxy->SetWorldScale3D(FVector(Manifest->RadiusCm/50.0));
     NearSurface->SetWorldScale3D(FVector(Manifest->RadiusCm/50.0));
     Atmosphere->TransformMode=ESkyAtmosphereTransformMode::PlanetCenterAtComponentTransform;
     Atmosphere->MarkRenderStateDirty();
     Atmosphere->SetBottomRadius(Manifest->RadiusCm/100000.0);
-    LoadState(); SeedObjects();
+    SeedObjects(); LoadState();
     for(const FIBS3City& C:Manifest->Cities)
     {
         auto* Proxy=NewObject<UStaticMeshComponent>(this); AddInstanceComponent(Proxy); Proxy->SetupAttachment(RootComponent);
         Proxy->SetStaticMesh(PlanetProxy->GetStaticMesh()); Proxy->SetCollisionEnabled(ECollisionEnabled::NoCollision); Proxy->RegisterComponent();
         Proxy->SetWorldLocation(CityPosition(C)); Proxy->SetWorldScale3D(FVector(70)); CityProxies.Add(Proxy);
     }
-    if(DestinationCity.IsNone()) DestinationCity=Manifest->Cities[0].CityId;
+    if(!Manifest->Cities.ContainsByPredicate([this](const FIBS3City& C){return C.CityId==DestinationCity;})) DestinationCity=Manifest->Cities[0].CityId;
     UpdateResidency(CityPosition(Manifest->Cities[0]),0);
 }
 double AIBS3PlanetWorld::P95Seconds() const
@@ -142,14 +173,22 @@ double AIBS3PlanetWorld::P95Seconds() const
 }
 bool AIBS3PlanetWorld::IsReady(FName City) const
 {
-    const auto* Hub=Hubs.Find(City); return Hub && IsValid(*Hub) && (*Hub)->bCollisionReady;
+    const auto* Hub=Hubs.Find(City); return Hub && IsValid(*Hub) && !(*Hub)->IsActorBeingDestroyed() && (*Hub)->bCollisionReady;
+}
+bool AIBS3PlanetWorld::IsOperational() const
+{
+    const FBodyInstance* GroundBody=GroundCollision->GetBodyInstance();
+    return bValid && IsValid(Manifest) && GroundBody && GroundBody->IsValidBodyInstance();
 }
 FName AIBS3PlanetWorld::RegionAt(FVector P) const
 {
+    if(!IsOperational()) return NAME_None;
+    const IBS3::Geo Geo=IBS3::geographic(WorldVector(P),Manifest->RadiusCm,WorldVector(GetActorLocation()));
+    if(!Geo.valid) return NAME_None;
     for(const FIBS3City& C:Manifest->Cities)
         if(IBS3::surfaceDistance(WorldVector(P),WorldVector(CityPosition(C)),Manifest->RadiusCm,WorldVector(GetActorLocation()))<=C.FootprintRadiusCm)
             return C.RegionId;
-    return FName(*FString::Printf(TEXT("earth.cell.%02d"),IBS3::regionCell(IBS3::geographic(WorldVector(P),Manifest->RadiusCm,WorldVector(GetActorLocation())))));
+    return FName(*FString::Printf(TEXT("earth.cell.%02d"),IBS3::regionCell(Geo)));
 }
 void AIBS3PlanetWorld::SeedObjects()
 {
@@ -170,24 +209,31 @@ void AIBS3PlanetWorld::SeedObjects()
         }
     }
 }
-void AIBS3PlanetWorld::SnapshotProps()
+bool AIBS3PlanetWorld::SnapshotProps()
 {
+    bool Valid=true;
     for(auto& Pair:Props) if(IsValid(Pair.Value))
     {
-        FIBS3ObjectDelta D=Pair.Value->Capture(OriginOffset()); D.CurrentRegionId=RegionAt(Pair.Value->GetActorLocation()); Deltas.Add(Pair.Key,D);
+        FIBS3ObjectDelta D=Pair.Value->Capture(OriginOffset()); D.CurrentRegionId=RegionAt(Pair.Value->GetActorLocation());
+        const FIBS3ObjectDelta* Expected=Deltas.Find(Pair.Key);
+        if(!Expected || !ValidDelta(D,*Expected)) { Valid=false; Status=TEXT("Invalid live object state: last valid delta retained, save/unload suspended"); continue; }
+        Deltas.Add(Pair.Key,D);
     }
+    return Valid;
 }
 void AIBS3PlanetWorld::UpdateResidency(FVector P,double Speed)
 {
-    if(!bValid) return;
+    if(!IsOperational() || P.ContainsNaN() || !FMath::IsFinite(Speed) || Speed<0) return;
     const double Lead=IBS3::prefetch(Speed,P95Seconds(),Manifest->BrakeCmS2,Manifest->PrefetchMarginCm);
     ActiveCity=NAME_None; double Nearest=DBL_MAX;
     for(int32 I=0;I<Manifest->Cities.Num();++I)
     {
         const FIBS3City& C=Manifest->Cities[I];
+        if(auto* Existing=Hubs.Find(C.CityId); Existing && (!IsValid(*Existing) || (*Existing)->IsActorBeingDestroyed()))
+        { Hubs.Remove(C.CityId); LoadStartedAt.Remove(C.CityId); }
         const double D=IBS3::surfaceDistance(WorldVector(P),WorldVector(CityPosition(C)),Manifest->RadiusCm,WorldVector(GetActorLocation()));
         const double Height=FMath::Max(0.0,FVector::Distance(P,GetActorLocation())-Manifest->RadiusCm-C.SurfaceOffsetCm);
-        const bool Want=IBS3::wanted(FMath::Sqrt(D*D+Height*Height)-C.FootprintRadiusCm,Lead,Hubs.Contains(C.CityId),Manifest->ResidencyHysteresisCm);
+        const bool Want=IBS3::wanted(FMath::Sqrt(D*D+Height*Height)-SafetyRadius(C),Lead,Hubs.Contains(C.CityId),Manifest->ResidencyHysteresisCm);
         if(Want && !Hubs.Contains(C.CityId))
         {
             const double Start=FPlatformTime::Seconds();
@@ -203,12 +249,12 @@ void AIBS3PlanetWorld::UpdateResidency(FVector P,double Speed)
         if(Hubs.Contains(C.CityId))
         {
             AIBS3Hub* Hub=Hubs[C.CityId];
-            Hub->bCollisionReady=Hub->Pavement->IsPhysicsStateCreated() && Hub->LandingPad->IsPhysicsStateCreated() &&
-                Hub->Buildings->IsPhysicsStateCreated();
+            Hub->RefreshCollisionReady();
             if(Hub->bCollisionReady && LoadStartedAt.Contains(C.CityId))
             {
                 LoadSamples.Add(FPlatformTime::Seconds()-LoadStartedAt[C.CityId]); LoadStartedAt.Remove(C.CityId);
                 if(LoadSamples.Num()>64) LoadSamples.RemoveAt(0);
+                if(Status==TEXT("Collider preparation pending: approach speed constrained")) Status=TEXT("City colliders ready");
             }
             else if(!Hub->bCollisionReady) Status=TEXT("Collider preparation pending: approach speed constrained");
         }
@@ -216,7 +262,9 @@ void AIBS3PlanetWorld::UpdateResidency(FVector P,double Speed)
         if(D<C.FootprintRadiusCm && Height<Manifest->PhysicsBubbleCm && D<Nearest && IsReady(C.CityId)) { Nearest=D; ActiveCity=C.CityId; }
     }
     if(!ActiveCity.IsNone()) Discovered.Add(ActiveCity);
-    SnapshotProps();
+    for(auto It=Props.CreateIterator();It;++It)
+        if(!IsValid(It.Value()) || It.Value()->IsActorBeingDestroyed()) It.RemoveCurrent();
+    if(!SnapshotProps()) return;
     // Object residency follows its saved global location, not its city of origin; moved cars cannot duplicate.
     for(auto& Pair:Deltas)
     {
@@ -235,15 +283,24 @@ void AIBS3PlanetWorld::UpdateResidency(FVector P,double Speed)
 }
 double AIBS3PlanetWorld::AllowedSpeed(FVector P,double RequestedSpeed) const
 {
+    if(!IsOperational() || P.ContainsNaN() || !FMath::IsFinite(RequestedSpeed) || RequestedSpeed<0) return 0;
     double Limit=RequestedSpeed;
     for(const FIBS3City& C:Manifest->Cities) if(!IsReady(C.CityId))
     {
         const double D=IBS3::surfaceDistance(WorldVector(P),WorldVector(CityPosition(C)),Manifest->RadiusCm,WorldVector(GetActorLocation()));
         const double Height=FMath::Max(0.0,FVector::Distance(P,GetActorLocation())-Manifest->RadiusCm-C.SurfaceOffsetCm);
-        const double Clearance=FMath::Sqrt(D*D+Height*Height)-C.FootprintRadiusCm-Manifest->PrefetchMarginCm;
+        const double Clearance=FMath::Sqrt(D*D+Height*Height)-SafetyRadius(C)-Manifest->PrefetchMarginCm;
         Limit=FMath::Min(Limit,IBS3::safeSpeed(Clearance,P95Seconds(),Manifest->BrakeCmS2));
     }
     return Limit;
+}
+bool AIBS3PlanetWorld::CanTraverse(FVector Start,FVector End,double CapsuleExtentCm) const
+{
+    if(!IsOperational() || Start.ContainsNaN() || End.ContainsNaN() || !FMath::IsFinite(CapsuleExtentCm) || CapsuleExtentCm<0) return false;
+    for(const FIBS3City& C:Manifest->Cities)
+        if(!IsReady(C.CityId) && IBS3::entersUnreadyRegion(WorldVector(Start),WorldVector(End),WorldVector(CityPosition(C)),SafetyRadius(C)+CapsuleExtentCm))
+            return false;
+    return true;
 }
 void AIBS3PlanetWorld::Tick(float Dt)
 {
@@ -272,18 +329,28 @@ void AIBS3PlanetWorld::LoadState()
     bSaveCompatible=Save && Save->SchemaVersion==1 && Save->BodyId==Manifest->BodyId && Save->ManifestRevision==Manifest->Revision &&
         FMath::IsNearlyEqual(Save->RadiusCm,Manifest->RadiusCm,0.01) && Save->GlobalBodyCenter.Equals(GetActorLocation()+OriginOffset(),0.01);
     if(!bSaveCompatible) { Status=TEXT("Save incompatible/corrupt; original slot preserved, writes disabled"); return; }
+    TMap<FName,FIBS3ObjectDelta> Candidate=Deltas;
+    TSet<FName> Seen;
     for(const FIBS3ObjectDelta& D:Save->Deltas)
     {
-        if(D.Key.IsNone() || D.GlobalTransform.ContainsNaN() || D.LinearVelocity.ContainsNaN() || D.AngularVelocity.ContainsNaN() || Deltas.Contains(D.Key))
-        { bSaveCompatible=false; Deltas.Empty(); Status=TEXT("Invalid/duplicate delta; original slot preserved"); return; }
-        Deltas.Add(D.Key,D);
+        const FIBS3ObjectDelta* Expected=Deltas.Find(D.Key);
+        if(!Expected || Seen.Contains(D.Key) || !ValidDelta(D,*Expected))
+        { bSaveCompatible=false; Status=TEXT("Invalid/duplicate object identity or pose: original save preserved; fresh defaults retained"); return; }
+        Seen.Add(D.Key); Candidate.Add(D.Key,D);
     }
-    for(FName City:Save->DiscoveredCities) Discovered.Add(City); DestinationCity=Save->DestinationCity;
+    Deltas=MoveTemp(Candidate);
+    for(FName City:Save->DiscoveredCities)
+        if(Manifest->Cities.ContainsByPredicate([City](const FIBS3City& C){return C.CityId==City;})) Discovered.Add(City);
+    DestinationCity=Save->DestinationCity;
+    Status=TEXT("S3 state loaded");
 }
 bool AIBS3PlanetWorld::SaveState()
 {
-    if(!bValid || !bSaveCompatible) return false; SnapshotProps();
+    if(!IsOperational()) { Status=TEXT("Save unavailable: planet physics not ready"); return false; }
+    if(!bSaveCompatible) { Status=TEXT("Save disabled: incompatible/corrupt original slot preserved"); return false; }
+    if(!SnapshotProps()) return false;
     UIBS3SaveGame* Save=Cast<UIBS3SaveGame>(UGameplayStatics::CreateSaveGameObject(UIBS3SaveGame::StaticClass()));
+    if(!Save) { Status=TEXT("Could not allocate save object"); return false; }
     Save->BodyId=Manifest->BodyId; Save->ManifestRevision=Manifest->Revision; Save->RadiusCm=Manifest->RadiusCm;
     Save->GlobalBodyCenter=GetActorLocation()+OriginOffset(); Save->DiscoveredCities=Discovered.Array(); Save->DestinationCity=DestinationCity;
     Deltas.GenerateValueArray(Save->Deltas);

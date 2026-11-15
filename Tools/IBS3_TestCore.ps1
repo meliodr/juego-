@@ -1,10 +1,11 @@
-param([string]$CompilerRoot = 'C:\Program Files\Microsoft Visual Studio\18\Community', [string]$OutputDirectory)
+param([string]$CompilerRoot = 'C:\Program Files\Microsoft Visual Studio\18\Community', [string]$OutputDirectory,
+      [ValidateSet('Core','Review')][string]$Suite = 'Core')
 $ErrorActionPreference = 'Stop'
 if (!$OutputDirectory) { $OutputDirectory = Join-Path ([IO.Path]::GetTempPath()) ('IBS3_QA_' + [guid]::NewGuid().ToString('N')) }
 $null = New-Item -ItemType Directory -Force -Path $OutputDirectory
 $outputRoot = (Resolve-Path -LiteralPath $OutputDirectory).Path
 $vcvars = Join-Path $CompilerRoot 'VC\Auxiliary\Build\vcvars64.bat'
-$source = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'IBS3_CoreTests.cpp')).Path
+$source = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot ('IBS3_' + $Suite + 'Tests.cpp'))).Path
 if (!(Test-Path -LiteralPath $vcvars)) { throw 'MSVC environment not found; pass -CompilerRoot. No installation attempted.' }
 # Use one temporary build script with literal, quoted paths; this performs no deletion/moving.
 $batch = Join-Path $outputRoot 'compile-core.cmd'

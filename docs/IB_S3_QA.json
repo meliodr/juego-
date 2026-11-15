@@ -17,8 +17,22 @@
     "max_transport_error": 1.99682283926e-13,
     "trial_25km_500m_alt_270m_s_seconds": 593.411945678,
     "prefetch_320m_s_p95_1_5s_brake_80m_s2_margin_300m_m": 1420,
-    "geometry_header_sha256": "A25ABE248AAE65EE946956B5C8716C0B609FB64204D6CAE1DA3C3DDDA545CBF4",
-    "test_source_sha256": "C75226F7836F10009BF2FFEE8B2047894B62509AD883DBFDF1FF20BA79BDE170"
+    "geometry_header_sha256": "16DBE13E74A8EDFF8A42B1E44F02D27547AF3F77AB3C6A75A5DA5B5B69DB3690",
+    "test_source_sha256": "A5BFAD997C0E082D275E663A8E92D9516981309472BE6FACB32561D274572E51"
+  },
+  "static_review": {
+    "baseline_commit": "2add2edd64b3bb0270e442aa80dfb50b0c08fbb4",
+    "baseline_assertions": 5,
+    "baseline_failures_reproduced": 5,
+    "corrected_review_assertions": 100172,
+    "corrected_review_failures": 0,
+    "total_current_native_assertions": 436423,
+    "runtime_flight_helper_numeric_loops": 2,
+    "runtime_flight_helper_max_return_cm": 0.0000723808,
+    "runtime_flight_helper_max_altitude_drift_cm": 0.0000231871,
+    "manifest_revision": 2,
+    "review_test_sha256": "9C9F99C86904D359F58A483E42E30641FCFC352C0F2C76C1DDB1D49FF0FA9D8B",
+    "scope": "Native CPU math/policy and inspection of installed engine source, not Unreal execution"
   },
   "generated_obj_geometry": {
     "status": "PASS",
@@ -38,6 +52,7 @@
   "map_and_asset_authoring": "NOT_RUN",
   "unreal_manifest_test": "PREPARED_NOT_RUN",
   "unreal_collision_and_residency_test": "PREPARED_NOT_RUN",
+  "unreal_save_validation_test": "PREPARED_NOT_RUN",
   "four_character_landings": "NOT_RUN",
   "ten_runtime_reentries": "NOT_RUN",
   "full_restart_persistence": "NOT_RUN",

@@ -25,7 +25,7 @@ int main()
             Frame F=frame(G); V3 Local{817.235,-344.567,456.789};
             check((F.toLocal(F.toGlobal(Local))-Local).length()<1e-8,"orthonormal tangent roundtrip");
             close(F.up.dot(F.east),0,1e-12,"east perpendicular to gravity");
-            check(F.east.cross(F.north).dot(F.up)>0.99999999,"right handed frame");
+            check(F.north.cross(F.east).dot(F.up)>0.99999999,"UE forward/right/up geographic frame");
         }
         // Both equatorial and meridian loops, including two poles; 60 Hz, no position reset at end.
         for(V3 Direction:{V3{0,1,0},V3{0,0,1}})

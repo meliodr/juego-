@@ -25,7 +25,8 @@ class IMPACTBEYOND_API UIBS3WorldManifest : public UDataAsset
 public:
     UIBS3WorldManifest();
     UPROPERTY(EditAnywhere, BlueprintReadOnly) FName BodyId = TEXT("BODY_EARTH_LAB");
-    UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 Revision = 1;
+    // Revision 2 fixes longitude handedness for UE forward/right/up; do not reuse revision-1 coordinates.
+    UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 Revision = 2;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(ClampMin="100000")) double RadiusCm = 2500000;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(ClampMin="1")) double GravityCmS2 = 980;
     UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(ClampMin="1")) double TraversalSpeedCmS = 27000;

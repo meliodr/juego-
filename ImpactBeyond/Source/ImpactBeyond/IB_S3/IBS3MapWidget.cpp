@@ -10,7 +10,7 @@ void UIBS3MapWidget::NativeConstruct() { Super::NativeConstruct(); SetVisibility
 void UIBS3MapWidget::NativeTick(const FGeometry& Geometry,float Dt)
 {
     Super::NativeTick(Geometry,Dt); Refresh-=Dt;
-    if(Refresh>0 || !IsValid(Pilot) || !IsValid(Pilot->Planet) || !Pilot->Planet->Manifest) return;
+    if(Refresh>0 || !IsValid(Pilot) || !IsValid(Pilot->Planet) || !Pilot->Planet->IsOperational()) return;
     Refresh=0.1f; auto* W=Pilot->Planet;
     const double R=W->Manifest->RadiusCm;
     const IBS3::V3 P=MapVector(Pilot->GetActorLocation()), Center=MapVector(W->GetActorLocation());

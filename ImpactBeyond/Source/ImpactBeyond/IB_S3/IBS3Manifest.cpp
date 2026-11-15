@@ -17,18 +17,21 @@ UIBS3WorldManifest::UIBS3WorldManifest()
 
 bool UIBS3WorldManifest::Validate(FString& Error) const
 {
-    if(BodyId.IsNone() || !FMath::IsFinite(RadiusCm) || RadiusCm<100000 || Cities.IsEmpty() ||
-        !FMath::IsFinite(GravityCmS2) || GravityCmS2<=0 || !FMath::IsFinite(BrakeCmS2) || BrakeCmS2<=0 ||
+    if(BodyId.IsNone() || Revision<1 || !FMath::IsFinite(RadiusCm) || RadiusCm<100000 || !FMath::IsFinite(static_cast<float>(RadiusCm)) || Cities.IsEmpty() ||
+        !FMath::IsFinite(GravityCmS2) || GravityCmS2<=0 || !FMath::IsFinite(static_cast<float>(GravityCmS2)) || !FMath::IsFinite(BrakeCmS2) || BrakeCmS2<=0 ||
         !FMath::IsFinite(TraversalSpeedCmS) || TraversalSpeedCmS<=0 || !FMath::IsFinite(InitialLoadP95Seconds) || InitialLoadP95Seconds<0 ||
-        !FMath::IsFinite(PrefetchMarginCm) || PrefetchMarginCm<0 || !FMath::IsFinite(PhysicsBubbleCm) || PhysicsBubbleCm<1000)
+        !FMath::IsFinite(PrefetchMarginCm) || PrefetchMarginCm<0 || !FMath::IsFinite(PhysicsBubbleCm) || PhysicsBubbleCm<1000 ||
+        !FMath::IsFinite(ResidencyHysteresisCm) || ResidencyHysteresisCm<0 ||
+        !FMath::IsFinite(static_cast<float>(TraversalSpeedCmS)) || !FMath::IsFinite(static_cast<float>(BrakeCmS2)))
     { Error=TEXT("Invalid planet, speed, gravity, braking, or load-budget data"); return false; }
     TSet<FName> CityIds,RegionIds;
     for(const FIBS3City& C:Cities)
     {
         if(C.CityId.IsNone() || C.RegionId.IsNone() || CityIds.Contains(C.CityId) || RegionIds.Contains(C.RegionId) ||
-            !FMath::IsFinite(C.LatitudeDegrees) || !FMath::IsFinite(C.LongitudeDegrees) || FMath::Abs(C.LatitudeDegrees)>90 ||
+            !FMath::IsFinite(C.LatitudeDegrees) || !FMath::IsFinite(C.LongitudeDegrees) || FMath::Abs(C.LatitudeDegrees)>90 || FMath::Abs(C.LongitudeDegrees)>180 ||
             !FMath::IsFinite(C.FootprintRadiusCm) || C.FootprintRadiusCm<30000 || !FMath::IsFinite(C.SurfaceOffsetCm) || C.SurfaceOffsetCm<0 ||
-            !FMath::IsFinite(C.BuildingHeightScale) || C.BuildingHeightScale<=0)
+            !FMath::IsFinite(C.BuildingHeightScale) || C.BuildingHeightScale<=0 ||
+            !FMath::IsFinite(static_cast<float>(4500*C.BuildingHeightScale)) || !FMath::IsFinite(static_cast<float>(RadiusCm+C.SurfaceOffsetCm)))
         { Error=TEXT("City IDs/regions must be unique and coordinates/footprints valid"); return false; }
         CityIds.Add(C.CityId); RegionIds.Add(C.RegionId);
     }

@@ -32,6 +32,7 @@ public:
     UPROPERTY(VisibleAnywhere) TObjectPtr<UInstancedStaticMeshComponent> Buildings;
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> LandingPad;
     bool Build(const FIBS3City& City, const FVector& Center, double Radius);
+    bool RefreshCollisionReady();
     bool bCollisionReady = false;
 };
 
@@ -61,9 +62,12 @@ public:
     FName RegionAt(FVector Position) const;
     double P95Seconds() const;
     bool IsReady(FName City) const;
+    bool IsOperational() const;
     double AllowedSpeed(FVector Position, double RequestedSpeed) const;
+    bool CanTraverse(FVector Start,FVector End,double CapsuleExtentCm) const;
     void UpdateResidency(FVector Position, double Speed);
 private:
+    friend class FIBS3SaveValidationTest;
     UPROPERTY() TMap<FName,TObjectPtr<AIBS3Hub>> Hubs;
     UPROPERTY() TMap<FName,TObjectPtr<AIBS3Prop>> Props;
     UPROPERTY() TMap<FName,FIBS3ObjectDelta> Deltas;
@@ -75,5 +79,5 @@ private:
     double NextResidencyUpdate = 0;
     void LoadState();
     void SeedObjects();
-    void SnapshotProps();
+    bool SnapshotProps();
 };

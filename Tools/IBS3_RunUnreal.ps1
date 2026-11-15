@@ -43,7 +43,7 @@ try {
         if ($Mode -eq 'Author') {
             if (!(Select-String -LiteralPath $log -SimpleMatch -Quiet 'IB_S3 authoring complete')) { throw "Author script did not report success: $log" }
         } else {
-            foreach ($test in @('ImpactBeyond.S3.Manifest','ImpactBeyond.S3.RuntimeResidency')) {
+            foreach ($test in @('ImpactBeyond.S3.Manifest','ImpactBeyond.S3.RuntimeResidency','ImpactBeyond.S3.SaveValidation')) {
                 $pattern = 'Test Completed\. Result=\{Success\}.*Path=\{' + [regex]::Escape($test) + '\}'
                 if (!(Select-String -LiteralPath $log -Pattern $pattern -Quiet)) { throw "Missing PASS for $test in $log" }
             }

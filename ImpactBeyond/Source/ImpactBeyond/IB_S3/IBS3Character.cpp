@@ -16,29 +16,41 @@ IBS3::V3 PilotVector(FVector P) { return {P.X,P.Y,P.Z}; }
 FVector PilotUE(IBS3::V3 P) { return {P.x,P.y,P.z}; }
 }
 
+void UIBS3Movement::TickComponent(float Dt,ELevelTick TickType,FActorComponentTickFunction* TickFunction)
+{
+    AIBS3Character* Pilot=Cast<AIBS3Character>(CharacterOwner);
+    // UE's movement component ticks BEFORE its owner by default. Configure gravity/limits here.
+    if(!Pilot || !Pilot->PrepareMovement()) { StopMovementImmediately(); return; }
+    Super::TickComponent(Dt,TickType,TickFunction);
+}
+
 void UIBS3Movement::PhysFlying(float Dt,int32 Iterations)
 {
     AIBS3Character* Pilot=Cast<AIBS3Character>(CharacterOwner);
-    if(!Pilot || !Pilot->Planet || !HasValidData()) return;
+    if(!Pilot || !IsValid(Pilot->Planet) || !Pilot->Planet->IsOperational() || !HasValidData()) return;
     AIBS3PlanetWorld* World=Pilot->Planet;
     const FVector Center=World->GetActorLocation();
     // Bound chord sagitta and collision sweep length. No SetActorLocation in flight.
     double Remaining=Dt;
     int32 Steps=0;
+    const FVector InitialUp=(UpdatedComponent->GetComponentLocation()-Center).GetSafeNormal();
+    const bool HoldAltitude=FMath::Abs(FVector::DotProduct(Acceleration,InitialUp))<=1;
+    if(HoldAltitude) Velocity=FVector::VectorPlaneProject(Velocity,InitialUp);
     while(Remaining>1.e-6 && Steps++<128)
     {
-        const double Step=FMath::Min(Remaining,FMath::Min(1.0/60.0,400.0/FMath::Max(Velocity.Size(),1.0)));
+        const double Step=IBS3::boundedStep(Remaining,Velocity.Size(),Acceleration.Size());
+        if(Step<=0) { StopMovementImmediately(); World->Status=TEXT("Invalid motion data: stopped safely"); break; }
         Remaining-=Step;
         const FVector P=UpdatedComponent->GetComponentLocation();
         const FVector Up=(P-Center).GetSafeNormal();
         SetGravityDirection(-Up);
         CalcVelocity(Step,0.4f,false,BrakingDecelerationFlying);
-        // Vertical input controls altitude; without it, altitude is held, including over poles.
-        const double RadialSpeed=FMath::Abs(FVector::DotProduct(Acceleration,Up))>1 ? FVector::DotProduct(Velocity,Up):0;
-        const FVector Tangent=FVector::VectorPlaneProject(Velocity,Up);
-        const IBS3::ArcStep Arc=IBS3::advance(PilotVector(P),PilotVector(Tangent),Tangent.Size()*Step,PilotVector(Center));
-        const FVector NewUp=(PilotUE(Arc.position)-Center).GetSafeNormal();
-        const FVector Target=PilotUE(Arc.position)+NewUp*(RadialSpeed*Step);
+        const IBS3::FlightStep Motion=IBS3::flightStep(PilotVector(P),PilotVector(Velocity),Step,PilotVector(Center),HoldAltitude);
+        if(!Motion.valid) { StopMovementImmediately(); World->Status=TEXT("Invalid radial trajectory: stopped safely"); break; }
+        const FVector Target=PilotUE(Motion.position);
+        const FVector NewUp=(Target-Center).GetSafeNormal();
+        if(!World->CanTraverse(P,Target,Pilot->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()))
+        { StopMovementImmediately(); World->Status=TEXT("City collider not ready: stopped outside approach boundary"); break; }
         const FVector Forward=PilotUE(IBS3::transport(PilotVector(Pilot->TangentForward),PilotVector(Up),PilotVector(NewUp))).GetSafeNormal();
         FHitResult Hit;
         SafeMoveUpdatedComponent(Target-P,FRotationMatrix::MakeFromXZ(Forward,NewUp).ToQuat(),true,Hit);
@@ -46,7 +58,8 @@ void UIBS3Movement::PhysFlying(float Dt,int32 Iterations)
         {
             HandleImpact(Hit,Step,Target-P); StopMovementImmediately(); break;
         }
-        Velocity=PilotUE(IBS3::transport(PilotVector(Tangent),PilotVector(Up),PilotVector(NewUp)))+NewUp*RadialSpeed;
+        Velocity=PilotUE(Motion.velocity);
+        Acceleration=PilotUE(IBS3::transport(PilotVector(Acceleration),PilotVector(Up),PilotVector(NewUp)));
         Pilot->TangentForward=Forward; Pilot->PreviousUp=NewUp;
     }
     // On an extreme hitch, remaining motion is discarded rather than traversing unswept space.
@@ -71,12 +84,11 @@ void AIBS3Character::BeginPlay()
 {
     Super::BeginPlay();
     for(TActorIterator<AIBS3PlanetWorld> It(GetWorld());It;++It) { Planet=*It; break; }
-    if(Planet && Planet->Manifest)
+    if(Planet)
     {
         AddTickPrerequisiteActor(Planet);
-        PreviousUp=(GetActorLocation()-Planet->GetActorLocation()).GetSafeNormal();
-        TangentForward=PilotUE(IBS3::frame(IBS3::geographic(PilotVector(GetActorLocation()),Planet->Manifest->RadiusCm,PilotVector(Planet->GetActorLocation()))).north);
-        GetCharacterMovement()->SetGravityDirection(-PreviousUp);
+        GetCharacterMovement()->AddTickPrerequisiteActor(Planet);
+        PrepareMovement();
     }
     if(APlayerController* PC=Cast<APlayerController>(GetController()))
     {
@@ -88,8 +100,20 @@ void AIBS3Character::BeginPlay()
 }
 void AIBS3Character::Tick(float Dt)
 {
-    Super::Tick(Dt); if(!Planet || !Planet->Manifest) return;
+    Super::Tick(Dt); if(!IsValid(Planet) || !Planet->IsOperational()) return;
+    LastLongitude=IBS3::geographic(PilotVector(GetActorLocation()),Planet->Manifest->RadiusCm,PilotVector(Planet->GetActorLocation()),LastLongitude).lon;
+    Arm->SetRelativeRotation(FRotator(CameraPitch,0,0));
+}
+bool AIBS3Character::PrepareMovement()
+{
+    if(!IsValid(Planet) || !Planet->IsOperational()) return false;
+    const IBS3::Geo Geo=IBS3::geographic(PilotVector(GetActorLocation()),Planet->Manifest->RadiusCm,PilotVector(Planet->GetActorLocation()),LastLongitude);
+    if(!Geo.valid) { Planet->Status=TEXT("Invalid player coordinates: movement suspended"); return false; }
     const FVector Up=(GetActorLocation()-Planet->GetActorLocation()).GetSafeNormal();
+    if(!bFrameInitialized)
+    {
+        TangentForward=PilotUE(IBS3::frame(Geo).north); PreviousUp=Up; bFrameInitialized=true;
+    }
     TangentForward=PilotUE(IBS3::transport(PilotVector(TangentForward),PilotVector(PreviousUp),PilotVector(Up))).GetSafeNormal(); PreviousUp=Up;
     auto* Move=GetCharacterMovement(); Move->SetGravityDirection(-Up);
     // CMC applies radial gravity; rotate capsule/camera frame continuously, independent of geographic heading singularities.
@@ -99,8 +123,7 @@ void AIBS3Character::Tick(float Dt)
     Move->BrakingDecelerationFlying=Planet->Manifest->BrakeCmS2;
     Move->MaxFlySpeed=Planet->AllowedSpeed(GetActorLocation(),bBrake?0:(bTraversal?Planet->Manifest->TraversalSpeedCmS:8000));
     if(bBrake) ConsumeMovementInputVector();
-    LastLongitude=IBS3::geographic(PilotVector(GetActorLocation()),Planet->Manifest->RadiusCm,PilotVector(Planet->GetActorLocation()),LastLongitude).lon;
-    Arm->SetRelativeRotation(FRotator(CameraPitch,0,0));
+    return true;
 }
 void AIBS3Character::Forward(float X) { if(!bBrake) AddMovementInput(TangentForward,X); }
 void AIBS3Character::Right(float X) { if(!bBrake) AddMovementInput(FVector::CrossProduct(PreviousUp,TangentForward),X); }

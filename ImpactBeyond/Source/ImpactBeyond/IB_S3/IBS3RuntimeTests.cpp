@@ -98,4 +98,52 @@ bool FIBS3ManifestTest::RunTest(const FString& Parameters)
     TestFalse(TEXT("Duplicate CityId rejected"),Data->Validate(Error));
     return !HasAnyErrors();
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FIBS3SaveValidationTest,"ImpactBeyond.S3.SaveValidation",
+    EAutomationTestFlags::ClientContext | EAutomationTestFlags::ProductFilter)
+bool FIBS3SaveValidationTest::RunTest(const FString& Parameters)
+{
+    AIBS3PlanetWorld* Planet=nullptr;
+    for(const FWorldContext& Context:GEngine->GetWorldContexts())
+        if(Context.World() && (Context.WorldType==EWorldType::Game || Context.WorldType==EWorldType::PIE))
+            for(TActorIterator<AIBS3PlanetWorld> It(Context.World());It;++It) { Planet=*It; break; }
+    if(!TestNotNull(TEXT("S3 lab loaded"),Planet) || !TestTrue(TEXT("Ground physics ready"),Planet->IsOperational())) return false;
+    const FString OriginalSlot=Planet->SaveSlot;
+    const bool OriginalCompatibility=Planet->bSaveCompatible;
+    const FString FixtureSlot=TEXT("IB_S3_QA_Validation_")+FGuid::NewGuid().ToString(EGuidFormats::Digits);
+    Planet->SaveSlot=FixtureSlot; Planet->bSaveCompatible=true;
+    auto Cleanup=[&]()
+    {
+        Planet->SaveSlot=OriginalSlot; Planet->bSaveCompatible=OriginalCompatibility;
+        UGameplayStatics::DeleteGameInSlot(FixtureSlot,0);
+    };
+    if(!TestTrue(TEXT("Write isolated save fixture"),Planet->SaveState())) { Cleanup(); return false; }
+    auto* Baseline=Cast<UIBS3SaveGame>(UGameplayStatics::LoadGameFromSlot(FixtureSlot,0));
+    if(!TestNotNull(TEXT("Read fixture"),Baseline) || !TestTrue(TEXT("Two object records available"),Baseline->Deltas.Num()>=2))
+    { Cleanup(); return false; }
+    const FName FirstKey=Baseline->Deltas[0].Key;
+    const FTransform Before=Planet->Deltas[FirstKey].GlobalTransform;
+    auto Reject=[&](const TCHAR* Label,auto Mutate)
+    {
+        auto* Bad=DuplicateObject<UIBS3SaveGame>(Baseline,GetTransientPackage());
+        // A valid earlier record must not commit when a later record fails validation.
+        Bad->Deltas[0].GlobalTransform.AddToTranslation(FVector(123,456,789)); Mutate(Bad);
+        if(!TestTrue(TEXT("Write intentionally invalid fixture"),UGameplayStatics::SaveGameToSlot(Bad,FixtureSlot,0))) return;
+        Planet->bSaveCompatible=true; Planet->LoadState();
+        TestFalse(Label,Planet->bSaveCompatible);
+        const FIBS3ObjectDelta* Retained=Planet->Deltas.Find(FirstKey);
+        TestTrue(TEXT("Rejected file commits no partial deltas"),Retained && Retained->GlobalTransform.Equals(Before,0.001));
+        TestFalse(TEXT("Rejected slot cannot be overwritten by SaveState"),Planet->SaveState());
+    };
+    Reject(TEXT("Finite zero quaternion rejected"),[](UIBS3SaveGame* S){ S->Deltas[1].GlobalTransform.SetRotation(FQuat(0,0,0,0)); });
+    Reject(TEXT("Stable origin cannot change"),[](UIBS3SaveGame* S){ S->Deltas[1].OriginRegionId=TEXT("earth.invalid.origin"); });
+    Reject(TEXT("Object kind cannot change"),[](UIBS3SaveGame* S){ S->Deltas[1].Kind=TEXT("invalid-kind"); });
+    Reject(TEXT("Duplicate stable ID rejected"),[](UIBS3SaveGame* S){ S->Deltas.Add(S->Deltas[0]); });
+    Reject(TEXT("Different coordinate revision rejected"),[](UIBS3SaveGame* S){ ++S->ManifestRevision; });
+    TestTrue(TEXT("Restore fixture file"),UGameplayStatics::SaveGameToSlot(Baseline,FixtureSlot,0));
+    Planet->LoadState(); TestTrue(TEXT("Valid file reload accepted"),Planet->bSaveCompatible);
+    Cleanup();
+    AddInfo(TEXT("Serialization fixtures exercise USaveGame validation, not full game restart or physical reentry."));
+    return !HasAnyErrors();
+}
 #endif

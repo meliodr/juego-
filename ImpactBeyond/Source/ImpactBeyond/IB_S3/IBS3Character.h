@@ -15,6 +15,7 @@ class IMPACTBEYOND_API UIBS3Movement : public UCharacterMovementComponent
 {
     GENERATED_BODY()
 public:
+    virtual void TickComponent(float DeltaTime,ELevelTick TickType,FActorComponentTickFunction* TickFunction) override;
     virtual void PhysFlying(float DeltaTime,int32 Iterations) override;
 };
 
@@ -36,7 +37,9 @@ public:
     double LastLongitude = 0;
     FVector TangentForward = FVector::UpVector;
     FVector PreviousUp = FVector::ForwardVector;
+    bool PrepareMovement();
 private:
+    bool bFrameInitialized = false;
     bool bTraversal = false;
     bool bBrake = false;
     float CameraPitch = -12;

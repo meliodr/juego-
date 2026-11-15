@@ -18,6 +18,8 @@ El código nuevo es el adaptador esférico mínimo para este laboratorio: matem�
 
 Todas las longitudes del contrato son centímetros, dobles. `IBS3Geometry.h` es el mismo núcleo que consumen runtime y pruebas C++ nativas. Marco global centrado en el cuerpo; geografía con latitud [-90,90], longitud [-180,180), altitud sobre radio. Las conversiones admiten origen global lejano. Centro singular devuelve `valid=false`.
 
+Revisión estática posterior: [hallazgos, correcciones y regresiones](IB_S3_STATIC_REVIEW.md). El manifiesto usa **revisión 2**: positivo este apunta hacia -Y en el meridiano cero, coherente con X=norte/Y=este/Z=arriba del actor UE. Revisión 1 se rechaza al cargar; no se reinterpreta un save anterior. El Actor planeta admite solo traslación; configurar radio en el manifiesto antes de iniciar, no mediante escala del Actor ni mutaciones del manifiesto durante vuelo.
+
 `UIBS3WorldManifest` contiene BodyId, revisión, radio, gravedad, velocidad de ensayo, frenado, margen, estimación inicial p95, burbuja física y array abierto de recetas de ciudad. Ninguna lógica de Pawn/streaming contiene cuatro ramas por CityId. Añadir ciudad 5–9 consiste en añadir datos únicos. Semilla y escala de edificios están en cada receta. Los polígonos construidos en este primer laboratorio siguen siendo pequeños; modificar FootprintRadius no genera automáticamente kilómetros de ciudad.
 
 | BodyId | CityId | RegionId de origen | Latitud / longitud | Seed |
@@ -41,6 +43,8 @@ Los hubs instancian 169 losas curvadas, dos calles cruzadas abiertas, pad centra
 
 `UIBS3Movement` deriva de CMC únicamente para este Pawn de laboratorio. Tierra/caída usan gravedad radial CMC. Vuelo integra arcos sobre la esfera de altitud actual y barre la cápsula en subpasos de hasta 4 m / 1/60 s, orientando +Z radial. Entrada vertical cambia altura; sin ella se mantiene altura. Transporte paralelo del frente evita singularidad de yaw en polos. No usa teleports de jugador ni snap de longitud. Si hay colisión se detiene; si se agota presupuesto de pasos se informa y se detiene. El uso de `TeleportPhysics` queda limitado a hidratar props y a fixtures de QA explícitos, nunca la circunnavegación.
 
+La preparación de gravedad/límites se ejecuta **antes de CMC::TickComponent**, con dependencia explícita del Tick del planeta. El límite de subpaso incluye aceleración. `flightStep` comparte la integración de ascenso/curvatura con la suite nativa; aceleración y velocidad se transportan entre subpasos. Se comprueba el segmento completo contra la envolvente de cada ciudad pendiente antes de mover, incluyendo extensión de cápsula; una retirada desde dentro sigue permitida. Detener por esa barrera muestra el motivo y no simula un collider listo.
+
 Caminar, gravedad, cápsula rotada y esfera Chaos de gran radio aún necesitan ensayo de motor. La exactitud matemática no certifica contactos ni penetración. El cap cercano se aproxima por triángulos: a R=25 km su error máximo de arista medido es 2,1973 cm, frente a 376,4483 cm de la malla orbital. A R=90 km esos errores escalan; la colisión sigue siendo analítica. Transición LOD, sombreado y horizonte deben revisarse visualmente antes de aceptación.
 
 ## Residencia, precarga y persistencia
@@ -48,6 +52,8 @@ Caminar, gravedad, cápsula rotada y esfera Chaos de gran radio aún necesitan e
 Hay un único ActiveCity; ciudades próximas pueden tener colisión precargada, el resto proxies. Distancia de precarga = velocidad × p95 + velocidad²/(2×frenada) + margen. Valor inicial conservador p95=1,5 s; a 320 m/s, freno 80 m/s² y margen 300 m resulta 1.420 m. Se mide desde solicitud hasta preparación del estado físico, con hasta 64 muestras; el presupuesto mantiene el suelo conservador inicial. No se presenta como p95 real medido fuera de Unreal.
 
 Selección incluye distancia geodésica y altura, histéresis de 400 m y revisión a 10 Hz. Antes de entrar se comprueba estado físico de calles, pad y edificios. Si no está listo, velocidad admisible deriva del presupuesto de frenada; no se permite fingir collider cargado. Esta primera implementación crea hubs pequeños sincrónicamente con componentes nativos y espera su estado físico cuando es diferido. No equivale a streaming asíncrono de paquetes urbanos reales ni garantiza ausencia de hitches: la sustitución por cargas/celdas preautorizadas se hará tras medir.
+
+La comprobación actual revisa FBodyInstance de cada instancia y pad, además del cuerpo planetario. La carga de USaveGame valida poses e identidad contra defaults del manifiesto en un candidato y solo aplica el conjunto completo al terminar. Estado vivo inválido suspende guardado/descarga y conserva el último delta válido. Contactos/query real, carga diferida y reentradas siguen pendientes de motor.
 
 Solo los props a menos de 1.200 m del jugador simulan; salir captura delta y destruye el actor, entrar rehidrata una sola instancia por clave. La selección usa la posición global guardada del objeto, no su ciudad de origen; un objeto movido a otra celda no vuelve a aparecer en su punto original. Se mantienen 12 registros representativos iniciales, no árboles/edificios completos. La esfera global no simula fragmentos lejanos. Un objeto descargado queda congelado, no resuelve una trayectoria balística fuera de burbuja.
 
@@ -76,6 +82,7 @@ Sin Unreal y sin coste adicional:
 
 ```powershell
 ./Tools/IBS3_TestCore.ps1 -OutputDirectory ../qa-core
+./Tools/IBS3_TestCore.ps1 -Suite Review -OutputDirectory ../qa-review
 python Tools/IBS3_TestAuthoring.py ../qa-geometry
 ```
 
@@ -90,6 +97,8 @@ Tras **coordinar explícitamente un turno exclusivo** con otras sesiones, revisa
 El guard comprueba procesos y un mutex cooperativo; no sustituye coordinación con sesiones que no usan ese mutex. Build se limita a dos acciones. Author usa plugins Python/editor scripting nativos solo en el proceso, sin modificar .uproject. Crea `/Game/IB_S3/Lvl_IB_S3_PlanetLab`, manifiesto y mallas originales; rechaza sobrescribir assets/mapa existentes. El HUD UMG es nativo; cualquier Blueprint de UI futuro se crea solamente bajo Content/IB_S3.
 
 `ImpactBeyond.S3.Manifest` prepara pruebas de novena ciudad/radio 90 km/IDs duplicados. `ImpactBeyond.S3.RuntimeResidency` prepara trazas de suelo en cuatro hubs, 10 descargas/reentradas, persistencia de muro/auto, unicidad y lectura de un archivo USaveGame de prueba con nombre GUID. Usa colocación de fixtures y **no cuenta como vuelo continuo, aterrizajes, reinicio completo del juego ni rendimiento**. El archivo temporal de QA es el único save que elimina.
+
+`ImpactBeyond.S3.SaveValidation` prepara archivos de prueba con pose, identidad, duplicados y revisión inválidos; debe verificar rechazo completo, conservación del estado anterior y bloqueo de sobrescritura. Tampoco se ejecutó. Las suites nativas actuales suman **436.423 aserciones PASS** (336.251 Core + 100.172 Review); no sustituyen ninguno de estos tests de motor.
 
 Después faltan: cuatro aterrizajes CMC; suelo/aire/giros en ecuador y ambos polos; cinco cruces físicos; 10 retornos con los tres objetos alterados y reinicio real; minimapa/mapa en tierra/aire/dateline/polos; 320 m/s con freno y fallo de precarga; vuelta continua ≥1 (roadmap general pide 3); empaquetado Win64 DX12; 1080p con audio, FPS/p95/p99/VRAM; Steam Input/DualSense y aceptación humana. No simular QA independiente: el mismo agente implementó y verificó las pruebas ligeras.
 
