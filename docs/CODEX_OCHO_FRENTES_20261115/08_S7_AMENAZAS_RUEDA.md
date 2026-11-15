@@ -1,6 +1,6 @@
 # PROMPT OPERATIVO 08 — S7 · robot pesado, kaiju mediano y rueda radial
 
-**Modelo sugerido, no seleccionado:** Codex UE5 gameplay AI/Chaos/UI más capaz disponible, razonamiento Extra High por integración y rendimiento.
+**Modelo sugerido, NO seleccionado ni verificado:** GPT-6 Astra · Extra High (si existe en Codex); IA/Chaos/UI de amenazas. Alternativa: mejor Codex UE/C++ con Extra High.
 
 **Worktree Windows aislado:** `../impact-wave8-s7-threats` · **rama exclusiva:** `prototype/ib-wave8-s7-threats`.
 
