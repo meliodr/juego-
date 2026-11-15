@@ -2,6 +2,21 @@
 Fecha: 2026-11-14. Estado: INVESTIGACIÓN; ningún módulo ha sido descargado/compilado/ejecutado en el Linux del usuario. GPU declarada RTX 4070 8 GB VRAM, RAM 64 GB. CPU, driver, distro, Unreal no comprobados.
 **Decisión del usuario: el cooperativo es MUY LEJANO, fuera de la ruta crítica, sin pruebas de red tempranas.** Este documento prevalece sobre planes anteriores con N0/N1 tempranos o matchmaking.
 
+## Resultado IB-FLT-AUD en Windows — 2026-11-15
+
+Revisión fijada de [ManOfSteel](https://github.com/ProdiG66/ManOfSteel/tree/d808f32ccab77dfbe2ba4b5f1cd29c2571eaa422), UE 5.3, código bajo MIT según LICENSE raíz. La tabla registra qué podemos reutilizar sobre el Third Person validado en IB-W01. No se compiló ni importó el donante.
+
+| Archivo o grupo | Evidencia y dependencia | Decisión |
+|---|---|---|
+| ManOfSteel.uproject y Source/ManOfSteel/ManOfSteel.Build.cs | Archivos completos. UE 5.3, Motion Warping y módulos Niagara, UMG y Enhanced Input | Descartar como base. La plantilla local ya aporta el personaje, el control y un proyecto que empaqueta |
+| Source/ManOfSteel/Private/Components/Flight.cpp y Public/Components/Flight.h | Código completo. Usa MOVE_Flying, límites de velocidad/aceleración, cámara y cálculo de inclinación; acoplado a BaseStats, TargetLock, Niagara y animaciones | Referencia MIT para estados de vuelo e inclinación. Inicio con CMC nativo en nuestro personaje; ninguna copia de código en este ticket. Conservar aviso MIT si se adapta código más adelante |
+| Source/ManOfSteel/Private/Actors/Superman.cpp | Código completo. Usa dirección relativa a cámara y ascenso/descenso con SetActorLocation sin barrido | Referencia de input. En IB-F01 usar el volumen y movimiento barrido del CMC, incluso en vertical |
+| Content/Animations/Superman/Flight (140 archivos) | Git guarda punteros de 129–131 bytes. Al consultar Git LFS se recuperó A_Flight_FastMove_A.uasset (290911 bytes), con SHA-256 igual al puntero. Se comprobó integridad de ese objeto, no importación ni permisos del arte. Los otros 139 objetos no se solicitaron | Reserva por licencia y compatibilidad. La advertencia histórica de cuota LFS no bloqueó esta transferencia, pero la disponibilidad de un archivo no acredita todo el set ni autoriza incorporar assets de Superman |
+| ImpactBeyond/Content/Characters/Mannequins/Anims/Unarmed | Archivos completos de la plantilla ya integrada. Blend Space BS_Idle_Walk_Run y secuencias MM_Jump, MM_Fall_Loop y MM_Land. El paquete IB-W01 mostró locomoción y salto | Usar el rig de la plantilla y estas animaciones como primera opción de IB-GND00. Para el vuelo, probar las poses provisionales en el mismo rig antes de buscar clips nuevos |
+| Quaternius UAL Standard y Rokoko Superhero Mocap | Referencias del pipeline, sin archivos verificados en este ensayo | Reserva para clips concretos cuando se comprueben edición, licencia y retargeting |
+
+**Decisión operativa:** IB-GND00 empieza sobre el CharacterMovementComponent y Enhanced Input de la plantilla. IB-F01 extenderá ese mismo personaje con MOVE_Flying y un único control de aceleración/frenado. El mínimo trabajo propio es regular el movimiento aéreo y suplir solo las poses que la prueba de vuelo demuestre necesarias. Se mantiene una implementación de movimiento y un rig. Esta decisión sustituye el orden de prueba Linux y la preferencia histórica por portar primero el componente de vuelo.
+
 ## 1. Auditoría profunda ManOfSteel
 Fuente https://github.com/ProdiG66/ManOfSteel, LICENSE raíz MIT (Copyright 2024 Jan Enri Arquero), proyecto UE5.3.
 Árbol remoto inspeccionado: 681 entradas, 61 archivos .cpp/.h, 140 rutas bajo Content/Animations/Superman/Flight. Los UAssets revisados contienen únicamente punteros Git LFS de ~130 bytes: NO son las animaciones. Ejemplo Content/Animations/Superman/Flight/FastMove/A_Flight_FastMove_A.uasset remite a 290911 bytes lógicos. El README admite que su cuota LFS expiró y que los clones traen binarios incompletos. Fork Aaryan-Umar inspeccionado mostraba punteros similares; NO equivale a copia restaurada.

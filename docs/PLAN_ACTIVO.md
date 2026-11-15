@@ -29,7 +29,7 @@ Este es el único plan de entregas vigente. Sustituye el orden y los requisitos 
 
 ## Estado verificado de Windows — 2026-11-15
 
-IB-W00 e IB-W01 aceptados en la rama de trabajo: UE 5.8.4 arrancó con DX12, Third Person C++ compiló y el paquete Win64 ejecutó el mapa y sus controles básicos. [Evidencia local](IB_W00_W01_VALIDACION.md). Siguiente ticket: IB-FLT-AUD.
+IB-W00 e IB-W01 aceptados en la rama de trabajo: UE 5.8.4 arrancó con DX12, Third Person C++ compiló y el paquete Win64 ejecutó el mapa y sus controles básicos. [Evidencia local](IB_W00_W01_VALIDACION.md). IB-FLT-AUD aceptado. El [resultado del donante](FLIGHT_REUSE_AUDIT_V09.md) fija CMC y el rig de la plantilla como base. Siguiente ticket: IB-GND00.
 
 ## 1. Evidencia disponible y decisiones que no cambian
 
