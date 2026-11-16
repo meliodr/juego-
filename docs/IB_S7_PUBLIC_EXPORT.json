@@ -1,5 +1,5 @@
 {
-  "status": "INTERMEDIATE_SOURCE_SNAPSHOT_EXPORTED_FINAL_QA_AND_AUTHORING_PENDING",
+  "status": "WORLD_MATERIAL_AUTHORING_FIX_EXPORTED_FINAL_PACKAGE_CONFIRMATION_PENDING",
   "public_base": "6c2d903c708553e7c840d27a96e5eb86810cb8a7",
   "imported_s25_commit": "70187086042669e8ec178b3b268c57730da8492f",
   "imported_s25_source_metadata": [
@@ -192,8 +192,8 @@
   "final_build_and_runtime_evidence": {
     "unreal_previous_snapshot_4f95872": "Compiled, reported by integrator",
     "unreal_source_snapshot_9ca77e1": "Editor and Game PASS, reported by integrator",
-    "package_dx12_audio_input_human_acceptance": "PENDING",
-    "later_authoring_update": "Exact 742ff49 script integrated as b341476: authoring PASS, exit 0, zero missing dependencies; run s7-author-20261116T053232Z",
+    "package_dx12_audio_input_human_acceptance": "Current fa75f7f package and first DX12/audio profile PASS; second profile, exact functional and visible Steam launch pending; physical controller/human acceptance separate",
+    "later_authoring_update": "Exact 730b39f script integrated at ead1d59; authoring PASS (11 verified, only agua changed); updated package confirmation pending",
     "unreal_source_snapshot_acf4156": "Editor PASS; Game not yet reported for this snapshot",
     "functional_acf4156": {
       "run": "s7-tests-20261116T051706Z",
@@ -335,10 +335,97 @@
       },
       "editor_last_compiled": "6b4631d",
       "changes_scope": "QA-only capture/GPU metadata plus RenderCore and RHI dependencies; gameplay logic unchanged",
-      "packaged_profile": "PENDING",
+      "packaged_profile": {
+        "status": "TWO_RUNS_PASS_BEFORE_WATER_MATERIAL_FIX",
+        "first": {
+          "run": "s7-tests-20261116T055356Z",
+          "status": "PASS",
+          "duration_seconds": 90.008,
+          "frames": 5397,
+          "fps_mean": 59.94,
+          "frame_ms_p95": 16.7181,
+          "frame_ms_p99": 16.9259,
+          "frame_ms_max": 50.018,
+          "frames_over_50_ms": 1,
+          "gpu_ms_mean": 6.144,
+          "gpu_ms_p95": 6.8109,
+          "gpu_ms_p99": 7.2065,
+          "output_resolution": "1920x1080",
+          "internal_resolution_scale_percent": 83,
+          "quality_level": 2,
+          "fps_cap": 60,
+          "time": "real wall-clock, no fixed timestep",
+          "renderer": "DX12",
+          "audio": true,
+          "fortnite_running": false,
+          "observer": "integrator"
+        },
+        "second": {
+          "run": "s7-tests-20261116T055617Z",
+          "status": "PASS",
+          "fps_mean": 59.9848,
+          "frame_ms_p95": 16.684,
+          "frame_ms_p99": 16.7149,
+          "frame_ms_max": 26.207,
+          "frames_over_33_33_ms": 0,
+          "same_executable_as_first": true,
+          "observer": "integrator"
+        },
+        "executable_sha256": "6C7741F10E1350CF56A8A80C84B34300CBB2A29E33E8E3BB3B09DD5DEEAE4337"
+      },
       "observer": "integrator",
-      "package": "RECOOK_IN_PROGRESS; exact run identifier pending",
-      "profile_conditions": "Measure actual machine state; Fortnite was closed by the user before this rerun, verify contemporaneous workload when capturing; prior packaged DX12 functional run had Fortnite active"
+      "package": {
+        "run": "s7-package-20261116T055049Z",
+        "status": "PASS",
+        "observer": "integrator"
+      },
+      "profile_conditions": "Measure actual machine state; Fortnite was closed by the user before this rerun, verify contemporaneous workload when capturing; prior packaged DX12 functional run had Fortnite active",
+      "final_exact_functional": {
+        "reported_run_suffix": "055847Z",
+        "assertion_result": "4 suites PASS",
+        "hard_gate": "FAIL: water material lacks instancing usage",
+        "material": "/Game/IB_Donors/CityKit/hotel/hotel/Materials/agua",
+        "release_blocker": true,
+        "observer": "integrator"
+      },
+      "steam": {
+        "target_updated_to_current_executable": true,
+        "steam_input_enabled_ui_verified": true,
+        "visible_launch": "PENDING",
+        "physical_dualsense": "PENDING_HUMAN",
+        "observer": "integrator"
+      },
+      "water_material_correction": {
+        "status": "AUTHORING_AND_RECOOK_PASS_RUNTIME_CONFIRMATION_PENDING",
+        "cpp_changed": false,
+        "planned_checks": [
+          "Recook",
+          "Four exact packaged functional suites and content hard gate",
+          "One confirming profile",
+          "Final Steam target and visible launch"
+        ],
+        "authoring_snapshot": "730b39ff8425f21297ca2bd89f6207dabace105c",
+        "run": "s7-author-20261116T060201Z"
+      }
+    },
+    "authoring_ead1d59": {
+      "run": "s7-author-20261116T060201Z",
+      "status": "PASS",
+      "verified_material_count": 11,
+      "changed_material_count": 1,
+      "changed_package": "/Game/IB_Donors/CityKit/hotel/hotel/Materials/agua",
+      "other_ten_already_enabled": true,
+      "private_asset_commit": "8b56a20 (not exported)",
+      "observer": "integrator"
+    },
+    "package_8b56a20": {
+      "status": "COOK_AND_PACKAGE_PASS_CONFIRMATION_PENDING",
+      "cpp_source_equivalent": "fa75f7f",
+      "executable_sha256": "6C7741F10E1350CF56A8A80C84B34300CBB2A29E33E8E3BB3B09DD5DEEAE4337",
+      "changed_content": "Only local water material instancing usage; not exported",
+      "confirmation": "Four exact DX12 functional suites active; one confirming profile and final Steam target/visible launch pending",
+      "run": "s7-package-20261116T060244Z",
+      "duration_seconds": 37.01
     }
   },
   "preserve_preparation_over_staging": [
@@ -533,9 +620,9 @@
     "s3_geometry": "PASS: winding, manifold edges, sphere radius, near-cap sagitta 2.1972592033847604 cm at 25 km",
     "s25_recipes": "10 PASS + 1 SKIP local asset bytes absent; R2 5 PASS",
     "cpp_snapshot_equality": 107,
-    "github_actions": "PR33 remote 534f0d4: Integrated source checks and Lab audit tests SUCCESS",
-    "unreal_final_snapshot": "fa75f7f Game PASS, run s7-build-20261116T054825Z, 114.26 seconds; last Editor 6b4631d PASS; updated package/profile pending",
-    "cook_package_dx12_audio_human": "17d7f91 cook/package PASS and four packaged DX12 functional suites PASS; profile failed before CSV; fa75f7f QA capture fix pending Game build/runtime validation",
+    "github_actions": "PR33 a645030: Integrated source checks and Lab audit tests SUCCESS",
+    "unreal_final_snapshot": "fa75f7f Game PASS (s7-build-20261116T054825Z, 114.26 s), package PASS (s7-package-20261116T055049Z), first DX12 profile PASS; last Editor 6b4631d PASS",
+    "cook_package_dx12_audio_human": "Water authoring fix and 8b56a20 package PASS (060244Z,37.01s); C++/executable identical to fa75f7f measured twice; exact final functional/content gate, confirming profile and Steam launch pending",
     "unreal_build_report": {
       "source_commit": "9ca77e1",
       "run": "s7-build-20261116T045837Z",
@@ -546,7 +633,7 @@
     },
     "python_syntax": "50 tracked Python files parsed without import",
     "public_source_policy_precommit": "PASS for all 156 snapshot text changes",
-    "native_report_scope": "13 suites PASS through remote 534f0d4; pure policies/native fixtures unchanged in fa75f7f QA-only update; no new native run implied"
+    "native_report_scope": "13 suites PASS through remote a645030; pure policies/native fixtures unchanged in fa75f7f QA-only update; static/natives do not certify render or physics"
   },
   "sanitized_documentation": [
     "docs/IB_S7_ASSET_PROVENANCE.md",
@@ -914,31 +1001,41 @@
         "ImpactBeyond/Source/ImpactBeyond/ImpactBeyond.Build.cs"
       ],
       "reason": "QA-only DX12 frame readback via retained Slate framebuffer and actual rendering GPU metadata; RenderCore/RHI dependencies; no new image/assets"
+    },
+    {
+      "snapshot": "730b39ff8425f21297ca2bd89f6207dabace105c",
+      "previous_snapshot": "742ff4977b95e8fb93eeec0dee3847b09f57253e",
+      "paths": [
+        "Tools/IBPlay_AuthorProduction.py"
+      ],
+      "reason": "Verify all eight world and three tree owned/CC0 instancing materials; no Fab/asset bytes exported"
     }
   ],
   "pr": {
     "number": 33,
     "url": "https://github.com/meliodr/juego-/pull/33",
     "state": "DRAFT",
-    "remote_head_at_review": "534f0d4dbd94092bc2cf2d50af1336db43d0d582"
+    "remote_head_at_review": "a6450301b7f4907077ce41d54fdc0039a0a737d8"
   },
   "closed_labs": {
     "21": "Closed by integrator as covered by PR30; no action by source-preparation agent"
   },
   "remote_ci": {
-    "commit": "534f0d4dbd94092bc2cf2d50af1336db43d0d582",
-    "integrated_source_run": 43812082671,
-    "lab_audit_run": 43812082685,
+    "commit": "a6450301b7f4907077ce41d54fdc0039a0a737d8",
+    "integrated_source_run": 43813155209,
+    "lab_audit_run": 43813155278,
     "status": "SUCCESS",
-    "pending_export": "Exact fa75f7f Source/Build.cs plus current evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+    "pending_export": "730b39f authoring and updated evidence; local commit not yet pushed or run remotely"
   },
-  "authoring_snapshot_commit": "742ff4977b95e8fb93eeec0dee3847b09f57253e",
-  "authoring_script_sha256": "5c44aaf5814133ad2828f8d487ba24e941699fdf132a304902a20376bc4fccff",
+  "authoring_snapshot_commit": "730b39ff8425f21297ca2bd89f6207dabace105c",
+  "authoring_script_sha256": "44dbabd371da8e1456901eacc7469a58908f1d516de60c98d41a4ae557632e72",
   "closure_review": "docs/IB_S7_CLOSURE_REVIEW.md",
   "authoring_source_material_scope": {
-    "recipe": "Tools/IBPlay_AuthorProduction.py::prepare_s25_instancing_materials",
-    "allowlisted_material_count": 7,
-    "owned_cc0_s25_usage_flags_only": true,
+    "recipe": "Tools/IBPlay_AuthorProduction.py::prepare_world_instancing_materials",
+    "allowlisted_material_count": 11,
+    "world_material_count": 8,
+    "tree_material_count": 3,
+    "owned_cc0_world_usage_flags_only": true,
     "parent_materials_modified": false,
     "fab_sources_modified": false,
     "binary_outputs_exported": false
@@ -968,6 +1065,28 @@
       "source_and_recipes": "SUCCESS",
       "native_policies": "SUCCESS",
       "pending_export": "17d7f91 config/runner corrections plus updated evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+    },
+    {
+      "commit": "534f0d4dbd94092bc2cf2d50af1336db43d0d582",
+      "integrated_source_run": 43812082671,
+      "lab_audit_run": 43812082685,
+      "status": "SUCCESS",
+      "pending_export": "Exact fa75f7f Source/Build.cs plus current evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
     }
-  ]
+  ],
+  "current_delivery_status": {
+    "source_cpp": "fa75f7f",
+    "game_build": "PASS",
+    "authoring": "PASS",
+    "package": "PASS_8b56a20_s7-package-20261116T060244Z",
+    "profile_first": "PASS",
+    "profile_second": "PASS_BEFORE_WATER_FIX",
+    "exact_final_functional": "4_ASSERTIONS_PASS_CONTENT_GATE_FAIL_WATER_INSTANCING",
+    "steam_target_and_input_setting": "CURRENT_TARGET_VERIFIED_FINAL_RECOOK_TARGET_PENDING",
+    "steam_visible_launch": "PENDING",
+    "physical_controller_and_human_acceptance": "PENDING_SEPARATE",
+    "public_source_ci": "a645030 SUCCESS",
+    "packaged_content_gate": "AUTHORING_AND_RECOOK_PASS_EXACT_RUNTIME_CONFIRMATION_PENDING",
+    "final_confirmation": "FOUR_FUNCTIONALS_ONE_PROFILE_STEAM_LAUNCH_PENDING"
+  }
 }

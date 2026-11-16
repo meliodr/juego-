@@ -1,17 +1,16 @@
-# Integrar S1–S7 en una partida con fuentes y arte reconstruible
+# Integrar S1–S7 en una partida con arte reconstruible
 
-Los laboratorios de planeta, carga, combate, civiles, héroes y amenazas estaban separados. Esta candidata los reúne en un personaje y una sesión comunes, con daño y persistencia compartidos, cuatro ciudades, reloj/civiles, tres héroes, robot/kaiju y rueda. La publicación parte de main y conserva recetas S2.5, los cambios de Robert y las decisiones aceptadas de PR17/22/23.
+Los laboratorios de planeta, interacción, combate, civiles, héroes y amenazas estaban separados. Esta candidata los reúne en un personaje y una sesión comunes, con daño y persistencia compartidos, cuatro ciudades, reloj/civiles, tres héroes, robot/kaiju y rueda de poderes. Conserva las recetas S2.5, los cambios de Robert y las decisiones aceptadas de PR17/22/23.
 
-Fuentes C++: `fa75f7f` (base jugable `6b4631d` y corrección QA de captura/GPU); autoría `742ff49`; configuración/validador de paquete `17d7f91`. No se incorpora historial privado ni Content binario nuevo. El autor debe proveer las dependencias autorizadas y generar `/Game/IB_Playable`: el clone público no incluye ese arte ni mapa.
+La rama parte de main y añade fuentes, recetas y documentación. C++: `fa75f7f`; autoría: `730b39f`; configuración y validador de paquete: `17d7f91`. No incorpora historial privado ni Content binario nuevo. La reconstrucción requiere dependencias autorizadas y generación local de `/Game/IB_Playable`.
 
-Validación observada:
+Validación actual:
 
-- CI de `534f0d4`: [Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43812082671) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43812082685) aprobados, incluidas 13 suites nativas. La actualización `fa75f7f` aún necesita su CI.
-- Editor + Game de `6b4631d` PASS; Game de `fa75f7f` PASS en `s7-build-20261116T054825Z` (114,26 s). La corrección afecta captura QA y módulos RHI/RenderCore, sin cambios de lógica jugable; no se atribuye una nueva compilación Editor.
-- Autoría `b341476` PASS, exit 0 y cero dependencias ausentes (`s7-author-20261116T053232Z`). Los siete materiales S25 con flags de instancing permanecen locales; su receta es pública.
-- Paquete `17d7f91` PASS, cero errores y 807 paquetes (`s7-package-20261116T054101Z`). Sus cuatro pruebas DX12 —PlayableSession, RealInput, S3 Contacts y S7 PreparedEncounter— pasaron en `s7-tests-20261116T054558Z`, sin recursos ausentes ni materiales de reserva. Se conservan resultados y límites por mapa, incluida FlightReentry de diez regresos en S3Lab.
-- El perfil previo falló en la lectura QA de imagen (`InRHITexture null`) y no produjo CSV. `fa75f7f` corrige esa captura y registra la GPU real de RHI. Faltan recook/actualización del ejecutable, repetición del perfil y revisión de presentación/audio. La captura definitiva medirá el equipo como está, con contexto de carga registrado; Fortnite fue cerrado por el usuario antes de esta repetición, mientras las cuatro pruebas DX12 previas sí lo tuvieron activo. Input simulado, DualSense físico y aceptación humana permanecen separados; no se promete 60 FPS ni se declara S7 aceptado.
+- [CI a645030](https://github.com/meliodr/juego-/actions/runs/43813155209) y [auditoría](https://github.com/meliodr/juego-/actions/runs/43813155278) verdes, incluidas 13 suites nativas.
+- Game `fa75f7f` y paquete actualizado `s7-package-20261116T060244Z` PASS (37,01 s); autoría PASS con salida limpia y cero dependencias ausentes. Editor aprobado en `6b4631d`; el cambio posterior es QA de captura/GPU y dependencias RHI/RenderCore, sin cambios de lógica jugable.
+- Dos perfiles del mismo ejecutable PASS: medias 59,94 / 59,9848 FPS; p95 16,7181 / 16,684 ms y p99 16,9259 / 16,7149 ms. Salida 1920×1080, escala interna 83%, calidad 2, límite 60 FPS, DX12/audio y tiempo real; Fortnite ausente. Mediciones acotadas anteriores a la corrección del agua, no garantía de 60 FPS.
+- Gate final: las cuatro suites aprobaron sus aserciones, pero el control de contenido falló por instancing del material de agua. Autoría corregida PASS: once materiales verificados y solo `agua` guardado (`s7-author-20261116T060201Z`), sin cambios C++; recook `8b56a20` aprobado; faltan cuatro funcionales con gate limpio, un perfil confirmatorio y arranque visible desde Steam. El acceso apunta al ejecutable actual y Steam Input está activado y comprobado en UI. DualSense físico y aceptación humana se registran por separado.
 
-[Archivos y hashes](IB_S7_PUBLIC_EXPORT.json) · [Reproducción](IB_S7_SOURCE_OVERVIEW.md) · [Evidencia y límites de cierre](IB_S7_CLOSURE_REVIEW.md).
+[Fuentes y hashes](IB_S7_PUBLIC_EXPORT.json) · [Reproducción](IB_S7_SOURCE_OVERVIEW.md) · [Resultados y límites](IB_S7_CLOSURE_REVIEW.md).
 
-Tras integrar la candidata validada, #26/#27/#28 podrán cerrarse como cubiertos; #25 como laboratorio sustituido, conservando su rama y sin afirmar importación completa. #7/#8 quedan como prototipos cubiertos y PR17/22/23 como decisiones consolidadas. PR21 ya fue cerrado por el integrador como cubierto por PR30. No se propone cerrar #1/#5/#6/#20 ni integrar investigación ausente.
+Después de integrar la candidata validada: #26/#27/#28 cubiertos, #25 laboratorio sustituido sin afirmar importación completa, #7/#8 prototipos cubiertos, #17/#22/#23 decisiones consolidadas. Conservar ramas y descripciones históricas. PR21 ya está cerrado como cubierto por PR30. No se propone cerrar #1/#5/#6/#20.

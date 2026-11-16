@@ -30,19 +30,23 @@ Utilizar un checkout aislado y turno exclusivo de Unreal. Conservar la escena or
 
 Los scripts conservan los guards originales de propietario, hash y mapa. Generan salidas locales ignoradas; los recibos no conceden una licencia nueva ni sustituyen la licencia de shaders, plantillas o recursos privados dependientes. No publicar packs o derivados privados. No suministrar bytes NoAI a herramientas generativas.
 
-## Flags de materiales para las ciudades instanciadas
+## Flags de los once materiales del mundo para instancias
 
-`Tools/IBPlay_AuthorProduction.py`, snapshot `742ff49`, contiene `material_usage_preflight()` y `prepare_s25_instancing_materials()`. El modo `IB_PLAY_API_ONLY=1` comprueba la API sin modificar materiales. La ejecución completa aplica `InstancedStaticMeshes` solo a esta lista de materiales S25 propios/CC0:
+`Tools/IBPlay_AuthorProduction.py`, snapshot `730b39f`, contiene `material_usage_preflight()` y `prepare_world_instancing_materials()`. El modo `IB_PLAY_API_ONLY=1` comprueba la API sin modificar materiales. La ejecución completa aplica `InstancedStaticMeshes` solo a esta lista explícita de materiales propios/CC0: los ocho de `IBS3World::ProductionMaterials` y los tres del árbol:
 
 - `/Game/IB_S25/Materials/M_Asphalt`
 - `/Game/IB_S25/Materials/M_Markings`
 - `/Game/IB_S25/Materials/M_Paving`
 - `/Game/IB_S25/Materials/M_R2_Soil`
+- `/Game/IB_S25/Materials/M_R2v3_Roof`
+- `/Game/IB_S25/Materials/M_R2v3_Metal`
+- `/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster`
+- `/Game/IB_Donors/CityKit/hotel/hotel/Materials/agua`
 - `/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01`
 - `/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches`
 - `/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves`
 
-Se validan todas las rutas y tipos antes de escribir; una redirección fuera de la lista falla. Las instancias reciben un override local de uso: no se cambia su padre compartido de Interchange ni materiales, texturas o PNG de Fab. Cada cambio se verifica, guarda y registra en `Saved/IB_Playable_Authoring/author-report.json`, apartado `s25_instancing`. Los siete `.uasset` modificados permanecen locales; la rama pública incorpora la receta que permite reproducir los flags y no esos binarios. Comprobar el código de salida externo, render y cook: un reporte generado no prueba por sí solo que el proceso haya terminado correctamente.
+Se validan todas las rutas y tipos antes de escribir; una redirección fuera de la lista falla. Las instancias reciben un override local de uso: no se cambia su padre compartido de Interchange ni materiales, texturas o PNG de Fab. Cada cambio se verifica, guarda y registra en `Saved/IB_Playable_Authoring/author-report.json`, apartado `world_instancing`. Los `.uasset` modificados permanecen locales; la rama pública incorpora la receta que permite reproducir los flags y no esos binarios. La ejecución `s7-author-20261116T060201Z` verificó los once y guardó solo `agua`; los otros diez ya tenían el uso activado. No modifica fuentes Fab ni amplía permisos por carpeta. Comprobar el código de salida externo, render y cook: un reporte generado no prueba por sí solo que el proceso haya terminado correctamente.
 
 ## Pruebas de esta preparación
 

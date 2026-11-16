@@ -11,7 +11,7 @@ Root coordinates the editor slot and first stages licensed packs at their origin
 /Game paths. This script never downloads, uploads, exports, or logs asset payloads.
 Only paths, bone names, counts, parameter names and dependencies enter its report.
 Generated outputs stay under /Game/IB_Playable. The only source edits permitted
-are instancing usage flags on the seven explicitly allowlisted owned/CC0 S25
+are instancing usage flags on the eleven explicitly allowlisted owned/CC0 world
 materials below. Fab sources, source maps, material parents and textures are untouched.
 Reruns reuse outputs bearing this script's metadata tag; unrelated assets fail closed.
 """
@@ -39,13 +39,18 @@ ASSETS = unreal.EditorAssetLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 MAT = unreal.MaterialEditingLibrary
 GEOMETRY = {}
-# These existing owned/CC0 materials are used by S3's production ISM/HISM batches.
+# All eight materials listed by IBS3World's ProductionMaterials plus the three
+# tree mesh materials. These owned/CC0 assets serve production ISM/HISM batches.
 # Do not expand this into a folder-wide edit or follow parents into engine/plugins.
-S25_INSTANCING_MATERIALS = (
+WORLD_INSTANCING_MATERIALS = (
     "/Game/IB_S25/Materials/M_Asphalt",
     "/Game/IB_S25/Materials/M_Markings",
     "/Game/IB_S25/Materials/M_Paving",
     "/Game/IB_S25/Materials/M_R2_Soil",
+    "/Game/IB_S25/Materials/M_R2v3_Roof",
+    "/Game/IB_S25/Materials/M_R2v3_Metal",
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster",
+    "/Game/IB_Donors/CityKit/hotel/hotel/Materials/agua",
     "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01",
     "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches",
     "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves",
@@ -232,20 +237,20 @@ def material_usage_preflight():
     REPORT["material_usage_api"] = {name: getattr(MAT, name).__doc__ or "" for name in functions}
 
 
-def prepare_s25_instancing_materials():
+def prepare_world_instancing_materials():
     usage = unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES
     resolved = []
     # Validate the entire list before changing any asset. A redirect must never
     # silently enlarge the write scope to an unrelated or shared material.
-    for path in S25_INSTANCING_MATERIALS:
+    for path in WORLD_INSTANCING_MATERIALS:
         material = typed(path, unreal.MaterialInterface)
-        require(material.get_path_name().split(".")[0] == path, "S25 material redirected outside allowlist: " + path)
+        require(material.get_path_name().split(".")[0] == path, "World material redirected outside allowlist: " + path)
         require(isinstance(material, (unreal.Material, unreal.MaterialInstanceConstant)),
-                "Unsupported S25 material type: " + path)
+                "Unsupported world material type: " + path)
         resolved.append((path, material))
-    changes = {"usage": "InstancedStaticMeshes", "allowlist": list(S25_INSTANCING_MATERIALS),
+    changes = {"usage": "InstancedStaticMeshes", "allowlist": list(WORLD_INSTANCING_MATERIALS),
                "parents_modified": False, "materials": []}
-    REPORT["s25_instancing"] = changes
+    REPORT["world_instancing"] = changes
     for path, material in resolved:
         before = bool(MAT.has_material_usage(material, usage))
         instance = isinstance(material, unreal.MaterialInstanceConstant)
@@ -265,7 +270,7 @@ def prepare_s25_instancing_materials():
             require(MAT.has_material_usage(material, usage), "Instancing usage did not bind: " + path)
             # Separate from save(): only this exact allowlist can be written
             # outside /Game/IB_Playable, and no authoring tag is added to sources.
-            require(ASSETS.save_loaded_asset(material, only_if_is_dirty=False), "S25 material save failed: " + path)
+            require(ASSETS.save_loaded_asset(material, only_if_is_dirty=False), "World material save failed: " + path)
             record["saved"] = True
         record["usage_verified"] = bool(MAT.has_material_usage(material, usage))
         require(record["usage_verified"], "Instancing usage readback failed: " + path)
@@ -975,8 +980,8 @@ def main():
         checkpoint("source_metadata")
         # Validate portable input before creating or modifying any content asset.
         DONOR_CONTENT = configured_donor_content()
-        checkpoint("s25_instancing_materials")
-        prepare_s25_instancing_materials()
+        checkpoint("world_instancing_materials")
+        prepare_world_instancing_materials()
         checkpoint("source_metadata")
         ASSETS.make_directory(ROOT)
         registry = unreal.AssetRegistryHelpers.get_asset_registry()

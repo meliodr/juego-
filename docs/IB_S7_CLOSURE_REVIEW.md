@@ -1,49 +1,51 @@
-# Revisión de cierre S7
+# Evidencia actual de la candidata S7
 
-Estado al 16 de noviembre de 2026: **implementación integrada en validación**. Fuentes C++ candidatas `fa75f7f` (base jugable `6b4631d` más corrección QA), autoría `742ff49` y configuración/validador de paquete `17d7f91`; no constituyen una build entregada o aceptada. Esta revisión aplica los contratos de [PLAN_ACTIVO.md](PLAN_ACTIVO.md), consolidados de PR17/22/23; no añade alcance a la cola.
+C++ `fa75f7f`; autoría `730b39f`; configuración/validador de paquete `17d7f91`. Paquete actual: `8b56a20`, `s7-package-20261116T060244Z` (37,01 s), con el mismo ejecutable C++ `fa75f7f`. La candidata tiene build, autoría, cook y dos mediciones aprobados; el gate final de materiales detectó agua sin soporte de instancias y requiere una corrección de autoría/recook; **no se declara aceptación humana de S7**. Rigen los criterios de [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 
-## Contratos frente al código
+## Gates observados
 
-| Contrato | Implementación observada | Evidencia y límite |
-|---|---|---|
-| Robot pesado con dos piezas funcionales | `IB_S7/Wave8Threats/ThreatModel.h`: Hammer habilita el golpe; Claw habilita el agarre. `IBS7TThreatActor` aplica colisión, movimiento radial, captura acotada y liberación | Política nativa y RuntimeContract cubren consecuencias, desprendimiento y reset. Falta confirmar lectura visual y comportamiento sostenido en el paquete |
-| Kaiju con tres partes y dos ataques anunciados | Horn modifica daño de Charge, Tail habilita TailSweep, Shoulder modifica vulnerabilidad. El cuerpo puede llegar a cero sin desprender todas las piezas. Hay anticipación temporizada, trayectoria fijada y avisos distintos | Políticas y runtime automatizados; apariencia, timing percibido, sonido y contacto en el recorrido final requieren DX12/audio |
-| Una pieza física por desprendimiento | Actor S7 y objeto S3.5 conservan PartId, desactivan collider/módulo adherido y crean una pieza agarrable. Snapshots rechazan estados incompatibles y renuevan vida del receptor | RuntimeContract y PreparedEncounter cubren partes, replay, colisión antigua, agarre y restauración. Nueva prueba de grafo de ticks en `6b4631d` aún pendiente |
-| Daño compartido con los tres héroes | Sesión registra receptores y dirige mensajes mediante ImpactContract; poderes, golpes y partes reutilizan la misma autoridad | PlayableSession pasó sin render en `761a2b5`; repetir la regresión afectada después de la corrección de ticks |
-| Rueda equipa sin activar, con cancelación y poder anterior | `Radial/PowerWheel.h` acepta 6–8 slots, zona muerta, disponibilidad/cooldown y selección anterior. `UpdateSlots` conserva historial al refrescar. Host bloquea acciones mientras está abierta | Suite nativa de refresco y prueba UE; RealInput inyecta eventos reales de PlayerController. El HUD actual distribuye seis sectores y cada héroe ofrece seis: no afirmar que presenta 7–8 sectores correctamente |
-| Ratón, mando y restauración de input | Componente acumula desplazamiento de ratón o lee stick, cancela al perder foco, libera su bloqueo de cámara y no modifica dilatación global | RealInput cubre Tab, D-pad, stick, confirmar/cancelar y supresión modal. No cubre selección direccional por ratón, pérdida de foco ni DualSense físico; quedan en revisión de controles |
-| Regiones, persistencia y presupuesto | Sesión crea un robot por región visitada y un kaiju en puerto/montaña; activa amenazas cercanas dentro de la burbuja física. Guardado captura cuerpo/partes y rechaza reset/guardado incompatible con piezas retenidas | No equivale a una única instancia global de cada enemigo. Medir residencia/coste tras visitar cuatro ciudades y regresar; no inferir presupuesto aprobado de un test local |
+| Gate | Resultado y alcance |
+|---|---|
+| CI pública `a645030` | Integrated source checks `43813155209` y Lab audit tests `43813155278` PASS; 13 suites nativas |
+| Compilación | Game `fa75f7f` PASS, `s7-build-20261116T054825Z`, 114,26 s. Último Editor: `6b4631d`; cambio posterior limitado a QA de framebuffer/GPU y dependencias RHI |
+| Autoría | Partida generada con cero dependencias ausentes. Corrección final `ead1d59`, `s7-author-20261116T060201Z`: PASS; once materiales verificados, solo `agua` cambiado y guardado localmente |
+| Producción | PlayableSession, S3 Contacts —seis superficies— y S7 PreparedEncounter PASS, `s7-tests-20261116T053308Z`; grafo de ticks sin ciclos ni warnings |
+| Reentrada S3 | Diez regresos físicos PASS en S3Lab, `s7-tests-20261116T053404Z`; no equivale a tres circunnavegaciones renderizadas en producción |
+| Funcionales DX12 anteriores | Cuatro suites PASS sobre paquete `17d7f91`, `s7-tests-20261116T054558Z`: PlayableSession, RealInput, S3 Contacts y PreparedEncounter; cero recursos ausentes/materiales de reserva |
+| Paquete actual | Cook/paquete `8b56a20` PASS, `s7-package-20261116T060244Z`, 37,01 s; cuatro funcionales DX12 con gate de contenido en curso |
+| Steam | Acceso actualizado al ejecutable actual y Activar Steam Input comprobado en UI; arranque visible pendiente |
 
-Los modelos se escalan provisionalmente a 4 m de robot y 8 m de kaiju en el host. La lectura de escala y las piezas animadas requieren revisión a cámara de juego. Las pruebas de política no certifican colisiones del motor, presentación o sensación.
+Los resultados Unreal fueron comunicados por el integrador, único operador de editor/UBT/cook. Las revisiones y fallos anteriores se conservan en el [manifiesto de evidencia](IB_S7_PUBLIC_EXPORT.json); no invalidan ni se confunden con los runs corregidos.
 
-## Resultados registrados
+## Dos perfiles previos a la corrección del agua
 
-Los resultados Unreal siguientes fueron comunicados por el integrador, único operador de Unreal. Este frente no ejecutó editor, UBT, cook ni paquete.
+Run `s7-tests-20261116T055356Z`, 90,008 s y 5.397 fotogramas. DX12 con audio y reloj real, salida **1920×1080**, escala interna **83%**, calidad **2** y límite **60 FPS**. Fortnite estaba ausente; se mide el equipo en su estado real, según la preferencia del usuario.
 
-| Revisión / run | Resultado observado | Alcance |
-|---|---|---|
-| Público `534f0d4` / Actions `43812082671`, `43812082685` | CI verde | Recetas, sintaxis, publicación y 13 suites nativas. No se extiende a commits posteriores |
-| `9ca77e1` / `s7-build-20261116T045837Z` | Editor + Game PASS | 224,52 s y 210,82 s respectivamente |
-| `acf4156` / `s7-tests-20261116T051706Z` | 12 funcionales PASS; Editor también aprobado por el integrador | Sin render: combate integrado, S6, runtime S7, encuentro preparado, refresco de rueda, vida/persistencia S5, ciudades, golpes, aterrizaje y agarre/lanzamiento/reset |
-| `s7-tests-20261116T052404Z` | Tres pruebas S4 PASS | ThirdPerson con GameMode S4. H01, ResponseContract y PreparedCollision; sustituye el estado anterior de PreparedCollision pendiente y no certifica por sí solo el mapa de producción |
-| `761a2b5` / `s7-tests-20261116T052319Z` | Integration.PlayableSession PASS | Mapa de producción sin render |
-| `761a2b5` / `s7-tests-20261116T052438Z` | Playable.RealInput PASS | DX12 offscreen, eventos simulados de teclado/mando. Fortnite estaba activo: no es una medición de rendimiento ni prueba de mando físico |
-| Autoría `761a2b5` | Contenido generado y cero referencias ausentes; proceso terminó con exit 3 | Fallo posterior durante teardown de Python; resuelto por la ejecución posterior `b341476` |
-| `6b4631d` / `s7-build-20261116T052603Z` | Editor + Game PASS (Editor: 181,87 s) | C++ congelado; regresión específica registrada debajo |
+| Métrica | Primera medición `055356Z` | Segunda medición `055617Z` |
+|---|---:|---:|
+| FPS medios | 59,94 | 59,9848 |
+| Fotograma p95 / p99 | 16,7181 / 16,9259 ms | 16,684 / 16,7149 ms |
+| Fotograma máximo | 50,018 ms | 26,2070 ms |
+| Fotogramas >50 ms | 1 | 0 |
+| GPU media / p95 / p99 | 6,144 / 6,8109 / 7,2065 ms | No informado en este resumen |
 
-La regresión de producción `s7-tests-20261116T053308Z` aprobó **PlayableSession, S3 Contacts (seis superficies) y S7 PreparedEncounter**, incluida comprobación de grafo de ticks; cero warnings de ciclos. El batch terminó FAIL únicamente por S3FlightReentry: requiere los fixtures car01/wall01 del laboratorio, que producción omite intencionadamente. La repetición en S3Lab **pasó con diez regresos físicos**, run `s7-tests-20261116T053404Z`, sin alterar la prueba. Su alcance sigue siendo la fixture S3Lab; no certifica por sí sola circunnavegaciones o viajes completos en producción.
+Ambas mediciones pasaron sobre el mismo ejecutable SHA-256 `6C7741F10E1350CF56A8A80C84B34300CBB2A29E33E8E3BB3B09DD5DEEAE4337`. La segunda no tuvo fotogramas >33,33 ms. Sus resultados permanecen ligados a ese paquete anterior a la corrección del agua; falta una medición confirmatoria del recook.
 
-La autoría integrada en `b341476` **pasó con exit 0 y cero dependencias ausentes**, run `s7-author-20261116T053232Z`: queda resuelto el fallo de teardown. El script exacto `742ff49` aplicó la [receta de instancing S25](IB_S25_SOURCE_REBUILD.md), guardando los siete materiales únicamente en la integración local. Todavía faltan revisión visual/cook y el paquete; no se exportan esos binarios.
+El resultado no es rendimiento sin límite ni render interno nativo 1080p; tampoco garantiza la misma tasa en recorridos, densidades o condiciones diferentes. Las pruebas funcionales anteriores tenían Fortnite activo y no se usan como benchmark.
 
-El primer paquete `a91b163` (`s7-package-20261116T053439Z`) **se retiró como candidato**: el cook pasó, pero la prueba DX12 detectó cinco recursos S3 ausentes y viewport 888×500 por DPI. `17d7f91` añade los directorios de materiales S25 y mallas del árbol a AlwaysCook, activa High DPI, fuerza la resolución de pruebas y falla ante referencias ausentes o materiales de reserva. El nuevo cook/paquete `s7-package-20261116T054101Z` pasó con cero errores y 807 paquetes. Cuatro suites funcionales del paquete pasaron en DX12 en `s7-tests-20261116T054558Z`: PlayableSession, RealInput, S3 Contacts y S7 PreparedEncounter, sin recursos ausentes ni materiales de reserva. El perfil anterior falló en la lectura QA de imagen (`InRHITexture null`); no produjo CSV ni resultados de rendimiento. `fa75f7f` conserva el framebuffer Slate durante la lectura y registra la GPU de RHI en lugar del adaptador primario de pantalla. Game pasó en `s7-build-20261116T054825Z` (114,26 s); la última compilación Editor corresponde a `6b4631d`. El recook actualizado está en curso. Fortnite estaba activo en las cuatro pruebas DX12 anteriores; el usuario lo cerró antes de la repetición de perfil y pidió medir el equipo como está. La carga concurrente se registrará al capturar.
+El gate final detectó falta de instancing en `/Game/IB_Donors/CityKit/hotel/hotel/Materials/agua`. La corrección de autoría `730b39f` pasó: once materiales verificados, solo `agua` cambió; los otros diez ya tenían instancing. No hay cambios C++. El recook actualizado pasó; cuatro funcionales con el gate de contenido están en curso y queda un perfil confirmatorio. No se considera resuelto por el PASS de las aserciones de gameplay.
 
-La fuente de prueba RealInput conserva la advertencia explícita sobre mando físico. La rama pública mantiene `final_source_commit: null` y `is_final_release_snapshot: false` hasta que el integrador fije la entrega real.
+## Contratos S7 y límites
 
-## Pasos de cierre ya previstos
+- Robot con Hammer/Claw funcionales y kaiju con Horn/Tail/Shoulder, dos ataques anunciados, consecuencias de desarme y cuerpo vencible sin desmontar todas las partes. Políticas y runtime cubren deduplicación, una pieza física por PartId y restauración.
+- Sesión y héroes comparten ImpactContract, receptores, agarre y persistencia. El encuentro preparado y el grafo de ticks pasaron en producción.
+- La rueda equipa sin activar, cancela y conserva el poder anterior al refrescar. Cada héroe ofrece seis poderes y el HUD distribuye seis sectores; no se afirma presentación correcta de 7–8 sectores aunque la política los admite.
+- RealInput inyecta teclado, mando y stick mediante PlayerController. No certifica DualSense físico, selección direccional con ratón, pérdida de foco ni sensación; estas comprobaciones se mantienen separadas.
+- Escala provisional: robot 4 m y kaiju 8 m. La sesión crea amenazas por región y activa las cercanas; residencia/coste tras viajes y aceptación artística requieren su propio recorrido.
 
-1. Conservar los recibos con su mapa: FlightReentry pasó diez regresos en S3Lab; PlayableSession, PreparedEncounter y S3 Contacts pasaron en producción sin ciclos de ticks. La autoría terminó limpia y sin dependencias ausentes.
-2. Terminar el recook de Game `fa75f7f` ya compilado y repetir el perfil que falló antes de producir CSV; comprobar el ejecutable actualizado con DX12/audio y el acceso Steam vigente. Verificar cuerpos/piezas, telegráficos, seis sectores de rueda, ratón, pérdida de foco y persistencia al viajar/regresar.
-3. Completar el recorrido continuo y cargas de QA pendientes del plan: colisión rápida/carga, destrucción y resets, reloj/civiles, acciones H02/H03, desarme y reinicios. Registrar p95/p99, VRAM y tirones con hardware, calidad y resolución; no usar la sesión concurrente con Fortnite como benchmark.
-4. Separar evidencia de input simulado, DualSense físico y valoración humana. Actualizar fuentes y documentación con la revisión efectivamente probada, pasar CI y reconciliar los PR cubiertos/sustituidos con precisión.
+## Pendiente para cerrar esta entrega
 
-S8 —pausa completa y comienzo del espacio— sigue después de este cierre. El estado actual no demuestra aceptación S7 ni justifica ampliar el alcance para ocultar fallos de la candidata.
+1. Validar el paquete recocinado con la autoría del agua corregida: cuatro funcionales más gate de contenido y un perfil confirmatorio sobre el paquete actualizado.
+2. Arranque visible desde Steam y revisión de imagen/audio, piezas, telegráficos, rueda y persistencia de la partida entregada.
+3. Registrar los límites de las pruebas acotadas frente a la QA sostenida del plan; no equivalen a certificar todos sus recorridos y ciclos. DualSense físico y valoración humana permanecen separados.
+4. Publicar la evidencia final y reconciliar los PR cubiertos/sustituidos conservando su historial. S8 sigue después de este cierre.
