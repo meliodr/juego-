@@ -22,7 +22,7 @@ public class ImpactBeyond : ModuleRules
             "SlateCore"
 		});
 
-		PrivateDependencyModuleNames.Add("AnimationCore");
+		PrivateDependencyModuleNames.AddRange(new string[] { "AnimationCore", "RenderCore", "RHI" });
 
 		PublicIncludePaths.AddRange(new string[] {
 			"ImpactBeyond",

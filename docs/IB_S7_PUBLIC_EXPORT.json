@@ -289,7 +289,7 @@
       "cook": "PASS"
     },
     "package_17d7f91": {
-      "status": "RECOOK_IN_PROGRESS",
+      "status": "COOK_AND_PACKAGE_PASS_RUNTIME_VALIDATION_PENDING",
       "source_cpp_equivalent": "6b4631d",
       "fixes": [
         "Explicit S25 materials and tree static meshes AlwaysCook",
@@ -297,9 +297,48 @@
         "DX12 test -ForceRes",
         "Packaged missing assets/default material fail gate"
       ],
-      "exact_executable_validation": "PENDING",
-      "dx12_audio_performance": "PENDING",
+      "exact_executable_validation": {
+        "run": "s7-tests-20261116T054558Z",
+        "status": "PASS",
+        "renderer": "DX12",
+        "suites": [
+          "Integration.PlayableSession",
+          "Playable.RealInput",
+          "S3 Contacts",
+          "S7 PreparedEncounter"
+        ],
+        "missing_assets": 0,
+        "fallback_usage_materials": 0,
+        "observer": "integrator",
+        "concurrent_application": "Fortnite active; not a performance acceptance"
+      },
+      "dx12_audio_performance": "Functional DX12 PASS; performance capture failed before CSV, corrected QA Game build pending",
+      "observer": "integrator",
+      "run": "s7-package-20261116T054101Z",
+      "cook_errors": 0,
+      "cooked_packages": 807
+    },
+    "profile_17d7f91": {
+      "run_time_suffix_reported": "054345Z",
+      "status": "FAIL",
+      "failure": "QA ReadPixels asserted InRHITexture null",
+      "csv_produced": false,
+      "performance_result": null,
       "observer": "integrator"
+    },
+    "candidate_fa75f7f": {
+      "game_build": {
+        "run": "s7-build-20261116T054825Z",
+        "status": "PASS",
+        "seconds": 114.26,
+        "observer": "integrator"
+      },
+      "editor_last_compiled": "6b4631d",
+      "changes_scope": "QA-only capture/GPU metadata plus RenderCore and RHI dependencies; gameplay logic unchanged",
+      "packaged_profile": "PENDING",
+      "observer": "integrator",
+      "package": "RECOOK_IN_PROGRESS; exact run identifier pending",
+      "profile_conditions": "Measure actual machine state; Fortnite was closed by the user before this rerun, verify contemporaneous workload when capturing; prior packaged DX12 functional run had Fortnite active"
     }
   },
   "preserve_preparation_over_staging": [
@@ -393,7 +432,7 @@
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounter.h": "1a3e7dd915ecf123ae11e29b4f03e4504a4ffff0dbc5b8b4ec30cc52fc5226c7",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp": "b4c1c65161baaf4adcb81bff8d840fad312246373133571eecd196657d42da78",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayInputTests.cpp": "9fbd82e049bf7665d012be238a417a713519d8379068b9bee8202de5ff2e295f",
-    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayPerformanceTests.cpp": "68c7564a7bd9448c8a94f7f2b7583aea7c15eff4f8ef38ac87af5333c2a78d2a",
+    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayPerformanceTests.cpp": "f4efe35d4b787d6edd7eb878d68b3ae9c3338855701b1177b1e947ab2ea0ac83",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.cpp": "4a5173e29fe7b8599ab36b10bc9ca75477122b804e038b2324cd91b7f4662654",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.h": "86bd3a6fa0b9e77b0fe7aab330237b415d4d62464dd7ac11ca48aa4ad24bcf75",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySessionTests.cpp": "52db2cc907873169372776c3171d82885b68319ea3b65fcf458677228fb9bbf7",
@@ -475,7 +514,7 @@
     "ImpactBeyond/Source/ImpactBeyond/IB_S7/Wave8Threats/Tests/ThreatPersistenceTests.cpp": "fb0e14171f427407348779707a0f2735692d5ae857d0c95413d366e0fae07915",
     "ImpactBeyond/Source/ImpactBeyond/IB_S7/Wave8Threats/Tests/ThreatRuntimeTests.cpp": "7ce2204fe983c60a30d1e481e032fb612fc2018af9248176fbe15fe9d92b26b4",
     "ImpactBeyond/Source/ImpactBeyond/IB_S7/Wave8Threats/ThreatModel.h": "191dda41f1884a81fb7c61dd524360236e785808e8c789b09d477b4fd4a5aeb4",
-    "ImpactBeyond/Source/ImpactBeyond/ImpactBeyond.Build.cs": "921c9b1de161f4f24eac3771b014e0b290519a246238bcaaba5158e3165b5c49",
+    "ImpactBeyond/Source/ImpactBeyond/ImpactBeyond.Build.cs": "7269ce3977ea4d34c2b69bec364f9f927fdc3023132af145b121cdd978eef310",
     "ImpactBeyond/Source/ImpactBeyond/ImpactCircuitComponent.cpp": "2c5d6894862e8e93edf07915a2acc1555cdbeb2a5339179bbff337e2f99ce05b",
     "ImpactBeyond/Source/ImpactBeyond/ImpactCircuitComponent.h": "5c5ece40161f5a440060f94c1b557812f6f9d8dd72466b96c16ff82731b74661",
     "ImpactBeyond/Source/ImpactBeyond/ImpactFlightFeedback.cpp": "be8d6a1d73b7c63c11722b22d702587f16710988b635cfdefc064b55e81504eb",
@@ -494,9 +533,9 @@
     "s3_geometry": "PASS: winding, manifold edges, sphere radius, near-cap sagitta 2.1972592033847604 cm at 25 km",
     "s25_recipes": "10 PASS + 1 SKIP local asset bytes absent; R2 5 PASS",
     "cpp_snapshot_equality": 107,
-    "github_actions": "PR33 remote 43b52a5: Lab audit tests SUCCESS; Integrated source checks source-and-recipes and native-policies SUCCESS",
-    "unreal_final_snapshot": "6b4631d Editor and Game PASS, run s7-build-20261116T052603Z, reported by integrator; authoring and package still pending",
-    "cook_package_dx12_audio_human": "First a91b163 package withdrawn after cook PASS but DX12 missing-content/DPI failure; 17d7f91 recook and exact executable validation pending",
+    "github_actions": "PR33 remote 534f0d4: Integrated source checks and Lab audit tests SUCCESS",
+    "unreal_final_snapshot": "fa75f7f Game PASS, run s7-build-20261116T054825Z, 114.26 seconds; last Editor 6b4631d PASS; updated package/profile pending",
+    "cook_package_dx12_audio_human": "17d7f91 cook/package PASS and four packaged DX12 functional suites PASS; profile failed before CSV; fa75f7f QA capture fix pending Game build/runtime validation",
     "unreal_build_report": {
       "source_commit": "9ca77e1",
       "run": "s7-build-20261116T045837Z",
@@ -507,7 +546,7 @@
     },
     "python_syntax": "50 tracked Python files parsed without import",
     "public_source_policy_precommit": "PASS for all 156 snapshot text changes",
-    "native_report_scope": "13 suites PASS on 9ca77e1 public export and remote 52e8da3/43b52a5; pure policies/native fixtures unchanged through 6b4631d; Unreal tick regression passed separately in production"
+    "native_report_scope": "13 suites PASS through remote 534f0d4; pure policies/native fixtures unchanged in fa75f7f QA-only update; no new native run implied"
   },
   "sanitized_documentation": [
     "docs/IB_S7_ASSET_PROVENANCE.md",
@@ -515,7 +554,7 @@
     "docs/IB_S35_CONTRACT.md",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/ImpactContract/README.md"
   ],
-  "exported_snapshot_commit": "6b4631dbb82703e771b76e7489c341688d1460e1",
+  "exported_snapshot_commit": "fa75f7f3555505f20338e6fa4afdc06b62db9c86",
   "snapshot_export_paths": [
     "ImpactBeyond/Config/DefaultEngine.ini",
     "ImpactBeyond/Config/DefaultGame.ini",
@@ -866,26 +905,32 @@
         "Tools/IBPlay_Validate.py"
       ],
       "reason": "Cook S3 runtime city resources explicitly, enable High DPI, force DX12 test resolution and reject packaged missing assets/fallback materials; C++ unchanged"
+    },
+    {
+      "snapshot": "fa75f7f3555505f20338e6fa4afdc06b62db9c86",
+      "previous_snapshot": "6b4631dbb82703e771b76e7489c341688d1460e1",
+      "paths": [
+        "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayPerformanceTests.cpp",
+        "ImpactBeyond/Source/ImpactBeyond/ImpactBeyond.Build.cs"
+      ],
+      "reason": "QA-only DX12 frame readback via retained Slate framebuffer and actual rendering GPU metadata; RenderCore/RHI dependencies; no new image/assets"
     }
   ],
   "pr": {
     "number": 33,
     "url": "https://github.com/meliodr/juego-/pull/33",
     "state": "DRAFT",
-    "remote_head_at_review": "43b52a5590527267bc2452b3610f1fe83dadbcdd"
+    "remote_head_at_review": "534f0d4dbd94092bc2cf2d50af1336db43d0d582"
   },
   "closed_labs": {
     "21": "Closed by integrator as covered by PR30; no action by source-preparation agent"
   },
   "remote_ci": {
-    "commit": "43b52a5590527267bc2452b3610f1fe83dadbcdd",
-    "integrated_source_run": 43811267932,
-    "lab_audit_run": 43811267857,
+    "commit": "534f0d4dbd94092bc2cf2d50af1336db43d0d582",
+    "integrated_source_run": 43812082671,
+    "lab_audit_run": 43812082685,
     "status": "SUCCESS",
-    "lab_audit": "SUCCESS",
-    "source_and_recipes": "SUCCESS",
-    "native_policies": "SUCCESS",
-    "pending_export": "17d7f91 config/runner corrections plus updated evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+    "pending_export": "Exact fa75f7f Source/Build.cs plus current evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
   },
   "authoring_snapshot_commit": "742ff4977b95e8fb93eeec0dee3847b09f57253e",
   "authoring_script_sha256": "5c44aaf5814133ad2828f8d487ba24e941699fdf132a304902a20376bc4fccff",
@@ -898,7 +943,7 @@
     "fab_sources_modified": false,
     "binary_outputs_exported": false
   },
-  "source_frozen_commit": "6b4631dbb82703e771b76e7489c341688d1460e1",
+  "source_frozen_commit": "fa75f7f3555505f20338e6fa4afdc06b62db9c86",
   "remote_ci_previous": {
     "commit": "52e8da322357cfd3fa5aeba0da69fbf1c29ca2c5",
     "integrated_source_run": 43808923815,
@@ -912,5 +957,17 @@
     "ImpactBeyond/Config/DefaultEngine.ini": "656cb72b678d19bab6287925b2de6758fa634b69ab349120b2aa57bff2b21047",
     "ImpactBeyond/Config/DefaultGame.ini": "f4e69735b00541ef2f7ae47a81efb25464d4f93e65162fce25b7a2d1253c7fdc",
     "Tools/IBPlay_Validate.py": "1bdc335159309eaa0d7a9576166548e9c85c69a53daaaf24da78a7aa158f6b91"
-  }
+  },
+  "remote_ci_history": [
+    {
+      "commit": "43b52a5590527267bc2452b3610f1fe83dadbcdd",
+      "integrated_source_run": 43811267932,
+      "lab_audit_run": 43811267857,
+      "status": "SUCCESS",
+      "lab_audit": "SUCCESS",
+      "source_and_recipes": "SUCCESS",
+      "native_policies": "SUCCESS",
+      "pending_export": "17d7f91 config/runner corrections plus updated evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+    }
+  ]
 }

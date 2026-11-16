@@ -1,6 +1,6 @@
 # Revisión de cierre S7
 
-Estado al 16 de noviembre de 2026: **implementación integrada en validación**. Fuentes C++ candidatas `6b4631d`, autoría `742ff49` y configuración/validador de paquete `17d7f91`; no constituyen una build entregada o aceptada. Esta revisión aplica los contratos de [PLAN_ACTIVO.md](PLAN_ACTIVO.md), consolidados de PR17/22/23; no añade alcance a la cola.
+Estado al 16 de noviembre de 2026: **implementación integrada en validación**. Fuentes C++ candidatas `fa75f7f` (base jugable `6b4631d` más corrección QA), autoría `742ff49` y configuración/validador de paquete `17d7f91`; no constituyen una build entregada o aceptada. Esta revisión aplica los contratos de [PLAN_ACTIVO.md](PLAN_ACTIVO.md), consolidados de PR17/22/23; no añade alcance a la cola.
 
 ## Contratos frente al código
 
@@ -22,7 +22,7 @@ Los resultados Unreal siguientes fueron comunicados por el integrador, único op
 
 | Revisión / run | Resultado observado | Alcance |
 |---|---|---|
-| Público `43b52a5` / Actions `43811267932`, `43811267857` | CI verde | Recetas, sintaxis, publicación y 13 suites nativas. No se extiende a commits posteriores |
+| Público `534f0d4` / Actions `43812082671`, `43812082685` | CI verde | Recetas, sintaxis, publicación y 13 suites nativas. No se extiende a commits posteriores |
 | `9ca77e1` / `s7-build-20261116T045837Z` | Editor + Game PASS | 224,52 s y 210,82 s respectivamente |
 | `acf4156` / `s7-tests-20261116T051706Z` | 12 funcionales PASS; Editor también aprobado por el integrador | Sin render: combate integrado, S6, runtime S7, encuentro preparado, refresco de rueda, vida/persistencia S5, ciudades, golpes, aterrizaje y agarre/lanzamiento/reset |
 | `s7-tests-20261116T052404Z` | Tres pruebas S4 PASS | ThirdPerson con GameMode S4. H01, ResponseContract y PreparedCollision; sustituye el estado anterior de PreparedCollision pendiente y no certifica por sí solo el mapa de producción |
@@ -35,14 +35,14 @@ La regresión de producción `s7-tests-20261116T053308Z` aprobó **PlayableSessi
 
 La autoría integrada en `b341476` **pasó con exit 0 y cero dependencias ausentes**, run `s7-author-20261116T053232Z`: queda resuelto el fallo de teardown. El script exacto `742ff49` aplicó la [receta de instancing S25](IB_S25_SOURCE_REBUILD.md), guardando los siete materiales únicamente en la integración local. Todavía faltan revisión visual/cook y el paquete; no se exportan esos binarios.
 
-El primer paquete `a91b163` (`s7-package-20261116T053439Z`) **se retiró como candidato**: el cook pasó, pero la prueba DX12 detectó cinco recursos S3 ausentes y viewport 888×500 por DPI. `17d7f91` añade los directorios de materiales S25 y mallas del árbol a AlwaysCook, activa High DPI, fuerza la resolución de pruebas y falla ante referencias ausentes o materiales de reserva. Su recook está en curso; aún no hay PASS del nuevo paquete.
+El primer paquete `a91b163` (`s7-package-20261116T053439Z`) **se retiró como candidato**: el cook pasó, pero la prueba DX12 detectó cinco recursos S3 ausentes y viewport 888×500 por DPI. `17d7f91` añade los directorios de materiales S25 y mallas del árbol a AlwaysCook, activa High DPI, fuerza la resolución de pruebas y falla ante referencias ausentes o materiales de reserva. El nuevo cook/paquete `s7-package-20261116T054101Z` pasó con cero errores y 807 paquetes. Cuatro suites funcionales del paquete pasaron en DX12 en `s7-tests-20261116T054558Z`: PlayableSession, RealInput, S3 Contacts y S7 PreparedEncounter, sin recursos ausentes ni materiales de reserva. El perfil anterior falló en la lectura QA de imagen (`InRHITexture null`); no produjo CSV ni resultados de rendimiento. `fa75f7f` conserva el framebuffer Slate durante la lectura y registra la GPU de RHI en lugar del adaptador primario de pantalla. Game pasó en `s7-build-20261116T054825Z` (114,26 s); la última compilación Editor corresponde a `6b4631d`. El recook actualizado está en curso. Fortnite estaba activo en las cuatro pruebas DX12 anteriores; el usuario lo cerró antes de la repetición de perfil y pidió medir el equipo como está. La carga concurrente se registrará al capturar.
 
 La fuente de prueba RealInput conserva la advertencia explícita sobre mando físico. La rama pública mantiene `final_source_commit: null` y `is_final_release_snapshot: false` hasta que el integrador fije la entrega real.
 
 ## Pasos de cierre ya previstos
 
 1. Conservar los recibos con su mapa: FlightReentry pasó diez regresos en S3Lab; PlayableSession, PreparedEncounter y S3 Contacts pasaron en producción sin ciclos de ticks. La autoría terminó limpia y sin dependencias ausentes.
-2. Terminar el recook de `17d7f91` (C++ idéntico a `6b4631d`); probar el nuevo ejecutable identificado con DX12/audio y el acceso Steam vigente. Verificar cuerpos/piezas, telegráficos, seis sectores de rueda, ratón, pérdida de foco y persistencia al viajar/regresar.
+2. Terminar el recook de Game `fa75f7f` ya compilado y repetir el perfil que falló antes de producir CSV; comprobar el ejecutable actualizado con DX12/audio y el acceso Steam vigente. Verificar cuerpos/piezas, telegráficos, seis sectores de rueda, ratón, pérdida de foco y persistencia al viajar/regresar.
 3. Completar el recorrido continuo y cargas de QA pendientes del plan: colisión rápida/carga, destrucción y resets, reloj/civiles, acciones H02/H03, desarme y reinicios. Registrar p95/p99, VRAM y tirones con hardware, calidad y resolución; no usar la sesión concurrente con Fortnite como benchmark.
 4. Separar evidencia de input simulado, DualSense físico y valoración humana. Actualizar fuentes y documentación con la revisión efectivamente probada, pasar CI y reconciliar los PR cubiertos/sustituidos con precisión.
 

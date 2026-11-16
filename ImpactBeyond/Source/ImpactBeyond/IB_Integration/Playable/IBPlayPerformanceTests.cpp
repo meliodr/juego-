@@ -13,6 +13,7 @@
 #include "Engine/GameViewportClient.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
+#include "Framework/Application/SlateApplication.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/WorldSettings.h"
@@ -26,9 +27,15 @@
 #include "Misc/EngineVersion.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Parse.h"
+#include "Rendering/SlateRenderer.h"
+#include "RenderingThread.h"
+#include "RHICommandList.h"
+#include "RHIGlobals.h"
 #include "Scalability.h"
 #include "SceneView.h"
+#include "Slate/SlateViewportProvider.h"
 #include "UnrealClient.h"
+#include "Widgets/SWindow.h"
 
 namespace
 {
@@ -112,7 +119,23 @@ class FIBPlayPerformanceRoute final : public IAutomationLatentCommand
         // no screenshot or image asset is written, and GPU readback is outside the CSV interval.
         TArray<FColor> Pixels;
         const FIntRect Region(Extent.X/3,Extent.Y/3,Extent.X*2/3,Extent.Y*2/3);
-        if (!Screen->ReadPixels(Pixels,FReadSurfaceDataFlags(RCM_UNorm),Region) || Pixels.Num() == 0)
+        const TSharedPtr<SWindow> Window = GEngine->GameViewport->GetWindow();
+        ISlateViewportProvider* Provider = Window && FSlateApplication::IsInitialized()
+            ? FSlateApplication::Get().GetRenderer()->GetViewportProvider(*Window) : nullptr;
+        if (!Provider)
+        { Test.AddError(TEXT("DX12 viewport has no Slate framebuffer provider.")); return false; }
+        // FSceneViewport releases its transient render-thread target after Draw.
+        // Slate owns the actual offscreen texture or window backbuffer instead.
+        // Retain the window through the flush and the texture through the read.
+        ENQUEUE_RENDER_COMMAND(IBPlayReadPresentedFrame)(
+            [Provider, Window, Extent, Region, &Pixels](FRHICommandListImmediate& RHICmdList)
+            {
+                const FTextureRHIRef Framebuffer = Provider->GetBackBufferResource();
+                if (Framebuffer.IsValid() && Framebuffer->GetSizeX() == Extent.X && Framebuffer->GetSizeY() == Extent.Y)
+                    RHICmdList.ReadSurfaceData(Framebuffer,Region,Pixels,FReadSurfaceDataFlags(RCM_UNorm));
+            });
+        FlushRenderingCommands();
+        if (Pixels.Num() != Region.Area())
         { Test.AddError(TEXT("DX12 viewport color readback failed.")); return false; }
         double Sum = 0, Square = 0;
         int32 NonBlack = 0;
@@ -137,7 +160,8 @@ class FIBPlayPerformanceRoute final : public IAutomationLatentCommand
         { FCsvProfiler::SetMetadata(Name,*Value); Diagnostics += FString(Name)+TEXT("=")+Value+TEXT("\n"); };
         Set(TEXT("IB_RHI"),FApp::GetGraphicsRHI());
         Set(TEXT("IB_CPU"),FPlatformMisc::GetCPUBrand());
-        Set(TEXT("IB_GPU"),FPlatformMisc::GetPrimaryGPUBrand());
+        Set(TEXT("IB_GPU"),GRHIGlobals.GpuInfo.AdapterName);
+        Set(TEXT("IB_PrimaryDisplayGPU"),FPlatformMisc::GetPrimaryGPUBrand());
         Set(TEXT("IB_Engine"),FEngineVersion::Current().ToString());
         Set(TEXT("IB_Build"),FApp::GetBuildVersion());
         Set(TEXT("IB_RenderExtent"),TEXT("1920x1080"));
