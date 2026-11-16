@@ -18,6 +18,23 @@ class UIBPlayCombat;
 class UIBPlayArt;
 class AIBPlaySession;
 class UAnimSequence;
+class UAnimationAsset;
+class UBlendSpace;
+
+enum class EIBPlayMotion : uint8 { Ground, Jump, Fall, Land, Takeoff, Hover, Flight, Brake, Carry, Throw, Attack, Dive };
+
+/** Observed presentation only: movement, collision and damage remain owned by their components. */
+struct FIBPlayPresentation
+{
+    EIBPlayMotion Motion = EIBPlayMotion::Ground;
+    float Speed = 0;
+    float GroundSpeed = 0;
+    float BlendDirection = 0;
+    float PlaybackRate = 1;
+    int32 FlightPose = 0;
+    FRotator VisualRotation = FRotator::ZeroRotator;
+    uint32 Transition = 0;
+};
 
 /** Production pawn reuses S3 radial CMC and S2 presentation with one common action set. */
 UCLASS()
@@ -45,11 +62,13 @@ public:
     UPROPERTY() TObjectPtr<UIBPlayArt> Art;
     UPROPERTY() TObjectPtr<AIBPlaySession> Session;
     int32 FlightGear = 1;
-    bool bHelp = true;
+    bool bHelp = false;
     bool bSettings = false;
     FString Notice;
     float NoticeSeconds = 0;
     bool IsGameplayLocked() const;
+    FString GetMovementStatusText() const;
+    const FIBPlayPresentation& GetPresentation() const { return Presentation; }
     void ShowNotice(const FString& Text);
     bool DispatchS35(const FIBS35DamageMessage& Message,const FHitResult& Hit);
     bool DispatchS4(const FIBS4Hit& Message,const FHitResult& Hit);
@@ -59,18 +78,39 @@ protected:
     virtual double RequestedFlightSpeed() const override;
     virtual void ReadDigitalMovement(APlayerController* Player) override;
 private:
+    friend struct FIBPlayPresentationFixture;
     UPROPERTY() TArray<TObjectPtr<UAnimSequence>> FlightPoses;
+    UPROPERTY() TObjectPtr<UBlendSpace> GroundLocomotion;
     UPROPERTY() TObjectPtr<UAnimSequence> IdlePose;
     UPROPERTY() TObjectPtr<UAnimSequence> WalkPose;
     UPROPERTY() TObjectPtr<UAnimSequence> RunPose;
     UPROPERTY() TObjectPtr<UAnimSequence> CarryPose;
     UPROPERTY() TObjectPtr<UAnimSequence> BrakePose;
     UPROPERTY() TObjectPtr<UAnimSequence> ThrowPose;
-    UPROPERTY() TObjectPtr<UAnimSequence> Playing;
+    UPROPERTY() TObjectPtr<UAnimationAsset> Playing;
     UPROPERTY() TArray<TObjectPtr<UAnimSequence>> AttackPoses;
     UPROPERTY() TObjectPtr<UAnimSequence> HeavyPose;
     UPROPERTY() TObjectPtr<UAnimSequence> HoverPose;
     UPROPERTY() TObjectPtr<UAnimSequence> DivePose;
+    UPROPERTY() TObjectPtr<UAnimSequence> JumpPose;
+    UPROPERTY() TObjectPtr<UAnimSequence> FallPose;
+    UPROPERTY() TObjectPtr<UAnimSequence> LandPose;
+    UPROPERTY() TObjectPtr<UAnimSequence> TakeoffPose;
+    UPROPERTY() TObjectPtr<UAnimSequence> CarryTakeoffPose;
+    FIBPlayPresentation Presentation;
+    FQuat VisualFacing = FQuat::Identity;
+    FQuat PreviousPresentationFrame = FQuat::Identity;
+    FVector PreviousPresentationUp = FVector::UpVector;
+    FVector PreviousTravelDirection = FVector::ZeroVector;
+    EMovementMode PreviousPresentationMode = MOVE_None;
+    float FlightBank = 0;
+    float TakeoffRemaining = 0;
+    float LandRemaining = 0;
+    uint32 AttackSerial = 0;
+    uint32 PresentedAttackSerial = 0;
+    uint32 ThrowSerial = 0;
+    uint32 PresentedThrowSerial = 0;
+    bool bUsingTravelPose = false;
     float WheelRefresh = 0;
     float ThrowAnimation = 0;
     bool bTurbo = false;
@@ -82,6 +122,8 @@ private:
     bool HostAbility(int32 Id);
     void ReleaseHostAbility(int32 Id);
     void UpdateAnimation(float Dt);
+    void UpdatePresentationCamera(float Dt);
+    UFUNCTION() void OnPunchCue(FName Phase, float NormalizedTime);
     void Flight();
     void GearUp();
     void GearDown();

@@ -13,9 +13,58 @@ void UImpactGripMesh::SetCircuit(UImpactCircuitComponent* InCircuit)
 
 void UImpactGripMesh::BeginFlightPoseBlend(float Duration)
 {
+	if (!GetWorld() || !GetSkeletalMeshAsset() || !FMath::IsFinite(Duration) || Duration <= 0)
+	{
+		PreviousPose.Reset();
+		PreviousPoseMesh.Reset();
+		return;
+	}
 	PreviousPose = GetComponentSpaceTransforms();
+	PreviousPoseMesh = GetSkeletalMeshAsset();
 	BlendStart = GetWorld()->GetTimeSeconds();
 	BlendDuration = Duration;
+}
+
+bool UImpactGripMesh::BlendPoseInLocalSpace(const FReferenceSkeleton& Skeleton,
+	const TArray<FTransform>& FromComponentPose, TArray<FTransform>& ToComponentPose, float Alpha)
+{
+	const int32 Count = ToComponentPose.Num();
+	if (!FMath::IsFinite(Alpha) || Count == 0 || FromComponentPose.Num() != Count || Skeleton.GetNum() != Count)
+	{
+		return false;
+	}
+	for (int32 Bone = 0; Bone < Count; ++Bone)
+	{
+		const int32 Parent = Skeleton.GetParentIndex(Bone);
+		if ((Parent != INDEX_NONE && (Parent < 0 || Parent >= Bone))
+			|| FromComponentPose[Bone].ContainsNaN() || ToComponentPose[Bone].ContainsNaN())
+		{
+			return false;
+		}
+	}
+	if (Alpha <= 0) { ToComponentPose = FromComponentPose; return true; }
+	if (Alpha >= 1) return true;
+
+	// Work from leaves to root so each incoming parent is still in component
+	// space when its child is converted. Interpolating component-space positions
+	// cuts across a rotating joint's arc and visibly shortens the bone chain.
+	for (int32 Bone = Count - 1; Bone >= 0; --Bone)
+	{
+		const int32 Parent = Skeleton.GetParentIndex(Bone);
+		const FTransform FromLocal = Parent == INDEX_NONE ? FromComponentPose[Bone]
+			: FromComponentPose[Bone].GetRelativeTransform(FromComponentPose[Parent]);
+		const FTransform ToLocal = Parent == INDEX_NONE ? ToComponentPose[Bone]
+			: ToComponentPose[Bone].GetRelativeTransform(ToComponentPose[Parent]);
+		ToComponentPose[Bone].Blend(FromLocal, ToLocal, Alpha);
+	}
+	// Restore component space in parent-first order. Preserve authored local
+	// translation/scale changes; do not force every animation into the bind pose.
+	for (int32 Bone = 0; Bone < Count; ++Bone)
+	{
+		const int32 Parent = Skeleton.GetParentIndex(Bone);
+		if (Parent != INDEX_NONE) ToComponentPose[Bone] *= ToComponentPose[Parent];
+	}
+	return true;
 }
 
 void UImpactGripMesh::FinalizeBoneTransform()
@@ -27,16 +76,11 @@ void UImpactGripMesh::FinalizeBoneTransform()
 		{
 			const float Elapsed = static_cast<float>(GetWorld()->GetTimeSeconds() - BlendStart);
 			const float Alpha = FMath::SmoothStep(0.0f, BlendDuration, Elapsed);
-			if (Alpha >= 1.0f || Pose.Num() != PreviousPose.Num())
+			if (Alpha >= 1.0f || PreviousPoseMesh.Get() != GetSkeletalMeshAsset()
+				|| !BlendPoseInLocalSpace(GetSkeletalMeshAsset()->GetRefSkeleton(), PreviousPose, Pose, Alpha))
 			{
 				PreviousPose.Reset();
-			}
-			else
-			{
-				for (int32 Bone = 0; Bone < Pose.Num(); ++Bone)
-				{
-					Pose[Bone].Blend(PreviousPose[Bone], FTransform(Pose[Bone]), Alpha);
-				}
+				PreviousPoseMesh.Reset();
 			}
 		}
 

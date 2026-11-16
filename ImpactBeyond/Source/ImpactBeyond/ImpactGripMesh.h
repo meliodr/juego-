@@ -5,6 +5,7 @@
 
 class UImpactCircuitComponent;
 class UIBS35GripComponent;
+struct FReferenceSkeleton;
 
 UCLASS()
 class UImpactGripMesh : public USkeletalMeshComponent
@@ -16,6 +17,9 @@ public:
     void SetSharedGrip(UIBS35GripComponent* InGrip) { SharedGrip = InGrip; }
 	void BeginFlightPoseBlend(float Duration = 0.18f);
 	virtual void FinalizeBoneTransform() override;
+	/** Blend local bone channels, then rebuild component space for the existing grip IK. */
+	static bool BlendPoseInLocalSpace(const FReferenceSkeleton& Skeleton,
+		const TArray<FTransform>& FromComponentPose, TArray<FTransform>& ToComponentPose, float Alpha);
 
 private:
 	void SolveArm(TArray<FTransform>& Pose, const FReferenceSkeleton& Skeleton,
@@ -25,6 +29,7 @@ private:
 	TObjectPtr<UImpactCircuitComponent> Circuit;
     UPROPERTY(Transient) TObjectPtr<UIBS35GripComponent> SharedGrip;
 	TArray<FTransform> PreviousPose;
+	TWeakObjectPtr<USkeletalMesh> PreviousPoseMesh;
 	double BlendStart = 0.0;
 	float BlendDuration = 0.18f;
 };

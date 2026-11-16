@@ -3,21 +3,80 @@
 #include "AudioDeviceHandle.h"
 #include "Components/AudioComponent.h"
 #include "Components/LineBatchComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/Pawn.h"
 #include "Misc/App.h"
 #include "SceneManagement.h"
 #include "Sound/SoundWaveProcedural.h"
+#if WITH_DEV_AUTOMATION_TESTS
+#include "Misc/AutomationTest.h"
+#endif
 
 namespace
 {
 	constexpr int32 SampleRate = 22050;
 	constexpr int32 WindSamples = SampleRate;
-	constexpr int32 MaxTrailPoints = 12;
-	constexpr float TrailInterval = 1.0f / 36.0f;
-	constexpr double TrailLifetime = 0.25;
-	constexpr float TrailMinimumSpeed = 1100.0f;
+	constexpr int32 MaxAirStrokes = 8;
+	constexpr int32 SegmentsPerStroke = 5;
 	constexpr float WallProbeDistance = 360.0f;
+	using FAirLines = TArray<FBatchedLine, TInlineAllocator<MaxAirStrokes * SegmentsPerStroke>>;
+
+	float Follow(float Current, float Target, float DeltaSeconds, float Rise, float Fall)
+	{
+		return FMath::Lerp(Current, Target, 1.0f - FMath::Exp(-DeltaSeconds / (Target > Current ? Rise : Fall)));
+	}
+
+	bool IsDiscontinuity(const FVector& Previous, const FVector& Current, float Speed, float DeltaSeconds)
+	{
+		// Permit real high-speed travel; suppress spatial jumps and stale/paused samples.
+		return DeltaSeconds > 0.25f || FVector::DistSquared(Previous, Current)
+			> FMath::Square(FMath::Max(1500.0f, Speed * DeltaSeconds * 2.0f + 200.0f));
+	}
+
+	float BuildAirStrokes(FAirLines& Lines, const FVector& LeftHand, const FVector& RightHand,
+		const FVector& Direction, const FVector& Right, float Strength, float Boost, float Phase,
+		float RequestedLength, float OpacityScale)
+	{
+		const float MaxLength = FMath::Clamp(RequestedLength, 50.0f, 400.0f);
+		const float Length = MaxLength * FMath::Clamp(0.20f + Strength * 0.60f + Boost * 0.15f, 0.0f, 0.95f);
+		const float Span = Length * (0.28f + 0.10f * Boost);
+		const FVector Normal = FVector::CrossProduct(Direction, Right).GetSafeNormal();
+		float Extent = 0.0f;
+		for (int32 Stroke = 0; Stroke < MaxAirStrokes; ++Stroke)
+		{
+			const float Weight = FMath::Clamp(3.0f + Strength * 3.0f + Boost * 2.0f - Stroke, 0.0f, 1.0f);
+			const float Age = FMath::Frac(Phase + Stroke * 0.618034f);
+			const float Envelope = FMath::Square(FMath::Sin(PI * Age));
+			const float Opacity = FMath::Clamp(OpacityScale, 0.0f, 1.0f) * Strength * Weight * Envelope;
+			if (Opacity < 0.003f) continue;
+			const float Side = Stroke % 2 == 0 ? -1.0f : 1.0f;
+			const FVector Anchor = Side < 0 ? LeftHand : RightHand;
+			const float Head = Age * (Length - Span);
+			const auto Point = [&](float T)
+			{
+				const float Distance = Head + Span * T;
+				const float Curve = FMath::Sin(PI * T) * MaxLength * (0.018f + 0.012f * Strength);
+				const FVector Offset = -Direction * Distance + Right * Side * (Stroke / 2 * 3.0f + Curve)
+					+ Normal * (FMath::Sin(Stroke * 2.1f + T * 1.6f) * MaxLength * 0.025f);
+				return Anchor + Offset.GetClampedToMaxSize(MaxLength);
+			};
+			FVector Start = Point(0.0f);
+			for (int32 Segment = 0; Segment < SegmentsPerStroke; ++Segment)
+			{
+				const FVector End = Point(static_cast<float>(Segment + 1) / SegmentsPerStroke);
+				const float Taper = FMath::Sin(PI * (Segment + 0.5f) / SegmentsPerStroke);
+				const float Alpha = Opacity * Taper * 0.60f;
+				// UE 5.8's line-batch proxy uses DrawTranslucentLine: fade alpha, not white towards black.
+				const FLinearColor Color(0.88f, 0.94f, 1.0f, Alpha);
+				Lines.Emplace(Start, End, Color, 0.0f, 0.65f + 1.10f * Opacity * Taper, SDPG_World);
+				Extent = FMath::Max(Extent, static_cast<float>(FMath::Max((Start - Anchor).Size(), (End - Anchor).Size())));
+				Start = End;
+			}
+		}
+		return Extent;
+	}
 
 	float SamplePeriodicNoise(const TArray<float>& Samples, float Phase)
 	{
@@ -39,21 +98,66 @@ void UImpactFlightFeedback::UpdateFlightFeedback(float DeltaSeconds, bool bFlyin
 			WindWave->ResetAudio();
 		}
 		WindVolume = 0.0f;
-		TurboBurst = 0.0f;
-		bWasTurbo = false;
+		SpeedStrength = BoostStrength = 0.0f;
+		ObservedSpeedCmS = ObservedAccelerationCmS2 = 0.0f;
+		bHasMotionSample = false;
 		ClearTrail();
 		return;
 	}
 
 	const FVector Velocity = Pawn->GetVelocity();
 	const float Speed = static_cast<float>(Velocity.Size());
-	FVector Right = FVector::CrossProduct(GetOwner()->GetActorUpVector(), Velocity).GetSafeNormal();
+	const FVector Location = Pawn->GetActorLocation();
+	if (!FMath::IsFinite(DeltaSeconds) || DeltaSeconds <= 0.0f || !FMath::IsFinite(Speed) || Location.ContainsNaN())
+	{
+		ClearTrail();
+		return;
+	}
+	const bool bFirstSample = !bHasMotionSample;
+	const bool bDiscontinuity = bHasMotionSample && IsDiscontinuity(PreviousLocation, Location,
+		FMath::Max(Speed, PreviousSpeed), DeltaSeconds);
+	AdvancePresentation(DeltaSeconds, Speed, bFlying, bTurbo, bDiscontinuity);
+	PreviousLocation = Location;
+	const FVector Direction = ResolveFlowDirection(Velocity, Pawn->GetActorForwardVector(), bFirstSample || bDiscontinuity);
+	FVector Right = FVector::CrossProduct(GetOwner()->GetActorUpVector(), Direction).GetSafeNormal();
 	if (Right.IsNearlyZero())
 	{
-		Right = Pawn->GetActorRightVector();
+		Right = FVector::VectorPlaneProject(Pawn->GetActorRightVector(), Direction).GetSafeNormal();
 	}
-	UpdateWind(DeltaSeconds, Speed, bFlying, bTurbo, Right);
-	UpdateTrail(DeltaSeconds, Speed, bFlying, bTurbo, Right);
+	UpdateWind(DeltaSeconds, bFlying, Right);
+	UpdateTrail(Direction, Right);
+}
+
+FVector UImpactFlightFeedback::ResolveFlowDirection(const FVector& Velocity, const FVector& Fallback, bool bReset)
+{
+	if (bReset) LastFlowDirection = Fallback.GetSafeNormal();
+	// Retain the last airflow as it fades after braking, including backward/lateral flight.
+	// Tiny stopping corrections must not spin the remaining strokes around the hands.
+	if (Velocity.SizeSquared() >= 100.0 * 100.0) LastFlowDirection = Velocity.GetSafeNormal();
+	return LastFlowDirection;
+}
+
+void UImpactFlightFeedback::AdvancePresentation(float DeltaSeconds, float Speed, bool bFlying, bool bTurbo, bool bDiscontinuity)
+{
+	ObservedSpeedCmS = Speed;
+	ObservedAccelerationCmS2 = bHasMotionSample && !bDiscontinuity ? (Speed - PreviousSpeed) / DeltaSeconds : 0.0f;
+	PreviousSpeed = Speed;
+	bHasMotionSample = true;
+	if (bDiscontinuity)
+	{
+		++DiscontinuityResets;
+		SpeedStrength = BoostStrength = FlowPhase = 0.0f;
+		NearbyWall = WallAccent = 0.0f;
+		ClearTrail();
+		return;
+	}
+	const float Onset = FMath::SmoothStep(600.0f, 1400.0f, Speed);
+	const float TargetStrength = bFlying ? Onset * FMath::Sqrt(FMath::Clamp((Speed - 600.0f) / 21400.0f, 0.0f, 1.0f)) : 0.0f;
+	SpeedStrength = Follow(SpeedStrength, TargetStrength, DeltaSeconds, 0.10f, 0.18f);
+	const float TargetBoost = bFlying && bTurbo && Speed > 1200.0f
+		? Onset * FMath::Clamp((ObservedAccelerationCmS2 - 1500.0f) / 7500.0f, 0.0f, 1.0f) : 0.0f;
+	BoostStrength = Follow(BoostStrength, TargetBoost, DeltaSeconds, 0.045f, 0.16f);
+	FlowPhase = FMath::Frac(FlowPhase + DeltaSeconds * (0.80f + SpeedStrength * 2.50f + BoostStrength * 1.50f));
 }
 
 void UImpactFlightFeedback::CreateWind()
@@ -82,8 +186,8 @@ void UImpactFlightFeedback::CreateWind()
 	for (int32 Index = 0; Index < WindLoop.Num(); ++Index)
 	{
 		const float Phase = static_cast<float>(Index) / WindSamples;
-		const float Wind = 0.28f * SamplePeriodicNoise(Rumble, Phase) + 0.51f * SamplePeriodicNoise(Body, Phase)
-			+ 0.21f * SamplePeriodicNoise(Air, Phase);
+		const float Wind = 0.28f * SamplePeriodicNoise(Rumble, Phase) + 0.60f * SamplePeriodicNoise(Body, Phase)
+			+ 0.12f * SamplePeriodicNoise(Air, Phase);
 		WindLoop[Index] = static_cast<int16>(Wind * 24500.0f);
 	}
 
@@ -101,7 +205,7 @@ void UImpactFlightFeedback::CreateWind()
 	WindAudio->RegisterComponent();
 }
 
-void UImpactFlightFeedback::UpdateWind(float DeltaSeconds, float Speed, bool bFlying, bool bTurbo, const FVector& Right)
+void UImpactFlightFeedback::UpdateWind(float DeltaSeconds, bool bFlying, const FVector& Right)
 {
 	if (!WindAudio && bFlying && WindVolumeScale > 0.0f)
 	{
@@ -113,7 +217,7 @@ void UImpactFlightFeedback::UpdateWind(float DeltaSeconds, float Speed, bool bFl
 	}
 
 	WallCheckRemaining -= DeltaSeconds;
-	if (bFlying && Speed > 2700.0f && WallCheckRemaining <= 0.0f)
+	if (bFlying && ObservedSpeedCmS > 2700.0f && WallCheckRemaining <= 0.0f)
 	{
 		WallCheckRemaining = 0.14f;
 		const FVector Origin = GetOwner()->GetActorLocation();
@@ -128,27 +232,17 @@ void UImpactFlightFeedback::UpdateWind(float DeltaSeconds, float Speed, bool bFl
 			}
 		}
 	}
-	else if (!bFlying || Speed <= 2700.0f)
+	else if (!bFlying || ObservedSpeedCmS <= 2700.0f)
 	{
 		NearbyWall = 0.0f;
 	}
-	WallAccent = FMath::FInterpTo(WallAccent, NearbyWall, DeltaSeconds, NearbyWall > WallAccent ? 15.0f : 3.5f);
-
-	const float SpeedAlpha = FMath::Sqrt(FMath::Clamp(Speed / 32000.0f, 0.0f, 1.0f));
-	const bool bTurboActive = bFlying && bTurbo;
-	if (bTurboActive && !bWasTurbo)
-	{
-		TurboBurst = 0.22f;
-	}
-	bWasTurbo = bTurboActive;
-	TurboBurst = bFlying ? FMath::FInterpTo(TurboBurst, 0.0f, DeltaSeconds, 3.8f) : 0.0f;
-	const float TurboAccent = (bTurboActive ? 0.17f * SpeedAlpha : 0.0f) + TurboBurst;
+	WallAccent = Follow(WallAccent, NearbyWall, DeltaSeconds, 0.07f, 0.28f);
 	const float TargetVolume = bFlying
-		? WindVolumeScale * FMath::Min(0.99f, 0.055f + 0.69f * SpeedAlpha + TurboAccent + WallAccent * 0.17f)
+		? FMath::Clamp(WindVolumeScale, 0.0f, 1.0f) * (0.012f + 0.60f * SpeedStrength + 0.12f * BoostStrength + WallAccent * 0.08f)
 		: 0.0f;
-	WindVolume = FMath::FInterpTo(WindVolume, TargetVolume, DeltaSeconds, 5.0f);
-	WindPitch = FMath::FInterpTo(WindPitch, 0.80f + SpeedAlpha * 0.61f + TurboAccent + WallAccent * 0.13f,
-		DeltaSeconds, 5.0f);
+	WindVolume = Follow(WindVolume, TargetVolume, DeltaSeconds, 0.10f, 0.25f);
+	WindPitch = Follow(WindPitch, 0.80f + SpeedStrength * 0.42f + BoostStrength * 0.09f + WallAccent * 0.07f,
+		DeltaSeconds, 0.10f, 0.20f);
 	if (!bFlying && WindVolume <= 0.006f)
 	{
 		if (WindAudio->IsPlaying())
@@ -172,19 +266,13 @@ void UImpactFlightFeedback::UpdateWind(float DeltaSeconds, float Speed, bool bFl
 	}
 }
 
-void UImpactFlightFeedback::UpdateTrail(float DeltaSeconds, float Speed, bool bFlying, bool bTurbo, const FVector& Right)
+void UImpactFlightFeedback::UpdateTrail(const FVector& Direction, const FVector& Right)
 {
-	if (!bDrawTrail || !bFlying || Speed < TrailMinimumSpeed || !FApp::CanEverRender())
+	if (!bDrawTrail || SpeedStrength < 0.005f || TrailOpacityScale <= 0.0f || !FApp::CanEverRender())
 	{
 		ClearTrail();
 		return;
 	}
-	TrailAccumulator += DeltaSeconds;
-	if (TrailAccumulator < TrailInterval)
-	{
-		return;
-	}
-	TrailAccumulator = FMath::Fmod(TrailAccumulator, TrailInterval);
 	if (!FlightTrail)
 	{
 		FlightTrail = NewObject<ULineBatchComponent>(GetOwner());
@@ -194,44 +282,44 @@ void UImpactFlightFeedback::UpdateTrail(float DeltaSeconds, float Speed, bool bF
 		FlightTrail->RegisterComponent();
 	}
 
-	const double Now = GetWorld()->GetTimeSeconds();
 	const FVector Origin = GetOwner()->GetActorLocation();
-	const float Intensity = FMath::Clamp((Speed - TrailMinimumSpeed) / 14000.0f + (bTurbo ? 0.18f : 0.0f), 0.1f, 1.0f);
-	const double Offset = 73.0 + Intensity * 27.0;
-	const FVector Left = Origin - Right * Offset;
-	const FVector RightPoint = Origin + Right * Offset;
-	if (!Trail.IsEmpty() && FVector::DistSquared(Left, Trail.Last().Left) > FMath::Square(5000.0))
+	FVector LeftHand = Origin - Right * 55.0f;
+	FVector RightHand = Origin + Right * 55.0f;
+	bUsingHandAnchors = false;
+	if (const ACharacter* Character = Cast<ACharacter>(GetOwner()))
 	{
-		// Do not connect a streak across a teleport or streaming discontinuity.
-		Trail.Reset();
+		const USkeletalMeshComponent* Mesh = Character->GetMesh();
+		if (Mesh && Mesh->GetBoneIndex(TEXT("hand_l")) != INDEX_NONE && Mesh->GetBoneIndex(TEXT("hand_r")) != INDEX_NONE)
+		{
+			const FVector L = Mesh->GetSocketLocation(TEXT("hand_l"));
+			const FVector R = Mesh->GetSocketLocation(TEXT("hand_r"));
+			if (!L.ContainsNaN() && !R.ContainsNaN() && FVector::DistSquared(Origin, L) < 62500.0
+				&& FVector::DistSquared(Origin, R) < 62500.0)
+			{
+				LeftHand = L;
+				RightHand = R;
+				bUsingHandAnchors = true;
+			}
+		}
 	}
-	while (!Trail.IsEmpty() && (Now - Trail[0].Time > TrailLifetime || Trail.Num() >= MaxTrailPoints))
-	{
-		Trail.RemoveAt(0, EAllowShrinking::No);
-	}
-	Trail.Add({Left, RightPoint, Now});
-	TArray<FBatchedLine, TInlineAllocator<2 * MaxTrailPoints>> Lines;
-	for (int32 Index = 1; Index < Trail.Num(); ++Index)
-	{
-		const float Age = static_cast<float>((Now - Trail[Index - 1].Time) / TrailLifetime);
-		const float Amount = Intensity * FMath::Square(1.0f - Age);
-		const FLinearColor Color(0.24f * Amount, 0.66f * Amount, 0.86f * Amount, 1.0f);
-		const float Width = FMath::Lerp(0.65f, 3.2f, Amount);
-		Lines.Emplace(Trail[Index - 1].Left, Trail[Index].Left, Color, 0.0f, Width, SDPG_World);
-		Lines.Emplace(Trail[Index - 1].Right, Trail[Index].Right, Color, 0.0f, Width, SDPG_World);
-	}
+	// Rebuild only around current anchors. No stored world positions can bridge a teleport.
+	FAirLines Lines;
+	LastTrailExtentCm = BuildAirStrokes(Lines, LeftHand, RightHand, Direction, Right, SpeedStrength,
+		BoostStrength, FlowPhase, MaxTrailLengthCm, TrailOpacityScale);
+	LastDrawnSegments = Lines.Num();
 	FlightTrail->Flush();
 	FlightTrail->DrawLines(Lines);
 }
 
 void UImpactFlightFeedback::ClearTrail()
 {
-	if (!Trail.IsEmpty() && FlightTrail)
+	if (FlightTrail)
 	{
 		FlightTrail->Flush();
 	}
-	Trail.Reset();
-	TrailAccumulator = 0.0f;
+	LastDrawnSegments = 0;
+	LastTrailExtentCm = 0.0f;
+	bUsingHandAnchors = false;
 }
 
 void UImpactFlightFeedback::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -247,3 +335,75 @@ void UImpactFlightFeedback::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 	Super::EndPlay(EndPlayReason);
 }
+
+#if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FImpactFlightFeedbackPresentationTest, "ImpactBeyond.Presentation.FlightFeedback",
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FImpactFlightFeedbackPresentationTest::RunTest(const FString& Parameters)
+{
+	UImpactFlightFeedback* Feedback = NewObject<UImpactFlightFeedback>();
+	for (const FVector Travel : {-FVector::ForwardVector, FVector::RightVector, FVector::UpVector})
+	{
+		Feedback->ResolveFlowDirection(Travel * 4000.0, FVector::ForwardVector, true);
+		TestTrue(TEXT("Braking preserves the residual airflow direction"),
+			Feedback->ResolveFlowDirection(FVector::ZeroVector, FVector::ForwardVector, false).Equals(Travel));
+		TestTrue(TEXT("Tiny opposite stopping corrections cannot flip the residual trail"),
+			Feedback->ResolveFlowDirection(-Travel * 20.0, FVector::ForwardVector, false).Equals(Travel));
+	}
+	TestTrue(TEXT("A stationary teleport discards the previous airflow direction"),
+		Feedback->ResolveFlowDirection(FVector::ZeroVector, -FVector::RightVector, true).Equals(-FVector::RightVector));
+	for (int32 Frame = 0; Frame < 120; ++Frame)
+		Feedback->AdvancePresentation(1.0f / 60.0f, 0.0f, true, true, false);
+	TestEqual(TEXT("Hover has no air strokes or turbo gust"), Feedback->SpeedStrength + Feedback->BoostStrength, 0.0f);
+	Feedback->AdvancePresentation(0.016f, 4000.0f, true, false, true);
+	for (int32 Frame = 0; Frame < 60; ++Frame)
+		Feedback->AdvancePresentation(1.0f / 60.0f, 4000.0f, true, true, false);
+	TestEqual(TEXT("Turbo at constant speed does not invent acceleration"), Feedback->BoostStrength, 0.0f);
+	TestTrue(TEXT("Ordinary cruise remains visible without turbo"), Feedback->SpeedStrength > 0.25f && Feedback->SpeedStrength < 0.60f);
+	for (int32 Frame = 1; Frame <= 12; ++Frame)
+		Feedback->AdvancePresentation(1.0f / 60.0f, 4000.0f + Frame * 150.0f, true, true, false);
+	TestTrue(TEXT("Measured acceleration produces a gust"), Feedback->BoostStrength > 0.8f);
+	Feedback->AdvancePresentation(0.016f, 28600.0f, true, true, true);
+	TestEqual(TEXT("Teleport discards old acceleration and gust"), Feedback->ObservedAccelerationCmS2 + Feedback->BoostStrength, 0.0f);
+	Feedback->AdvancePresentation(0.016f, 28600.0f, true, true, false);
+	TestEqual(TEXT("The first post-teleport sample does not invent a gust"), Feedback->BoostStrength, 0.0f);
+	for (int32 Frame = 0; Frame < 120; ++Frame)
+		Feedback->AdvancePresentation(1.0f / 60.0f, 28600.0f, false, true, false);
+	TestTrue(TEXT("Grounded motion fades flight cues even at high speed"), Feedback->SpeedStrength < 0.001f && Feedback->BoostStrength < 0.001f);
+
+	UImpactFlightFeedback* SlowFrames = NewObject<UImpactFlightFeedback>();
+	UImpactFlightFeedback* FastFrames = NewObject<UImpactFlightFeedback>();
+	for (int32 Frame = 0; Frame < 30; ++Frame)
+		SlowFrames->AdvancePresentation(1.0f / 30.0f, 22000.0f, true, false, false);
+	for (int32 Frame = 0; Frame < 120; ++Frame)
+		FastFrames->AdvancePresentation(1.0f / 120.0f, 22000.0f, true, false, false);
+	TestTrue(TEXT("Strength transition follows elapsed time at 30/120 Hz"),
+		FMath::IsNearlyEqual(SlowFrames->SpeedStrength, FastFrames->SpeedStrength, 0.0001f));
+	TestFalse(TEXT("Real travel at 368 m/s is not a teleport"), IsDiscontinuity(FVector::ZeroVector, FVector(3680,0,0), 36800.0f, 0.10f));
+	TestTrue(TEXT("A 25 m blink at cruise resets feedback"), IsDiscontinuity(FVector::ZeroVector, FVector(2500,0,0), 4000.0f, 0.016f));
+
+	for (const FVector Direction : {FVector::ForwardVector, FVector::UpVector, -FVector::RightVector})
+	{
+		const FVector Right = FVector::CrossProduct(Direction, FVector(1,1,1)).GetSafeNormal();
+		const FVector Offset(9000000, -7000000, 5000000);
+		const FVector LeftHand = Offset - Right * 55.0f;
+		const FVector RightHand = Offset + Right * 55.0f;
+		for (const float Phase : {0.0f, 0.17f, 0.54f, 0.99f})
+		{
+			FAirLines Lines;
+			const float Extent = BuildAirStrokes(Lines, LeftHand, RightHand, Direction, Right, 1.0f, 1.0f, Phase, 50000.0f, 1.0f);
+			TestTrue(TEXT("Air strokes have a fixed rendering budget"), Lines.Num() > 0 && Lines.Num() <= 40);
+			TestTrue(TEXT("Even an excessive configured length is capped at four metres"), Extent <= 400.01f);
+			for (const FBatchedLine& Line : Lines)
+			for (const FVector Point : {Line.Start, Line.End})
+			{
+				TestFalse(TEXT("Radial air stroke remains finite"), Point.ContainsNaN());
+				TestTrue(TEXT("All vertices belong to current anchors, never the pre-teleport origin"),
+					FMath::Min(FVector::DistSquared(Point, LeftHand), FVector::DistSquared(Point, RightHand)) <= FMath::Square(400.01));
+			}
+		}
+	}
+	return true;
+}
+#endif

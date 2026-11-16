@@ -1,57 +1,56 @@
 # IMPACT: BEYOND
 
+Sandbox 3D de superhumanos para **Windows como plataforma principal y un jugador offline**: caminar, correr, volar, combatir, agarrar y lanzar objetos, y destruir partes preparadas del entorno. Presupuesto de compras de assets/plugins: **RD$0**. Reutilización primero.
+
+## Estado actual — 16 de noviembre de 2026
+
+**La integración técnica S1–S7 está publicada en [PR33](https://github.com/meliodr/juego-/pull/33), pero el usuario rechazó su presentación con 2/10. No está aceptada como juego.** La prioridad es [corregir animación, cámara, sensación de velocidad, efectos y escenario](docs/IB_S7_PRESENTATION_REWORK.md), conservando las mecánicas y velocidades. S8 permanece aplazado.
+
+El repositorio contiene el [proyecto Unreal](ImpactBeyond/ImpactBeyond.uproject), fuentes, recetas y pruebas. La entrega anterior, `s7-package-20261116T060244Z`, aprobó build, pruebas funcionales y perfil DX12/audio y arrancó desde Steam; sus [resultados y límites](docs/IB_S7_CLOSURE_REVIEW.md) son evidencia histórica de esa revisión. No certifican la candidata de presentación en curso ni sustituyen la valoración del usuario.
+
+La copia pública no suministra los packs Fab ni sus derivados privados. [Reproducir la partida](docs/IB_S7_SOURCE_OVERVIEW.md) requiere los recursos autorizados y generar el mapa local; compilar C++ por sí solo no produce una entrega completa.
+
+## Empezar aquí
+
+- **[Plan activo de producción](docs/PLAN_ACTIVO.md)**: alcance vigente, contratos y criterios de cierre.
+- **[Cola activa de tareas](docs/TAREAS_ACTIVAS.md)**: correcciones y siguiente condición verificable.
+- **[Corrección de presentación](docs/IB_S7_PRESENTATION_REWORK.md)**: causas identificadas, reutilización y aceptación pendiente.
+- **[Fuentes y reproducción](docs/IB_S7_SOURCE_OVERVIEW.md)**: componentes, dependencias locales, pruebas y arranque.
+- **[Instrucciones para agentes](AGENTS.md)**: reglas y uso selectivo de las skills de `.agents/skills/`.
+
+El plan y la cola vigentes sustituyen el orden de los documentos históricos. Las instrucciones de instalación inicial de [Windows/Unreal](docs/WINDOWS_INICIO_V12.md) son antecedentes; no ordenan rehacer W00/W01. Linux y cooperativo no forman parte de la entrega actual.
+
 ## Fab: selección y biblioteca — 15/11/2026
 
 **[Selección activa de Fab](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo CSV para Codex, 52 fichas públicas](docs/FAB_CATALOGO_MAESTRO.csv)** · [Lote 01](docs/FAB_AUDITORIA_LOTE01_2026-11-15.md) · [Lote 02](docs/FAB_AUDITORIA_LOTE02_2026-11-15.md).
 
-**Criba actual:** 8 SELECCIONAR, 5 PROBAR, 27 RESERVAR y 12 DESCARTAR. Todos los estados de **Mi biblioteca**, instalación y pruebas UE5.8 están SIN VERIFICAR; no asumir que el usuario reclamó o no reclamó paquetes. No entrenaremos IA. Una revisión periódica cada tres días, a partir del 18/11/2026, intentará actualizar el catálogo y registrar nuevos commits, sin comprar/descargar productos.
+La criba del catálogo del 15/11 registró 8 SELECCIONAR, 5 PROBAR, 27 RESERVAR y 12 DESCARTAR. Es una selección de fichas públicas, no un inventario actual de **Mi biblioteca**. La instalación y el uso local confirmados de Adventure Characters, Robot 13 y Bull están en [procedencia del arte S7](docs/IB_S7_ASSET_PROVENANCE.md); no generalizar esa evidencia a otros paquetes. No entrenar IA ni proporcionar bytes NoAI al modelo. La revisión periódica prevista desde el 18/11 no demuestra revisiones futuras, compras ni descargas.
 
 
 > **Regla de desarrollo: reutilizar lo más que se pueda y crear lo mínimo que se pueda.** Primero buscar y verificar herramientas, modelos, animaciones y código existentes; configurar y adaptar antes de desarrollar desde cero. Crear solo lo indispensable para una experiencia estable y divertida. Detalles obligatorios en [AGENTS.md](AGENTS.md).
 
 ## Auditoría Fab — primer lote 2026-11-15
 
-**[Catálogo de Fab: 25 fichas gratuitas revisadas, 3 promociones temporales y 4 pendientes](docs/FAB_AUDITORIA_LOTE01_2026-11-15.md)**. Primera selección: Scout Bot modular, animaciones de caída/planeo, Niagara Examples, efectos de energía, muestra de Chaos y ciudad/vehículos de Epic, sujetos a licencia/versión. Las promociones de Fab anuncian fin el **17 de noviembre a las 9:59 a. m. ET**. NO hemos agregado activos a la cuenta, descargado paquetes ni inspeccionado Mi biblioteca. Se mantiene la regla **reutilizar al máximo y crear lo mínimo**, sin retrasar W00/W01.
+**[Catálogo de Fab: 25 fichas gratuitas revisadas, 3 promociones temporales y 4 pendientes](docs/FAB_AUDITORIA_LOTE01_2026-11-15.md)**. Conserva la primera selección y sus precios/fechas históricos, sujetos a licencia y versión. Consultarlo por una necesidad concreta; una ficha no acredita adquisición, instalación ni funcionamiento.
 
 ## Plugins seleccionados — v1.4
 
-**[Ver selección y pruebas de plugins para UE5.8](docs/PLUGIN_SELECTION_V14.md)**. Se usarán herramientas incluidas (Enhanced Input, IK Rig/Control Rig, Niagara, Chaos/Fracture y PCG), activadas por fase. Unreal MCP + AllToolsets será un experimento local de automatización cuando editor y agente funcionen. Externos elegidos para pruebas, no instalaciones actuales: PCGEx MIT rama 5.8, Realtime Destructible Mesh Free (Fab Standard) y Realtime Mesh Component Core MIT como reserva. **Ninguno se ha instalado ni probado en el equipo del usuario.** Primera tarea sigue IB-W00/W01: Windows/Unreal 5.8.
+**[Ver selección y pruebas de plugins para UE5.8](docs/PLUGIN_SELECTION_V14.md)**. El documento propone herramientas incluidas y evaluaciones por fase; no obliga a instalarlas todas. PCGEx, Realtime Destructible Mesh y Realtime Mesh Component Core son candidatos de investigación, no nuevas dependencias autorizadas por esta corrección. No añadir plugins ni bibliotecas por anticipación.
 
 
-Sandbox 3D de superhumanos para **Windows como plataforma principal y un jugador offline**. Caminar, correr, volar, combatir, agarrar y lanzar objetos/personajes, y destruir partes del entorno. Presupuesto de compras de assets/plugins: **RD$0**. Reutilización primero.
-
-## Empezar aquí
-
-**Actualización de plataforma (15 de noviembre de 2026):** [Inicio en Windows con Unreal Engine 5.8](docs/WINDOWS_INICIO_V12.md). La instalación del motor aparece en curso en la captura del usuario; Fab/Quixel Bridge siguen en cola. Ningún ejecutable o proyecto Unreal se ha validado todavía. Linux es posible destino futuro, no requisito de inicio.
-
-
-- **[Plan activo de producción](docs/PLAN_ACTIVO.md)**: alcance, arquitectura, selección de donantes, entregas, roles, riesgos y criterios de prueba.
-- **[Cola activa de tareas](docs/TAREAS_ACTIVAS.md)**: primer encargo IB-L00 y fichas ordenadas hasta el sandbox jugable.
-- **[Instrucciones para agentes](AGENTS.md)**: reglas actuales y uso selectivo de las siete skills de `.agents/skills/`.
-
-Estos documentos sustituyen el orden de trabajo de los planes versionados anteriores. La investigación previa permanece en `docs/`, pero no hay que leer todas sus versiones ni ejecutar sus antiguas tareas de networking.
-
-## Estado real — 14 de noviembre de 2026
-
-El repositorio contiene planificación, auditorías y procedimientos; **todavía no contiene un proyecto Unreal jugable ni evidencia de compilación/ejecución en el equipo del usuario**. La revisión del árbol previa a esta consolidación fue sobre el commit `b060bc7cc6fe828405463e02bf7df1a637f10330`.
-
-Hardware reportado: **64 GB RAM y RTX 4070 con 8 GB VRAM**. CPU, driver, DirectX 12, Visual Studio/MSVC/Windows SDK, almacenamiento y motor/toolchain pendientes de verificación local. No hay acceso a esa máquina confirmado en esta documentación.
-
-**Próximo trabajo operativo: IB-W00 — confirmar instalación y herramientas de Unreal Engine 5.8 en Windows; después IB-W01 para crear un proyecto base.** Es una tarea preparada, no ejecutada ni enviada a Robert automáticamente. La planificación no autoriza instalaciones o cambios de sistema por sí sola.
-
-## Primera experiencia que construiremos
+## Bucle que estamos corrigiendo
 
 Caminar → correr → saltar → despegar → acelerar/frenar → agarrar un carro → transportarlo → lanzarlo contra una fachada → atravesar el hueco → pelear y recuperar el vuelo → reiniciar y repetir.
 
-Primero un héroe provisional, una manzana, un carro, paredes preparadas, un robot modular y un rival volador. No requiere terminar una campaña, personajes finales, población masiva o el sistema solar.
+La integración técnica incluye tres héroes, cuatro regiones urbanas, objetivos preparados, civiles, robot/kaiju y rueda de poderes. La corrección actual busca que movimiento, presentación y entorno acompañen ese bucle; no añade campaña, población masiva ni sistema solar.
 
 ## Visión que conservamos
 
 Tres héroes originales: H01 de fuerza; H02 genio cósmico masculino esmeralda según concepto aceptado; H03 teletransporte. Son IDs, no nombres definitivos. No usar los nombres de héroes rechazados ni recuperar el enemigo constructor genérico.
 
-Robots de varias escalas, kaijus desarmables y rivales superhumanos; daño por piezas con consecuencias, sin gore explícito. Posteriormente: ciudadanos, amenaza/alerta/karma diferenciados, rescates, robo, meteorito e invasiones opcionales.
+Robots de varias escalas, kaijus desarmables y rivales superhumanos; daño por piezas con consecuencias, sin gore explícito. S1–S7 ya integra civiles, un incidente opcional y consecuencias diferenciadas; la variedad futura de rescates, robos, meteoritos e invasiones sigue sujeta al plan.
 
-Ciudad vertical destructible por regiones en un planeta pequeño, salida a órbita, Luna y dos planetas con regiones visitables. Sol solo visual. **Cooperativo muy lejano, completamente fuera de las entregas actuales: sin LAN ni pruebas N0/N1.**
+La visión futura conserva ciudad vertical, salida a órbita, Luna y dos planetas con regiones visitables; no se anuncian entregados en S7. Sol solo visual. **Cooperativo muy lejano, completamente fuera de las entregas actuales: sin LAN ni pruebas N0/N1.**
 
 ## Selección de evaluación, no dependencias ya aceptadas
 

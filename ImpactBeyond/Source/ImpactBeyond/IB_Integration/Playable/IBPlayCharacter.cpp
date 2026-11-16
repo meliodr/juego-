@@ -18,6 +18,8 @@
 #include "ImpactLandingComponent.h"
 #include "ImpactGripMesh.h"
 #include "Animation/AnimSequence.h"
+#include "Animation/AnimSingleNodeInstance.h"
+#include "Animation/BlendSpace.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -60,6 +62,12 @@ AIBPlayCharacter::AIBPlayCharacter(const FObjectInitializer& Init)
     IdlePose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/MM_Idle")).Object;
     WalkPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Walk/MF_Unarmed_Walk_Fwd")).Object;
     RunPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jog/MF_Unarmed_Jog_Fwd")).Object;
+    GroundLocomotion=ConstructorHelpers::FObjectFinder<UBlendSpace>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/BS_Idle_Walk_Run")).Object;
+    JumpPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jump/MM_Jump")).Object;
+    FallPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jump/MM_Fall_Loop")).Object;
+    LandPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Jump/MM_Land")).Object;
+    TakeoffPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_FlightTakeoff")).Object;
+    CarryTakeoffPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_FlightCarryTakeoff")).Object;
     CarryPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_FlightCarry")).Object;
     BrakePose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_FlightBrake")).Object;
     ThrowPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_FlightThrow")).Object;
@@ -69,7 +77,8 @@ AIBPlayCharacter::AIBPlayCharacter(const FObjectInitializer& Init)
     HoverPose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_FlightHover")).Object;
     DivePose=ConstructorHelpers::FObjectFinder<UAnimSequence>(TEXT("/Game/IB_Flight/A_ImpactDive")).Object;
     Arm->TargetArmLength=420;
-    Arm->bEnableCameraLag=true; Arm->CameraLagSpeed=12; Arm->CameraLagMaxDistance=120;
+    Arm->bEnableCameraLag=true; Arm->CameraLagSpeed=14; Arm->CameraLagMaxDistance=45;
+    Arm->bEnableCameraRotationLag=false;
     Camera->FieldOfView=85;
     Camera->PostProcessSettings.bOverride_MotionBlurAmount=true;
     Camera->PostProcessSettings.MotionBlurAmount=0;
@@ -86,6 +95,7 @@ void AIBPlayCharacter::BeginPlay()
     Combat->InitializeReceiver();
     Heroes->CanonicalStrike.BindUObject(this,&AIBPlayCharacter::DispatchS35);
     Punches->CanonicalStrike.BindUObject(this,&AIBPlayCharacter::DispatchS35);
+    Punches->OnAttackCue.AddDynamic(this,&AIBPlayCharacter::OnPunchCue);
     Landing->CanonicalStrike.BindUObject(this,&AIBPlayCharacter::DispatchS35);
     Heroes->HostAbility.BindUObject(this,&AIBPlayCharacter::HostAbility);
     Heroes->HostReleaseAbility.BindUObject(this,&AIBPlayCharacter::ReleaseHostAbility);
@@ -155,27 +165,154 @@ void AIBPlayCharacter::Tick(float Dt)
     if(bChargingPunch) PunchCharge=FMath::Min(1.f,PunchCharge+Dt/.9f);
     WheelRefresh-=Dt; if(WheelRefresh<=0 && !Wheel->bOpen) { RefreshWheel(); WheelRefresh=.15f; }
     UpdateAnimation(Dt);
-    FlightFeedback->UpdateFlightFeedback(Dt,GetCharacterMovement()->IsFlying(),bTurbo);
-    const float Speed=GetVelocity().Size();
-    Camera->FieldOfView=FMath::FInterpTo(Camera->FieldOfView,85+FMath::Clamp(Speed/2000.f,0.f,12.f),Dt,4);
+    FlightFeedback->UpdateFlightFeedback(Dt,GetCharacterMovement()->IsFlying(),bTurbo&&!bBrake&&!bTraversal&&!Grip->GetHeld());
+    UpdatePresentationCamera(Dt);
     if(bLaserActive && IsGameplayLocked()) Release();
 }
 void AIBPlayCharacter::UpdateAnimation(float Dt)
 {
+    const UCharacterMovementComponent* Move=GetCharacterMovement();
+    const FVector Velocity=Move->Velocity;
+    const FQuat ActorFrame=GetActorQuat();
+    const FVector Up=GetActorUpVector();
+    const FVector TangentVelocity=FVector::VectorPlaneProject(Velocity,Up);
+    const float Speed=Velocity.Size(), GroundSpeed=TangentVelocity.Size();
+    const float RiseSpeed=FVector::DotProduct(Velocity,Up);
+    const bool Flying=Move->IsFlying(), Falling=Move->IsFalling();
+    const bool Carrying=Grip->GetHeld()&&!Grip->IsTelekinetic();
+    const bool Attacking=Punches->IsAttacking(), Diving=Landing->IsDiving();
+    const bool TakingOff=Flying&&PreviousPresentationMode!=MOVE_Flying;
+    const bool TouchingDown=Move->IsMovingOnGround()&&PreviousPresentationMode==MOVE_Falling;
+    constexpr float TakeoffDuration=.43f;
+    TakeoffRemaining=TakingOff?TakeoffDuration:FMath::Max(0.f,TakeoffRemaining-Dt);
+    if(!Flying) TakeoffRemaining=0;
+    const float LandDuration=GroundSpeed>200?.18f:.28f;
+    LandRemaining=TouchingDown?LandDuration:FMath::Max(0.f,LandRemaining-Dt);
+    if(Flying||Falling) LandRemaining=0;
     ThrowAnimation=FMath::Max(0.f,ThrowAnimation-Dt);
-    UAnimSequence* Next=GetVelocity().Size()>700?RunPose.Get():GetVelocity().Size()>35?WalkPose.Get():IdlePose.Get();
-    if(GetCharacterMovement()->IsFlying()) Next=bBrake?BrakePose.Get():FlightPoses[FMath::Clamp(FlightGear,0,4)].Get();
-    if(GetCharacterMovement()->IsFlying()&&GetVelocity().Size()<80) Next=HoverPose;
-    if(Grip->GetHeld()&&!Grip->IsTelekinetic()) Next=CarryPose;
-    if(ThrowAnimation>0) Next=ThrowPose;
-    if(Punches->IsAttacking()) Next=Punches->GetAttackStyle()==EIBS35PunchStyle::Heavy?HeavyPose.Get():AttackPoses[FMath::Clamp(Punches->GetComboIndex()-1,0,2)].Get();
-    if(Landing->IsDiving()) Next=DivePose;
-    if(Next && Next!=Playing)
+
+    // The speed selector limits movement; the visible pose follows achieved speed, including traversal.
+    bUsingTravelPose=Flying&&Speed>=(bUsingTravelPose?120.f:200.f);
+    static constexpr float PoseBoundaries[]={2900,6000,11000,18000};
+    int32 SpeedPose=Presentation.FlightPose;
+    while(SpeedPose<4&&Speed>PoseBoundaries[SpeedPose]*1.04f) ++SpeedPose;
+    while(SpeedPose>0&&Speed<PoseBoundaries[SpeedPose-1]*.96f) --SpeedPose;
+    UAnimationAsset* Next=GroundLocomotion.Get();
+    if(!Next) Next=GroundSpeed>450?RunPose.Get():GroundSpeed>35?WalkPose.Get():IdlePose.Get();
+    EIBPlayMotion Motion=EIBPlayMotion::Ground;
+    bool Loop=true;
+    float Rate=FMath::Clamp(GroundSpeed/600.f,1.f,3.f);
+    if(Falling)
     {
-        CastChecked<UImpactGripMesh>(GetMesh())->BeginFlightPoseBlend();
-        GetMesh()->PlayAnimation(Next,Next!=ThrowPose&&!Punches->IsAttacking()); Playing=Next;
-        GetMesh()->SetPlayRate(Punches->IsAttacking()?Next->GetPlayLength()/FMath::Max(.1f,Punches->GetAttackDuration()):1.f);
+        Motion=RiseSpeed>40?EIBPlayMotion::Jump:EIBPlayMotion::Fall;
+        Next=RiseSpeed>40?JumpPose.Get():FallPose.Get(); Loop=RiseSpeed<=40; Rate=1;
     }
+    else if(LandRemaining>0)
+    {
+        Motion=EIBPlayMotion::Land; Next=LandPose; Loop=false;
+        Rate=LandPose?LandPose->GetPlayLength()/LandDuration:1;
+    }
+    if(Flying)
+    {
+        Motion=bUsingTravelPose?EIBPlayMotion::Flight:EIBPlayMotion::Hover;
+        Next=bUsingTravelPose?FlightPoses[SpeedPose].Get():HoverPose.Get();
+        Rate=FMath::GetMappedRangeValueClamped(FVector2D(0,22000),FVector2D(.85f,1.2f),Speed);
+        if(Carrying) { Motion=EIBPlayMotion::Carry; Next=CarryPose; Rate=1; }
+        if(TakeoffRemaining>0)
+        {
+            Motion=EIBPlayMotion::Takeoff; Next=Carrying?CarryTakeoffPose.Get():TakeoffPose.Get(); Loop=false;
+            const UAnimSequence* Launch=Cast<UAnimSequence>(Next);
+            Rate=Launch?Launch->GetPlayLength()/TakeoffDuration:1;
+        }
+        if(bBrake&&!Carrying) { Motion=EIBPlayMotion::Brake; Next=BrakePose; Loop=false; Rate=1; }
+    }
+    if(ThrowAnimation>0) { Motion=EIBPlayMotion::Throw; Next=ThrowPose; Loop=false; Rate=1; }
+    if(Attacking)
+    {
+        Motion=EIBPlayMotion::Attack; Loop=false;
+        UAnimSequence* Attack=Punches->GetAttackStyle()==EIBS35PunchStyle::Heavy?HeavyPose.Get():AttackPoses[FMath::Clamp(Punches->GetComboIndex()-1,0,2)].Get();
+        Next=Attack; Rate=Attack?Attack->GetPlayLength()/FMath::Max(.1f,Punches->GetAttackDuration()):1;
+    }
+    if(Diving) { Motion=EIBPlayMotion::Dive; Next=DivePose; Loop=false; Rate=1; }
+
+    // Transport the previous visual frame with local gravity before following travel direction.
+    // Camera yaw and a curved planet must not masquerade as a banking turn.
+    const bool HasPreviousFrame=PreviousPresentationMode!=MOVE_None;
+    const FQuat Transport=HasPreviousFrame?FQuat::FindBetweenNormals(PreviousPresentationUp,Up):FQuat::Identity;
+    if(HasPreviousFrame) VisualFacing=(ActorFrame.Inverse()*Transport*PreviousPresentationFrame*VisualFacing).GetNormalized();
+    const FVector LocalVelocity=ActorFrame.UnrotateVector(Velocity);
+    const float TravelYaw=GroundSpeed>35?FMath::RadiansToDegrees(FMath::Atan2(LocalVelocity.Y,LocalVelocity.X)):VisualFacing.Rotator().Yaw;
+    const bool AimFacing=Carrying||Attacking||ThrowAnimation>0||bLaserActive;
+    FRotator TargetFacing(0,AimFacing?0:TravelYaw,0);
+    const FVector TravelDirection=TangentVelocity.GetSafeNormal();
+    float TurnRate=0;
+    if(Flying&&GroundSpeed>200&&!PreviousTravelDirection.IsNearlyZero()&&Dt>UE_SMALL_NUMBER)
+    {
+        const FVector Before=Transport.RotateVector(PreviousTravelDirection);
+        const float Turn=FMath::Atan2(FVector::DotProduct(Up,FVector::CrossProduct(Before,TravelDirection)),FVector::DotProduct(Before,TravelDirection));
+        TurnRate=FMath::RadiansToDegrees(Turn)/Dt;
+    }
+    if(Flying&&!Diving)
+    {
+        float Lean=FMath::GetMappedRangeValueClamped(FVector2D(180,1800),FVector2D(0,65),GroundSpeed);
+        if(TakeoffRemaining>0) Lean*=1-TakeoffRemaining/TakeoffDuration;
+        if(bBrake) Lean*=.2f;
+        const float TrajectoryPitch=FMath::RadiansToDegrees(FMath::Atan2(RiseSpeed,GroundSpeed));
+        TargetFacing.Pitch=FMath::Clamp(TrajectoryPitch*FMath::SmoothStep(70.f,600.f,Speed)-Lean,-85.f,35.f);
+        if(AimFacing) TargetFacing.Pitch=0;
+    }
+    const float BankTarget=Flying&&!AimFacing&&!Diving?FMath::Clamp(TurnRate/180.f,-1.f,1.f)*(bBrake?.25f:1.f):0;
+    FlightBank=FMath::FInterpTo(FlightBank,BankTarget,Dt,5);
+    TargetFacing.Roll=-28*FlightBank;
+    VisualFacing=FQuat::Slerp(VisualFacing,TargetFacing.Quaternion(),1-FMath::Exp(-9.f*FMath::Max(0.f,Dt))).GetNormalized();
+    const FVector MeshOffset(0,0,-GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight());
+    GetMesh()->SetRelativeLocationAndRotation(VisualFacing.RotateVector(MeshOffset),VisualFacing*FRotator(0,-90,0).Quaternion());
+    // Blend-space direction is relative to the lagging visual heading, not the camera/capsule.
+    const float Direction=GroundSpeed>1?FMath::FindDeltaAngleDegrees(VisualFacing.Rotator().Yaw,TravelYaw):0;
+
+    const bool ActionRestart=(Motion==EIBPlayMotion::Attack&&AttackSerial!=PresentedAttackSerial)
+        ||(Motion==EIBPlayMotion::Throw&&ThrowSerial!=PresentedThrowSerial);
+    if(Next&&(Next!=Playing||Motion!=Presentation.Motion||ActionRestart))
+    {
+        CastChecked<UImpactGripMesh>(GetMesh())->BeginFlightPoseBlend(Motion==EIBPlayMotion::Throw?.08f:.16f);
+        GetMesh()->PlayAnimation(Next,Loop); Playing=Next; ++Presentation.Transition;
+    }
+    // Rates must also change while the same clip stays selected (walk -> sprint, climb -> cruise).
+    if(UAnimSingleNodeInstance* Animation=GetMesh()->GetSingleNodeInstance())
+    {
+        Animation->SetPlayRate(Rate); Animation->SetLooping(Loop);
+        if(Next==GroundLocomotion) Animation->SetBlendSpacePosition(FVector(Direction,FMath::Min(GroundSpeed,600.f),0));
+    }
+    Presentation.Motion=Motion; Presentation.Speed=Speed; Presentation.GroundSpeed=GroundSpeed;
+    Presentation.BlendDirection=Direction; Presentation.PlaybackRate=Rate; Presentation.FlightPose=SpeedPose;
+    Presentation.VisualRotation=VisualFacing.Rotator();
+    PresentedAttackSerial=AttackSerial; PresentedThrowSerial=ThrowSerial;
+    PreviousPresentationMode=Move->MovementMode; PreviousPresentationFrame=ActorFrame; PreviousPresentationUp=Up;
+    PreviousTravelDirection=GroundSpeed>200?TravelDirection:FVector::ZeroVector;
+}
+void AIBPlayCharacter::OnPunchCue(FName Phase,float NormalizedTime)
+{
+    if(Phase==TEXT("Windup")) ++AttackSerial;
+}
+void AIBPlayCharacter::UpdatePresentationCamera(float Dt)
+{
+    const bool Flying=GetCharacterMovement()->IsFlying();
+    const bool Carrying=Grip->GetHeld()!=nullptr;
+    const float SpeedAlpha=(Flying||Landing->IsDiving())?FMath::Sqrt(FMath::Clamp(float(GetVelocity().Size())/22000.f,0.f,1.f)):0;
+    Camera->FieldOfView=FMath::FInterpTo(Camera->FieldOfView,85+12*SpeedAlpha,Dt,4);
+    Arm->TargetArmLength=FMath::FInterpTo(Arm->TargetArmLength,Carrying?510.f:420.f+50*SpeedAlpha,Dt,4);
+    Arm->SocketOffset=FMath::VInterpTo(Arm->SocketOffset,FVector(0,0,Carrying?45:15),Dt,4);
+}
+FString AIBPlayCharacter::GetMovementStatusText() const
+{
+    if(Landing->IsDiving()) return TEXT("Impacto");
+    if(GetCharacterMovement()->IsFlying())
+    {
+        FString State=bBrake?TEXT("Freno"):Grip->GetHeld()?TEXT("Carga"):bTraversal?TEXT("Travesia"):bTurbo?TEXT("Turbo"):TEXT("Vuelo");
+        return FString::Printf(TEXT("%s %d/5"),*State,FlightGear+1);
+    }
+    if(GetCharacterMovement()->IsFalling()) return FVector::DotProduct(GetVelocity(),GetActorUpVector())>40?TEXT("Salto"):TEXT("Caida");
+    return GetVelocity().Size()>1000?TEXT("Sprint"):TEXT("A pie");
 }
 void AIBPlayCharacter::RefreshWheel()
 {
@@ -190,6 +327,7 @@ void AIBPlayCharacter::RefreshWheel()
 void AIBPlayCharacter::HeroChanged(int32 Id)
 {
     bChargingPunch=false; Release(); Landing->CancelImpactDive(); Punches->CancelAttack(); Grip->Drop(); Wheel->Cancel();
+    ThrowAnimation=0; Playing=nullptr;
     Response->bH01=Id==0;
     if(Art && Art->Heroes.IsValidIndex(Id) && Art->Heroes[Id])
     {
@@ -261,7 +399,11 @@ void AIBPlayCharacter::ThrowStart() { if(!IsGameplayLocked()) Grip->BeginCharge(
 void AIBPlayCharacter::ThrowRelease()
 {
     if(IsGameplayLocked()) { Grip->CancelCharge(); return; }
-    if(Grip->CommitThrow(Camera->GetForwardVector())) ThrowAnimation=.65f;
+    if(Grip->CommitThrow(Camera->GetForwardVector()))
+    {
+        ThrowAnimation=ThrowPose?ThrowPose->GetPlayLength():.4f;
+        ++ThrowSerial;
+    }
 }
 void AIBPlayCharacter::Activate()
 {
@@ -276,7 +418,7 @@ void AIBPlayCharacter::Activate()
 }
 void AIBPlayCharacter::Release()
 {
-    if(bChargingPunch) { bChargingPunch=false; if(!IsGameplayLocked()) { Punches->BeginChargedPunch(PunchCharge); Playing=nullptr; } }
+    if(bChargingPunch) { bChargingPunch=false; if(!IsGameplayLocked()) Punches->BeginChargedPunch(PunchCharge); }
     Heroes->ReleaseEquipped(); Powers->SetLaser(false); bLaserActive=false;
 }
 void AIBPlayCharacter::Quick() { if(!IsGameplayLocked()) Punches->BeginPunch(false); }
@@ -377,7 +519,8 @@ void AIBPlayHUD::DrawHUD()
     const FString Name=Heroes.IsValidIndex(Id)?Heroes[Id].Label.ToString():TEXT("Heroe");
     DrawText(TEXT("IMPACT: BEYOND"),Cyan,38,30,nullptr,1.3);
     DrawText(FString::Printf(TEXT("%s   Vida %.0f   Energia %.0f"),*Name,P->Response->Health,P->Heroes->Energy()),White,38,59);
-    DrawText(FString::Printf(TEXT("Vuelo %d/5   %.0f km/h   H heroes  |  TAB poderes"),P->FlightGear+1,P->GetVelocity().Size()*.036),White,38,85);
+    DrawText(FString::Printf(TEXT("%s   %.0f km/h"),*P->GetMovementStatusText(),P->GetVelocity().Size()*.036),White,38,85);
+    if(!P->bHelp) DrawText(TEXT("F1 controles"),White,24,H-30);
     if(P->Session&&P->Session->Life) DrawText(P->Session->Life->GetStatusText(),White,24,136);
     DrawLine(W/2-6,H/2,W/2+6,H/2,Cyan); DrawLine(W/2,H/2-6,W/2,H/2+6,Cyan);
     if(P->NoticeSeconds>0) { DrawRect(Panel,W*.25f,H-100,W*.5f,40); DrawText(P->Notice,White,W*.25f+16,H-90); }
