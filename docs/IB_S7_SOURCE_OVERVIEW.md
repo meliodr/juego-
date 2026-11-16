@@ -1,6 +1,6 @@
 # Candidata integrada S1–S7: fuentes y reproducción
 
-La fuente C++ se exporta del snapshot `9ca77e1` a una rama pública limpia. **Es una candidata en validación, no una declaración de S7 jugable aceptado.** El integrador reportó Editor + Game aprobados para ese snapshot. Los cambios posteriores de autoría/QA y el paquete se siguen por separado; esta exportación aún es intermedia. El [manifiesto de exportación](IB_S7_PUBLIC_EXPORT.json) fija los archivos y hashes; el [plan activo](PLAN_ACTIVO.md) fija lo que falta demostrar.
+La fuente C++ y las herramientas se exportan del snapshot `acf4156` a una rama pública limpia. **Es una candidata en validación, no una declaración de S7 jugable aceptado.** El integrador reportó Editor aprobado para `acf4156` y Game aprobado para `9ca77e1`. Los cambios posteriores de autoría/QA y el paquete se siguen por separado; esta exportación aún es intermedia. El [manifiesto de exportación](IB_S7_PUBLIC_EXPORT.json) fija los archivos y hashes; el [plan activo](PLAN_ACTIVO.md) fija lo que falta demostrar.
 
 ## Entrada y responsabilidades
 
@@ -45,4 +45,4 @@ python -B Tools/IBCI_Native.py --output ../qa-native
 
 El gate de publicación inspecciona todo commit introducido, no solo el diff final. La suite nativa exige 13 fixtures y compila C++17 con MSVC en Windows; los outputs deben estar fuera del checkout. El test de texturas locales S2.5 puede omitirse explícitamente cuando no se han provisto bytes; sus recetas y recibos sí se prueban.
 
-Un PASS nativo cubre políticas y matemáticas. No valida UObject/CMC, controles de Unreal, DX12/audio, rendimiento, paquete ni sensación. El informe final debe distinguir la compilación anterior `4f95872`, la candidata `9ca77e1`, los cambios posteriores de autoría y la versión exacta del paquete probado.
+Un PASS nativo cubre políticas y matemáticas. No valida UObject/CMC, controles de Unreal, DX12/audio, rendimiento, paquete ni sensación. El informe final debe distinguir la compilación anterior `4f95872`, la candidata `acf4156`, sus diferencias respecto a `9ca77e1` y los cambios posteriores de autoría y la versión exacta del paquete probado.

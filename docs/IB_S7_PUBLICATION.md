@@ -1,8 +1,8 @@
 # Preparación de la publicación S7
 
-**Estado: snapshot intermedio C++ `9ca77e1` exportado y compilado Editor + Game por el integrador; ajustes posteriores de autoría/Source, validación final, paquete y aceptación pendientes.** Base pública `6c2d903c708553e7c840d27a96e5eb86810cb8a7`. La rama nace directamente de esa base; no hereda el historial de all-staging ni sus commits locales de assets.
+**Estado: snapshot intermedio `acf4156` exportado; Editor aprobado por el integrador. La última compilación Game confirmada corresponde a `9ca77e1`. Autoría, validación final, paquete y aceptación pendientes.** Base pública `6c2d903c708553e7c840d27a96e5eb86810cb8a7`. La rama nace directamente de esa base; no hereda el historial de all-staging ni sus commits locales de assets.
 
-La lista exacta de fuentes S2.5 ya recuperadas y de rutas candidatas está en [IB_S7_PUBLIC_EXPORT.json](IB_S7_PUBLIC_EXPORT.json). El inventario preliminar `4f95872` se conserva como historial. Los campos de exportación fijan ahora `9ca77e1` y sus archivos/hashes; una actualización posterior de autoría se registrará aparte. No se identifica todavía una build final aceptada.
+La lista exacta de fuentes S2.5 ya recuperadas y de rutas candidatas está en [IB_S7_PUBLIC_EXPORT.json](IB_S7_PUBLIC_EXPORT.json). El inventario preliminar `4f95872` se conserva como historial. Los campos de exportación fijan ahora `acf4156` y sus archivos/hashes; el historial registra los cuatro cambios posteriores a `9ca77e1`. No se identifica todavía una build final aceptada.
 
 ## Exportación final
 
@@ -17,18 +17,18 @@ El repositorio conserva los assets que ya estaban en la base pública. Esta oper
 
 ## Comprobaciones antes de publicar
 
-El workflow existente `Lab audit tests` conserva sus pruebas de gates. `Integrated source checks` añade política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17 con MSVC en Windows. Falta cualquier suite requerida implica fallo, nunca PASS vacío. Las 13 suites pasaron localmente sobre la exportación `9ca77e1`; la ejecución remota de GitHub Actions sigue pendiente de publicación.
+El workflow existente `Lab audit tests` conserva sus pruebas de gates. `Integrated source checks` añade política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17 con MSVC en Windows. Falta cualquier suite requerida implica fallo, nunca PASS vacío. Las 13 suites pasaron localmente sobre la exportación `9ca77e1`; los jobs source-and-recipes y native-policies también pasaron en GitHub para el commit público `52e8da3` (PR33). La actualización `acf4156` continúa local.
 
 `IBCI_Native.py` admite `--root` y salida fuera del checkout. No ejecuta UBT/editor, no instala herramientas y comprueba hashes antes/después para detectar cambios durante las pruebas. Los wrappers históricos `IBS35_CheckScope.py`, `IBS4_Check.py` e `IBS6H_Check.py` conservan gates de laboratorios S2; no se usan como CI de integración porque rechazan legítimamente cambios compartidos.
 
 La comparación S35/S4 se conserva actualizada: rechaza replay con timestamp refrescado e IDs retirados tras reutilizar slots; mantiene pruebas de signo, unidades, categorías, capacidad e inmunidad. Los tests `ImpactContractNative` y `IBS4_ContractConsumerTests` cubren además el contrato canónico actual. No confundir esa comparación con ejecución de UObject/CMC.
 
-Exportación comprobada localmente: 13 suites nativas juntas con MSVC y snapshot estable, incluida la comparación actualizada de 282 assertions; [recibo nativo](IB_S7_NATIVE_VALIDATION.json). Geometría S3 y recetas S2.5 también pasaron. GitHub Actions todavía no se ha ejecutado. No se ha ejecutado Unreal desde este frente.
+Exportación comprobada localmente: 13 suites nativas juntas con MSVC y snapshot estable, incluida la comparación actualizada de 282 assertions; [recibo nativo](IB_S7_NATIVE_VALIDATION.json). Geometría S3 y recetas S2.5 también pasaron. GitHub Actions pasó para `52e8da3`: Integrated source checks [43808923815](https://github.com/meliodr/juego-/actions/runs/43808923815) y Lab audit tests [43808923825](https://github.com/meliodr/juego-/actions/runs/43808923825). Estos resultados no se atribuyen automáticamente a commits posteriores. No se ha ejecutado Unreal desde este frente.
 
 El integrador añade evidencia del SHA final para Editor/Game, automatización real de input, cook/paquete, DX12/audio, controles, persistencia y rendimiento. Registrar aparte las comprobaciones que requieren DualSense físico y aceptación humana. No afirmar S7 completado porque el CI nativo esté verde.
 
 ## Reconciliación de PR
 
-Tras integrar y validar el PR limpio, #26/#27/#28 pueden cerrarse como cubiertos por la integración. #25 puede cerrarse como laboratorio sustituido por la partida S7, preservando la rama y sin afirmar que todo su contenido fue importado. #7/#8 son prototipos anteriores; #21 tiene sus scripts/tests incorporados mediante PR30. PR17/22/23 aportan decisiones consolidadas en el plan activo; sus prompts históricos siguen en sus ramas. Investigación/inventarios #1/#5/#6/#20 no se etiquetan integrados cuando sus archivos continúan ausentes.
+Tras integrar y validar el PR limpio, #26/#27/#28 pueden cerrarse como cubiertos por la integración. #25 puede cerrarse como laboratorio sustituido por la partida S7, preservando la rama y sin afirmar que todo su contenido fue importado. #7/#8 son prototipos anteriores; #21 fue cerrado por el integrador como cubierto por PR30, que incorporó sus scripts/tests. PR17/22/23 aportan decisiones consolidadas en el plan activo; sus prompts históricos siguen en sus ramas. Investigación/inventarios #1/#5/#6/#20 no se etiquetan integrados cuando sus archivos continúan ausentes.
 
-Esta preparación no publica comentarios, pushes, merges ni cierres. La publicación y evidencia final quedan a cargo del integrador dentro de la autorización vigente del usuario.
+El integrador publicó la rama inicial y abrió [PR33 en borrador](https://github.com/meliodr/juego-/pull/33). Este frente prepara cambios locales y monitoriza CI; no publica los siguientes commits ni realiza merges/cierres. La actualización remota se agrupa con la exportación final por el integrador.

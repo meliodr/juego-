@@ -49,6 +49,13 @@ GEOMETRY_METHODS = {
     "Materials": ("enable_material_ids",),
     "MeshEdits": ("append_mesh",),
 }
+CUSTOM_PROPERTIES = {
+    "IBPlayArt": ("Heroes", "CitizenMesh", "HeroAccents", "EnergyMaterial", "Robot", "Kaiju",
+        "RobotAnimations", "KaijuAnimations", "RobotParts", "KaijuParts", "RobotPartBones", "KaijuPartBones",
+        "Props", "Tank", "Drone", "SmallRobot", "Cannon", "Concrete", "Ground", "Glass", "Metal"),
+    "IBS3PlanetWorld": ("bProductionVisuals", "SaveSlot"),
+    "IBPlaySession": ("SaveSlot", "Art"),
+}
 
 HERO = "/Game/Adventures_Pack/Mesh/Adventure_05/Mesh_UE5/Full/SK_UE5_Adventure_05_Full_01"
 MANNY = "/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple"
@@ -143,6 +150,27 @@ def geometry_preflight():
     REPORT["python_api"] = metadata
     REPORT["python_api_failures"] = failures
     require(not failures, "Geometry API preflight failed: " + "; ".join(failures))
+
+
+def native_property_preflight():
+    # Project classes without generated Python wrappers use the generic UObject
+    # wrapper. ResolvePropertyName then passes names through to FindPropertyByName;
+    # native UPROPERTY names work whereas snake_case aliases need not exist.
+    failures = []
+    for name, properties in CUSTOM_PROPERTIES.items():
+        native_class = unreal.load_class(None, "/Script/ImpactBeyond." + name)
+        if native_class is None:
+            failures.append(name + ": compiled class missing")
+            continue
+        default = unreal.get_default_object(native_class)
+        for prop in properties:
+            try:
+                default.get_editor_property(prop)
+            except Exception as error:
+                failures.append(name + "." + prop + ": " + str(error))
+    REPORT["native_properties"] = {name: list(properties) for name, properties in CUSTOM_PROPERTIES.items()}
+    REPORT["native_property_failures"] = failures
+    require(not failures, "Native property preflight failed: " + "; ".join(failures))
 
 
 def load(path, cls):
@@ -654,10 +682,10 @@ def author_s4(robot):
         "cannon_selection": cannon_rule, "pose": "source reference pose, geometry processed locally",
         "derived_assets": [asset.get_path_name() for asset in (small_asset, drone_asset, tank_asset, cannon_asset)],
         "original_details": "drone nacelles; tank hull, tracks, wheels, turret; fallback cannon"}
-    return {"small_robot": small_asset, "drone": drone_asset, "tank": tank_asset, "cannon": cannon_asset,
-        "concrete": typed("/Game/IB_S25/Materials/M_R2v3_StoneDetail", unreal.MaterialInterface),
-        "ground": typed("/Game/IB_S25/Materials/M_Paving", unreal.MaterialInterface),
-        "glass": typed("/Game/Car/Assets/M_Glass", unreal.MaterialInterface), "metal": metal}
+    return {"SmallRobot": small_asset, "Drone": drone_asset, "Tank": tank_asset, "Cannon": cannon_asset,
+        "Concrete": typed("/Game/IB_S25/Materials/M_R2v3_StoneDetail", unreal.MaterialInterface),
+        "Ground": typed("/Game/IB_S25/Materials/M_Paving", unreal.MaterialInterface),
+        "Glass": typed("/Game/Car/Assets/M_Glass", unreal.MaterialInterface), "Metal": metal}
 
 
 def import_original(name, vertices, faces, material, stage):
@@ -744,16 +772,16 @@ def author_map(art):
     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     planets = [actor for actor in actors.get_all_level_actors() if actor.get_class() == planet_class]
     require(len(planets) == 1, "Playable map requires exactly one S3 planet")
-    planets[0].set_editor_property("production_visuals", True)
-    planets[0].set_editor_property("save_slot", "IB_Playable_S7_v1_planet")
+    planets[0].set_editor_property("bProductionVisuals", True)
+    planets[0].set_editor_property("SaveSlot", "IB_Playable_S7_v1_planet")
     sessions = [actor for actor in actors.get_all_level_actors() if actor.get_class() == session_class]
     require(len(sessions) <= 1, "Duplicate playable sessions in map")
     session = sessions[0] if sessions else actors.spawn_actor_from_class(session_class, unreal.Vector())
     require(session, "Could not create playable session actor")
-    session.set_editor_property("save_slot", "IB_Playable_S7_v1")
+    session.set_editor_property("SaveSlot", "IB_Playable_S7_v1")
     # LoadObject string literals alone do not guarantee cooking. This serialized
     # actor reference roots the data asset and its selected art in the entry map.
-    session.set_editor_property("art", art)
+    session.set_editor_property("Art", art)
     world.get_world_settings().set_editor_property("default_game_mode", game_mode)
     world.get_world_settings().set_editor_property("kill_z", -1000000000.0)
     ASSETS.set_metadata_tag(world, TAG, VERSION)
@@ -820,6 +848,7 @@ def main():
     api_only = os.environ.get("IB_PLAY_API_ONLY", "") == "1"
     try:
         geometry_preflight()
+        native_property_preflight()
         if api_only:
             REPORT["status"] = "api_preflight_passed"
             return
@@ -850,13 +879,13 @@ def main():
         else:
             art = require(TOOLS.create_asset("DA_PlayArt", ROOT, data_class, factory), "Data asset creation failed")
             ASSETS.set_metadata_tag(art, TAG, VERSION)
-        values = {"heroes": heroes, "citizen_mesh": hero, "hero_accents": accents,
-            "energy_material": energy_material(), "robot": robot, "kaiju": kaiju,
-            "robot_animations": validate_clips(robot, ROBOT_CLIPS),
-            "kaiju_animations": validate_clips(kaiju, KAIJU_CLIPS),
-            "robot_parts": robot_parts, "robot_part_bones": robot_bones,
-            "kaiju_parts": kaiju_parts, "kaiju_part_bones": kaiju_bones,
-            "props": author_props(stage)}
+        values = {"Heroes": heroes, "CitizenMesh": hero, "HeroAccents": accents,
+            "EnergyMaterial": energy_material(), "Robot": robot, "Kaiju": kaiju,
+            "RobotAnimations": validate_clips(robot, ROBOT_CLIPS),
+            "KaijuAnimations": validate_clips(kaiju, KAIJU_CLIPS),
+            "RobotParts": robot_parts, "RobotPartBones": robot_bones,
+            "KaijuParts": kaiju_parts, "KaijuPartBones": kaiju_bones,
+            "Props": author_props(stage)}
         values.update(author_s4(robot))
         for key, value in values.items():
             art.set_editor_property(key, value)

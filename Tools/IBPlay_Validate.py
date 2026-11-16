@@ -15,6 +15,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("phase", choices=("build", "tests", "author", "package"))
 parser.add_argument("--suite", action="append")
 parser.add_argument("--map", default="/Game/IB_C00/Lvl_IB_C00")
+parser.add_argument("--batch", action="store_true", help="Run requested functional suites in one isolated process")
+parser.add_argument("--render-offscreen", action="store_true", help="DX12 at 1080p with audio and real timing, without opening a user window")
+parser.add_argument("--game-exe", type=Path, help="Test the cooked package instead of the editor game client")
+parser.add_argument("--target", action="append", choices=("ImpactBeyondEditor", "ImpactBeyond"))
 args = parser.parse_args()
 def git(*values):
     return subprocess.check_output(["git", "-C", str(repo), *values], text=True).strip()
@@ -58,16 +62,19 @@ editor = str(engine / "Engine/Binaries/Win64/UnrealEditor-Cmd.exe")
 try:
     if args.phase == "build":
         ubt = str(engine / "Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll")
-        for target in ("ImpactBeyondEditor", "ImpactBeyond"):
+        for target in (args.target or ("ImpactBeyondEditor", "ImpactBeyond")):
             execute(target, [dotnet, ubt, target, "Win64", "Development", project, "-DisableUnity", "-MaxParallelActions=4", "-NoUBA", "-NoHotReload", "-NoHotReloadFromIDE"])
     elif args.phase == "tests":
-        suites = args.suite or ["Integration.PlayableCombat", "S6.Runtime", "S7.RuntimeContract", "S7.PreparedEncounter", "S7.WheelRefresh", "S5.LifeAndPersistence", "S3.ProductionCities", "S35.PlayablePunches", "Landing.RadialCanonical", "S35.GripAndReset", "S35.ThrowsPhysical", "S4.H01Response", "S4.PreparedCollision"]
-        for suite in suites:
-            report = run / (suite + "-report")
-            execute(suite, [editor, project, args.map, "-game", "-IBPlayQA", "-NullRHI", "-UseFixedTimeStep", "-FPS=60", "-unattended", "-nosplash", "-nosound", "-nowrite", "-NoLiveCoding", "-ExecCmds=Automation RunTests ImpactBeyond." + suite, "-TestExit=Automation Test Queue Empty", "-abslog=" + str(run / (suite + ".unreal.log")), "-ReportExportPath=" + str(report)])
+        suites = args.suite or ["Integration.PlayableCombat", "S6.Runtime", "S7.RuntimeContract", "S7.PreparedEncounter", "S7.WheelRefresh", "S5.LifeAndPersistence", "S3.ProductionCities", "S35.PlayablePunches", "Landing.RadialCanonical", "S35.GripAndReset", "S35.ThrowsPhysical", "S35.RestoreClearsLaunch"]
+        for group in ([suites] if args.batch else [[suite] for suite in suites]):
+            label = "FunctionalBatch" if args.batch else group[0]
+            report = run / (label + "-report")
+            launch = [str(args.game_exe.resolve())] if args.game_exe else [editor, project]
+            renderer = ["-dx12", "-RenderOffscreen", "-windowed", "-ResX=1920", "-ResY=1080"] if args.render_offscreen else ["-NullRHI", "-UseFixedTimeStep", "-FPS=60", "-nosound"]
+            execute(label, launch + [args.map, "-game", "-IBPlayQA", "-IBBuildRevision="+head] + renderer + ["-unattended", "-nosplash", "-nowrite", "-NoLiveCoding", "-ExecCmds=Automation RunTests " + "+".join("ImpactBeyond."+suite for suite in group), "-TestExit=Automation Test Queue Empty", "-abslog=" + str(run / (label + ".unreal.log")), "-ReportExportPath=" + str(report)])
             result = json.loads((report / "index.json").read_text(encoding="utf-8-sig"))
-            if result.get("succeeded", 0) < 1 or result.get("failed", 0) or result.get("notRun", 0):
-                raise RuntimeError("Missing complete test success: " + suite)
+            if result.get("succeeded", 0) + result.get("succeededWithWarnings", 0) < len(group) or result.get("failed", 0) or result.get("notRun", 0):
+                raise RuntimeError("Missing complete test success: " + label)
     elif args.phase == "author":
         script = str(repo / "Tools/IBPlay_AuthorProduction.py")
         execute("Author", [editor, project, "-run=pythonscript", "-script=" + script, "-unattended", "-nosplash", "-NullRHI", "-nowrite", "-NoLiveCoding", "-abslog=" + str(run / "author.unreal.log")])

@@ -193,7 +193,8 @@
     "unreal_previous_snapshot_4f95872": "Compiled, reported by integrator",
     "unreal_source_snapshot_9ca77e1": "Editor and Game PASS, reported by integrator",
     "package_dx12_audio_input_human_acceptance": "PENDING",
-    "later_authoring_update": "Pending follow-up export after final QA; integrator reports Tools at 491c0f2 and upcoming SessionArt editability change"
+    "later_authoring_update": "Exported Tools from acf4156; authoring and final QA still in progress",
+    "unreal_source_snapshot_acf4156": "Editor PASS; Game not yet reported for this snapshot"
   },
   "preserve_preparation_over_staging": [
     ".gitignore",
@@ -284,11 +285,11 @@
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayCombatTests.cpp": "05d5d16395024d38f73b8fcbf4a4150ea77165006def01130ad4c547c92ea7db",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounter.cpp": "efbe05deca39d1252a7f463135e5fc766dc641d14374b392d0f321bccf835c73",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounter.h": "1a3e7dd915ecf123ae11e29b4f03e4504a4ffff0dbc5b8b4ec30cc52fc5226c7",
-    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp": "6d189089e45558b557c2cab84345f1f4a038332b1c3b305e15e0126102625509",
+    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp": "69ce01597a96051d2d0c5bf8a8a899d399173f4546b229ba3d961c279642163f",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayInputTests.cpp": "9fbd82e049bf7665d012be238a417a713519d8379068b9bee8202de5ff2e295f",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayPerformanceTests.cpp": "68c7564a7bd9448c8a94f7f2b7583aea7c15eff4f8ef38ac87af5333c2a78d2a",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.cpp": "4a5173e29fe7b8599ab36b10bc9ca75477122b804e038b2324cd91b7f4662654",
-    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.h": "8732946af80a75f40fd6122f336dc481722f739e59688497bcd9286281c38938",
+    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.h": "86bd3a6fa0b9e77b0fe7aab330237b415d4d62464dd7ac11ca48aa4ad24bcf75",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySessionTests.cpp": "52db2cc907873169372776c3171d82885b68319ea3b65fcf458677228fb9bbf7",
     "ImpactBeyond/Source/ImpactBeyond/IB_S3/IBS3Character.cpp": "5df526df6254354fbb40a456db97ced06ca3fbedac6fad77916419be77da8b4b",
     "ImpactBeyond/Source/ImpactBeyond/IB_S3/IBS3Character.h": "26e03141339bfd44b709c3557628824127f87b136126c353b2a7ebac1806ab26",
@@ -387,8 +388,8 @@
     "s3_geometry": "PASS: winding, manifold edges, sphere radius, near-cap sagitta 2.1972592033847604 cm at 25 km",
     "s25_recipes": "10 PASS + 1 SKIP local asset bytes absent; R2 5 PASS",
     "cpp_snapshot_equality": 107,
-    "github_actions": "NOT_RUN; branch not pushed",
-    "unreal_final_snapshot": "Snapshot 9ca77e1 Editor and Game PASS, reported by integrator; later source adjustments pending",
+    "github_actions": "PR33 remote 52e8da3: Lab audit tests SUCCESS; Integrated source checks source-and-recipes and native-policies SUCCESS",
+    "unreal_final_snapshot": "acf4156 Editor PASS; latest confirmed Game build remains 9ca77e1, reported by integrator",
     "cook_package_dx12_audio_human": "PENDING",
     "unreal_build_report": {
       "source_commit": "9ca77e1",
@@ -399,7 +400,8 @@
       "status": "PASS"
     },
     "python_syntax": "50 tracked Python files parsed without import",
-    "public_source_policy_precommit": "PASS for all 156 snapshot text changes"
+    "public_source_policy_precommit": "PASS for all 156 snapshot text changes",
+    "native_report_scope": "13 suites PASS on 9ca77e1 public export and remote 52e8da3; native policies/fixtures unchanged by acf4156"
   },
   "sanitized_documentation": [
     "docs/IB_S7_ASSET_PROVENANCE.md",
@@ -407,7 +409,7 @@
     "docs/IB_S35_CONTRACT.md",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/ImpactContract/README.md"
   ],
-  "exported_snapshot_commit": "9ca77e1e4240fe2f8d8a86461e110f191a4d5412",
+  "exported_snapshot_commit": "acf415639b9855086689a25c4240a7052a5c47a9",
   "snapshot_export_paths": [
     "ImpactBeyond/Config/DefaultEngine.ini",
     "ImpactBeyond/Config/DefaultGame.ini",
@@ -718,5 +720,34 @@
     "docs/IB_S7_PUBLICATION.md",
     "docs/IB_S7_PUBLIC_EXPORT.json",
     "docs/IB_S7_SOURCE_OVERVIEW.md"
-  ]
+  ],
+  "export_history": [
+    {
+      "snapshot": "acf415639b9855086689a25c4240a7052a5c47a9",
+      "previous_snapshot": "9ca77e1e4240fe2f8d8a86461e110f191a4d5412",
+      "paths": [
+        "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.h",
+        "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp",
+        "Tools/IBPlay_AuthorProduction.py",
+        "Tools/IBPlay_Validate.py"
+      ],
+      "reason": "Authorable session art, radial encounter fixture and updated authoring/QA runner"
+    }
+  ],
+  "pr": {
+    "number": 33,
+    "url": "https://github.com/meliodr/juego-/pull/33",
+    "state": "DRAFT",
+    "remote_head_at_review": "52e8da322357cfd3fa5aeba0da69fbf1c29ca2c5"
+  },
+  "closed_labs": {
+    "21": "Closed by integrator as covered by PR30; no action by source-preparation agent"
+  },
+  "remote_ci": {
+    "commit": "52e8da322357cfd3fa5aeba0da69fbf1c29ca2c5",
+    "integrated_source_run": 43808923815,
+    "lab_audit_run": 43808923825,
+    "status": "SUCCESS",
+    "new_acf_export": "LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+  }
 }

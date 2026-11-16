@@ -51,7 +51,7 @@ public:
     virtual void Tick(float Dt) override;
     UPROPERTY() TObjectPtr<AIBS3PlanetWorld> Planet;
     UPROPERTY() TObjectPtr<AIBS5WorldLife> Life;
-    UPROPERTY() TObjectPtr<UIBPlayArt> Art;
+    UPROPERTY(EditAnywhere, Category="Presentation") TObjectPtr<UIBPlayArt> Art;
     UPROPERTY() TObjectPtr<AIBPlayCharacter> Hero;
     UPROPERTY(EditAnywhere) bool bPersistence=true;
     UPROPERTY(EditAnywhere) FString SaveSlot=TEXT("IB_Playable_S7_v1");

@@ -88,8 +88,9 @@ bool FIBPlayableEncounterTest::RunTest(const FString& Parameters)
         {
             TestTrue(TEXT("Conversion keeps exactly one loose cannon"),Target->GetSharedLoosePart()==Part);
             TestFalse(TEXT("Former cannon collider is disabled"),Target->GetPart()->IsCollisionEnabled());
-            Part->SetActorLocation(Ground+FVector(0,0,700),false,nullptr,ETeleportType::TeleportPhysics);
-            Hero->SetActorLocation(Part->GetActorLocation()+FVector(0,0,200));
+            const FTransform RadialFrame=Encounter->GetActorTransform();
+            Part->SetActorLocation(RadialFrame.TransformPosition(FVector(0,0,700)),false,nullptr,ETeleportType::TeleportPhysics);
+            Hero->SetActorLocationAndRotation(Part->GetActorLocation()+RadialFrame.GetUnitAxis(EAxis::X)*200,RadialFrame.GetRotation());
             auto* Grip=NewObject<UIBS35GripComponent>(Hero); Hero->AddInstanceComponent(Grip); Grip->RegisterComponent();
             TestTrue(TEXT("Shared grip can lift the detached cannon"),Grip->TryGrab(Part));
             FIBS4PreparedSnapshot State;
