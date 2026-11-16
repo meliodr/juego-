@@ -14,7 +14,7 @@ import subprocess
 
 PREFIXES = ("ImpactBeyond/Source/", "ImpactBeyond/Config/", "Tools/", "docs/", ".github/workflows/")
 ROOT_FILES = {".gitignore", "AGENTS.md", "README.md", "ImpactBeyond/ImpactBeyond.uproject"}
-EXTENSIONS = {".h", ".cpp", ".cs", ".py", ".ps1", ".md", ".json", ".yml", ".yaml", ".ini", ".csv", ".txt", ".toml", ".uproject"}
+EXTENSIONS = {".h", ".cpp", ".cs", ".py", ".ps1", ".cmd", ".md", ".json", ".yml", ".yaml", ".ini", ".csv", ".txt", ".toml", ".uproject"}
 PRIVATE_PATH = re.compile(r"[A-Za-z]:[/\\]+Users[/\\]+|/(?:home|Users)/[^/\s<>]+/")
 
 

@@ -4,6 +4,7 @@
 #include "ImpactGripMesh.generated.h"
 
 class UImpactCircuitComponent;
+class UIBS35GripComponent;
 
 UCLASS()
 class UImpactGripMesh : public USkeletalMeshComponent
@@ -12,6 +13,7 @@ class UImpactGripMesh : public USkeletalMeshComponent
 
 public:
 	void SetCircuit(UImpactCircuitComponent* InCircuit);
+    void SetSharedGrip(UIBS35GripComponent* InGrip) { SharedGrip = InGrip; }
 	void BeginFlightPoseBlend(float Duration = 0.18f);
 	virtual void FinalizeBoneTransform() override;
 
@@ -21,6 +23,7 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UImpactCircuitComponent> Circuit;
+    UPROPERTY(Transient) TObjectPtr<UIBS35GripComponent> SharedGrip;
 	TArray<FTransform> PreviousPose;
 	double BlendStart = 0.0;
 	float BlendDuration = 0.18f;

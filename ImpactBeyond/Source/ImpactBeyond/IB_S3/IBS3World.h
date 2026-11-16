@@ -1,0 +1,96 @@
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "IBS3Manifest.h"
+#include "IBS3World.generated.h"
+
+class USphereComponent;
+class UStaticMeshComponent;
+class UInstancedStaticMeshComponent;
+class USkyAtmosphereComponent;
+class UHierarchicalInstancedStaticMeshComponent;
+class UStaticMesh;
+class UMaterialInterface;
+
+UCLASS()
+class IMPACTBEYOND_API AIBS3Prop : public AActor
+{
+    GENERATED_BODY()
+public:
+    AIBS3Prop();
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Mesh;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Visual;
+    UPROPERTY() TSoftObjectPtr<UStaticMesh> CarMesh;
+    FIBS3ObjectDelta State;
+    void Restore(const FIBS3ObjectDelta& Delta, const FVector& WorldOrigin);
+    FIBS3ObjectDelta Capture(const FVector& WorldOrigin) const;
+    void Interact(FVector Direction);
+    void ApplyProductionAppearance();
+};
+
+UCLASS()
+class IMPACTBEYOND_API AIBS3Hub : public AActor
+{
+    GENERATED_BODY()
+public:
+    AIBS3Hub();
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UInstancedStaticMeshComponent> Pavement;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UInstancedStaticMeshComponent> Buildings;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> LandingPad;
+    bool Build(const FIBS3City& City, const FVector& Center, double Radius);
+    bool RefreshCollisionReady();
+    bool bCollisionReady = false;
+    bool bProductionVisuals = false;
+private:
+    UPROPERTY() TArray<TObjectPtr<UHierarchicalInstancedStaticMeshComponent>> ProductionBatches;
+    UPROPERTY() TArray<TSoftObjectPtr<UStaticMesh>> ProductionMeshes;
+    UPROPERTY() TArray<TSoftObjectPtr<UMaterialInterface>> ProductionMaterials;
+    void BuildProduction(const FIBS3City& City, const FVector& Center, double Radius);
+};
+
+UCLASS()
+class IMPACTBEYOND_API AIBS3PlanetWorld : public AActor
+{
+    GENERATED_BODY()
+public:
+    AIBS3PlanetWorld();
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaSeconds) override;
+    virtual void EndPlay(const EEndPlayReason::Type Reason) override;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly) TObjectPtr<UIBS3WorldManifest> Manifest;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Presentation") bool bProductionVisuals = false;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<USphereComponent> GroundCollision;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> PlanetProxy;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> NearSurface;
+    UPROPERTY(VisibleAnywhere) TObjectPtr<USkyAtmosphereComponent> Atmosphere;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly) FName ActiveCity;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly) FName DestinationCity;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly) TSet<FName> Discovered;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly) FString Status;
+    UPROPERTY(EditAnywhere) FString SaveSlot = TEXT("IB_S3_PlanetLab_v1");
+    UFUNCTION(BlueprintCallable) bool SaveState();
+    UFUNCTION(BlueprintCallable) void CycleDestination();
+    FVector CityPosition(const FIBS3City& City) const;
+    FVector OriginOffset() const;
+    FName RegionAt(FVector Position) const;
+    double P95Seconds() const;
+    bool IsReady(FName City) const;
+    bool IsOperational() const;
+    double AllowedSpeed(FVector Position, double RequestedSpeed) const;
+    bool CanTraverse(FVector Start,FVector End,double CapsuleExtentCm) const;
+    void UpdateResidency(FVector Position, double Speed);
+private:
+    friend class FIBS3SaveValidationTest;
+    UPROPERTY() TMap<FName,TObjectPtr<AIBS3Hub>> Hubs;
+    UPROPERTY() TMap<FName,TObjectPtr<AIBS3Prop>> Props;
+    UPROPERTY() TMap<FName,FIBS3ObjectDelta> Deltas;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CityProxies;
+    TArray<double> LoadSamples;
+    TMap<FName,double> LoadStartedAt;
+    bool bValid = false;
+    bool bSaveCompatible = true;
+    double NextResidencyUpdate = 0;
+    void LoadState();
+    void SeedObjects();
+    bool SnapshotProps();
+};

@@ -16,6 +16,11 @@
 		}
 	],
 	"Plugins": [
+        {
+            "Name": "GeometryScripting",
+            "Enabled": true,
+            "TargetAllowList": ["Editor"]
+        },
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,

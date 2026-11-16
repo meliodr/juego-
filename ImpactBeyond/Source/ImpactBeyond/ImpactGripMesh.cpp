@@ -3,6 +3,7 @@
 #include "Engine/SkeletalMesh.h"
 #include "Engine/World.h"
 #include "ImpactCircuitComponent.h"
+#include "IB_S35/IBS35GripComponent.h"
 #include "TwoBoneIK.h"
 
 void UImpactGripMesh::SetCircuit(UImpactCircuitComponent* InCircuit)
@@ -40,10 +41,10 @@ void UImpactGripMesh::FinalizeBoneTransform()
 		}
 
 		FVector Left, Right;
-		if (Circuit && Circuit->GetGripTargets(Left, Right))
+		if ((SharedGrip && SharedGrip->GetGripTargets(Left, Right)) || (Circuit && Circuit->GetGripTargets(Left, Right)))
 		{
 			const FReferenceSkeleton& Skeleton = GetSkeletalMeshAsset()->GetRefSkeleton();
-			const float Weight = Circuit->GetGripWeight();
+			const float Weight = SharedGrip ? SharedGrip->GetGripWeight() : Circuit->GetGripWeight();
 			SolveArm(Pose, Skeleton, TEXT("upperarm_l"), TEXT("lowerarm_l"), TEXT("hand_l"), Left, -1.0f, Weight);
 			SolveArm(Pose, Skeleton, TEXT("upperarm_r"), TEXT("lowerarm_r"), TEXT("hand_r"), Right, 1.0f, Weight);
 		}
@@ -65,7 +66,7 @@ void UImpactGripMesh::SolveArm(TArray<FTransform>& Pose, const FReferenceSkeleto
 	const FTransform MeshToWorld = GetComponentTransform();
 	const FVector Effector = FMath::Lerp(Pose[Hand].GetLocation(), MeshToWorld.InverseTransformPosition(Target), Weight);
 	const AActor* Owner = GetOwner();
-	const FVector ElbowOffset = Owner->GetActorRightVector() * Side * 48.0f - FVector::UpVector * 32.0f
+	const FVector ElbowOffset = Owner->GetActorRightVector() * Side * 48.0f - Owner->GetActorUpVector() * 32.0f
 		+ Owner->GetActorForwardVector() * 8.0f;
 	const FVector Pole = Pose[Upper].GetLocation() + MeshToWorld.InverseTransformVectorNoScale(ElbowOffset);
 	const TArray<FTransform> Original = Pose;

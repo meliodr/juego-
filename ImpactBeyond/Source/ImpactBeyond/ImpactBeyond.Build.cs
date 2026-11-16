@@ -18,7 +18,8 @@ public class ImpactBeyond : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"Slate"
+			"Slate",
+            "SlateCore"
 		});
 
 		PrivateDependencyModuleNames.Add("AnimationCore");

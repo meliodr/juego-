@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "status": "PROPOSED_UNREAL_NOT_EXECUTED",
+  "fixtureClass": "AIBS7TArenaFixture",
+  "enableFixtureDefault": false,
+  "regionReadyDefault": false,
+  "maxThreats": 2,
+  "threats": [
+    {"class": "AIBS7TThreatActor", "kaiju": false, "parts": ["Hammer", "Claw"], "target": "S4 Wall"},
+    {"class": "AIBS7TThreatActor", "kaiju": true, "parts": ["Horn", "Tail", "Shoulder"], "target": "S4 Crater"}
+  ],
+  "hudClass": "AIBS7TWheelHUD",
+  "componentClass": "UIBS7TWheelComponent",
+  "bindings": {"mouseOpen": "F9", "padOpen": "Gamepad_DPad_Up", "confirm": "release_same_device", "cancel": ["Escape", "Gamepad_FaceButton_Right"]},
+  "slots": [
+    {"AbilityId": 1, "Label": "Fixture 1", "IconId": "PLACEHOLDER_CIRCLE", "Cooldown": 0, "bAvailable": true},
+    {"AbilityId": 2, "Label": "Fixture 2", "IconId": "PLACEHOLDER_CIRCLE", "Cooldown": 2, "bAvailable": true},
+    {"AbilityId": 3, "Label": "Fixture 3", "IconId": "PLACEHOLDER_CIRCLE", "Cooldown": 0, "bAvailable": false},
+    {"AbilityId": 4, "Label": "Fixture 4", "IconId": "PLACEHOLDER_CIRCLE", "Cooldown": 0, "bAvailable": true},
+    {"AbilityId": 5, "Label": "Fixture 5", "IconId": "PLACEHOLDER_CIRCLE", "Cooldown": 0, "bAvailable": true},
+    {"AbilityId": 6, "Label": "Fixture 6", "IconId": "PLACEHOLDER_CIRCLE", "Cooldown": 0, "bAvailable": true}
+  ],
+  "notes": "JSON is an integration recipe, not automatically loaded. Slot IDs are fixture IDs, not S6 IDs. No power activation; provider rejects by default. No physical debris or final art."
+}

@@ -1,8 +1,8 @@
 # Preparación de la publicación S7
 
-**Estado: fuentes públicas preparadas; exportación final de Source y entrega jugable pendientes.** Base pública `6c2d903c708553e7c840d27a96e5eb86810cb8a7`. La rama nace directamente de esa base; no hereda el historial de all-staging ni sus commits locales de assets.
+**Estado: snapshot intermedio C++ `9ca77e1` exportado y compilado Editor + Game por el integrador; ajustes posteriores de autoría/Source, validación final, paquete y aceptación pendientes.** Base pública `6c2d903c708553e7c840d27a96e5eb86810cb8a7`. La rama nace directamente de esa base; no hereda el historial de all-staging ni sus commits locales de assets.
 
-La lista exacta de fuentes S2.5 ya recuperadas y de rutas candidatas está en [IB_S7_PUBLIC_EXPORT.json](IB_S7_PUBLIC_EXPORT.json). Su inventario preliminar corresponde a `4f95872`; no identifica la futura build final. Los campos de commit final, exportación y evidencia se completan únicamente cuando el integrador entregue el SHA congelado.
+La lista exacta de fuentes S2.5 ya recuperadas y de rutas candidatas está en [IB_S7_PUBLIC_EXPORT.json](IB_S7_PUBLIC_EXPORT.json). El inventario preliminar `4f95872` se conserva como historial. Los campos de exportación fijan ahora `9ca77e1` y sus archivos/hashes; una actualización posterior de autoría se registrará aparte. No se identifica todavía una build final aceptada.
 
 ## Exportación final
 
@@ -17,13 +17,13 @@ El repositorio conserva los assets que ya estaban en la base pública. Esta oper
 
 ## Comprobaciones antes de publicar
 
-El workflow existente `Lab audit tests` conserva sus pruebas de gates. `Integrated source checks` añade política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17 con MSVC en Windows. Falta cualquier suite requerida implica fallo, nunca PASS vacío. Un repo que solo contiene esta preparación aún no puede pasar la etapa nativa: Source final no se ha exportado.
+El workflow existente `Lab audit tests` conserva sus pruebas de gates. `Integrated source checks` añade política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17 con MSVC en Windows. Falta cualquier suite requerida implica fallo, nunca PASS vacío. Las 13 suites pasaron localmente sobre la exportación `9ca77e1`; la ejecución remota de GitHub Actions sigue pendiente de publicación.
 
 `IBCI_Native.py` admite `--root` y salida fuera del checkout. No ejecuta UBT/editor, no instala herramientas y comprueba hashes antes/después para detectar cambios durante las pruebas. Los wrappers históricos `IBS35_CheckScope.py`, `IBS4_Check.py` e `IBS6H_Check.py` conservan gates de laboratorios S2; no se usan como CI de integración porque rechazan legítimamente cambios compartidos.
 
 La comparación S35/S4 se conserva actualizada: rechaza replay con timestamp refrescado e IDs retirados tras reutilizar slots; mantiene pruebas de signo, unidades, categorías, capacidad e inmunidad. Los tests `ImpactContractNative` y `IBS4_ContractConsumerTests` cubren además el contrato canónico actual. No confundir esa comparación con ejecución de UObject/CMC.
 
-Preparación comprobada localmente: 12 suites nativas del staging con snapshot estable y 282 assertions de la comparación actualizada, compiladas con MSVC; pruebas de recetas documentadas en [reconstrucción S2.5](IB_S25_SOURCE_REBUILD.md). La ejecución de las 13 juntas en la exportación final y en GitHub sigue pendiente. No se ha ejecutado Unreal desde este frente.
+Exportación comprobada localmente: 13 suites nativas juntas con MSVC y snapshot estable, incluida la comparación actualizada de 282 assertions; [recibo nativo](IB_S7_NATIVE_VALIDATION.json). Geometría S3 y recetas S2.5 también pasaron. GitHub Actions todavía no se ha ejecutado. No se ha ejecutado Unreal desde este frente.
 
 El integrador añade evidencia del SHA final para Editor/Game, automatización real de input, cook/paquete, DX12/audio, controles, persistencia y rendimiento. Registrar aparte las comprobaciones que requieren DualSense físico y aceptación humana. No afirmar S7 completado porque el CI nativo esté verde.
 

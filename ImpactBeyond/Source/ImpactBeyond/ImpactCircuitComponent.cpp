@@ -12,6 +12,52 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
+#include "IB_Integration/ImpactContract/ImpactContractUE.h"
+
+// One route for the circuit panel's lifetime. This is a producer hookup to the
+// canonical adapter, not another damage policy or a second S35 health receiver.
+struct FImpactCircuitCanonical
+{
+	TWeakObjectPtr<UIBS4ResponseComponent> Response;
+	FGuid Session = FGuid::NewGuid();
+	FGuid TargetLife = FGuid::NewGuid();
+	FGuid Part = FGuid::NewGuid();
+	FGuid Instigator = FGuid::NewGuid();
+	TUniquePtr<IBImpactUE::S4Bridge> Bridge;
+	TWeakObjectPtr<UObject> Owner;
+	explicit FImpactCircuitCanonical(UIBS4ResponseComponent& InResponse, UObject& InOwner) : Response(&InResponse), Owner(&InOwner)
+	{
+		Bridge = MakeUnique<IBImpactUE::S4Bridge>(InResponse, InOwner, Session, TargetLife, FName(TEXT("Circuit.Panel.Concrete")));
+		// This panel currently accepts only captured S35 physical contacts below.
+		// Native S4 ingress has no captured identity here and must fail closed.
+		FIBS4IngressRouter Ingress;
+		Ingress.BindLambda([](UIBS4ResponseComponent&, const FIBS4Hit&) {});
+		if (!InResponse.BindConsumer(&InOwner, Ingress)) { Bridge.Reset(); }
+	}
+	~FImpactCircuitCanonical()
+	{
+		if (Response.IsValid() && Owner.IsValid()) { Response->UnbindConsumer(Owner.Get()); }
+	}
+};
+
+void FImpactCircuitCanonicalDeleter::operator()(FImpactCircuitCanonical* Ptr) const { delete Ptr; }
+UImpactCircuitComponent::~UImpactCircuitComponent() = default;
+
+void UImpactCircuitComponent::EndPlay(const EEndPlayReason::Type Reason)
+{
+	Canonical.Reset();
+	Super::EndPlay(Reason);
+}
+
+int32 UImpactCircuitComponent::GetCanonicalAcceptedHits() const
+{
+	return Canonical && Canonical->Response.IsValid() ? Canonical->Response->AcceptedHits : 0;
+}
+
+float UImpactCircuitComponent::GetCanonicalTargetHealth() const
+{
+	return Canonical && Canonical->Response.IsValid() ? Canonical->Response->Health : -1.0f;
+}
 
 namespace
 {
@@ -89,6 +135,16 @@ void UImpactCircuitComponent::BeginPlay()
 	}
 
 	ChassisExtent = Car->GetStaticMesh()->GetBounds().BoxExtent * Car->GetComponentScale().GetAbs();
+	// The circuit owns this tagged panel. Never stack another health receiver on it.
+	if (!Panel->GetOwner()->FindComponentByClass<UIBS4ResponseComponent>())
+	{
+		UIBS4ResponseComponent* Response = NewObject<UIBS4ResponseComponent>(Panel->GetOwner());
+		Response->Surface = EIBS4Surface::Concrete;
+		Response->bH01 = false;
+		Panel->GetOwner()->AddInstanceComponent(Response);
+		Response->RegisterComponent();
+		Canonical.Reset(new FImpactCircuitCanonical(*Response, *this));
+	}
 	AddTickPrerequisiteComponent(Hero->GetCharacterMovement());
 	Hero->GetMesh()->AddTickPrerequisiteComponent(this);
 	SetComponentTickEnabled(true);
@@ -373,6 +429,7 @@ void UImpactCircuitComponent::TickComponent(float DeltaTime, ELevelTick TickType
 			if (Vehicles.Contains(Car.Get()))
 			{
 				LaunchedVehicle = Car;
+				ThrowAttackId = FGuid::NewGuid(); // one ID per physical release, not per contact
 				PrePhysicsCarVelocity = LaunchVelocity;
 			}
 			// REPIRK PhysicsGrabber: release first, then apply a mass-independent impulse and haptic pulse.
@@ -397,6 +454,26 @@ void UImpactCircuitComponent::OnCarHit(UPrimitiveComponent* HitComponent, AActor
 	{
 		return;
 	}
+
+	if (!Canonical || !Canonical->Bridge || !ThrowAttackId.IsValid()) { return; }
+	FIBS35DamageMessage Contact;
+	Contact.AttackId = ThrowAttackId;
+	Contact.TargetId = Canonical->TargetLife;
+	Contact.InstigatorId = Canonical->Instigator;
+	Contact.InstigatorActor = Hero;
+	Contact.TargetPart = OtherComponent;
+	Contact.DamageKind = EIBS35DamageKind::ThrownObject;
+	// Preserve the old circuit's thresholded, single-impact break; S4 alone mutates HP.
+	Contact.HealthDelta = -100.0f;
+	Contact.Contact = Hit.ImpactPoint;
+	Contact.RelativeVelocity = PrePhysicsCarVelocity - OtherComponent->GetPhysicsLinearVelocity();
+	Contact.Impulse = NormalImpulse;
+	Contact.bPhysicsResolved = true; // Chaos has resolved this contact; no second impulse
+	Contact.bAirborne = Hero->GetCharacterMovement()->IsFlying();
+	Contact.AttackSeconds = PhaseTime;
+	Contact.SurfaceMaterial = TEXT("Concrete");
+	const auto Record = Canonical->Bridge->ReceiveS35(Contact, OtherComponent, Canonical->Part);
+	if (Record.Result.State != IBImpact::Status::Accepted) { return; }
 
 	Panel->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Panel->SetVisibility(false);
