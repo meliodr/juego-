@@ -1,6 +1,6 @@
 # Candidata integrada S1–S7: fuentes y reproducción
 
-C++ `fa75f7f`, autoría `730b39f` y configuración/validador de paquete `17d7f91`, exportados a una rama limpia desde main. Game, autoría, cook actualizado `s7-package-20261116T060244Z` y dos perfiles DX12 están aprobados. El gate final detectó instancing ausente en el agua pese al PASS de cuatro suites; la corrección de autoría pasó verificando once materiales y cambiando solo agua; el recook pasó en 37,01 s; faltan cuatro funcionales con gate limpio, perfil confirmatorio y arranque visible Steam; no se declara aceptación humana. El [manifiesto](IB_S7_PUBLIC_EXPORT.json) fija revisiones/archivos y la [evidencia actual](IB_S7_CLOSURE_REVIEW.md) separa resultados y límites.
+Versión jugable integrada con C++ `fa75f7f`, autoría `730b39f` y configuración/validador `17d7f91`. Game, autoría, paquete final `s7-package-20261116T060244Z`, doce suites funcionales del ejecutable, cuatro del paquete DX12 y perfil confirmatorio aprobados. El [manifiesto](IB_S7_PUBLIC_EXPORT.json) fija revisiones y hashes; [resultados y límites](IB_S7_CLOSURE_REVIEW.md). Solo queda confirmar el arranque visible Steam tras cerrar un aviso Windows de QA; control físico y evaluación humana son comprobaciones separadas.
 
 ## Entrada y responsabilidades
 
@@ -46,3 +46,7 @@ python -B Tools/IBCI_Native.py --output ../qa-native
 El gate de publicación inspecciona todo commit introducido, no solo el diff final. La suite nativa exige 13 fixtures y compila C++17 con MSVC en Windows; los outputs deben estar fuera del checkout. El test de texturas locales S2.5 puede omitirse explícitamente cuando no se han provisto bytes; sus recetas y recibos sí se prueban.
 
 Un PASS nativo cubre políticas y matemáticas. No valida UObject/CMC, controles de Unreal, DX12/audio, rendimiento, paquete ni sensación. El informe final debe distinguir las pruebas anteriores de la candidata `fa75f7f` y de la versión exacta del paquete probado. Los scripts públicos no incluyen bytes de los recursos privados ni certifican su aspecto en la partida.
+
+## Arranque de la entrega local
+
+Usar el acceso ImpactBeyond existente en Steam con **Activar Steam Input**. Argumentos recomendados: `-dx12 -windowed -ResX=1920 -ResY=1080 -UDPMESSAGING_TRANSPORT_ENABLE=0`. El último argumento desactiva el transporte UDP de mensajería del motor, innecesario para esta partida offline; no concede permisos de red ni modifica el firewall. La configuración de Steam Input ya fue comprobada en UI. El primer arranque visible está pendiente de cerrar un aviso Windows de una sesión QA anterior.

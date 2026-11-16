@@ -1,6 +1,6 @@
 # Procedencia del arte de la versión jugable S7
 
-Actualizado: 2026-11-16. Esta nota registra instalación, autoría ejecutada y pruebas con alcance explícito. **El paquete actual pasó dos perfiles DX12; el gate final de materiales detectó un uso de instancing pendiente de corregir en el agua.**
+Actualizado: 2026-11-16. Esta nota registra instalación, autoría ejecutada y pruebas con alcance explícito. **La autoría y el paquete final pasaron las pruebas DX12, el gate de contenido y el perfil confirmatorio; la evaluación humana se registra aparte.**
 
 | Recurso | Adquisición e instalación confirmadas en esta entrega | Carpeta de contenido |
 |---|---|---|
@@ -19,6 +19,6 @@ La autoría integrada en `b341476` **pasó con exit 0 y cero dependencias ausent
 
 El script escribió `Saved/IB_Playable_Authoring/author-report.json` con referencias, nombres de huesos, recuentos, advertencias y dependencias. La receta actual verifica flags de instancing de ocho materiales del mundo y tres del árbol, propios/CC0, que enumera la [receta reproducible](IB_S25_SOURCE_REBUILD.md), sin modificar padres compartidos, texturas ni fuentes Fab. Los `.uasset` modificados se guardan localmente y no forman parte de esta exportación.
 
-El paquete actualizado `8b56a20` pasó cook en `s7-package-20261116T060244Z` (37,01 s), con el mismo ejecutable C++ `fa75f7f`. El único cambio de contenido posterior a las dos mediciones fue el flag local de instancing del agua. Las dos mediciones anteriores siguen identificadas por su paquete y SHA del ejecutable; falta una confirmación sobre el contenido recocinado.
+El paquete final `8b56a20` pasó cook en `s7-package-20261116T060244Z` (37,01 s), cuatro funcionales DX12 con cero recursos ausentes/materiales de reserva en `s7-tests-20261116T060433Z` y perfil confirmatorio en `s7-tests-20261116T060613Z`. El ejecutable C++ `fa75f7f` conserva el mismo SHA-256 probado. El último cambio de contenido fue el flag local de instancing del agua; sus bytes no se exportan.
 
-Las cuatro suites funcionales DX12 con gate de contenido están en curso; perfil confirmatorio y arranque visible Steam quedan pendientes. Las pruebas de RealInput usan eventos simulados, no DualSense físico. No se publican imágenes, frames, texturas ni assets. [Resultados y límites actuales](IB_S7_CLOSURE_REVIEW.md); las correcciones históricas quedan en el manifiesto.
+El perfil final de 90,011 s usa salida 1920×1080, escala interna 83%, calidad alta/2 y límite 60 FPS: media 59,9253 FPS, p95 16,6848 ms, p99 16,7421 ms, máximo 93,0082 ms con un fotograma >50 ms. No garantiza rendimiento universal ni sustituye revisión humana. Steam Input está configurado; arranque visible pendiente de cerrar aviso Windows de QA, sin cambios de firewall. No se publican imágenes, frames, texturas ni assets. [Resultados y límites](IB_S7_CLOSURE_REVIEW.md).

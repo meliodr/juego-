@@ -1,51 +1,43 @@
-# Evidencia actual de la candidata S7
+# Versión jugable S1–S7: validación de entrega
 
-C++ `fa75f7f`; autoría `730b39f`; configuración/validador de paquete `17d7f91`. Paquete actual: `8b56a20`, `s7-package-20261116T060244Z` (37,01 s), con el mismo ejecutable C++ `fa75f7f`. La candidata tiene build, autoría, cook y dos mediciones aprobados; el gate final de materiales detectó agua sin soporte de instancias y requiere una corrección de autoría/recook; **no se declara aceptación humana de S7**. Rigen los criterios de [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
+C++ `fa75f7f`, autoría `730b39f`, configuración/validador `17d7f91`. Paquete final local `8b56a20`, run `s7-package-20261116T060244Z`. **Build, autoría, pruebas funcionales del paquete y perfil DX12/audio aprobados.** La evaluación humana y el mando físico se registran aparte.
 
-## Gates observados
+## Evidencia final
 
 | Gate | Resultado y alcance |
 |---|---|
-| CI pública `a645030` | Integrated source checks `43813155209` y Lab audit tests `43813155278` PASS; 13 suites nativas |
-| Compilación | Game `fa75f7f` PASS, `s7-build-20261116T054825Z`, 114,26 s. Último Editor: `6b4631d`; cambio posterior limitado a QA de framebuffer/GPU y dependencias RHI |
-| Autoría | Partida generada con cero dependencias ausentes. Corrección final `ead1d59`, `s7-author-20261116T060201Z`: PASS; once materiales verificados, solo `agua` cambiado y guardado localmente |
-| Producción | PlayableSession, S3 Contacts —seis superficies— y S7 PreparedEncounter PASS, `s7-tests-20261116T053308Z`; grafo de ticks sin ciclos ni warnings |
-| Reentrada S3 | Diez regresos físicos PASS en S3Lab, `s7-tests-20261116T053404Z`; no equivale a tres circunnavegaciones renderizadas en producción |
-| Funcionales DX12 anteriores | Cuatro suites PASS sobre paquete `17d7f91`, `s7-tests-20261116T054558Z`: PlayableSession, RealInput, S3 Contacts y PreparedEncounter; cero recursos ausentes/materiales de reserva |
-| Paquete actual | Cook/paquete `8b56a20` PASS, `s7-package-20261116T060244Z`, 37,01 s; cuatro funcionales DX12 con gate de contenido en curso |
-| Steam | Acceso actualizado al ejecutable actual y Activar Steam Input comprobado en UI; arranque visible pendiente |
+| CI pública `dce329e` | Integrated source checks `43814696403` y Lab audit tests `43814696452` PASS; 13 suites nativas |
+| Compilación | Game `fa75f7f` PASS, `s7-build-20261116T054825Z`, 114,26 s. Último Editor `6b4631d`; cambio posterior limitado a QA de framebuffer/GPU y dependencias RHI |
+| Autoría | `s7-author-20261116T060201Z` PASS: once materiales verificados; solo `agua` cambió y se guardó localmente. Partida generada sin dependencias ausentes |
+| Paquete final | `s7-package-20261116T060244Z` PASS, 37,01 s |
+| Funcionales del ejecutable | Doce suites PASS, `s7-tests-20261116T055829Z`, ejecutable exacto `fa75f7f` |
+| Funcionales del paquete DX12 | `s7-tests-20261116T060433Z` PASS: PlayableSession, RealInput, S3 Contacts y S7 PreparedEncounter; cero recursos ausentes/materiales de reserva |
+| Reentrada S3 | Diez regresos físicos PASS en S3Lab, `s7-tests-20261116T053404Z` |
+| Steam | Steam Input configurado y comprobado en UI; arranque visible pendiente de cerrar aviso Windows de QA, sin conceder red ni cambiar firewall |
 
-Los resultados Unreal fueron comunicados por el integrador, único operador de editor/UBT/cook. Las revisiones y fallos anteriores se conservan en el [manifiesto de evidencia](IB_S7_PUBLIC_EXPORT.json); no invalidan ni se confunden con los runs corregidos.
+SHA-256 del ejecutable probado: `6C7741F10E1350CF56A8A80C84B34300CBB2A29E33E8E3BB3B09DD5DEEAE4337`. El ajuste final del agua solo cambió contenido local; la comprobación funcional y el perfil siguientes utilizaron el paquete actualizado. El [manifiesto](IB_S7_PUBLIC_EXPORT.json) conserva revisiones e intentos históricos separados de estos resultados.
 
-## Dos perfiles previos a la corrección del agua
+## Perfil del paquete final
 
-Run `s7-tests-20261116T055356Z`, 90,008 s y 5.397 fotogramas. DX12 con audio y reloj real, salida **1920×1080**, escala interna **83%**, calidad **2** y límite **60 FPS**. Fortnite estaba ausente; se mide el equipo en su estado real, según la preferencia del usuario.
+Run `s7-tests-20261116T060613Z`: **90,011 s, 5.395 fotogramas**, recorrido local de 208,47 m y 75,01 s de vuelo. DX12 con audio y reloj real, salida **1920×1080**, escala interna **83%**, calidad **alta/2**, límite **60 FPS**. Fortnite ausente; se midió el equipo en su estado real: Intel Core i9-14900HX y NVIDIA GeForce RTX 4070 Laptop GPU, confirmados por los metadatos CPU/RHI del log.
 
-| Métrica | Primera medición `055356Z` | Segunda medición `055617Z` |
-|---|---:|---:|
-| FPS medios | 59,94 | 59,9848 |
-| Fotograma p95 / p99 | 16,7181 / 16,9259 ms | 16,684 / 16,7149 ms |
-| Fotograma máximo | 50,018 ms | 26,2070 ms |
-| Fotogramas >50 ms | 1 | 0 |
-| GPU media / p95 / p99 | 6,144 / 6,8109 / 7,2065 ms | No informado en este resumen |
+| Métrica | Resultado |
+|---|---:|
+| FPS medios | 59,9253 |
+| Fotograma p95 / p99 | 16,6848 / 16,7421 ms |
+| Fotograma máximo | 93,0082 ms |
+| Fotogramas >50 ms | 1 |
+| GPU media / p95 / p99 | 6,8739 / 7,6963 / 8,1459 ms |
+| VRAM máxima de toda la GPU | 2.831 MiB |
 
-Ambas mediciones pasaron sobre el mismo ejecutable SHA-256 `6C7741F10E1350CF56A8A80C84B34300CBB2A29E33E8E3BB3B09DD5DEEAE4337`. La segunda no tuvo fotogramas >33,33 ms. Sus resultados permanecen ligados a ese paquete anterior a la corrección del agua; falta una medición confirmatoria del recook.
+VRAM corresponde al total de la GPU, no únicamente al juego. El perfil es un ensayo local con límite de FPS y render interno escalado; no garantiza la misma tasa en otras rutas, densidades o condiciones. Los dos perfiles previos del mismo ejecutable se conservan como antecedentes, con su contenido y configuración identificados.
 
-El resultado no es rendimiento sin límite ni render interno nativo 1080p; tampoco garantiza la misma tasa en recorridos, densidades o condiciones diferentes. Las pruebas funcionales anteriores tenían Fortnite activo y no se usan como benchmark.
+## Alcance verificado y límites
 
-El gate final detectó falta de instancing en `/Game/IB_Donors/CityKit/hotel/hotel/Materials/agua`. La corrección de autoría `730b39f` pasó: once materiales verificados, solo `agua` cambió; los otros diez ya tenían instancing. No hay cambios C++. El recook actualizado pasó; cuatro funcionales con el gate de contenido están en curso y queda un perfil confirmatorio. No se considera resuelto por el PASS de las aserciones de gameplay.
+- Robot con dos piezas funcionales y kaiju con tres partes, dos ataques anunciados, consecuencias de desarme y cuerpo vencible sin desmontar todo. Políticas/runtime cubren deduplicación, una pieza física por PartId y restauración.
+- Sesión y héroes comparten impacto canónico, receptores, agarre y persistencia. Encuentro preparado, contactos y grafo de ticks pasaron en producción.
+- Cada héroe ofrece seis poderes; la rueda equipa sin activar, cancela y conserva el poder anterior al refrescar. El HUD presenta seis sectores; no se anuncia presentación para siete u ocho.
+- RealInput valida eventos simulados mediante PlayerController. DualSense físico, sensación, revisión visual humana y pruebas sostenidas más amplias del plan son alcances diferentes; los resultados actuales no se convierten en aceptación humana.
+- Los regresos S3Lab no equivalen a tres circunnavegaciones renderizadas. El perfil local tampoco certifica coste máximo tras visitar todas las regiones.
 
-## Contratos S7 y límites
-
-- Robot con Hammer/Claw funcionales y kaiju con Horn/Tail/Shoulder, dos ataques anunciados, consecuencias de desarme y cuerpo vencible sin desmontar todas las partes. Políticas y runtime cubren deduplicación, una pieza física por PartId y restauración.
-- Sesión y héroes comparten ImpactContract, receptores, agarre y persistencia. El encuentro preparado y el grafo de ticks pasaron en producción.
-- La rueda equipa sin activar, cancela y conserva el poder anterior al refrescar. Cada héroe ofrece seis poderes y el HUD distribuye seis sectores; no se afirma presentación correcta de 7–8 sectores aunque la política los admite.
-- RealInput inyecta teclado, mando y stick mediante PlayerController. No certifica DualSense físico, selección direccional con ratón, pérdida de foco ni sensación; estas comprobaciones se mantienen separadas.
-- Escala provisional: robot 4 m y kaiju 8 m. La sesión crea amenazas por región y activa las cercanas; residencia/coste tras viajes y aceptación artística requieren su propio recorrido.
-
-## Pendiente para cerrar esta entrega
-
-1. Validar el paquete recocinado con la autoría del agua corregida: cuatro funcionales más gate de contenido y un perfil confirmatorio sobre el paquete actualizado.
-2. Arranque visible desde Steam y revisión de imagen/audio, piezas, telegráficos, rueda y persistencia de la partida entregada.
-3. Registrar los límites de las pruebas acotadas frente a la QA sostenida del plan; no equivalen a certificar todos sus recorridos y ciclos. DualSense físico y valoración humana permanecen separados.
-4. Publicar la evidencia final y reconciliar los PR cubiertos/sustituidos conservando su historial. S8 sigue después de este cierre.
+El paso operativo pendiente es confirmar la apertura visible desde el acceso Steam. La publicación de fuentes y reconciliación de PR pueden avanzar con los gates aprobados. Después, la valoración del usuario orientará refinamientos y el siguiente sprint, sin presentar S8 como entregado.

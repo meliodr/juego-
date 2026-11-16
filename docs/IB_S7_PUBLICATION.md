@@ -2,7 +2,7 @@
 
 La rama nace de la base pública `6c2d903` y contiene una exportación de fuentes, sin historial privado de arte. Snapshot C++ `fa75f7f`, autoría `730b39f`, configuración y validador de paquete `17d7f91`. [Archivos y hashes exactos](IB_S7_PUBLIC_EXPORT.json).
 
-Estado actual: Game, autoría, cook y dos perfiles DX12 aprobados; CI de `a645030` verde. El gate final de contenido falló por instancing del agua aunque las cuatro suites aprobaron sus aserciones. Autoría corregida PASS (once materiales, solo agua guardado); recook `8b56a20` aprobado en 37,01 s; cuatro funcionales con gate limpio, perfil confirmatorio y arranque visible Steam pendientes. [Evidencia y límites](IB_S7_CLOSURE_REVIEW.md). PR33 continúa en borrador hasta que el integrador valide el cierre.
+Estado actual: versión jugable validada mediante build, autoría, paquete final, doce suites funcionales del ejecutable, cuatro suites DX12 del paquete, gate de contenido limpio y perfil confirmatorio. CI de `dce329e` verde. [Evidencia y límites](IB_S7_CLOSURE_REVIEW.md). La publicación e integración pueden avanzar; el arranque visible Steam sigue pendiente de cerrar un aviso Windows, sin conceder permisos de red. La evaluación humana permanece separada.
 
 ## Contrato de exportación
 
@@ -11,13 +11,13 @@ Estado actual: Game, autoría, cook y dos perfiles DX12 aprobados; CI de `a64503
 - Exportar solo Source, configuración textual, herramientas seleccionadas y documentación revisada. No añadir Content binario, packs Fab, derivados privados, Binaries, Intermediate, Saved, DDC, fuentes descargadas, frames ni capturas.
 - Los assets ya presentes en la base pública permanecen intactos. Los flags locales de ocho materiales del mundo y tres del árbol se reconstruyen mediante la [receta](IB_S25_SOURCE_REBUILD.md); no se publican sus `.uasset` modificados.
 - Revisar datos y rutas personales en documentos y recibos. El gate inspecciona cada commit introducido: añadir y después borrar un asset no lo elimina de la auditoría.
-- La versión final debe registrar commit, archivos y pruebas exactas. `final_source_commit` permanece sin fijar mientras se valida la entrega; no convertir un snapshot intermedio en aceptación por cambiar una etiqueta.
+- La versión final debe registrar commit, archivos y pruebas exactas. `final_source_commit` fija el C++ `fa75f7f`; la autoría y contenido local tienen sus revisiones separadas. La aceptación humana no se infiere de esa etiqueta.
 
 Un clone de fuentes requiere provisión legal local y autoría del mapa. Compilar C++ no suministra el arte ni garantiza el arranque de `/Game/IB_Playable/Lvl_IB_Playable`.
 
 ## CI y comprobaciones
 
-[Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43813155209) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43813155278) aprobaron `a645030`. Incluyen política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17/MSVC. Una fixture requerida ausente provoca fallo.
+[Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43814696403) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43814696452) aprobaron `dce329e`. Incluyen política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17/MSVC. Una fixture requerida ausente provoca fallo.
 
 `IBCI_Native.py` escribe fuera del checkout, verifica estabilidad de hashes y no ejecuta Unreal ni instala herramientas. Las pruebas nativas no certifican física CMC/Chaos, render, audio o control humano. La comparación S35/S4 conserva casos de unidades/categorías/inmunidad y rechazo de replay; el contrato canónico tiene sus propias pruebas. [Recibo nativo inicial](IB_S7_NATIVE_VALIDATION.json) y resultados remotos quedan identificados por revisión.
 
