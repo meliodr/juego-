@@ -14,3 +14,13 @@ El autor declara CC BY 4.0 y dispensa atribución en el texto; conservar crédit
 
 ## Estado
 Ambas entradas: candidato documental, no dependencia aceptada. No se ha escuchado audio, medido rendimiento, inspeccionado bytes ni validado arte. Elegir como máximo el subconjunto necesario y verificarlo en sandbox con el responsable del proyecto antes de importar. No se inicia nueva búsqueda masiva de Fab.
+
+## Contraste dirigido de asfalto: conservar la opción existente
+
+Revisión documental adicional del 16 de noviembre, sin acceder a bytes del proyecto local ni ejecutar sus recetas.
+
+- [Asphalt de Quixel](https://www.fab.com/listings/eb97ec51-1041-46a4-831d-78178efd2651): Free, texture set/glTF, área de escaneo 2 × 2 m; la ficha recuperada indica uso con IA **Yes**.
+- [Asphalt Surface de Quixel](https://www.fab.com/listings/7ed0b883-55d3-456a-ba47-f2a2112d7c2b): Free, texture set/glTF, área 0,42 × 0,42 m; la ficha recuperada también indica uso con IA **Yes**. Por tanto, esta consulta no reproduce la diferencia de indicadores informada previamente. No inferir una fecha de cambio ni invalidar una captura anterior: guardar la licencia concreta al adquirir. Ninguno se descargó o probó en UE5.8.
+- El proyecto ya tiene una ruta documentada para [Asphalt 02 de Poly Haven](https://polyhaven.com/a/asphalt_02), CC0 según [licencia oficial](https://polyhaven.com/license). `Tools/IBS25_pbr.py` selecciona tres mapas 2K y `Tools/IBS25_sources/manifest.json` registra sus tamaños y SHA256: basecolor, normal DirectX y rugosidad. `docs/IB_S25_SOURCE_REBUILD.md` registra `/Game/IB_S25/Materials/M_Asphalt` entre los materiales de producción. Esto acredita receta/procedencia y recibos publicados, no una nueva verificación de archivos locales o del render actual.
+
+**Decisión concreta:** no sustituir ahora el asfalto por Quixel ni añadir ambas alternativas al catálogo activo. Ya existe un recurso CC0 con receta y recibos. Primero diagnosticar escala UV, repetición, normal, rugosidad e iluminación en la misma build que se evalúe; cambiar de fuente solo si una captura comparativa demuestra una carencia que el material existente no puede resolver. Si hiciera falta un ensayo Quixel, usar un único material aislado, comprobar licencia y tamaño y conservar el original. La distinta área de escaneo obliga a respetar escala física; mayor densidad declarada no demuestra mejor apariencia o rendimiento. Ningún archivo de otros trabajos fue modificado.
