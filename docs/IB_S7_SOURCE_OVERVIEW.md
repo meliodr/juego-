@@ -1,6 +1,6 @@
 # Candidata integrada S1–S7: fuentes y reproducción
 
-La fuente C++ y las herramientas se exportan del snapshot `acf4156` a una rama pública limpia. **Es una candidata en validación, no una declaración de S7 jugable aceptado.** El integrador reportó Editor aprobado para `acf4156` y Game aprobado para `9ca77e1`. Los cambios posteriores de autoría/QA y el paquete se siguen por separado; esta exportación aún es intermedia. El [manifiesto de exportación](IB_S7_PUBLIC_EXPORT.json) fija los archivos y hashes; el [plan activo](PLAN_ACTIVO.md) fija lo que falta demostrar.
+La fuente C++ y las herramientas se exportan de `6b4631d`, con `IBPlay_AuthorProduction.py` actualizado exactamente desde `742ff49` a una rama pública limpia. **Es una candidata en validación, no una declaración de S7 jugable aceptado.** Editor y Game pasaron en `s7-build-20261116T052603Z` (Editor: 181,87 s). La autoría de `b341476` pasó con exit 0 y cero dependencias ausentes (`s7-author-20261116T053232Z`); los cambios locales de materiales no se exportan. El integrador reportó pruebas funcionales, sesión e input DX12 en revisiones anteriores; sus resultados y límites están en la [revisión de cierre](IB_S7_CLOSURE_REVIEW.md). El [manifiesto de exportación](IB_S7_PUBLIC_EXPORT.json) fija archivos y hashes, y el [plan activo](PLAN_ACTIVO.md) conserva los criterios de entrega.
 
 ## Entrada y responsabilidades
 
@@ -26,7 +26,7 @@ No se incorporan assets nuevos de Content ni historial privado de arte. Los recu
 1. Compilar el proyecto con la instalación Windows/UE del proyecto. Solo el integrador ejecuta Unreal/UBT/cook; los CI públicos no redistribuyen ni instalan Unreal.
 2. Generar el mapa/manifiesto/mallas originales S3 con `Tools/IBS3_AuthorLab.py` en una sesión exclusiva. Proveer los materiales y árbol S2.5 según [su receta](IB_S25_SOURCE_REBUILD.md), conservando fachadas y donantes existentes.
 3. Proveer Adventure Characters, Robot 13 y Bull con sus rutas originales locales. [Procedencia](IB_S7_ASSET_PROVENANCE.md). No publicar estos paquetes ni derivados privados.
-4. Configurar `IB_PLAY_DONOR_CONTENT` con el Content del proyecto donante autorizado. El script no tiene fallback personal. Ejecutar `Tools/IBPlay_AuthorProduction.py` en Unreal ya compilado; produce derivados y el mapa bajo `/Game/IB_Playable`, ignorados por Git.
+4. Configurar `IB_PLAY_DONOR_CONTENT` con el Content del proyecto donante autorizado. El script no tiene fallback personal. Ejecutar `Tools/IBPlay_AuthorProduction.py` en Unreal ya compilado; produce derivados y el mapa bajo `/Game/IB_Playable`, ignorados por Git. También aplica únicamente los flags de instancing a los siete materiales S25 propios/CC0 enumerados por la [receta de reconstrucción](IB_S25_SOURCE_REBUILD.md). No modifica padres, texturas ni recursos Fab; los `.uasset` locales modificados no se publican.
 5. Validar referencias, colisión, animación, materiales y cocinar el paquete. `DefaultEngine.ini` apunta a `/Game/IB_Playable/Lvl_IB_Playable`: **no arrancará esa partida en un clone que todavía carece de ese mapa generado**. El arte no queda implícitamente disponible por compilar el C++.
 
 La selección de la plantilla base y las herramientas ya existentes no cambia su licencia. El procesamiento local de donantes no envía mallas, texturas o bytes NoAI al modelo. Los informes públicos incluyen solo código, rutas de paquetes, nombres y recuentos revisados.
@@ -45,4 +45,4 @@ python -B Tools/IBCI_Native.py --output ../qa-native
 
 El gate de publicación inspecciona todo commit introducido, no solo el diff final. La suite nativa exige 13 fixtures y compila C++17 con MSVC en Windows; los outputs deben estar fuera del checkout. El test de texturas locales S2.5 puede omitirse explícitamente cuando no se han provisto bytes; sus recetas y recibos sí se prueban.
 
-Un PASS nativo cubre políticas y matemáticas. No valida UObject/CMC, controles de Unreal, DX12/audio, rendimiento, paquete ni sensación. El informe final debe distinguir la compilación anterior `4f95872`, la candidata `acf4156`, sus diferencias respecto a `9ca77e1` y los cambios posteriores de autoría y la versión exacta del paquete probado.
+Un PASS nativo cubre políticas y matemáticas. No valida UObject/CMC, controles de Unreal, DX12/audio, rendimiento, paquete ni sensación. El informe final debe distinguir las pruebas anteriores de la candidata `6b4631d` y de la versión exacta del paquete probado. Los scripts públicos no incluyen bytes de los recursos privados ni certifican su aspecto en la partida.

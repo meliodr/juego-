@@ -193,8 +193,82 @@
     "unreal_previous_snapshot_4f95872": "Compiled, reported by integrator",
     "unreal_source_snapshot_9ca77e1": "Editor and Game PASS, reported by integrator",
     "package_dx12_audio_input_human_acceptance": "PENDING",
-    "later_authoring_update": "Exported Tools from acf4156; authoring and final QA still in progress",
-    "unreal_source_snapshot_acf4156": "Editor PASS; Game not yet reported for this snapshot"
+    "later_authoring_update": "Exact 742ff49 script integrated as b341476: authoring PASS, exit 0, zero missing dependencies; run s7-author-20261116T053232Z",
+    "unreal_source_snapshot_acf4156": "Editor PASS; Game not yet reported for this snapshot",
+    "functional_acf4156": {
+      "run": "s7-tests-20261116T051706Z",
+      "passed": 12,
+      "rendering": false,
+      "observer": "integrator"
+    },
+    "s4_contracts": {
+      "run": "s7-tests-20261116T052404Z",
+      "passed": 3,
+      "map": "ThirdPerson with S4 GameMode override",
+      "observer": "integrator",
+      "supersedes": "Earlier H01 and ResponseContract PASS on C00; PreparedCollision pending status resolved by this scoped run"
+    },
+    "playable_session_761a2b5": {
+      "run": "s7-tests-20261116T052319Z",
+      "suite": "ImpactBeyond.Integration.PlayableSession",
+      "status": "PASS",
+      "map": "/Game/IB_Playable/Lvl_IB_Playable",
+      "rendering": false,
+      "observer": "integrator"
+    },
+    "real_input_761a2b5": {
+      "run": "s7-tests-20261116T052438Z",
+      "suite": "ImpactBeyond.Playable.RealInput",
+      "status": "PASS",
+      "renderer": "DX12 offscreen",
+      "scope": "Simulated PlayerController keyboard/gamepad events; not physical DualSense or performance acceptance",
+      "concurrent_gpu_application": "Fortnite active",
+      "observer": "integrator"
+    },
+    "authoring_761a2b5": {
+      "status": "Asset generation and dependency closure completed; zero missing references reported",
+      "process_exit": 3,
+      "failure_stage": "Python teardown after completion",
+      "observer": "integrator"
+    },
+    "candidate_6b4631d": {
+      "editor_game_build": "PASS",
+      "authoring_clean_exit": "PASS on b341476 with exact 742ff49 script; C++ unchanged",
+      "post_fix_functional_regression": {
+        "run": "s7-tests-20261116T053308Z",
+        "map": "production",
+        "passed": [
+          "Integration.PlayableSession",
+          "S3 Contacts (six surfaces)",
+          "S7 PreparedEncounter including tick DAG"
+        ],
+        "tick_cycle_warning_count": 0,
+        "batch_status": "FAIL: S3FlightReentry requires legacy car01/wall01 fixtures intentionally absent in production",
+        "flight_reentry_lab_rerun": "IN_PROGRESS",
+        "observer": "integrator"
+      },
+      "package_dx12_audio_performance_human": "PENDING",
+      "editor_build": {
+        "status": "PASS",
+        "seconds": 181.87,
+        "observer": "integrator"
+      },
+      "build_run": "s7-build-20261116T052603Z",
+      "game_build": {
+        "status": "PASS",
+        "observer": "integrator"
+      }
+    },
+    "authoring_b341476": {
+      "run": "s7-author-20261116T053232Z",
+      "status": "PASS",
+      "process_exit": 0,
+      "missing_dependency_count": 0,
+      "s25_material_flags_saved_locally": 7,
+      "local_asset_commit": "a91b163 (not exported)",
+      "observer": "integrator",
+      "package_validated": false
+    }
   },
   "preserve_preparation_over_staging": [
     ".gitignore",
@@ -285,7 +359,7 @@
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayCombatTests.cpp": "05d5d16395024d38f73b8fcbf4a4150ea77165006def01130ad4c547c92ea7db",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounter.cpp": "efbe05deca39d1252a7f463135e5fc766dc641d14374b392d0f321bccf835c73",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounter.h": "1a3e7dd915ecf123ae11e29b4f03e4504a4ffff0dbc5b8b4ec30cc52fc5226c7",
-    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp": "69ce01597a96051d2d0c5bf8a8a899d399173f4546b229ba3d961c279642163f",
+    "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp": "b4c1c65161baaf4adcb81bff8d840fad312246373133571eecd196657d42da78",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayInputTests.cpp": "9fbd82e049bf7665d012be238a417a713519d8379068b9bee8202de5ff2e295f",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayPerformanceTests.cpp": "68c7564a7bd9448c8a94f7f2b7583aea7c15eff4f8ef38ac87af5333c2a78d2a",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlaySession.cpp": "4a5173e29fe7b8599ab36b10bc9ca75477122b804e038b2324cd91b7f4662654",
@@ -340,7 +414,7 @@
     "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4PresentationComponent.h": "e67de8d97e5b9aaea4f7fd0249f3e5a5701522c3eb8defce0cb0673be9e56b5b",
     "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4ResponseComponent.cpp": "4ffc716fc17213788078b628b2d12e8ca978b4a7271646ddda0daaa1cbd47b53",
     "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4ResponseComponent.h": "393c669d88bdb58e09d4e49a52ab7afc5d3760b86281fd2bffa13807da3bebb3",
-    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Threat.cpp": "a7684318112f2741b4f03bdc39b44af18170fdd1b67084207b48466c2d592d2a",
+    "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Threat.cpp": "1612d06a64a209783212a4a04b44c8b40d5342e33891ef958b59393c9cfe6aad",
     "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Threat.h": "5cd023ccac66f818db4f849558ace4434e55e5d9f669ead67410ed621f6944b1",
     "ImpactBeyond/Source/ImpactBeyond/IB_S5/IBS5Policy.h": "aade1f1e141696f7560df134bb345978aa5390e6fcc6356d51cb02d87250c427",
     "ImpactBeyond/Source/ImpactBeyond/IB_S5/IBS5WorldLife.cpp": "6d2ba653478a7879212932e11d1f43915fdb1a842478ddebc44ab5462840cb29",
@@ -389,8 +463,8 @@
     "s25_recipes": "10 PASS + 1 SKIP local asset bytes absent; R2 5 PASS",
     "cpp_snapshot_equality": 107,
     "github_actions": "PR33 remote 52e8da3: Lab audit tests SUCCESS; Integrated source checks source-and-recipes and native-policies SUCCESS",
-    "unreal_final_snapshot": "acf4156 Editor PASS; latest confirmed Game build remains 9ca77e1, reported by integrator",
-    "cook_package_dx12_audio_human": "PENDING",
+    "unreal_final_snapshot": "6b4631d Editor and Game PASS, run s7-build-20261116T052603Z, reported by integrator; authoring and package still pending",
+    "cook_package_dx12_audio_human": "PENDING: exact package/render/audio/performance and human acceptance; earlier DX12 simulated-input PASS remains scoped to 761a2b5",
     "unreal_build_report": {
       "source_commit": "9ca77e1",
       "run": "s7-build-20261116T045837Z",
@@ -401,7 +475,7 @@
     },
     "python_syntax": "50 tracked Python files parsed without import",
     "public_source_policy_precommit": "PASS for all 156 snapshot text changes",
-    "native_report_scope": "13 suites PASS on 9ca77e1 public export and remote 52e8da3; native policies/fixtures unchanged by acf4156"
+    "native_report_scope": "13 suites PASS on 9ca77e1 public export and remote 52e8da3; pure policies/native fixtures unchanged through 6b4631d; newer UE fixture requires Unreal validation"
   },
   "sanitized_documentation": [
     "docs/IB_S7_ASSET_PROVENANCE.md",
@@ -409,7 +483,7 @@
     "docs/IB_S35_CONTRACT.md",
     "ImpactBeyond/Source/ImpactBeyond/IB_Integration/ImpactContract/README.md"
   ],
-  "exported_snapshot_commit": "acf415639b9855086689a25c4240a7052a5c47a9",
+  "exported_snapshot_commit": "6b4631dbb82703e771b76e7489c341688d1460e1",
   "snapshot_export_paths": [
     "ImpactBeyond/Config/DefaultEngine.ini",
     "ImpactBeyond/Config/DefaultGame.ini",
@@ -732,6 +806,24 @@
         "Tools/IBPlay_Validate.py"
       ],
       "reason": "Authorable session art, radial encounter fixture and updated authoring/QA runner"
+    },
+    {
+      "snapshot": "6b4631dbb82703e771b76e7489c341688d1460e1",
+      "previous_snapshot": "acf415639b9855086689a25c4240a7052a5c47a9",
+      "paths": [
+        "ImpactBeyond/Source/ImpactBeyond/IB_Integration/Playable/IBPlayEncounterTests.cpp",
+        "ImpactBeyond/Source/ImpactBeyond/IB_S4/IBS4Threat.cpp",
+        "Tools/IBPlay_AuthorProduction.py"
+      ],
+      "reason": "Remove cyclic threat movement tick prerequisite, add regression assertion, checkpoint authoring and release Python/editor wrappers before shutdown"
+    },
+    {
+      "snapshot": "742ff4977b95e8fb93eeec0dee3847b09f57253e",
+      "previous_snapshot": "6b4631dbb82703e771b76e7489c341688d1460e1",
+      "paths": [
+        "Tools/IBPlay_AuthorProduction.py"
+      ],
+      "reason": "Reproducible instancing flags for seven explicitly allowlisted S25 materials; no Fab bytes or modified uassets exported"
     }
   ],
   "pr": {
@@ -748,6 +840,19 @@
     "integrated_source_run": 43808923815,
     "lab_audit_run": 43808923825,
     "status": "SUCCESS",
-    "new_acf_export": "LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
-  }
+    "new_acf_export": "LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY",
+    "pending_local_exports": "20bfe01 plus current 6b4631d export; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+  },
+  "authoring_snapshot_commit": "742ff4977b95e8fb93eeec0dee3847b09f57253e",
+  "authoring_script_sha256": "5c44aaf5814133ad2828f8d487ba24e941699fdf132a304902a20376bc4fccff",
+  "closure_review": "docs/IB_S7_CLOSURE_REVIEW.md",
+  "authoring_source_material_scope": {
+    "recipe": "Tools/IBPlay_AuthorProduction.py::prepare_s25_instancing_materials",
+    "allowlisted_material_count": 7,
+    "owned_cc0_s25_usage_flags_only": true,
+    "parent_materials_modified": false,
+    "fab_sources_modified": false,
+    "binary_outputs_exported": false
+  },
+  "source_frozen_commit": "6b4631dbb82703e771b76e7489c341688d1460e1"
 }

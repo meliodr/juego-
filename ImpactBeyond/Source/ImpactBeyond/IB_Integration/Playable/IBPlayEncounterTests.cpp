@@ -7,6 +7,7 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Misc/AutomationTest.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FIBPlayableEncounterTest, "ImpactBeyond.S7.PreparedEncounter",
@@ -31,6 +32,23 @@ bool FIBPlayableEncounterTest::RunTest(const FString& Parameters)
     TestFalse(TEXT("Absent presentation assets are reported"), Encounter->HasRequiredVisualAssets());
     TestEqual(TEXT("Six prepared targets"), Encounter->PreparedTargets.Num(), 6);
     TestEqual(TEXT("Five damageable autonomous threats"), Encounter->Threats.Num(), 5);
+    TSet<FTickFunction*> Visiting, Complete;
+    TFunction<bool(FTickFunction*)> HasAcyclicTicks = [&](FTickFunction* Tick)
+    {
+        if (!Tick || Complete.Contains(Tick)) return true;
+        if (Visiting.Contains(Tick)) return false;
+        Visiting.Add(Tick);
+        for (FTickPrerequisite& Prerequisite : Tick->GetPrerequisites())
+            if (!HasAcyclicTicks(Prerequisite.Get())) return false;
+        Visiting.Remove(Tick);
+        Complete.Add(Tick);
+        return true;
+    };
+    for (AIBS4Threat* Threat : Encounter->Threats)
+    {
+        TestTrue(TEXT("Spawned threat tick prerequisites have no cycle"), HasAcyclicTicks(&Threat->PrimaryActorTick));
+        TestTrue(TEXT("Spawned movement tick prerequisites have no cycle"), HasAcyclicTicks(&Threat->GetCharacterMovement()->PrimaryComponentTick));
+    }
     AIBS4PreparedTarget* Crater = nullptr;
     AIBS4PreparedTarget* Wall = nullptr;
     for (AIBS4PreparedTarget* Target : Encounter->PreparedTargets)

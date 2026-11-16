@@ -2,18 +2,20 @@
 
 Los laboratorios de planeta, carga, combate, civiles, héroes y amenazas estaban separados y sus PR no ofrecían una entrada común de juego. Esta candidata reúne sus fuentes alrededor de Playable: un host de personaje/sesión, daño y persistencia compartidos, ciudades, reloj/civiles, tres héroes, robot/kaiju y rueda. El alcance sigue en validación; este PR no declara todavía una versión S7 jugable aceptada.
 
-Se exporta el snapshot C++ y herramientas `acf4156` desde una rama limpia basada en `6c2d903`. No se incorpora el historial local de assets ni Content binario nuevo. Se conservan recetas S2.5, recibos de procedencia, los cambios públicos de Robert y las decisiones de PR17/22/23 en el plan vigente. La partida requiere provisión local autorizada y autoría de `/Game/IB_Playable`; un clone de fuentes no incluye ese arte ni el mapa generado.
+Se exporta C++ y herramientas `6b4631d`, con autoría actualizada desde `742ff49` desde una rama limpia basada en `6c2d903`. No se incorpora el historial local de assets ni Content binario nuevo. Se conservan recetas S2.5, recibos de procedencia, los cambios públicos de Robert y las decisiones de PR17/22/23 en el plan vigente. La partida requiere provisión local autorizada y autoría de `/Game/IB_Playable`; un clone de fuentes no incluye ese arte ni el mapa generado.
 
 La CI añade política de publicación sobre todos los commits nuevos, sintaxis/recetas y 13 suites nativas. La comparación S35/S4 exige rechazar el replay con timestamp renovado, manteniendo pruebas de unidades, signo, categorías e inmunidad.
 
 Validación observada:
 
-- CI remota de `52e8da3`: [Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43808923815) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43808923825) aprobados. La exportación `acf4156` todavía no se ha publicado ni ejecutado remotamente.
+- CI remota de `52e8da3`: [Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43808923815) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43808923825) aprobados. Las exportaciones posteriores siguen locales y no heredan esos resultados remotos.
 
 - Exportación: **17 tests de auditoría/publicación PASS**, 10 tests de receta S2.5 y 5 de refinamiento PASS; 1 test de bytes locales omitido explícitamente.
-- Nativos sobre la rama pública exportada: **13 suites requeridas PASS** con MSVC C++17, incluidas 282 assertions de comparación S35/S4. Hashes estables sobre `9ca77e1`; las políticas y fixtures nativas no cambian en `acf4156`. No se ejecutó Unreal desde este frente. Geometría S3 PASS.
-- Unreal: `4f95872` compiló y **`9ca77e1` compiló Editor + Game**, según el integrador: run `s7-build-20261116T045837Z`, 224,52 s y 210,82 s. El Editor de `acf4156` también pasó según el integrador; Game y QA finales de la nueva revisión siguen pendientes.
-- Pendientes: actualización final de autoría y ajustes de Source posteriores a este snapshot, validación Unreal de esa versión final, cook/paquete, partida DX12/audio, rendimiento y aceptación. Input simulado y DualSense físico se registran por separado.
+- Nativos sobre la rama pública exportada: **13 suites requeridas PASS** con MSVC C++17, incluidas 282 assertions de comparación S35/S4. Hashes estables sobre `9ca77e1`; las políticas y fixtures nativas no cambian hasta `6b4631d` (la nueva regresión de ticks es una prueba Unreal). No se ejecutó Unreal desde este frente. Geometría S3 PASS.
+- Unreal: `4f95872` compiló y **`9ca77e1` compiló Editor + Game**, según el integrador: run `s7-build-20261116T045837Z`, 224,52 s y 210,82 s. El Editor de `acf4156` también pasó según el integrador. Editor y Game de `6b4631d` pasaron en `s7-build-20261116T052603Z` (Editor: 181,87 s).
+- Automatización reportada por el integrador: 12 funcionales PASS en `acf4156`; tres contratos S4 PASS en ThirdPerson con override S4; PlayableSession sin render e input simulado DX12 PASS en `761a2b5`. [Runs y alcance](IB_S7_CLOSURE_REVIEW.md). El input pasó con Fortnite activo: no sirve como medición de rendimiento ni prueba de DualSense físico.
+- Autoría final `b341476`: **PASS, exit 0 y cero dependencias ausentes**, run `s7-author-20261116T053232Z`. La limpieza de wrappers resolvió el exit 3 anterior. El script exacto `742ff49` aplica flags de instancing a siete materiales S25 locales; sus `.uasset` no se publican. La regresión de producción `s7-tests-20261116T053308Z` aprobó PlayableSession, S3 Contacts y S7 PreparedEncounter; cero warnings de ciclos. FlightReentry falló por fixtures del laboratorio ausentes en producción y se está repitiendo en S3Lab; el batch completo no se declara PASS.
+- Pendientes: regresión de la candidata final, cook/paquete, recorrido DX12/audio, rendimiento y aceptación. Input simulado y DualSense físico se registran por separado.
 
 [Archivos y hashes exportados](IB_S7_PUBLIC_EXPORT.json) · [Reproducción y dependencias](IB_S7_SOURCE_OVERVIEW.md) · [Alcance y gates](PLAN_ACTIVO.md).
 

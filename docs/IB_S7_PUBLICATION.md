@@ -1,8 +1,8 @@
 # Preparación de la publicación S7
 
-**Estado: snapshot intermedio `acf4156` exportado; Editor aprobado por el integrador. La última compilación Game confirmada corresponde a `9ca77e1`. Autoría, validación final, paquete y aceptación pendientes.** Base pública `6c2d903c708553e7c840d27a96e5eb86810cb8a7`. La rama nace directamente de esa base; no hereda el historial de all-staging ni sus commits locales de assets.
+**Estado: C++ `6b4631d` y autoría `742ff49` exportados localmente; Editor + Game aprobados (`s7-build-20261116T052603Z`). Los PASS anteriores conservan su revisión y alcance. Autoría aprobada con salida limpia; regresión final, paquete y aceptación pendientes.** Base pública `6c2d903c708553e7c840d27a96e5eb86810cb8a7`. La rama nace directamente de esa base; no hereda el historial de all-staging ni sus commits locales de assets.
 
-La lista exacta de fuentes S2.5 ya recuperadas y de rutas candidatas está en [IB_S7_PUBLIC_EXPORT.json](IB_S7_PUBLIC_EXPORT.json). El inventario preliminar `4f95872` se conserva como historial. Los campos de exportación fijan ahora `acf4156` y sus archivos/hashes; el historial registra los cuatro cambios posteriores a `9ca77e1`. No se identifica todavía una build final aceptada.
+La lista exacta de fuentes S2.5 ya recuperadas y de rutas candidatas está en [IB_S7_PUBLIC_EXPORT.json](IB_S7_PUBLIC_EXPORT.json). El inventario preliminar `4f95872` se conserva como historial. Los campos de exportación fijan ahora `6b4631d` y sus archivos/hashes; el historial registra los cuatro cambios de `acf4156`, los tres de `6b4631d` y el último script `742ff49`. La [revisión de cierre](IB_S7_CLOSURE_REVIEW.md) separa implementación, pruebas y pendientes. No se identifica todavía una build final aceptada.
 
 ## Exportación final
 
@@ -17,7 +17,7 @@ El repositorio conserva los assets que ya estaban en la base pública. Esta oper
 
 ## Comprobaciones antes de publicar
 
-El workflow existente `Lab audit tests` conserva sus pruebas de gates. `Integrated source checks` añade política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17 con MSVC en Windows. Falta cualquier suite requerida implica fallo, nunca PASS vacío. Las 13 suites pasaron localmente sobre la exportación `9ca77e1`; los jobs source-and-recipes y native-policies también pasaron en GitHub para el commit público `52e8da3` (PR33). La actualización `acf4156` continúa local.
+El workflow existente `Lab audit tests` conserva sus pruebas de gates. `Integrated source checks` añade política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17 con MSVC en Windows. Falta cualquier suite requerida implica fallo, nunca PASS vacío. Las 13 suites pasaron localmente sobre la exportación `9ca77e1`; los jobs source-and-recipes y native-policies también pasaron en GitHub para el commit público `52e8da3` (PR33). Los commits posteriores de exportación continúan locales, sin CI remota atribuida.
 
 `IBCI_Native.py` admite `--root` y salida fuera del checkout. No ejecuta UBT/editor, no instala herramientas y comprueba hashes antes/después para detectar cambios durante las pruebas. Los wrappers históricos `IBS35_CheckScope.py`, `IBS4_Check.py` e `IBS6H_Check.py` conservan gates de laboratorios S2; no se usan como CI de integración porque rechazan legítimamente cambios compartidos.
 
@@ -25,7 +25,7 @@ La comparación S35/S4 se conserva actualizada: rechaza replay con timestamp ref
 
 Exportación comprobada localmente: 13 suites nativas juntas con MSVC y snapshot estable, incluida la comparación actualizada de 282 assertions; [recibo nativo](IB_S7_NATIVE_VALIDATION.json). Geometría S3 y recetas S2.5 también pasaron. GitHub Actions pasó para `52e8da3`: Integrated source checks [43808923815](https://github.com/meliodr/juego-/actions/runs/43808923815) y Lab audit tests [43808923825](https://github.com/meliodr/juego-/actions/runs/43808923825). Estos resultados no se atribuyen automáticamente a commits posteriores. No se ha ejecutado Unreal desde este frente.
 
-El integrador añade evidencia del SHA final para Editor/Game, automatización real de input, cook/paquete, DX12/audio, controles, persistencia y rendimiento. Registrar aparte las comprobaciones que requieren DualSense físico y aceptación humana. No afirmar S7 completado porque el CI nativo esté verde.
+El integrador reportó 12 funcionales sobre `acf4156`, tres contratos S4 en ThirdPerson con override S4, PlayableSession sin render e input simulado DX12 sobre `761a2b5`: los runs y límites están en la revisión de cierre. La autoría `761a2b5` generó contenido con cero referencias ausentes, pero terminó con exit 3 al cerrar Python; no es un proceso aprobado. `6b4631d` incorpora la corrección de cierre y del ciclo de ticks de amenazas; el script `742ff49` añade la receta de flags de instancing S25. La autoría integrada en `b341476` pasó con exit 0 y cero referencias ausentes en `s7-author-20261116T053232Z`; los siete flags S25 se guardaron solo localmente. En `s7-tests-20261116T053308Z` pasaron PlayableSession, S3 Contacts (seis superficies) y S7 PreparedEncounter con grafo de ticks sin ciclos ni warnings. El batch falló solo en FlightReentry por requerir fixtures car01/wall01 del laboratorio, ausentes por diseño en producción; se repite en S3Lab, sin atribuir todavía un PASS. El integrador añadirá evidencia final para Editor/Game, cook/paquete, DX12/audio, controles, persistencia y rendimiento. Registrar aparte las comprobaciones que requieren DualSense físico y aceptación humana. No afirmar S7 completado porque el CI nativo esté verde.
 
 ## Reconciliación de PR
 

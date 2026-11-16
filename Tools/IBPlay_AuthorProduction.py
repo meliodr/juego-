@@ -10,15 +10,20 @@ Requires Python, EditorScriptingUtilities and GeometryScripting (editor only).
 Root coordinates the editor slot and first stages licensed packs at their original
 /Game paths. This script never downloads, uploads, exports, or logs asset payloads.
 Only paths, bone names, counts, parameter names and dependencies enter its report.
-Existing source assets/maps are never modified. Outputs stay under /Game/IB_Playable.
+Generated outputs stay under /Game/IB_Playable. The only source edits permitted
+are instancing usage flags on the seven explicitly allowlisted owned/CC0 S25
+materials below. Fab sources, source maps, material parents and textures are untouched.
 Reruns reuse outputs bearing this script's metadata tag; unrelated assets fail closed.
 """
+import gc
 import json
 import math
 import os
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
+from uuid import uuid4
 import unreal
 
 ROOT = "/Game/IB_Playable"
@@ -27,12 +32,24 @@ SOURCE_MAP = "/Game/IB_S3/Lvl_IB_S3_PlanetLab"
 TAG = "IBPlayAuthorVersion"
 VERSION = "1"
 DONOR_CONTENT = None
+REPORT_PATH = None
 REPORT = {"schema": 1, "status": "started", "warnings": [], "created": [], "parts": {},
-          "runtime_tested": False, "source_assets_modified": False}
+          "runtime_tested": False, "source_assets_modified": False, "fab_sources_modified": False}
 ASSETS = unreal.EditorAssetLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 MAT = unreal.MaterialEditingLibrary
 GEOMETRY = {}
+# These existing owned/CC0 materials are used by S3's production ISM/HISM batches.
+# Do not expand this into a folder-wide edit or follow parents into engine/plugins.
+S25_INSTANCING_MATERIALS = (
+    "/Game/IB_S25/Materials/M_Asphalt",
+    "/Game/IB_S25/Materials/M_Markings",
+    "/Game/IB_S25/Materials/M_Paving",
+    "/Game/IB_S25/Materials/M_R2_Soil",
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01",
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches",
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves",
+)
 # UE's camel-case iterator exports plural IDs as i_ds in some Python builds.
 # Resolve the exact installed callable once, before touching any content assets.
 GEOMETRY_METHODS = {
@@ -71,6 +88,40 @@ def require(value, message):
     if not value:
         raise RuntimeError(message)
     return value
+
+
+def checkpoint(phase=None, status=None):
+    """Persist progress before calls that may terminate the editor outside Python."""
+    if phase is not None:
+        REPORT["phase"] = phase
+    if status is not None:
+        REPORT["status"] = status
+    REPORT["updated_utc"] = datetime.now(timezone.utc).isoformat()
+    # Replace atomically so a process crash cannot leave a half-written report.
+    temporary = REPORT_PATH.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(REPORT, indent=2), encoding="utf-8")
+    os.replace(temporary, REPORT_PATH)
+
+
+def release_editor_wrappers():
+    """Drop this script's native wrappers while Python and editor modules live."""
+    global TOOLS, ASSETS, MAT
+    if REPORT_PATH is not None:
+        REPORT["cleanup"] = {"state": "running", "phase": "release_native_wrappers"}
+        checkpoint()
+    # Reflected methods retain their native closure/type metadata. AssetTools is
+    # a UObject wrapper. Neither needs to survive until Python plugin shutdown.
+    GEOMETRY.clear()
+    TOOLS = None
+    ASSETS = None
+    MAT = None
+    gc.collect()
+    unreal.collect_garbage()
+    gc.collect()
+    if REPORT_PATH is not None:
+        REPORT["cleanup"] = {"state": "complete", "phase": "wrappers_released",
+                             "engine_exit_validated": False}
+        checkpoint()
 
 
 def configured_donor_content():
@@ -171,6 +222,54 @@ def native_property_preflight():
     REPORT["native_properties"] = {name: list(properties) for name, properties in CUSTOM_PROPERTIES.items()}
     REPORT["native_property_failures"] = failures
     require(not failures, "Native property preflight failed: " + "; ".join(failures))
+
+
+def material_usage_preflight():
+    functions = ("has_material_usage", "set_base_material_usage", "set_material_usage_override")
+    for name in functions:
+        require(callable(getattr(MAT, name, None)), "Material usage API missing: " + name)
+    require(hasattr(unreal.MaterialUsage, "MATUSAGE_INSTANCED_STATIC_MESHES"), "Instancing usage enum missing")
+    REPORT["material_usage_api"] = {name: getattr(MAT, name).__doc__ or "" for name in functions}
+
+
+def prepare_s25_instancing_materials():
+    usage = unreal.MaterialUsage.MATUSAGE_INSTANCED_STATIC_MESHES
+    resolved = []
+    # Validate the entire list before changing any asset. A redirect must never
+    # silently enlarge the write scope to an unrelated or shared material.
+    for path in S25_INSTANCING_MATERIALS:
+        material = typed(path, unreal.MaterialInterface)
+        require(material.get_path_name().split(".")[0] == path, "S25 material redirected outside allowlist: " + path)
+        require(isinstance(material, (unreal.Material, unreal.MaterialInstanceConstant)),
+                "Unsupported S25 material type: " + path)
+        resolved.append((path, material))
+    changes = {"usage": "InstancedStaticMeshes", "allowlist": list(S25_INSTANCING_MATERIALS),
+               "parents_modified": False, "materials": []}
+    REPORT["s25_instancing"] = changes
+    for path, material in resolved:
+        before = bool(MAT.has_material_usage(material, usage))
+        instance = isinstance(material, unreal.MaterialInstanceConstant)
+        record = {"package": path, "type": "instance" if instance else "base",
+                  "usage_before": before, "changed": False, "saved": False}
+        changes["materials"].append(record)
+        if not before:
+            if instance:
+                # The glTF trees inherit /InterchangeAssets/.../M_GLTF. UE5.8
+                # supports instance-local usage overrides; never edit that parent.
+                MAT.set_material_usage_override(material, usage, True, True)
+            else:
+                # SetMaterialUsage is deprecated; this API also recompiles.
+                MAT.set_base_material_usage(material, usage, True)
+            record["changed"] = True
+            REPORT["source_assets_modified"] = True
+            require(MAT.has_material_usage(material, usage), "Instancing usage did not bind: " + path)
+            # Separate from save(): only this exact allowlist can be written
+            # outside /Game/IB_Playable, and no authoring tag is added to sources.
+            require(ASSETS.save_loaded_asset(material, only_if_is_dirty=False), "S25 material save failed: " + path)
+            record["saved"] = True
+        record["usage_verified"] = bool(MAT.has_material_usage(material, usage))
+        require(record["usage_verified"], "Instancing usage readback failed: " + path)
+        checkpoint()
 
 
 def load(path, cls):
@@ -757,18 +856,32 @@ def author_props(stage):
     return [car, container, rock]
 
 
+def prepare_map_package():
+    # Keep every temporary UWorld wrapper inside this scope. LoadLevel unloads
+    # existing worlds and fatally rejects a world rooted by FPyReferenceCollector.
+    # This helper deliberately returns no asset object, including on reruns.
+    world = existing(MAP, unreal.World)
+    if world is None:
+        world, _ = duplicate(typed(SOURCE_MAP, unreal.World), MAP, unreal.World)
+        ASSETS.set_metadata_tag(world, TAG, VERSION)
+        require(unreal.EditorLoadingAndSavingUtils.save_map(world, MAP), "Could not save duplicated playable map")
+
+
 def author_map(art):
     levels = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     game_mode = require(unreal.load_class(None, "/Script/ImpactBeyond.IBPlayGameMode"), "Compile IBPlayGameMode first")
     planet_class = require(unreal.load_class(None, "/Script/ImpactBeyond.IBS3PlanetWorld"), "Compile S3 first")
     session_class = require(unreal.load_class(None, "/Script/ImpactBeyond.IBPlaySession"), "Compile IBPlaySession first")
-    world = existing(MAP, unreal.World)
-    if world is None:
-        world, _ = duplicate(typed(SOURCE_MAP, unreal.World), MAP, unreal.World)
-        ASSETS.set_metadata_tag(world, TAG, VERSION)
-        require(unreal.EditorLoadingAndSavingUtils.save_map(world, MAP), "Could not save duplicated playable map")
+    checkpoint("map_package_preparing")
+    prepare_map_package()
+    gc.collect()
+    # This Python core API collects immediately. SystemLibrary.collect_garbage
+    # only queues a collection, which is too late before synchronous LoadLevel.
+    unreal.collect_garbage()
+    checkpoint("map_loading")
     require(levels.load_level(MAP), "Could not open isolated playable map")
+    checkpoint("map_configuring")
     world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     planets = [actor for actor in actors.get_all_level_actors() if actor.get_class() == planet_class]
     require(len(planets) == 1, "Playable map requires exactly one S3 planet")
@@ -785,10 +898,12 @@ def author_map(art):
     world.get_world_settings().set_editor_property("default_game_mode", game_mode)
     world.get_world_settings().set_editor_property("kill_z", -1000000000.0)
     ASSETS.set_metadata_tag(world, TAG, VERSION)
+    checkpoint("map_saving")
     require(levels.save_current_level(), "Playable map save failed")
     REPORT["map"] = {"path": MAP, "source": SOURCE_MAP, "mode": game_mode.get_path_name(),
                      "planet_slot": "IB_Playable_S7_v1_planet", "session_slot": "IB_Playable_S7_v1",
                      "serialized_art_reference": art.get_path_name()}
+    checkpoint("map_saved")
 
 
 def dependency_report(seeds):
@@ -842,32 +957,45 @@ def dependency_report(seeds):
 
 
 def main():
-    global DONOR_CONTENT
+    global DONOR_CONTENT, REPORT_PATH
     stage = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_saved_dir())) / "IB_Playable_Authoring"
     stage.mkdir(parents=True, exist_ok=True)
     api_only = os.environ.get("IB_PLAY_API_ONLY", "") == "1"
+    REPORT_PATH = stage / ("api-report.json" if api_only else "author-report.json")
+    REPORT["run_id"] = str(uuid4())
+    REPORT["started_utc"] = datetime.now(timezone.utc).isoformat()
+    checkpoint("preflight", "running")
     try:
         geometry_preflight()
         native_property_preflight()
+        material_usage_preflight()
         if api_only:
-            REPORT["status"] = "api_preflight_passed"
+            checkpoint("complete", "api_preflight_passed")
             return
+        checkpoint("source_metadata")
         # Validate portable input before creating or modifying any content asset.
         DONOR_CONTENT = configured_donor_content()
+        checkpoint("s25_instancing_materials")
+        prepare_s25_instancing_materials()
+        checkpoint("source_metadata")
         ASSETS.make_directory(ROOT)
         registry = unreal.AssetRegistryHelpers.get_asset_registry()
         registry.scan_paths_synchronous(["/Game/Adventures_Pack", "/Game/robot13", "/Game/SciFi_Beast06", "/Game/Car"])
         hero, manny = typed(HERO, unreal.SkeletalMesh), typed(MANNY, unreal.SkeletalMesh)
         validate_leader(hero, manny)
         robot, kaiju = typed(ROBOT, unreal.SkeletalMesh), typed(KAIJU, unreal.SkeletalMesh)
+        checkpoint("heroes")
         heroes, accents = author_heroes(hero)
+        checkpoint("robot_parts")
         robot_parts, robot_bones = author_parts(robot, "Robot", [
             ("Hammer", [r"hammer", r"mace", r"weapon.*r", r"hand[_ .-]?r$", r"r[_ .-]?hand$"]),
             ("Claw", [r"claw", r"pincer", r"hand[_ .-]?l$", r"l[_ .-]?hand$"])])
+        checkpoint("kaiju_parts")
         kaiju_parts, kaiju_bones = author_parts(kaiju, "Kaiju", [
             ("Horn", [r"horn.*(?:root|01|1)$", r"horn"]),
             ("Tail", [r"tail[_ .-]?(?:root|01|1)$", r"tail"]),
             ("Shoulder", [r"shoulder.*r", r"clavicle[_ .-]?r$", r"upperarm[_ .-]?r$"])])
+        checkpoint("art_data_and_props")
         data_class = require(unreal.load_class(None, "/Script/ImpactBeyond.IBPlayArt"), "Compile UIBPlayArt first")
         factory = unreal.DataAssetFactory()
         factory.set_editor_property("data_asset_class", data_class)
@@ -886,10 +1014,13 @@ def main():
             "RobotParts": robot_parts, "RobotPartBones": robot_bones,
             "KaijuParts": kaiju_parts, "KaijuPartBones": kaiju_bones,
             "Props": author_props(stage)}
+        checkpoint("s4_art")
         values.update(author_s4(robot))
+        checkpoint("art_data_saving")
         for key, value in values.items():
             art.set_editor_property(key, value)
         save(art)
+        checkpoint("art_data_saved")
         author_map(art)
         # Explicit C++ runtime asset paths are additional cook roots, because a
         # LoadObject string alone is not necessarily recorded by map serialization.
@@ -898,16 +1029,23 @@ def main():
             "A_FlightCarry", "A_FlightBrake", "A_FlightThrow")]
         runtime += ["/Game/Characters/Mannequins/Anims/Unarmed/" + name for name in (
             "MM_Idle", "Walk/MF_Unarmed_Walk_Fwd", "Jog/MF_Unarmed_Jog_Fwd")]
+        checkpoint("dependency_validation")
         dependency_report([MAP, ROOT + "/DA_PlayArt"] + runtime)
-        REPORT["status"] = "authored_requires_runtime_validation"
+        checkpoint("complete", "authored_requires_runtime_validation")
         unreal.log("IB playable authoring finished; metadata report: " + str(stage / "author-report.json"))
     except Exception as error:
+        REPORT["failed_phase"] = REPORT.get("phase")
         REPORT["status"] = "failed"
         REPORT["error"] = str(error)
         raise
     finally:
-        report_name = "api-report.json" if api_only else "author-report.json"
-        (stage / report_name).write_text(json.dumps(REPORT, indent=2), encoding="utf-8")
+        checkpoint()
 
 
-main()
+try:
+    main()
+finally:
+    # main's successful frame has unwound before this runs, releasing all of
+    # its asset/actor/registry locals before collecting native transient objects.
+    # A process exit code of zero must still be verified by the external runner.
+    release_editor_wrappers()

@@ -97,6 +97,8 @@ AIBS4Threat::AIBS4Threat()
     Outfit->SetVisibility(false);
     CreateDefaultSubobject<UIBS4PresentationComponent>(TEXT("Feedback"));
     GetCharacterMovement()->MaxWalkSpeed = 150;
+    // Threat Tick prepares radial gravity and movement input before CMC consumes it.
+    GetCharacterMovement()->bTickBeforeOwner = false;
     GetCapsuleComponent()->InitCapsuleSize(38, 90);
     GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 }
@@ -133,6 +135,10 @@ void AIBS4Threat::BeginPlay()
     Home = GetActorLocation();
     HomeRotation = GetActorQuat();
     NextHostileNotice = GetWorld()->GetTimeSeconds() + FMath::Max(0.f, HostileGraceSeconds);
+    // An older serialized movement component may have registered the default
+    // reverse edge already. Retire it before installing our explicit order.
+    GetCharacterMovement()->bTickBeforeOwner = false;
+    PrimaryActorTick.RemovePrerequisite(GetCharacterMovement(), GetCharacterMovement()->PrimaryComponentTick);
     GetCharacterMovement()->PrimaryComponentTick.AddPrerequisite(this, PrimaryActorTick);
     bTank = bTank || ThreatRole == EIBS4ThreatRole::Tank;
     if (bRadialGravity) GetCharacterMovement()->SetGravityDirection(-LocalUp());

@@ -26,9 +26,23 @@ Utilizar un checkout aislado y turno exclusivo de Unreal. Conservar la escena or
 3. Proveer los 11 archivos del [recibo del árbol](IB_S25_TREE_SOURCES.json) bajo `Tools/IBS25_sources/tree/`, conservando rutas relativas. El downloader PBR no obtiene el árbol. Verificar tamaño/hash antes de importarlo. [Recibo del suelo](IB_S25_R2_SOIL_SOURCES.json).
 4. En Unreal, con los donantes legales presentes, ejecutar `IBS25_stage.py`, después `IBS25_lookdev.py`. El preflight debe pasar; no sustituir silenciosamente dependencias ausentes por arte de otra procedencia.
 5. Ejecutar `IBS25_refine_recipe.py`; después, en el laboratorio base y fuera de PIE, `IBS25_refine.py`. Validar repetición con `IBS25_validate.py` en la fase base y `IBS25_refine_validate.py` tras R2. No aplicar el validador base al mapa R2.
-6. El integrador provee a la partida solo los assets requeridos y valida referencias/cook. `IBPlay_AuthorProduction.py` genera derivados privados en `IB_Playable`; su exportación pública es únicamente código y metadatos sanitizados.
+6. El integrador provee a la partida solo los assets requeridos y valida referencias/cook. `IBPlay_AuthorProduction.py` genera derivados privados en `IB_Playable`; su exportación pública es únicamente código y metadatos sanitizados. La receta de instancing siguiente forma parte de esa ejecución.
 
 Los scripts conservan los guards originales de propietario, hash y mapa. Generan salidas locales ignoradas; los recibos no conceden una licencia nueva ni sustituyen la licencia de shaders, plantillas o recursos privados dependientes. No publicar packs o derivados privados. No suministrar bytes NoAI a herramientas generativas.
+
+## Flags de materiales para las ciudades instanciadas
+
+`Tools/IBPlay_AuthorProduction.py`, snapshot `742ff49`, contiene `material_usage_preflight()` y `prepare_s25_instancing_materials()`. El modo `IB_PLAY_API_ONLY=1` comprueba la API sin modificar materiales. La ejecución completa aplica `InstancedStaticMeshes` solo a esta lista de materiales S25 propios/CC0:
+
+- `/Game/IB_S25/Materials/M_Asphalt`
+- `/Game/IB_S25/Materials/M_Markings`
+- `/Game/IB_S25/Materials/M_Paving`
+- `/Game/IB_S25/Materials/M_R2_Soil`
+- `/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01`
+- `/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches`
+- `/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves`
+
+Se validan todas las rutas y tipos antes de escribir; una redirección fuera de la lista falla. Las instancias reciben un override local de uso: no se cambia su padre compartido de Interchange ni materiales, texturas o PNG de Fab. Cada cambio se verifica, guarda y registra en `Saved/IB_Playable_Authoring/author-report.json`, apartado `s25_instancing`. Los siete `.uasset` modificados permanecen locales; la rama pública incorpora la receta que permite reproducir los flags y no esos binarios. Comprobar el código de salida externo, render y cook: un reporte generado no prueba por sí solo que el proceso haya terminado correctamente.
 
 ## Pruebas de esta preparación
 
