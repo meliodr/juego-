@@ -1,99 +1,82 @@
-# IMPACT: BEYOND — Selección activa de Fab para Codex
+# Selección activa Fab — lote 03, 2026-11-15
 
-Actualizado: 2026-11-15. **Fuente operativa** para elegir qué recursos merece la pena probar. Juego individual y privado en UE5.8 Windows, compras RD$0 y sin entrenar ningún modelo de IA. La prioridad sigue siendo el proyecto jugable: caminar/correr/volar → agarrar vehículo → perforar fachada → combate. El cooperativo está aplazado.
+## Decisión vigente: elegir recursos por necesidad
 
-**Estado real:** catálogo público con **52 productos que mostraron Gratis/Free** en las fichas al revisar. No se comprobó si estaban reclamados por el usuario: **0 elementos con propiedad confirmada, 52 NO_VERIFICADO**. Tampoco hay prueba de instalación, render/compilación ni compatibilidad real de cada asset con 5.8. El inventario de titularidad no está vacío: está PENDIENTE de consulta; no equivale a «no poseído».
+El cribado masivo se cierra con 1,681 tarjetas registradas. Los objetivos de volumen quedan cancelados por decisión del usuario. El Top 20 se conserva como referencia histórica y la tabla siguiente gobierna la selección para el prototipo actual. Presupuesto RD$0. La selección documental conserva el requisito de autorización para reclamar, descargar o instalar.
 
-## Resumen de la criba inicial
-
-| Decisión | Fichas | Significado |
-|---|---:|---|
-| SELECCIONAR | 8 | Primer candidato para el hito correspondiente; **no se importa automáticamente** |
-| PROBAR | 5 | Alternativa/ensayo A/B si la función no se resuelve con el principal |
-| RESERVAR | 27 | Guardar enlace; no descargar ahora |
-| DESCARTAR | 12 | No importar: redundancia, estilo, procedencia o coste de adaptación |
-
-Todos los ítems individuales viven en **[FAB_CATALOGO_MAESTRO.csv](FAB_CATALOGO_MAESTRO.csv)**, válido para lectura por Codex; incluye categoría, enlace Fab, indicador de precio, etiqueta NoAI, decisión, prioridad y campos diferenciados Mi biblioteca/Instalado/Prueba. Los detalles públicos y caveats están en [lote 01](FAB_AUDITORIA_LOTE01_2026-11-15.md) y [lote 02](FAB_AUDITORIA_LOTE02_2026-11-15.md).
-
-## Los 8 seleccionados para primeros experimentos
-
-| Recurso | Cuándo usarlo | Por qué se selecciona |
+| Necesidad actual | Recurso elegido | Criterio para usarlo |
 |---|---|---|
-| [Free Animation Set: Zipline Skydiving Glide Dash Falling](https://www.fab.com/listings/f036035a-9edf-407a-99d3-4ef97924ddac) | E1 — vuelo y caída | 21 clips in-place; 7 skydiving, 3 glide, 3 dash; retarget y vuelo propio |
-| [Free Stylized Sci-Fi Scout Bot](https://www.fab.com/listings/9c57ad32-3d3e-45ed-91e8-b32fc3af2ac0) | E3 — primer robot desmontable | Modelo low-poly con piezas separadas, candidato prioritario para desarme; no prometer clips incluidos |
-| [Chaos Destruction Demo](https://www.fab.com/listings/3fd0a610-852d-4246-a554-ce3c68489a98) | E2 — primer muro de Chaos | Ejemplos de Geometry Collection, fracturas, clusters y campos; usar laboratorio no importar proyecto entero |
-| [Niagara Examples Pack](https://www.fab.com/listings/0e188eca-4e54-4fb2-a9ed-d8b8a565e600) | E2/E3 — efectos y vuelo | Epic: estelas, impactos, explosión, humo, teleports, Niagara Data Channels; referencia de optimización |
-| [METALLIC – 50 Impact Sound Effects](https://www.fab.com/listings/dd15984f-4267-4bd5-81f0-ca106c3044ed) | E2/E3 — impactos metálicos | 50 WAV y 50 cues para golpes metálicos; el autor los presenta royalty-free |
-| [Motifect Locomotion Motion Pack](https://www.fab.com/listings/021d0450-017e-4262-8769-03953338dacc) | E1 — caminar/correr/esprintar | 45 animaciones humanoides en FBX, incluidas caminar/correr/sprint/salto/dodge. Retarget necesario; autor declara UE5.0+. |
-| [Port Yard Props - Free Sample (12 PBR Props)](https://www.fab.com/listings/ae3b6b05-245d-4eec-a80f-b378a5e88fb0) | E2/E3 — objetos lanzables | 12 props de puerto con UCX/FBX/GLB, 2092 tris en total reportados; no probado dentro de Unreal por autor. |
-| [free scifi containers](https://www.fab.com/listings/8e506a48-a6e9-4249-833f-9f4d86b08fe2) | E2/E3 — puerto y objetos grandes | Contenedores sci-fi FBX, proxies para puerto y lanzamiento. Colisión y material a preparar. |
+| Sprint rápido | Game Animation Sample, un clip de sprint compatible con el maniquí si está disponible | Revisar el clip y probar el cambio de carrera a sprint sin deslizamiento. Mantener el controlador actual. |
+| Inicio de vuelo | Mano de obra sobre el maniquí y la pose de vuelo actual | Hacer una transición breve de impulso a vuelo, con y sin carro. El Free Animation Set queda como donante de poses aéreas si hace falta. |
+| Carro provisional | Vehicle Variety Pack, un solo coche para reemplazar la malla visible | Preservar agarre, masa y colisión de referencia. Comprobar lanzamiento, apertura del panel y reinicio. |
+| Potencia del lanzamiento | Mecánica del prototipo | Probar toque para lanzamiento normal y mantener para cargar. Verificar que las fuerzas baja y alta produzcan resultados distintos. |
+| Impacto del carro | METALLIC, un sonido de impacto | Aplicar cuando el choque necesite feedback y comprobar que cada impacto se escucha una vez. |
+| Calle y fachada | Cartoon City Free, en reserva | Evaluar una calle y una fachada cuando toque vestir la manzana. Conservar el panel funcional actual. |
 
-**Condición antes de importar:** revisar licencia de esa ficha en la sesión del usuario, descarga realmente accesible/formatos, compatibilidad UE5.8; importar un subconjunto en mapa aislado y comprobar memoria/colisiones. **No instalar los ocho como lote**. Para el primer movimiento usare primero Third Person de Epic, no Motifect por obligación.
+Los materiales urbanos con migración pendiente y los recursos de robots, kaijus y espacio quedan como referencia. Reabrir Fab cuando una tarea tenga una carencia concreta que la biblioteca y el catálogo auditado no cubran. Verificar precio, licencia, versión y resultado en el prototipo antes de adoptar el recurso.
 
-## Alternativas que solo probaremos si se justifican
+**64 UUID auditados: 52 anteriores + 6 reclamados nuevos + 6 candidatos nuevos.** 7 reclamados; 3 SELECCIONAR,12 PROBAR,34 RESERVAR,15 DESCARTAR. Biblioteca actual completa; búsqueda del catálogo público parcial. Se conserva el catálogo previo en FAB_CATALOGO_ANTES_LOTE03.csv y la selección previa en FAB_SELECCION_ANTES_LOTE03.md. Este documento sustituye sus decisiones de Fab, sin alterar E0–E6 ni IB-W00/W01.
 
-| Recurso | Test condicionado |
+SELECCIONAR es una recomendación documental, nunca autorización para reclamar/descargar/instalar. Compatibilidad declarada no certifica UE5.8.4 ni nuestra build. No IA en entrenamiento/runtime; no enviar assets NoAI a generadores. Presupuesto RD$0.
+
+## Top 20 ordenado
+
+Coste de integración cualitativo, no horas medidas. Los puestos futuros no bloquean el primer ciclo. Personal gratuito de Scout Bot/Planet requiere elegibilidad; juego privado no la acredita. Para candidatos no adquiridos, cualquier adquisición requiere autorización.
+
+| # | Recurso | Decisión | Fase | Coste relativo | Uso y condición |
+|---|---|---|---|---|---|
+| 1 | [Free Animation Set: Zipline Skydiving Glide Dash Falling](https://www.fab.com/listings/f036035a-9edf-407a-99d3-4ef97924ddac) | SELECCIONAR | E1 | Bajo | Poses aéreas; revisar duplicados con bundle |
+| 2 | [Vehicle Variety Pack](https://www.fab.com/listings/dc1ada50-2523-44b1-b0e2-a72d14076fb4) | PROBAR | E2 | Medio | Un coche agarrable/lanzable |
+| 3 | [Cartoon City Free - Low Poly](https://www.fab.com/listings/e41364e1-c811-40db-85f5-84441192591d) | SELECCIONAR | E2–E3 | Medio | Una calle y fachada preparada |
+| 4 | [Adventure Characters (Pack)](https://www.fab.com/listings/db81464d-fcb5-43a8-b309-5555c392be3a) | PROBAR | E1/E5 | Medio | Donante humano ya reclamado |
+| 5 | [3D Platformer Game Bundle - Rail Grinding / Ziplines / Homing Attack & Dash Pads](https://www.fab.com/listings/1898b906-d481-4a05-8515-f2b4d3b28378) | PROBAR | E3 | Alto | Ataque dirigido del bundle ya reclamado |
+| 6 | [Game Animation Sample](https://www.fab.com/listings/880e319a-a59e-4ed2-b268-b32dac7fa016) | PROBAR | E1 | Medio | Locomoción y clips concretos |
+| 7 | [Content Examples](https://www.fab.com/listings/4d251261-d98c-48e2-baee-8f4e47c67091) | PROBAR | E2 | Bajo como consulta | Referencia física/materiales sin importar proyecto entero |
+| 8 | [METALLIC – 50 Impact Sound Effects](https://www.fab.com/listings/dd15984f-4267-4bd5-81f0-ca106c3044ed) | SELECCIONAR | E2 | Bajo | Impactos metálicos |
+| 9 | [Free Stylized Sci-Fi Scout Bot](https://www.fab.com/listings/9c57ad32-3d3e-45ed-91e8-b32fc3af2ac0) | PROBAR | E3 | Medio | Desarme por piezas; Personal sujeto a elegibilidad |
+| 10 | [Sci Fi Robot 13](https://www.fab.com/listings/2b68ee14-cec8-4347-a5fa-5ba870160467) | PROBAR | E3 | Medio/alto | Robot animado; migración5.7 |
+| 11 | [Stack O Bot](https://www.fab.com/listings/b4dfff49-0e7d-4c4b-a6c5-8a0315831c9c) | PROBAR | E3 | Alto si se migra entero | Referencia de robot e interacción física |
+| 12 | [Port Yard Props - Free Sample (12 PBR Props)](https://www.fab.com/listings/ae3b6b05-245d-4eec-a80f-b378a5e88fb0) | PROBAR | E2 | Medio | Props con UCX a validar |
+| 13 | [Niagara Examples Pack](https://www.fab.com/listings/0e188eca-4e54-4fb2-a9ed-d8b8a565e600) | PROBAR | E2–E4 | Medio | Impactos y teletransporte; migración5.7 |
+| 14 | [Free Spline VFX](https://www.fab.com/listings/2b923e61-b02d-4cc9-bd0b-b067c9e6056e) | RESERVAR | E4 | Medio/alto | Trazas de energía; coste NiagaraFluids |
+| 15 | [SciFi Beast06 Bull](https://www.fab.com/listings/126120a3-996e-4dc3-94f1-6550f0adac03) | RESERVAR | E4 | Alto | Kaiju ya reclamado; sin audio/FX |
+| 16 | [Monster for Survival Game PBR Polyart](https://www.fab.com/listings/9fdd1645-600d-460f-be4b-0b6421b7cf38) | RESERVAR | E4 | Medio | Alternativa monstruos ligera |
+| 17 | [Modular Rural Cabins](https://www.fab.com/listings/508fe84a-4976-4cfe-9a40-c2b9533da601) | RESERVAR | E5 | Medio | Periferia ya reclamada |
+| 18 | [FREE 4x4km Coastal Landscape Sample](https://www.fab.com/listings/fe1373c0-969d-4ebf-a8f0-9468fd29d239) | RESERVAR | E6 | Medio | Terreno costero sin comprar entorno completo |
+| 19 | [[FREE] Planet Project for Unreal Engine 5](https://www.fab.com/listings/fc591129-a147-4684-acbb-38a990e30c3a) | RESERVAR | E6 | Alto | Planeta visual; Personal condicionado, no aterrizaje garantizado |
+| 20 | [Procedural Asteroid Field Tool](https://www.fab.com/listings/7682cc66-36ad-4b70-a6c3-f37dcd04f266) | RESERVAR | E6 | Medio | Campo asteroides instanciado |
+
+## Plan de integración posterior a autorización
+
+1. **E0:** comprobar Windows, versión exacta de UE y toolchain; Third Person nativo; empaquetar base. Ningún pack completo es requisito.
+2. **E1:** mismo CMC para caminar/correr/saltar/volar; retarget de pocos clips Free Animation Set, primero comparar bundle poseído. GASP solo donante cuando falte un clip; no introducir Motion Matching completo. 30 ciclos suelo–aire–suelo y prueba humana.
+3. **E2:** un coche Vehicle Variety, materiales mínimos, colisión convexa y masa; Physics Handle/estado controlado. Preparar fachada/paneles con Chaos nativo. Chaos Destruction Demo UE4 descartado; Realtime Destructible Mesh solo laboratorio UE5.7→5.8. 30 agarres,50impactos,20reinicios; atravesar hueco real.
+4. **E3:** una manzana Cartoon City, un robot; verificar piezas separadas antes de prometer desarme. Audio METALLIC, pocos emisores. Homing Attack del bundle solo mecánica separable. Prueba15min y empaquetado Windows.
+5. **E4/E5:** efectos de energía y teleportación con destino validado; Bull ya reclamado y un civil Adventure. No prometer desmembramiento por tener skeleton: preparar piezas/colisiones y cambio funcional. No asumir audio o animaciones ausentes.
+6. **E6:** terreno costero, representación planetaria y asteroides solo después de E3 estable. Un globo y gravedad no equivalen a transición continua ni superficie aterrizable. Medir retorno y persistencia10veces.
+
+Cada ensayo futuro: copia/branch aislada; asset mínimo y dependencias; registrar licencia/edición y versión exacta; import/retarget; mapa pequeño; packaged build; frame time/p95,p99,memoriaCPU/GPU y VRAM pico a1080p en4070 8GB. Escalar texturas/efectos según medición, no estimar memoria como hecho. Una prueba mínima + corrección dirigida; si crece la migración volver al proxy nativo. Revertir por commit y retirar dependencias aisladas. No subir binarios Fab al repo.
+
+## Puntuación y selección
+
+CSV: utilidad, facilidad de adaptación, compatibilidad documental, VRAM, rig/animación, destrucción, permisos (0–10; mayor mejor). Son juicios editoriales preliminares, no resultados de laboratorio. ND significa evidencia insuficiente/no aplicable, nunca cero. Compatibilidad:10 incluye5.8,6 máximo5.7,4 otra5.x,1 solo4.x,3 sin paqueteUE. Facilidad:7/5/3 según soporte documentado; rig7 solo cuando clips relevantes están declarados; destrucción6 solo piezas separadas confirmadas; VRAM2 señala riesgo por detalle/texturas declarados. No hay suma para evitar que ND simule certeza. Permisos9 Standard,7 CC-BY con atribución,0 procedencia/licencia bloqueada; no sustituye la revisión contractual. La decisión incorpora fase, redundancia y presupuesto por encima del número.
+
+## Descartes actuales
+
+| Recurso | Motivo |
 |---|---|
-| [Cartoon City Free - Low Poly](https://www.fab.com/listings/e41364e1-c811-40db-85f5-84441192591d) | Edificios/calles/coches lowpoly en FBX/GLB/Unreal, pero dirección artística debe unificarse |
-| [Sci Fi Robot 13](https://www.fab.com/listings/2b68ee14-cec8-4347-a5fa-5ba870160467) | 15 animaciones de disparos, movimiento, sprint y reacciones; no garantiza partes desmontables |
-| [Realtime Destructible Mesh](https://www.fab.com/listings/46f4e8fc-c95c-4e1c-be61-17439bcbbd1b) | Booleanos y huecos reales según autor; licencia Fab Standard, comparar vs Chaos en sandbox, UE5.8 aún sin prueba local |
-| [Procedural Asteroid Field Tool](https://www.fab.com/listings/7682cc66-36ad-4b70-a6c3-f37dcd04f266) | Blueprint ligero para campos de asteroides en editor con variaciones/volumen/espaciado |
-| [Vehicle Variety Pack](https://www.fab.com/listings/dc1ada50-2523-44b1-b0e2-a72d14076fb4) | 5 vehículos manejables de 4 materiales aproximadamente; probar UNA unidad como objeto levantable. No importar interiores/blueprints hasta necesidad. |
-
-## Descartados de esta etapa (12)
-
-No son malas obras en general. **No aportan valor suficiente a este sandbox ahora**, o su cadena de procedencia necesita cautela. Sin descargas ni imports.
-
-- **[City Sample completo](https://www.fab.com/listings/4898e707-7855-404b-af0e-a505ee690e68)** — UE5.8 CitySamplePCG con ejemplos MCP; proyecto grande, preferir packs independientes
-- **[Paragon: Howitzer](https://www.fab.com/listings/7397dd8d-2e47-4e68-9e9d-a10c6fa0a9c7)** — Mecha/animaciones/FX gratis para UE; identidad Paragon no debe usarse en nuestro juego
-- **[Free Killer Doll Character](https://www.fab.com/listings/3a5f7cb6-ed57-4d11-9200-fbd61aba9c7c)** — Quinn rig y 14 partes estáticas; NO incluye animaciones pese a vídeo de promo
-- **[Robotz Modular Cartoon Robot](https://www.fab.com/listings/ed13427d-c7a8-4676-ad09-557a784b2b21)** — Blender editable y modular, pero sus 5 animaciones son gestos sociales, no combate; empaquetado nativo UE no anunciado.
-- **[Some Robot](https://www.fab.com/listings/1f6c8e1f-00b6-486d-bc36-3c6f5c07ff6c)** — Autor indica que modeló basándose en imagen de autor desconocido; procedencia artística no clara.
-- **[Demonic Spider Free Animated Monster](https://www.fab.com/listings/6cd4cfee-3247-49e6-af10-9fadb0c7f0e4)** — Criatura de terror generada con IA; estilo ajeno a primera ciudad y no necesario para sandbox.
-- **[Halloween Pumpkin](https://www.fab.com/listings/4ba3165d-66cd-4c92-ab44-52abeb08a987)** — 22 animaciones; estética Halloween no necesaria para robots/kaiju.
-- **[PSX Horror Monsters Free Sample](https://www.fab.com/listings/6580ee34-14aa-4e67-8f79-6b7aad2221a1)** — 2 modelos PS1 rigged con 6 clips; estética incompatible con ciudad semiestilizada.
-- **[UE TCA Russel/Admiral Rylak](https://www.fab.com/listings/f3450190-7d37-4620-9674-aef98d6c5c3a)** — Rig/outfits/groom, pero redundante con otros humanoides; no usar IP del personaje.
-- **[Low Poly City Buildings Pack](https://www.fab.com/listings/38e0e92c-bae5-42b9-a8a8-6ae4f60cc291)** — Solo Blender indicado, rating bajo, alternativas más completas en Quaternius/Kenney/Cartoon City.
-- **[Shipping Container PBR UNITY 6 SAMPLE](https://www.fab.com/listings/c81d98a3-8efc-41d9-8b59-f77422a0c3ca)** — Proyecto Unity-only, no FBX anunciado; mejor elegir FBX directo que importar prefabs de Unity.
-- **[PS1 Car Free](https://www.fab.com/listings/d196cffd-297b-4889-8578-20d75003f8db)** — Carro PS1 lowpoly; estilo inadecuado frente a otros paquetes.
-
-## Reservas (27)
-
-Consultar el CSV, **no importar ahora**. Contiene City Sample Buildings/Crowds/Vehicles, héroes de referencia TCA, más robots/monstruos, efectos de energía, ciudades futuristas, CosmoKit y sonidos. Algunos muestran NoAI, otros generados con IA; la decisión se basará en licencia, estilo y rendimiento. No se copiarán identidades de superhéroes de otros autores como personajes originales.
-
-## Fuentes con precio NO confirmado o uso restringido: NO comprar
-
-| Ficha | Problema |
-|---|---|
-| [Freeflow Combat](https://www.fab.com/listings/a51dbdb2-eb68-4d92-a5c7-f2509e6e162e) | **«Freeflow» no significa gratuito**: página muestra selector de licencia y Buy now, precio desconocido → DESCARTAR presupuesto RD$0 |
-| [Modular City Streets Builder (136)](https://www.fab.com/listings/cf8f6692-36e0-4305-9589-cbd567652b1b) | Muy interesante en FBX/GLB pero no se confirmó **Free**: selector de licencia y comprar → PENDIENTE/DESCARTAR hasta cambio |
-| [Low Poly City Locations Pack](https://www.fab.com/listings/5c944115-e098-4329-855a-bd373efbf42b) | 133 modelos listados, pero no precio gratis verificable → PENDIENTE |
-| [New York City Streets Environment](https://www.fab.com/listings/09484226-f51b-4a63-a4fc-eb7c88a15e76) | 228 meshes, muestra opción de compra y precio ofuscado; **la demo gratis no implica pack gratis** → DESCARTAR por ahora |
-| [Energy weapon VFX Pack](https://www.fab.com/listings/1d3c8d00-473b-4eb8-b0d4-471337285c20) | Selector de licencia/Buy now; no Gratis verificado → DESCARTAR |
-| [Shockwave Distortion](https://www.fab.com/listings/db0d837f-3c94-4a67-86a8-5653ebddce12) | Descripción dice free, pero precio en ficha no confirmado → PENDIENTE |
-| [Dynamic Falling & Rolling Animation Pack](https://www.fab.com/listings/68aca290-3b17-4acc-93f7-719d980f17f9) | Aparece «From Free» en buscador pero selector de licencia incierto → PENDIENTE |
-| [Free Animation Library](https://www.fab.com/listings/481ef75b-892b-424f-a213-f1cc058c9c19) | Nombre no prueba precio; revisar en cuenta → PENDIENTE |
-| [FREE Planet Project](https://www.fab.com/listings/fc591129-a147-4684-acbb-38a990e30c3a) | Nombre no prueba precio, compatibilidad UE5.8 no probada → PENDIENTE |
-
-## Promociones de corta duración (NO reclamadas automáticamente)
-
-Fab anunció [ofertas hasta el 17 de noviembre de 2026, 9:59 a.m. ET](https://www.fab.com/limited-time-free):
-
-1. [SciFi Beast06 Bull](https://www.fab.com/listings/126120a3-996e-4dc3-94f1-6550f0adac03): candidato kaiju (29 animaciones anunciadas), NoAI. Interesante **para reclamar manualmente si todavía marca Gratis**, no para entrenar IA.
-2. [3D Platformer Game Bundle](https://www.fab.com/listings/1898b906-d481-4a05-8515-f2b4d3b28378): homing attack, boost y rieles, posible referencia de targeting. Verificar Free y términos antes de obtener.
-3. [Underground Tunnel](https://www.fab.com/listings/6c9e3f18-0b5e-4240-9aea-eecb515175c1): prioridad baja para ciudad, adaptar de UE4.
-
-**La cuenta del usuario NO fue inspeccionada: no se ha reclamado ninguno de estos productos desde ChatGPT.** La automatización de revisión con fecha de 18 de noviembre no evitará que ofertas anteriores caduquen; adquisición es decisión y acción del usuario.
-
-## Lo que hará Codex al iniciar una tarea de recursos
-
-- Consultar este archivo y CSV antes de modelar/crear una mecánica de cero. Afirmar solo el estado real: público gratis, reclamado NO_VERIFICADO, instalado NO_VERIFICADO, probado NO_EJECUTADO.
-- Buscar primero en Mi biblioteca si acceso real disponible. Si no, NO supondrá que el usuario no posee el paquete.
-- Para cada selección registrar UUID Fab, licencia exacta y fecha de descarga, versión del motor compatible, formatos disponibles y archivo real importado. No exportar materiales Fab al repo público como paquetes sueltos.
-- No entrenaremos ninguna IA. [Epic Content License §17](https://www.unrealengine.com/eula/content) impide entregar contenido NoAI como entrada a programas de IA generativa, además de datasets/entrenamiento. Codex puede trabajar con los nombres/metadata/nuestro código sin subir archivos NoAI al modelo. Tener etiqueta «Generado con IA» no implica que tengamos que entrenar un modelo.
-- **Regla innegociable:** reutilizar lo máximo posible y crear solo el pegamento técnico imprescindible, sin sacrificar compatibilidad, control, claridad o estabilidad.
-- Probar UN donante a la vez con logs/capturas y evaluación de rendimiento en Windows UE5.8, 8GB VRAM; no instalar media biblioteca simultáneamente.
-
-## Mantenimiento
-
-La tarea periódica «Auditoría Fab de IMPACT» quedó activada **cada 3 días a ~09:00 America/Santo_Domingo** y primero se ejecutará 2026-11-18. Al ejecutarse intentará investigar cambios y actualizar estos recursos en GitHub; si la conexión o propiedad no puede verificarse, lo indicará en el reporte. No se garantiza acceso futuro ni se puede declarar por anticipado ninguna actualización. Una revisión posterior debe preservar el historial de candidatos, explicar altas/bajas y marcar el precio/propiedad como comprobados solo con evidencia actual.
+| [City Sample completo](https://www.fab.com/listings/4898e707-7855-404b-af0e-a505ee690e68) | Reclamado. Proyecto completo demasiado amplio para E0–E3; 5.8 declarado. Packs separados no son nuevas prestaciones. |
+| [Paragon: Howitzer](https://www.fab.com/listings/7397dd8d-2e47-4e68-9e9d-a10c6fa0a9c7) | 5.8. Descarte por dirección artística/redundancia, no prohibición general de usar arte. No usar marcas PARAGON en publicidad/título. |
+| [Free Killer Doll Character](https://www.fab.com/listings/3a5f7cb6-ed57-4d11-9200-fbd61aba9c7c) | Sin animaciones incluidas pese a vídeos; rig Quinn; máximo5.7; no prioritario. |
+| [Chaos Destruction Demo](https://www.fab.com/listings/3fd0a610-852d-4246-a554-ce3c68489a98) | UE4.23–4.27; requiere source build en parte del rango. Descartar importación UE5.8; usar Chaos nativo. |
+| [Robot (styloo, 11 animations)](https://www.fab.com/listings/3a36bb9e-9b8b-4091-b7e4-e1f86b546285) | 404 comprobado; precio/licencia actuales no verificables; no recomendar. |
+| [Robotz Modular Cartoon Robot](https://www.fab.com/listings/ed13427d-c7a8-4676-ad09-557a784b2b21) | Blender,20poses5animaciones sociales; adaptación excesiva para robot combatiente. |
+| [Some Robot](https://www.fab.com/listings/1f6c8e1f-00b6-486d-bc36-3c6f5c07ff6c) | Concepto de artista desconocido según ficha; procedencia insuficiente. |
+| [Demonic Spider Free Animated Monster](https://www.fab.com/listings/6cd4cfee-3247-49e6-af10-9fadb0c7f0e4) | Gratis solo idle1; nueve clips de pago; texturas IA; descartar para combate. |
+| [Halloween Pumpkin](https://www.fab.com/listings/4ba3165d-66cd-4c92-ab44-52abeb08a987) | 22clips; máximo5.7; temática Halloween inadecuada. |
+| [PSX Horror Monsters Free Sample](https://www.fab.com/listings/6580ee34-14aa-4e67-8f79-6b7aad2221a1) | 2criaturas6clips; estética PSX y generadoIA; redundante. |
+| [UE TCA Russel/Admiral Rylak](https://www.fab.com/listings/f3450190-7d37-4620-9674-aef98d6c5c3a) | 5.8; ropa/grooms/rig; descarte de estilo/redundancia, no veto de licencia. |
+| [Low Poly City Buildings Pack](https://www.fab.com/listings/38e0e92c-bae5-42b9-a8a8-6ae4f60cc291) | CC-BY; Blender; adaptación y redundancia; descarte no basado en rating. |
+| [Shipping Container PBR UNITY 6 SAMPLE](https://www.fab.com/listings/c81d98a3-8efc-41d9-8b59-f77422a0c3ca) | Paquete Unity6; no usar como nativoUE. Hay variantes relacionadas aún pendientes. |
+| [Niagara Explosion Pack_1](https://www.fab.com/listings/a48b3fa2-2ebf-42c2-8892-fa20a1eff289) | Ficha ahora Niagara Explosion Pack_1; USD11.99–20.99. Ya no es recurso RD$0. |
+| [PS1 Car Free](https://www.fab.com/listings/d196cffd-297b-4889-8578-20d75003f8db) | CC-BY; coche PS1; redundante y estilo diferente. |
