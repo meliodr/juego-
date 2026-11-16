@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="titulo descripcion">
+<title id="titulo">IMPACT: BEYOND — Manzana de pruebas IB-C00, planta conceptual</title>
+<desc id="descripcion">Recorrido en L: inicio, 110 metros de aceleración, 50 de frenada, esquina, carro a 58 metros de la pared, apertura de 6 metros con 30 metros libres detrás.</desc>
+<defs>
+ <marker id="flecha" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L8 3 L0 6 Z" fill="#176e9e"/></marker>
+ <marker id="flechaN" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L8 3 L0 6 Z" fill="#de7b1a"/></marker>
+</defs>
+<rect width="960" height="640" fill="#fafafa"/>
+<text x="45" y="50" fill="#192436" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="700">IMPACT: BEYOND · IB-C00</text>
+<text x="45" y="77" fill="#526070" font-family="Arial,Helvetica,sans-serif" font-size="16">Plano en planta — esquema conceptual; cotas en metros, no render del juego</text>
+<!-- suelo y calles -->
+<rect x="80" y="450" width="560" height="52" rx="4" fill="#dadee2" stroke="#9daab3" stroke-width="1"/>
+<rect x="520" y="170" width="52" height="332" fill="#dadee2" stroke="#9daab3" stroke-width="1"/>
+<!-- carril central -->
+<path d="M98 476 H548 V185" stroke="#f7f9fa" stroke-width="2" stroke-dasharray="15 12" fill="none"/>
+<!-- fachadas grises -->
+<rect x="130" y="407" width="133" height="33" rx="2" fill="#b9c0c7" stroke="#74808d"/>
+<rect x="280" y="407" width="136" height="33" rx="2" fill="#b9c0c7" stroke="#74808d"/>
+<rect x="130" y="513" width="133" height="39" rx="2" fill="#b9c0c7" stroke="#74808d"/>
+<rect x="280" y="513" width="136" height="39" rx="2" fill="#b9c0c7" stroke="#74808d"/>
+<rect x="477" y="269" width="33" height="159" rx="2" fill="#b9c0c7" stroke="#74808d"/>
+<rect x="585" y="269" width="33" height="159" rx="2" fill="#b9c0c7" stroke="#74808d"/>
+<!-- tramo de aceleracion y frenada -->
+<path d="M132 472 H395" fill="none" stroke="#176e9e" stroke-width="7" stroke-linecap="round" marker-end="url(#flecha)"/>
+<path d="M406 472 H530" fill="none" stroke="#de7b1a" stroke-width="7" stroke-linecap="round" marker-end="url(#flechaN)"/>
+<path d="M546 450 V352" fill="none" stroke="#176e9e" stroke-width="6" stroke-linecap="round" marker-end="url(#flecha)"/>
+<!-- marcadores -->
+<circle cx="126" cy="474" r="12" fill="#176e9e" stroke="#fff" stroke-width="3"/>
+<text x="122" y="480" fill="white" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700">1</text>
+<text x="138" y="464" fill="#14293b" font-family="Arial,Helvetica,sans-serif" font-size="13">DESPEGUE</text>
+<text x="236" y="393" fill="#176e9e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" text-anchor="middle">ACELERACIÓN · 110 m</text>
+<text x="461" y="535" fill="#aa5d14" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" text-anchor="middle">FRENO · 50 m</text>
+<text x="588" y="483" fill="#14293b" font-family="Arial,Helvetica,sans-serif" font-size="15">GIRO 90°</text>
+<!-- carro -->
+<rect x="533" y="311" width="26" height="45" rx="7" fill="#e3a34c" stroke="#965610" stroke-width="2"/>
+<rect x="537" y="318" width="18" height="13" rx="3" fill="#f9e9c4" stroke="#965610" stroke-width="1"/>
+<circle cx="531" cy="321" r="4" fill="#38424a"/><circle cx="561" cy="321" r="4" fill="#38424a"/>
+<circle cx="531" cy="346" r="4" fill="#38424a"/><circle cx="561" cy="346" r="4" fill="#38424a"/>
+<text x="582" y="326" fill="#754205" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="16">CARRO</text>
+<text x="582" y="345" fill="#48515c" font-family="Arial,Helvetica,sans-serif" font-size="13">4.5 × 2 × 1.5 m</text>
+<!-- diana y hueco -->
+<rect x="507" y="169" width="26" height="18" fill="#6d7781"/>
+<rect x="559" y="169" width="26" height="18" fill="#6d7781"/>
+<rect x="533" y="169" width="26" height="18" fill="#cd5454" stroke="#913b3b" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M545 303 V190" fill="none" stroke="#176e9e" stroke-width="5" stroke-linecap="round" marker-end="url(#flecha)"/>
+<text x="592" y="171" fill="#a33c3c" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700">PARED / PANEL</text>
+<text x="592" y="192" fill="#48515c" font-family="Arial,Helvetica,sans-serif" font-size="13">Panel preparado 6 × 5 m</text>
+<text x="592" y="209" fill="#48515c" font-family="Arial,Helvetica,sans-serif" font-size="13">Hueco real tras impacto</text>
+<!-- espacio libre -->
+<rect x="513" y="90" width="66" height="70" rx="4" fill="#e4f3e7" stroke="#5b9569" stroke-width="2" stroke-dasharray="6 4"/>
+<path d="M546 160 V105" fill="none" stroke="#3d9866" stroke-width="4" stroke-dasharray="7 4" marker-end="url(#flecha)"/>
+<text x="588" y="118" fill="#367248" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700">ESPACIO LIBRE</text>
+<text x="588" y="140" fill="#48515c" font-family="Arial,Helvetica,sans-serif" font-size="13">≥30 m detrás de la pared</text>
+<!-- caja de criterio -->
+<rect x="45" y="564" width="864" height="54" rx="8" fill="#f0f1f3" stroke="#d0d5da"/>
+<text x="63" y="585" fill="#263442" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700">Objetivo: despegar → acelerar → frenar → agarrar → lanzar → atravesar → reiniciar.</text>
+<text x="63" y="605" fill="#526070" font-family="Arial,Helvetica,sans-serif" font-size="13">Reinicio: un carro y una pared intacta, sin fragmentos ni colisión fantasma. No implementado ni probado.</text>
+<!-- orientacion -->
+<path d="M870 145 V100" stroke="#334960" stroke-width="3" marker-end="url(#flecha)"/>
+<text x="862" y="86" fill="#334960" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700">N</text>
+</svg>

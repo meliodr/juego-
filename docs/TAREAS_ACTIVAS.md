@@ -26,6 +26,10 @@ Actualización: 2026-11-14. Fuente de alcance: [PLAN_ACTIVO.md](PLAN_ACTIVO.md).
 
 **Estado real: ninguna tarea de juego ha comenzado ni está aceptada.** Esta es una cola documentada, no issues asignadas a agentes ni instrucciones ya enviadas a Robert. El primer bloqueo operativo es disponer del Windows real autorizado para inspeccionar y probar.
 
+## Diseño ya preparado, sin alterar el orden de implementación
+
+[Plano medible y pruebas de H01 — IB-C00](IB_C00_MANZANA_PRUEBA.md). Define la calle en L, colisiones del carro al transportarlo, panel de destrucción y restauración, con casos de prueba por ticket. **Solo es preparación documental:** IB-W00 sigue siendo el único trabajo de implementación activo y el recorrido completo no será aceptable hasta D01. El PR #2 ya prepara diagnóstico Windows sin ejecución local verificada.
+
 ## Próxima tarea
 
 **IB-W00 → IB-W01 — Confirmar Windows/Unreal/compilador y crear la base reproducible.** No comenzar otro sistema antes de obtener su evidencia. Este turno autoriza planificación; no sustituye permiso para instalar motor, cambiar drivers, ejecutar terceros o acceder a la máquina.
