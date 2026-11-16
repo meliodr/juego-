@@ -1,17 +1,23 @@
-# Fachadas modulares CC0: candidato acotado
+# Fachadas modulares CC0: recurso ya utilizado, no novedad
 
-Verificado documentalmente 2026-11-16 UTC. **No descargado, importado ni probado.** No cambia la selección activa ni interfiere con integración.
+Corrección documental 2026-11-16 UTC. La revisión inicial lo presentó como candidato nuevo tras buscar solo parte del catálogo. **Eso era incompleto: PR #16 ya incorporó este mismo recurso y S2 hereda ese commit.** Esta auditoría no descargó, importó ni ejecutó assets; no debe confundirse con ausencia de importaciones anteriores.
 
-## Hallazgo
-[Modular Urban Apartments Facade, Poly Haven](https://polyhaven.com/a/modular_urban_apartments_facade): modelo gratuito, coste de descarga RD$0. La ficha ofrece módulos residenciales, ventanas, puertas y esquinas, con FBX, glTF, USD y Blend; resoluciones 1K a 8K. La selección visible 4K/Blend mostraba 663,38 MB; no extrapolar ese tamaño a los demás formatos.
+## Recurso y licencia documentada
+[Modular Urban Apartments Facade, Poly Haven](https://polyhaven.com/a/modular_urban_apartments_facade): recurso gratuito RD$0, identificado en la revisión inicial mediante ficha oficial y [licencia CC0](https://polyhaven.com/license). CC0 permite uso personal/comercial, modificación y redistribución; no se identificó restricción NoAI para el asset. No cubre logotipos, textos o renders promocionales del sitio. Esta auditoría de repositorio no verificó de nuevo el ZIP original ni su hash.
 
-**Valor propuesto:** ensayo futuro de una sola fachada para reducir repetición y aumentar detalle arquitectónico, no reemplazar la ciudad completa. Poly Haven ya figuraba como fuente general; este modelo concreto no apareció en PR #1 ni en Robert/RECURSOS_GRATUITOS.md, CODIGO_Y_SISTEMAS.md, FUENTES_ADICIONALES.md, docs/REUSE_CATALOG.md, CITY_SOLAR_TELEPORT_V04.md o FREE_RESOURCE_AUDIT_V05.md revisados.
+## Evidencia del uso previo
+- [PR #16](https://github.com/meliodr/juego-/pull/16), abierto y borrador, head `32001f504fcfa4681c5f2ba8a1c46754573eddd4`, describe cuatro módulos para 28 edificios.
+- [Documentación en ese commit](https://github.com/meliodr/juego-/blob/32001f504fcfa4681c5f2ba8a1c46754573eddd4/docs/IB_C00_VALIDACION.md), sección «Fachadas urbanas»: glTF 1K, cuatro grupos de instancias jerárquicas, colisiones conservadas en los volúmenes del circuito y cristales convertidos a opacos oscuros.
+- Los archivos del PR incluyen BayWide, BayDouble, Entry y Cornice, materiales/texturas en `ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/`, el mapa y `Tools/Apply-RealisticFacades.py`. No es solo una propuesta escrita.
+- [Comparación PR16 → S2](https://github.com/meliodr/juego-/compare/32001f504fcfa4681c5f2ba8a1c46754573eddd4...1d01db54b63250ed0aacb0704a5ac16290324e32): ahead 4, behind 0, merge-base igual al head de PR16. Por tanto el head de [PR #19](https://github.com/meliodr/juego-/pull/19) hereda PR16. La comparación muestra además modificaciones posteriores de sus cinco materiales.
+- [Script conservado en S2](https://github.com/meliodr/juego-/blob/1d01db54b63250ed0aacb0704a5ac16290324e32/Tools/Apply-RealisticFacades.py): reutiliza assets guardados si existen; solo pide fuente glTF mediante IB_POLY_FACADE si no existen.
 
-## Licencia y edición
-[Licencia oficial](https://polyhaven.com/license): los assets del catálogo son CC0; permite uso personal/comercial, modificación y redistribución, sin atribución obligatoria. No se identificó restricción NoAI para este asset CC0. Esto no licencia logotipos, textos o renders promocionales del sitio. Registrar el paquete exacto y su licencia cuando se descargue; esta revisión no verificó el contenido del ZIP ni fijó un hash del archivo.
+## Qué está y qué no está demostrado
+El cuerpo de PR16 declara capturas DX12, paquete Win64 abierto por Steam y regresión de 20 ciclos del carro aprobada. Son resultados reportados por su autor, no reproducidos por esta auditoría. Su documento mantiene aceptación jugable pendiente y otros apartados de validación pendientes; esa diferencia debe reconciliarse antes de emitir un aprobado global.
 
-## Compatibilidad y límites
-La ficha ofrece formatos de intercambio, **no una certificación UE5.8/Windows**. Importación, escala, material, colisión, LOD, memoria y empaquetado están pendientes. Tampoco acredita interiores, geometría fracturable, colisiones transitables o rendimiento a máxima velocidad. No es un plugin de destrucción.
+PR16 y PR19 seguían abiertos, sin fusionar, durante esta revisión. La comparación PR16 → main es divergente (ahead 2 / behind 24), por lo que no acredita integración de PR16 en main. Herencia Git en S2 no demuestra que la build instalada de Steam esté actualizada, ni valida destrucción, recorrido continuo, colisión de fachada detallada o carga a máxima velocidad. No se inspeccionó el checkout local del integrador ni se ocupó Unreal.
 
-## Decisión
-RESERVA PARA ENSAYO AISLADO, no dependencia aprobada. Cuando termine la integración activa, probar 1–3 módulos a resolución mínima útil, conservar evidencia antes/después con cámara y luz equivalentes, medir memoria/draw calls y verificar colisión. Preparar destrucción por separado si se acepta. Rechazar si mejora solo capturas pero perjudica traversal o presupuesto. No se subieron archivos de terceros; este PR contiene únicamente investigación documental.
+## Decisión corregida
+**REUTILIZAR Y AUDITAR LO EXISTENTE. NO DESCARGAR NI IMPORTAR DE NUEVO POR ESTE HALLAZGO.** Retirar la etiqueta de novedad y el ensayo de importación duplicado. Coordinar con S2 sobre sus assets ya presentes, reconciliar evidencia y comprobar su estado en la candidata integrada. Cualquier mejora de variedad, materiales, colisiones o destrucción requiere un encargo separado y pruebas comparables; no es un plugin de destrucción.
+
+Este PR solo corrige investigación documental en una rama propia. No modifica ramas ajenas, main, assets, mapa, permisos ni trabajos activos.
