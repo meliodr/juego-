@@ -70,11 +70,15 @@ try:
             label = "FunctionalBatch" if args.batch else group[0]
             report = run / (label + "-report")
             launch = [str(args.game_exe.resolve())] if args.game_exe else [editor, project]
-            renderer = ["-dx12", "-RenderOffscreen", "-windowed", "-ResX=1920", "-ResY=1080"] if args.render_offscreen else ["-NullRHI", "-UseFixedTimeStep", "-FPS=60", "-nosound"]
+            renderer = ["-dx12", "-RenderOffscreen", "-windowed", "-ResX=1920", "-ResY=1080", "-ForceRes"] if args.render_offscreen else ["-NullRHI", "-UseFixedTimeStep", "-FPS=60", "-nosound"]
             execute(label, launch + [args.map, "-game", "-IBPlayQA", "-IBBuildRevision="+head] + renderer + ["-unattended", "-nosplash", "-nowrite", "-NoLiveCoding", "-ExecCmds=Automation RunTests " + "+".join("ImpactBeyond."+suite for suite in group), "-TestExit=Automation Test Queue Empty", "-abslog=" + str(run / (label + ".unreal.log")), "-ReportExportPath=" + str(report)])
             result = json.loads((report / "index.json").read_text(encoding="utf-8-sig"))
             if result.get("succeeded", 0) + result.get("succeededWithWarnings", 0) < len(group) or result.get("failed", 0) or result.get("notRun", 0):
                 raise RuntimeError("Missing complete test success: " + label)
+            if args.game_exe:
+                runtime_log = (run / (label + ".unreal.log")).read_text(encoding="utf-8-sig", errors="replace")
+                if "LogStreaming: Warning: LoadPackage: SkipPackage: /Game/" in runtime_log or "Default Material will be used in game" in runtime_log:
+                    raise RuntimeError("Packaged game has missing content or fallback materials: " + label)
     elif args.phase == "author":
         script = str(repo / "Tools/IBPlay_AuthorProduction.py")
         execute("Author", [editor, project, "-run=pythonscript", "-script=" + script, "-unattended", "-nosplash", "-NullRHI", "-nowrite", "-NoLiveCoding", "-abslog=" + str(run / "author.unreal.log")])

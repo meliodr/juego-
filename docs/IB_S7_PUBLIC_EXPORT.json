@@ -244,7 +244,7 @@
         ],
         "tick_cycle_warning_count": 0,
         "batch_status": "FAIL: S3FlightReentry requires legacy car01/wall01 fixtures intentionally absent in production",
-        "flight_reentry_lab_rerun": "IN_PROGRESS",
+        "flight_reentry_lab_rerun": "PASS: ten physical returns in S3Lab; run s7-tests-20261116T053404Z",
         "observer": "integrator"
       },
       "package_dx12_audio_performance_human": "PENDING",
@@ -268,6 +268,38 @@
       "local_asset_commit": "a91b163 (not exported)",
       "observer": "integrator",
       "package_validated": false
+    },
+    "flight_reentry_s3_lab": {
+      "run": "s7-tests-20261116T053404Z",
+      "status": "PASS",
+      "returns": 10,
+      "map": "S3Lab",
+      "scope": "Physical reentry test with legacy fixtures; not a production circumnavigation acceptance",
+      "observer": "integrator"
+    },
+    "package_a91b163": {
+      "run": "s7-package-20261116T053439Z",
+      "status": "WITHDRAWN_CANDIDATE",
+      "source_cpp_equivalent": "6b4631d",
+      "assets": "Local authored assets, including seven S25 material usage flags; not exported",
+      "observer": "integrator",
+      "exact_executable_validation": "FAIL: DX12 packaged validation found five missing S3 runtime assets; observed viewport 888x500 due to DPI",
+      "dx12_audio_performance": "NOT_ACCEPTED; candidate withdrawn, no performance claim",
+      "physical_dualsense": "PENDING_HUMAN",
+      "cook": "PASS"
+    },
+    "package_17d7f91": {
+      "status": "RECOOK_IN_PROGRESS",
+      "source_cpp_equivalent": "6b4631d",
+      "fixes": [
+        "Explicit S25 materials and tree static meshes AlwaysCook",
+        "bAllowHighDPIInGameMode=True",
+        "DX12 test -ForceRes",
+        "Packaged missing assets/default material fail gate"
+      ],
+      "exact_executable_validation": "PENDING",
+      "dx12_audio_performance": "PENDING",
+      "observer": "integrator"
     }
   },
   "preserve_preparation_over_staging": [
@@ -462,9 +494,9 @@
     "s3_geometry": "PASS: winding, manifold edges, sphere radius, near-cap sagitta 2.1972592033847604 cm at 25 km",
     "s25_recipes": "10 PASS + 1 SKIP local asset bytes absent; R2 5 PASS",
     "cpp_snapshot_equality": 107,
-    "github_actions": "PR33 remote 52e8da3: Lab audit tests SUCCESS; Integrated source checks source-and-recipes and native-policies SUCCESS",
+    "github_actions": "PR33 remote 43b52a5: Lab audit tests SUCCESS; Integrated source checks source-and-recipes and native-policies SUCCESS",
     "unreal_final_snapshot": "6b4631d Editor and Game PASS, run s7-build-20261116T052603Z, reported by integrator; authoring and package still pending",
-    "cook_package_dx12_audio_human": "PENDING: exact package/render/audio/performance and human acceptance; earlier DX12 simulated-input PASS remains scoped to 761a2b5",
+    "cook_package_dx12_audio_human": "First a91b163 package withdrawn after cook PASS but DX12 missing-content/DPI failure; 17d7f91 recook and exact executable validation pending",
     "unreal_build_report": {
       "source_commit": "9ca77e1",
       "run": "s7-build-20261116T045837Z",
@@ -475,7 +507,7 @@
     },
     "python_syntax": "50 tracked Python files parsed without import",
     "public_source_policy_precommit": "PASS for all 156 snapshot text changes",
-    "native_report_scope": "13 suites PASS on 9ca77e1 public export and remote 52e8da3; pure policies/native fixtures unchanged through 6b4631d; newer UE fixture requires Unreal validation"
+    "native_report_scope": "13 suites PASS on 9ca77e1 public export and remote 52e8da3/43b52a5; pure policies/native fixtures unchanged through 6b4631d; Unreal tick regression passed separately in production"
   },
   "sanitized_documentation": [
     "docs/IB_S7_ASSET_PROVENANCE.md",
@@ -824,24 +856,36 @@
         "Tools/IBPlay_AuthorProduction.py"
       ],
       "reason": "Reproducible instancing flags for seven explicitly allowlisted S25 materials; no Fab bytes or modified uassets exported"
+    },
+    {
+      "snapshot": "17d7f9127547c7b1b29ff3a377ec25ac5302095c",
+      "previous_snapshot": "6b4631dbb82703e771b76e7489c341688d1460e1",
+      "paths": [
+        "ImpactBeyond/Config/DefaultEngine.ini",
+        "ImpactBeyond/Config/DefaultGame.ini",
+        "Tools/IBPlay_Validate.py"
+      ],
+      "reason": "Cook S3 runtime city resources explicitly, enable High DPI, force DX12 test resolution and reject packaged missing assets/fallback materials; C++ unchanged"
     }
   ],
   "pr": {
     "number": 33,
     "url": "https://github.com/meliodr/juego-/pull/33",
     "state": "DRAFT",
-    "remote_head_at_review": "52e8da322357cfd3fa5aeba0da69fbf1c29ca2c5"
+    "remote_head_at_review": "43b52a5590527267bc2452b3610f1fe83dadbcdd"
   },
   "closed_labs": {
     "21": "Closed by integrator as covered by PR30; no action by source-preparation agent"
   },
   "remote_ci": {
-    "commit": "52e8da322357cfd3fa5aeba0da69fbf1c29ca2c5",
-    "integrated_source_run": 43808923815,
-    "lab_audit_run": 43808923825,
+    "commit": "43b52a5590527267bc2452b3610f1fe83dadbcdd",
+    "integrated_source_run": 43811267932,
+    "lab_audit_run": 43811267857,
     "status": "SUCCESS",
-    "new_acf_export": "LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY",
-    "pending_local_exports": "20bfe01 plus current 6b4631d export; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+    "lab_audit": "SUCCESS",
+    "source_and_recipes": "SUCCESS",
+    "native_policies": "SUCCESS",
+    "pending_export": "17d7f91 config/runner corrections plus updated evidence; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
   },
   "authoring_snapshot_commit": "742ff4977b95e8fb93eeec0dee3847b09f57253e",
   "authoring_script_sha256": "5c44aaf5814133ad2828f8d487ba24e941699fdf132a304902a20376bc4fccff",
@@ -854,5 +898,19 @@
     "fab_sources_modified": false,
     "binary_outputs_exported": false
   },
-  "source_frozen_commit": "6b4631dbb82703e771b76e7489c341688d1460e1"
+  "source_frozen_commit": "6b4631dbb82703e771b76e7489c341688d1460e1",
+  "remote_ci_previous": {
+    "commit": "52e8da322357cfd3fa5aeba0da69fbf1c29ca2c5",
+    "integrated_source_run": 43808923815,
+    "lab_audit_run": 43808923825,
+    "status": "SUCCESS",
+    "new_acf_export": "LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY",
+    "pending_local_exports": "20bfe01 plus current 6b4631d export; LOCAL_NOT_PUSHED_NOT_RUN_REMOTELY"
+  },
+  "packaging_snapshot_commit": "17d7f9127547c7b1b29ff3a377ec25ac5302095c",
+  "packaging_text_sha256": {
+    "ImpactBeyond/Config/DefaultEngine.ini": "656cb72b678d19bab6287925b2de6758fa634b69ab349120b2aa57bff2b21047",
+    "ImpactBeyond/Config/DefaultGame.ini": "f4e69735b00541ef2f7ae47a81efb25464d4f93e65162fce25b7a2d1253c7fdc",
+    "Tools/IBPlay_Validate.py": "1bdc335159309eaa0d7a9576166548e9c85c69a53daaaf24da78a7aa158f6b91"
+  }
 }
