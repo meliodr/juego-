@@ -6,10 +6,10 @@ La rama parte de main y publica fuentes, recetas y documentación, sin historial
 
 Validación:
 
-- [CI dce329e](https://github.com/meliodr/juego-/actions/runs/43814696403) y [auditoría](https://github.com/meliodr/juego-/actions/runs/43814696452) PASS, incluidas 13 suites nativas. Game, autoría y paquete final `s7-package-20261116T060244Z` PASS.
+- [CI 8acc379](https://github.com/meliodr/juego-/actions/runs/43815842275) y [auditoría](https://github.com/meliodr/juego-/actions/runs/43815842311) PASS, incluidas 13 suites nativas. Game, autoría y paquete final `s7-package-20261116T060244Z` PASS.
 - Doce suites funcionales sobre el ejecutable exacto y cuatro suites del paquete en DX12 PASS. El gate final confirma cero recursos ausentes y cero materiales de reserva (`s7-tests-20261116T060433Z`).
 - Perfil final `s7-tests-20261116T060613Z`: 90,011 s, 5.395 fotogramas, 59,9253 FPS medios; p95 16,6848 ms, p99 16,7421 ms, máximo 93,0082 ms y un fotograma >50 ms. DX12/audio y reloj real; salida 1920×1080, escala interna 83%, calidad alta/2, límite 60 FPS, Fortnite ausente. Es una medición local acotada, no garantía de rendimiento.
-- Steam Input está activado y el acceso preparado; arranque visible pendiente de cerrar un aviso Windows de QA. No se concedieron permisos de red ni cambiaron reglas del firewall. La evaluación humana del control y DualSense físico permanece separada de la entrega validada.
+- Arranque visible desde Steam verificado con el ejecutable final, Steam Input activado, mapa Playable y DX12/audio inicializados. No se concedieron permisos de red ni cambiaron reglas del firewall. La evaluación humana del control y DualSense físico permanece separada de la entrega validada.
 
 [Fuentes y hashes](IB_S7_PUBLIC_EXPORT.json) · [Reproducción y arranque](IB_S7_SOURCE_OVERVIEW.md) · [Resultados y límites](IB_S7_CLOSURE_REVIEW.md).
 

@@ -2,7 +2,7 @@
 
 La rama nace de la base pública `6c2d903` y contiene una exportación de fuentes, sin historial privado de arte. Snapshot C++ `fa75f7f`, autoría `730b39f`, configuración y validador de paquete `17d7f91`. [Archivos y hashes exactos](IB_S7_PUBLIC_EXPORT.json).
 
-Estado actual: versión jugable validada mediante build, autoría, paquete final, doce suites funcionales del ejecutable, cuatro suites DX12 del paquete, gate de contenido limpio y perfil confirmatorio. CI de `dce329e` verde. [Evidencia y límites](IB_S7_CLOSURE_REVIEW.md). La publicación e integración pueden avanzar; el arranque visible Steam sigue pendiente de cerrar un aviso Windows, sin conceder permisos de red. La evaluación humana permanece separada.
+Estado actual: versión jugable validada mediante build, autoría, paquete final, doce suites funcionales del ejecutable, cuatro suites DX12 del paquete, gate de contenido limpio y perfil confirmatorio. CI de `8acc379` verde. [Evidencia y límites](IB_S7_CLOSURE_REVIEW.md). La publicación e integración pueden avanzar; el arranque visible Steam ya está verificado con el ejecutable final, Steam Input activado y DX12/audio, sin conceder permisos de red. La evaluación humana permanece separada.
 
 ## Contrato de exportación
 
@@ -17,7 +17,7 @@ Un clone de fuentes requiere provisión legal local y autoría del mapa. Compila
 
 ## CI y comprobaciones
 
-[Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43814696403) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43814696452) aprobaron `dce329e`. Incluyen política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17/MSVC. Una fixture requerida ausente provoca fallo.
+[Integrated source checks](https://github.com/meliodr/juego-/actions/runs/43815842275) y [Lab audit tests](https://github.com/meliodr/juego-/actions/runs/43815842311) aprobaron `8acc379`. Incluyen política de publicación, sintaxis Python sin importar Unreal, recetas S2.5, geometría S3 y 13 suites C++17/MSVC. Una fixture requerida ausente provoca fallo.
 
 `IBCI_Native.py` escribe fuera del checkout, verifica estabilidad de hashes y no ejecuta Unreal ni instala herramientas. Las pruebas nativas no certifican física CMC/Chaos, render, audio o control humano. La comparación S35/S4 conserva casos de unidades/categorías/inmunidad y rechazo de replay; el contrato canónico tiene sus propias pruebas. [Recibo nativo inicial](IB_S7_NATIVE_VALIDATION.json) y resultados remotos quedan identificados por revisión.
 

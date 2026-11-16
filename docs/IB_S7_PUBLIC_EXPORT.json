@@ -1,5 +1,5 @@
 {
-  "status": "PLAYABLE_BUILD_VALIDATED_FOR_DELIVERY_HUMAN_EVALUATION_SEPARATE",
+  "status": "PLAYABLE_DELIVERY_VALIDATED_STEAM_VERIFIED_HUMAN_EVALUATION_SEPARATE",
   "public_base": "6c2d903c708553e7c840d27a96e5eb86810cb8a7",
   "imported_s25_commit": "70187086042669e8ec178b3b268c57730da8492f",
   "imported_s25_source_metadata": [
@@ -377,7 +377,7 @@
   "final_build_and_runtime_evidence": {
     "unreal_previous_snapshot_4f95872": "Compiled, reported by integrator",
     "unreal_source_snapshot_9ca77e1": "Editor and Game PASS, reported by integrator",
-    "package_dx12_audio_input_human_acceptance": "Final8b package, four DX12 functional/content gates, 12 flat suites and confirming real-clock DX12/audio profile PASS; visible Steam launch pending; physical controller and human evaluation separate",
+    "package_dx12_audio_input_human_acceptance": "Final package, functional/content gates, confirming DX12/audio profile and visible Steam launch PASS; physical controller and human evaluation separate",
     "later_authoring_update": "Exact 730b39f script integrated at ead1d59; authoring PASS (11 verified, only agua changed); updated package confirmation pending",
     "unreal_source_snapshot_acf4156": "Editor PASS; Game not yet reported for this snapshot",
     "functional_acf4156": {
@@ -580,14 +580,23 @@
         "observer": "integrator"
       },
       "steam": {
+        "status": "VERIFIED",
+        "target": "Final package s7-package-20261116T060244Z executable",
+        "start_directory": "Packaged ImpactBeyond/Binaries/Win64",
+        "launch_arguments": "-dx12 -windowed -ResX=1920 -ResY=1080 -UDPMESSAGING_TRANSPORT_ENABLE=0",
         "steam_input_enabled_ui_verified": true,
-        "final_target_prepared": "Package s7-package-20261116T060244Z",
-        "visible_launch": "PENDING_USER_CANCEL_FIREWALL_DIALOG_THEN_STEAM_LAUNCH",
-        "launch_argument": "-UDPMESSAGING_TRANSPORT_ENABLE=0",
+        "visible_launch": "PASS: Steam JUGAR became DETENER and ImpactBeyond game window appeared",
+        "window_title": "ImpactBeyond (64-bit Development PCD3D_SM6)",
+        "runtime_log_utc": "2026-11-16T06:23:23Z",
+        "runtime_map": "/Game/IB_Playable/Lvl_IB_Playable",
+        "runtime_game_mode": "IBPlayGameMode",
+        "renderer": "DX12",
+        "audio": "Realtek initialized",
+        "final_executable_process_verified": true,
         "network_permissions_granted": false,
-        "physical_dualsense": "PENDING_HUMAN",
-        "observer": "integrator",
-        "recommended_launch_arguments": "-dx12 -windowed -ResX=1920 -ResY=1080 -UDPMESSAGING_TRANSPORT_ENABLE=0"
+        "firewall_rules_changed": false,
+        "physical_dualsense": "SEPARATE_HUMAN_CHECK",
+        "observer": "integrator via CUA and process/log metadata"
       },
       "water_material_correction": {
         "status": "PASS_AUTHORING_COOK_FINAL_FUNCTIONAL_AND_PROFILE",
@@ -702,7 +711,7 @@
           "fortnite_running": false,
           "observer": "integrator"
         },
-        "steam_visible_launch": "PENDING"
+        "steam_visible_launch": "PASS: final executable launched via Steam, map/game mode/DX12/audio verified"
       },
       "run": "s7-package-20261116T060244Z",
       "duration_seconds": 37.01
@@ -900,9 +909,9 @@
     "s3_geometry": "PASS: winding, manifold edges, sphere radius, near-cap sagitta 2.1972592033847604 cm at 25 km",
     "s25_recipes": "10 PASS + 1 SKIP local asset bytes absent; R2 5 PASS",
     "cpp_snapshot_equality": 107,
-    "github_actions": "PR33 dce329e: Integrated source checks and Lab audit tests SUCCESS",
+    "github_actions": "PR33 8acc379: Integrated source checks and Lab audit tests SUCCESS; latest Steam documentation requires its own CI",
     "unreal_final_snapshot": "fa75f7f Game PASS (s7-build-20261116T054825Z, 114.26 s), package PASS (s7-package-20261116T055049Z), first DX12 profile PASS; last Editor 6b4631d PASS",
-    "cook_package_dx12_audio_human": "Final8b water-fixed package, exact DX12 functional/content gate and confirming profile PASS; Steam visible launch pending; no human acceptance claimed",
+    "cook_package_dx12_audio_human": "Final water-fixed package, exact DX12 functional/content gate, confirming profile and visible Steam launch PASS; no human acceptance claimed",
     "unreal_build_report": {
       "source_commit": "9ca77e1",
       "run": "s7-build-20261116T045837Z",
@@ -1295,17 +1304,17 @@
     "number": 33,
     "url": "https://github.com/meliodr/juego-/pull/33",
     "state": "DRAFT",
-    "remote_head_at_review": "dce329e480c8f5cd14ae40f99469d8f3a473f11b"
+    "remote_head_at_review": "8acc379248f26bae2ba4abe3f572bab8fb2c8a7c"
   },
   "closed_labs": {
     "21": "Closed by integrator as covered by PR30; no action by source-preparation agent"
   },
   "remote_ci": {
-    "commit": "dce329e480c8f5cd14ae40f99469d8f3a473f11b",
-    "integrated_source_run": 43814696403,
-    "lab_audit_run": 43814696452,
+    "commit": "8acc379248f26bae2ba4abe3f572bab8fb2c8a7c",
+    "integrated_source_run": 43815842275,
+    "lab_audit_run": 43815842311,
     "status": "SUCCESS",
-    "pending_docs": "FINAL_DOCUMENTATION_ONLY_READY_FOR_PUBLICATION"
+    "pending_docs": "STEAM_VERIFIED_DOCUMENTATION_UPDATE"
   },
   "authoring_snapshot_commit": "730b39ff8425f21297ca2bd89f6207dabace105c",
   "authoring_script_sha256": "44dbabd371da8e1456901eacc7469a58908f1d516de60c98d41a4ae557632e72",
@@ -1359,6 +1368,13 @@
       "lab_audit_run": 43813155278,
       "status": "SUCCESS",
       "pending_export": "730b39f authoring and updated evidence; local commit not yet pushed or run remotely"
+    },
+    {
+      "commit": "dce329e480c8f5cd14ae40f99469d8f3a473f11b",
+      "integrated_source_run": 43814696403,
+      "lab_audit_run": 43814696452,
+      "status": "SUCCESS",
+      "pending_docs": "FINAL_DOCUMENTATION_ONLY_READY_FOR_PUBLICATION"
     }
   ],
   "current_delivery_status": {
@@ -1373,10 +1389,10 @@
     "final_packaged_content_gate": "PASS_NO_MISSING_ASSETS_OR_FALLBACK_MATERIALS",
     "final_profile": "PASS",
     "steam_input_setting": "VERIFIED",
-    "steam_visible_launch": "PENDING_DISMISS_EXISTING_WINDOWS_QA_NOTICE; no network/firewall permissions granted",
+    "steam_visible_launch": "VERIFIED_FINAL_EXECUTABLE_STEAM_PLAY_TO_STOP_GAME_WINDOW_MAP_DX12_AUDIO",
     "physical_controller_and_human_acceptance": "SEPARATE_PENDING",
-    "public_source_ci": "dce329e SUCCESS",
-    "github_publication": "READY_FOR_INTEGRATOR_PUSH_CI_MERGE"
+    "public_source_ci": "8acc379 SUCCESS; Steam-confirmation documentation to be checked by its own CI",
+    "github_publication": "FINAL_STEAM_CONFIRMATION_DOCS_PREPARED_FOR_PUSH_CI_MERGE"
   },
-  "delivery_acceptance_scope": "Build, authoring, packaged functional/content gates and measured DX12/audio validated; physical DualSense and human evaluation separate. Windows dialog affects visible Steam handoff, not validated source publication."
+  "delivery_acceptance_scope": "Build, authoring, packaged functional/content gates, measured DX12/audio and visible Steam launch validated; physical DualSense and human evaluation remain separate."
 }

@@ -1,6 +1,6 @@
 # IMPACT: BEYOND — Plan activo
 
-Actualización: 16 de noviembre de 2026. **Versión jugable S1–S7 integrada y validada mediante build, autoría, paquete, pruebas funcionales y perfil DX12/audio.** [Evidencia final](IB_S7_CLOSURE_REVIEW.md). Publicación/reconciliación en cierre; arranque visible Steam pendiente de cerrar aviso Windows de QA. Evaluación humana del control y mando físico separada; no se afirma aceptación de todos los ensayos sostenidos del plan.
+Actualización: 16 de noviembre de 2026. **Versión jugable S1–S7 integrada y validada mediante build, autoría, paquete, pruebas funcionales y perfil DX12/audio.** [Evidencia final](IB_S7_CLOSURE_REVIEW.md). Publicación/reconciliación en cierre; arranque visible desde Steam verificado con el ejecutable final y Steam Input activado. Evaluación humana del control y mando físico separada; no se afirma aceptación de todos los ensayos sostenidos del plan.
 
 Este documento consolida las decisiones de [PR17](https://github.com/meliodr/juego-/pull/17), los problemas de [PR22](https://github.com/meliodr/juego-/pull/22) y el alcance de [PR23](https://github.com/meliodr/juego-/pull/23). Las instrucciones históricas de laboratorios sobre S2 no ordenan rehacerlos ni bloquean la integración autorizada por el usuario. La cola está en [TAREAS_ACTIVAS.md](TAREAS_ACTIVAS.md).
 

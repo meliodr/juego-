@@ -1,6 +1,6 @@
 # Candidata integrada S1–S7: fuentes y reproducción
 
-Versión jugable integrada con C++ `fa75f7f`, autoría `730b39f` y configuración/validador `17d7f91`. Game, autoría, paquete final `s7-package-20261116T060244Z`, doce suites funcionales del ejecutable, cuatro del paquete DX12 y perfil confirmatorio aprobados. El [manifiesto](IB_S7_PUBLIC_EXPORT.json) fija revisiones y hashes; [resultados y límites](IB_S7_CLOSURE_REVIEW.md). Solo queda confirmar el arranque visible Steam tras cerrar un aviso Windows de QA; control físico y evaluación humana son comprobaciones separadas.
+Versión jugable integrada con C++ `fa75f7f`, autoría `730b39f` y configuración/validador `17d7f91`. Game, autoría, paquete final `s7-package-20261116T060244Z`, doce suites funcionales del ejecutable, cuatro del paquete DX12 y perfil confirmatorio aprobados. El [manifiesto](IB_S7_PUBLIC_EXPORT.json) fija revisiones y hashes; [resultados y límites](IB_S7_CLOSURE_REVIEW.md). El arranque visible Steam está verificado con el ejecutable final y Steam Input activado; control físico y evaluación humana son comprobaciones separadas.
 
 ## Entrada y responsabilidades
 
@@ -49,4 +49,4 @@ Un PASS nativo cubre políticas y matemáticas. No valida UObject/CMC, controles
 
 ## Arranque de la entrega local
 
-Usar el acceso ImpactBeyond existente en Steam con **Activar Steam Input**. Argumentos recomendados: `-dx12 -windowed -ResX=1920 -ResY=1080 -UDPMESSAGING_TRANSPORT_ENABLE=0`. El último argumento desactiva el transporte UDP de mensajería del motor, innecesario para esta partida offline; no concede permisos de red ni modifica el firewall. La configuración de Steam Input ya fue comprobada en UI. El primer arranque visible está pendiente de cerrar un aviso Windows de una sesión QA anterior.
+Usar el acceso ImpactBeyond existente en Steam con **Activar Steam Input**. Argumentos recomendados: `-dx12 -windowed -ResX=1920 -ResY=1080 -UDPMESSAGING_TRANSPORT_ENABLE=0`. El último argumento desactiva el transporte UDP de mensajería del motor, innecesario para esta partida offline; no concede permisos de red ni modifica el firewall. La configuración de Steam Input ya fue comprobada en UI. El arranque visible se verificó al pulsar JUGAR: Steam mostró DETENER y apareció la ventana ImpactBeyond. El destino es el ejecutable del paquete final, con directorio de inicio Win64; el log de las 06:23:23 UTC confirmó mapa Playable, `IBPlayGameMode`, DX12 y audio Realtek.

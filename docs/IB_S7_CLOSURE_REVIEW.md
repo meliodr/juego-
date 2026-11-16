@@ -6,14 +6,14 @@ C++ `fa75f7f`, autoría `730b39f`, configuración/validador `17d7f91`. Paquete f
 
 | Gate | Resultado y alcance |
 |---|---|
-| CI pública `dce329e` | Integrated source checks `43814696403` y Lab audit tests `43814696452` PASS; 13 suites nativas |
+| CI pública `8acc379` | Integrated source checks `43815842275` y Lab audit tests `43815842311` PASS; 13 suites nativas |
 | Compilación | Game `fa75f7f` PASS, `s7-build-20261116T054825Z`, 114,26 s. Último Editor `6b4631d`; cambio posterior limitado a QA de framebuffer/GPU y dependencias RHI |
 | Autoría | `s7-author-20261116T060201Z` PASS: once materiales verificados; solo `agua` cambió y se guardó localmente. Partida generada sin dependencias ausentes |
 | Paquete final | `s7-package-20261116T060244Z` PASS, 37,01 s |
 | Funcionales del ejecutable | Doce suites PASS, `s7-tests-20261116T055829Z`, ejecutable exacto `fa75f7f` |
 | Funcionales del paquete DX12 | `s7-tests-20261116T060433Z` PASS: PlayableSession, RealInput, S3 Contacts y S7 PreparedEncounter; cero recursos ausentes/materiales de reserva |
 | Reentrada S3 | Diez regresos físicos PASS en S3Lab, `s7-tests-20261116T053404Z` |
-| Steam | Steam Input configurado y comprobado en UI; arranque visible pendiente de cerrar aviso Windows de QA, sin conceder red ni cambiar firewall |
+| Steam | Arranque visible verificado: JUGAR pasó a DETENER y apareció ImpactBeyond (64-bit Development PCD3D_SM6). Ejecutable final, Steam Input activado, mapa Playable, DX12 y audio Realtek confirmados; sin conceder red ni cambiar firewall |
 
 SHA-256 del ejecutable probado: `6C7741F10E1350CF56A8A80C84B34300CBB2A29E33E8E3BB3B09DD5DEEAE4337`. El ajuste final del agua solo cambió contenido local; la comprobación funcional y el perfil siguientes utilizaron el paquete actualizado. El [manifiesto](IB_S7_PUBLIC_EXPORT.json) conserva revisiones e intentos históricos separados de estos resultados.
 
@@ -40,4 +40,4 @@ VRAM corresponde al total de la GPU, no únicamente al juego. El perfil es un en
 - RealInput valida eventos simulados mediante PlayerController. DualSense físico, sensación, revisión visual humana y pruebas sostenidas más amplias del plan son alcances diferentes; los resultados actuales no se convierten en aceptación humana.
 - Los regresos S3Lab no equivalen a tres circunnavegaciones renderizadas. El perfil local tampoco certifica coste máximo tras visitar todas las regiones.
 
-El paso operativo pendiente es confirmar la apertura visible desde el acceso Steam. La publicación de fuentes y reconciliación de PR pueden avanzar con los gates aprobados. Después, la valoración del usuario orientará refinamientos y el siguiente sprint, sin presentar S8 como entregado.
+El arranque visible desde Steam quedó verificado. El log de las 06:23:23 UTC confirma `/Game/IB_Playable/Lvl_IB_Playable` con `IBPlayGameMode`, DX12 y audio Realtek; el proceso corresponde al ejecutable final. La publicación de fuentes y reconciliación de PR pueden avanzar con los gates aprobados. Después, la valoración del usuario orientará refinamientos y el siguiente sprint, sin presentar S8 como entregado.

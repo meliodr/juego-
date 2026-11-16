@@ -9,7 +9,7 @@ Actualización: 16 de noviembre de 2026. Rige [PLAN_ACTIVO.md](PLAN_ACTIVO.md). 
 | Pruebas del ejecutable | Doce suites funcionales y cuatro DX12 del paquete PASS; contenido sin ausentes/fallbacks | Evaluación humana separada |
 | Perfil final | PASS, medición local DX12/audio con límites documentados | No convertirla en garantía de FPS |
 | Publicación y PRs | Exportación limpia y CI verdes; documentación final lista | Integrar PR33 y reconciliar solo PRs cubiertos/sustituidos |
-| Entrega Steam | Steam Input configurado; aviso Windows de QA pendiente de cerrar | Confirmar arranque visible sin conceder permisos de red |
+| Entrega Steam | Arranque visible del ejecutable final y Steam Input activado verificados | Evaluación del usuario, sin conceder permisos de red |
 | Próximo sprint | S8 conserva pausa completa y comienzo del espacio | Priorizar con la valoración de esta entrega |
 
 DualSense físico, sensación y aceptación visual son valoraciones separadas. Los perfiles breves y regresos de laboratorio no certifican automáticamente todos los recorridos, ciclos o estrés del plan. Registrar sus límites sin volver a describir como pendientes los gates ya aprobados.
