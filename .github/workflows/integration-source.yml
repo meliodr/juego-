@@ -1,0 +1,45 @@
+name: Integrated source checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, 'integration/s7-public-*']
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-recipes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Test audit gates and public export policy
+        run: python3 -B -m unittest discover -s Tools/tests -p 'test_IB*.py' -v
+      - name: Check source-only publication diff
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: python3 -B Tools/IBCI_PublicSource.py --base "$BASE"
+      - name: Validate Python syntax without importing Unreal
+        run: python3 -B Tools/IBCI_PublicSource.py --syntax
+      - name: Test S25 source recipes
+        run: |
+          python3 -B Tools/IBS25_test.py
+          python3 -B Tools/IBS25_refine_test.py
+      - name: Test S3 generated geometry
+        run: python3 -B Tools/IBS3_TestAuthoring.py "$RUNNER_TEMP/s3-geometry"
+
+  native-policies:
+    needs: source-and-recipes
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Compile and run every required C++17 fixture with MSVC
+        run: python -B Tools/IBCI_Native.py --output "${{ runner.temp }}/native-integration"

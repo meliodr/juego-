@@ -47,7 +47,7 @@ void UImpactFlightFeedback::UpdateFlightFeedback(float DeltaSeconds, bool bFlyin
 
 	const FVector Velocity = Pawn->GetVelocity();
 	const float Speed = static_cast<float>(Velocity.Size());
-	FVector Right = FVector::CrossProduct(FVector::UpVector, Velocity).GetSafeNormal();
+	FVector Right = FVector::CrossProduct(GetOwner()->GetActorUpVector(), Velocity).GetSafeNormal();
 	if (Right.IsNearlyZero())
 	{
 		Right = Pawn->GetActorRightVector();

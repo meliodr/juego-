@@ -1,0 +1,3669 @@
+{
+  "schema": 1,
+  "art_commit": "70187086042669e8ec178b3b268c57730da8492f",
+  "map": "/Game/IB_S25/Lvl_IB_S25_RealismLab",
+  "local_only": true,
+  "engine_build": {
+    "MajorVersion": 5,
+    "MinorVersion": 8,
+    "PatchVersion": 4,
+    "Changelist": 58902052,
+    "CompatibleChangelist": 55116800,
+    "IsLicenseeVersion": 0,
+    "IsPromotedBuild": 1,
+    "BranchName": "++UE5+Release-5.8"
+  },
+  "method": "Offline version-checked FName/import/soft-package table closure. Not cooked/runtime reachability; does not deserialize arbitrary export data or code-built string loads. All reachable /Game packages included, native engine/plugin packages supplied by installed UE.",
+  "license_checked_on": "2026-11-16",
+  "licenses": {
+    "poly_facade": {
+      "source": "https://polyhaven.com/a/modular_urban_apartments_facade",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "redistribution": "CC0 source assets allow redistribution; engine dependencies retain their own terms.",
+      "publication_this_task": false
+    },
+    "poly_tree": {
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "redistribution": "CC0 source assets allow redistribution; engine dependencies retain their own terms.",
+      "publication_this_task": false
+    },
+    "poly_soil": {
+      "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "redistribution": "CC0 source assets allow redistribution; engine dependencies retain their own terms.",
+      "publication_this_task": false
+    },
+    "poly_asphalt": {
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "redistribution": "CC0 source assets allow redistribution; engine dependencies retain their own terms.",
+      "publication_this_task": false
+    },
+    "poly_paving": {
+      "source": "https://polyhaven.com/a/concrete_pavement",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "redistribution": "CC0 source assets allow redistribution; engine dependencies retain their own terms.",
+      "publication_this_task": false
+    },
+    "epic_conceptcar": {
+      "source": "Templates/TemplateResources/Standard/ConceptCar/Content/Car",
+      "license": "Unreal Engine EULA: Examples",
+      "license_url": "https://www.unrealengine.com/eula/unreal",
+      "redistribution": "Installed Templates content qualifies as Examples (section 1); section 5(b) permits distribution of Examples, including modifications. Not CC0. This task authorizes local copies only.",
+      "publication_this_task": false
+    },
+    "authored": {
+      "source": "Own procedural scripts and R2 layout at 70187086042669e8ec178b3b268c57730da8492f",
+      "license": "Project-authored; no new open-source license granted",
+      "redistribution": "Local staging authorized; no publication in this task.",
+      "publication_this_task": false
+    }
+  },
+  "source_inventory": [
+    {
+      "package": "/Game/Car/Assets/MI_CarPaint",
+      "path": "ImpactBeyond/Content/Car/Assets/MI_CarPaint.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/MI_CarPaint.uasset",
+      "bytes": 12897,
+      "sha256": "544e1321ac42f0cfd3a4c5028d7310f1d8df8337ab17f974c0214c6eebd602ab",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": false
+    },
+    {
+      "package": "/Game/Car/Assets/M_CarPaint",
+      "path": "ImpactBeyond/Content/Car/Assets/M_CarPaint.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_CarPaint.uasset",
+      "bytes": 25034,
+      "sha256": "e5cd38f571f94c4f843632880e854730d4c17fa24866da952a34f7ccf0901072",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": false
+    },
+    {
+      "package": "/Game/Car/Assets/M_Glass",
+      "path": "ImpactBeyond/Content/Car/Assets/M_Glass.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_Glass.uasset",
+      "bytes": 14025,
+      "sha256": "de2e00728b13b7c593880fab6def89b7205609051bec3373aaeee909ddb022d5",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/Car/Assets/M_Metal",
+      "path": "ImpactBeyond/Content/Car/Assets/M_Metal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_Metal.uasset",
+      "bytes": 8613,
+      "sha256": "802256efdf03ebb57a81eba060d75aae0995d3163721ae8716b6965c5a3ec925",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/Car/Assets/M_TireRubber",
+      "path": "ImpactBeyond/Content/Car/Assets/M_TireRubber.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_TireRubber.uasset",
+      "bytes": 90978,
+      "sha256": "b4b0a0a5561834712ef7710cce1baff365fd07ba963a28bb28d2fca7bcd5d757",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/Car/Assets/T_CarPaintFlakes_N",
+      "path": "ImpactBeyond/Content/Car/Assets/T_CarPaintFlakes_N.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/T_CarPaintFlakes_N.uasset",
+      "bytes": 3184174,
+      "sha256": "3271905a2f9a2e61ecfdd6ddc89c54c72663d37ec644ef8e32011c182a000e17",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/Car/Assets/T_Smudges_R",
+      "path": "ImpactBeyond/Content/Car/Assets/T_Smudges_R.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/T_Smudges_R.uasset",
+      "bytes": 2308217,
+      "sha256": "9233eaa0bc94e2947b60fca17501b652633ca62284da6146692a69ce59858a9c",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/Car/SM_AutomotiveTP_Car",
+      "path": "ImpactBeyond/Content/Car/SM_AutomotiveTP_Car.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/SM_AutomotiveTP_Car.uasset",
+      "bytes": 6301783,
+      "sha256": "1d236a56707ca93616e4ae0cea230762aa79ccc8a0293cb5684168111096ce14",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass.uasset",
+      "bytes": 74361,
+      "sha256": "a3ff1532d1d2469610ebdd49d29481006d5acbdb81abbabb6d54dd10ead3f8fe",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects.uasset",
+      "bytes": 73776,
+      "sha256": "58e2e9550012a42acf2334bcb19eb37cf0b1b8c12f8fdf1b6cca116bd83d943e",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster.uasset",
+      "bytes": 73700,
+      "sha256": "901a5f628993939f853d35984094c7282ac56be58e1665f129352dcad7d7385a",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01.uasset",
+      "bytes": 73670,
+      "sha256": "8b3ab5730f635dcb3ce0cec31e11188aaf935c56ed9662168f833e998f03c721",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_02",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_02.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_02.uasset",
+      "bytes": 73690,
+      "sha256": "a655787b1e563057ef1cd8bd658db7f6469dea7c7860a1abe4483bb31d39b854",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble.uasset",
+      "bytes": 207979,
+      "sha256": "337150938760777d15afa0b4524861cac0b1de7e3a0424f2c2955222db75a605",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide.uasset",
+      "bytes": 208773,
+      "sha256": "a8e7d7ed49bcbd5cf2b0b843f623dda6feb2e44a44440615c543d9f3bf56ca99",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice.uasset",
+      "bytes": 86586,
+      "sha256": "80d42a00b91a92bb04920bbf249d61462a529bd2217684e9d73bc560db2d3b80",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry.uasset",
+      "bytes": 185605,
+      "sha256": "2431232867559d5252660cb4820202078dfdf0f4547d63338faa7220721bf914",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha.uasset",
+      "bytes": 1355340,
+      "sha256": "d4bde6d0008a08e7aa2a8f79f06eb527cedbcf8c17f25cae17d9ed4bf5b3a40d",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1.uasset",
+      "bytes": 1355353,
+      "sha256": "a2e4494874566e6107acacd3a53292337e66c9db76258994b67d2fe9eb95575e",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough.uasset",
+      "bytes": 1847331,
+      "sha256": "c7047b7b5b586e8910bfc3a7c7115a653d533e285676c779b5b46ab29f1e1c4c",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1.uasset",
+      "bytes": 1847344,
+      "sha256": "a90aeb7463e348af536add0b341b50cfb6f05ffc41a15621c0cecef9bc79f6fb",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl.uasset",
+      "bytes": 1515212,
+      "sha256": "4437ab2e3caa555c180007733a59d0e44d2db1577718bfe20bf9e0b3379f0f9b",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1.uasset",
+      "bytes": 1515225,
+      "sha256": "b086c3275828f63ce08fa4c9c4b81d8aeba3d50629b364b5bb6a7631f684a445",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff.uasset",
+      "bytes": 1278585,
+      "sha256": "253dcbd61be3bf3be14d6e0f1fd84c1ab6eb066dad47277a286bea94a21c5fb0",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl.uasset",
+      "bytes": 2300578,
+      "sha256": "05f3861b47ef9b612462667e99eff00175006b418f95d3fbb38e796e2ef2508a",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough.uasset",
+      "bytes": 1364386,
+      "sha256": "a5f15678d3278699a3635b29115efa05859ef099a70f62dc9f7e9180e07180de",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff.uasset",
+      "bytes": 1251364,
+      "sha256": "a59af710da65ca7e1a20d2a79145b4a928227951b5e61c67dc02246e5de1c350",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl.uasset",
+      "bytes": 2084780,
+      "sha256": "61b104a78fe9f7223b1d66ceb4e7f517b9cff8a5a8e26612e30c30d7135d9ffc",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough.uasset",
+      "bytes": 1572236,
+      "sha256": "d97a083ab195e755eea060530371ade375622a69c6faf9a583094d91e0ac40ff",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_diff",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_diff.uasset",
+      "bytes": 911581,
+      "sha256": "5a9dd07e0878020a2e324d10dda12445428f30894364af7ca3cd4fd58f0c6f72",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_nor_gl.uasset",
+      "bytes": 1873775,
+      "sha256": "390e3af1b1e370a384777730162bbef69af157e5b207fad0a31c2e9114856a2a",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_rough.uasset",
+      "bytes": 1698572,
+      "sha256": "795c504583eba9ae9e37004ead19151c9613a119db62afa9d7a127817649fdd1",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_Asphalt",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Asphalt.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Asphalt.uasset",
+      "bytes": 71609,
+      "sha256": "9f24a635256d0db65672509a9a0052bb0991239434e15a0ccaa6ae73ea9af71b",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_Markings",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Markings.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Markings.uasset",
+      "bytes": 73401,
+      "sha256": "69fb9cd4b8c68f9b414d9fba3498b6bb1f6e9325f4465b39edf079475f49e935",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_Paving",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Paving.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Paving.uasset",
+      "bytes": 73538,
+      "sha256": "5000332f4d279c4155ec141fb1c7f7907f3e3404cb75b5ad182b99f9619525a4",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_BlueDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_BlueDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_BlueDetail.uasset",
+      "bytes": 77567,
+      "sha256": "baa18ce54c2c61f8de979ab53e665a72f402ecb71873a813c90f4d4d4c6da193",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_ClayDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_ClayDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_ClayDetail.uasset",
+      "bytes": 77686,
+      "sha256": "e36df62cbfedadec3350bd7f5b0c945f3df3ace15bae1cd3c3c7b53fa6c50b6a",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Curb",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Curb.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Curb.uasset",
+      "bytes": 190109,
+      "sha256": "de1a1855dd1f67df8b99001c0d21e79d545d5a3fbfec9e2cf7abee8668aecf9c",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_GlassSign",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_GlassSign.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_GlassSign.uasset",
+      "bytes": 75386,
+      "sha256": "fd107dfe5696d814d31772af8d04c910c4a78a7d46aa58b40ed55d1624b525ca",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Ground",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Ground.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Ground.uasset",
+      "bytes": 84384,
+      "sha256": "48696651632e86ac2e36a32626201f24c6f95ab8344d433ec41faa66c3f95f5d",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Markings",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Markings.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Markings.uasset",
+      "bytes": 75598,
+      "sha256": "41d30bff85fa5ca9f8d25f8d724de2947c257b19746535395f4e4c671b438ec9",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Metal",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Metal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Metal.uasset",
+      "bytes": 179914,
+      "sha256": "52943cbf9928283190d69a77abb877db978a03b179237ddbf350ddd8baac9746",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Paving",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Paving.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Paving.uasset",
+      "bytes": 76245,
+      "sha256": "702fa5a6de322615089d6d06079a2c8c2bfb83b82ffe8d63883d1bdd1f86b54c",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Roof",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Roof.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Roof.uasset",
+      "bytes": 74982,
+      "sha256": "25e9b1456aa8f847e2cc2ca100165e4152aafec0c8230d488a5ae549f0a87889",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_RoofMetal",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_RoofMetal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_RoofMetal.uasset",
+      "bytes": 79631,
+      "sha256": "79cfd27debbb1fdeb03ab3fd8e8a0189804caaf5a945c9f1255ab37130ca37c1",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Soil",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Soil.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Soil.uasset",
+      "bytes": 71725,
+      "sha256": "95a49cebd7fe2a571c94ccbe2af983bf8e628a16feb33fedd3581b506f0e4436",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_StoneDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_StoneDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_StoneDetail.uasset",
+      "bytes": 77031,
+      "sha256": "4063d5c79eb916ab1a946661a615a3a6815bc64737078ccf71e6b6d8d214e2aa",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_Roof",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Roof.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Roof.uasset",
+      "bytes": 74367,
+      "sha256": "027590174140349c767fa5c29fc55d35b744f1e6a07abbeac585e1ccd86b8d8c",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Lvl_IB_S25_RealismLab",
+      "path": "ImpactBeyond/Content/IB_S25/Lvl_IB_S25_RealismLab.umap",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Lvl_IB_S25_RealismLab.umap",
+      "bytes": 462893,
+      "sha256": "0b4a99b4bbd1089fc76a00c6ecb50f075c58d3133568d5ceb502b6d60dfc4055",
+      "format": "umap",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_CarPaint_0",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_0.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_0.uasset",
+      "bytes": 8678,
+      "sha256": "c06e5fa13a4735c10ed9a18b8f5f0ab2a4c80c5de46a48cae633f89347f3fcc3",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_CarPaint_1",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_1.uasset",
+      "bytes": 8655,
+      "sha256": "96c310a2561ca25839ee04674459ba21790586c7f3214fc637cad4dbf917f1e4",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_CarPaint_2",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_2.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_2.uasset",
+      "bytes": 8014,
+      "sha256": "d701afaab94d0b69a7b3bad57a648064d755918d188c527aaf134567eb0cc46b",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_R2v2_Blue",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Blue.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Blue.uasset",
+      "bytes": 74292,
+      "sha256": "e6a680b0192c6a7aefabe0e7ff6f8e3d729639d9a135f8e16a20d487b3a38d2d",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_R2v2_Clay",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Clay.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Clay.uasset",
+      "bytes": 74292,
+      "sha256": "b8973eeba65bf2578aaaecb3c728589b0e76fc23183322854244f80fa48b7b3b",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_R2v2_Stone",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Stone.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Stone.uasset",
+      "bytes": 78761,
+      "sha256": "97bdf50ad32c569bfd2ffc47e3f0471cc42df7071b4befff9e643cdd6c0af82c",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_Asphalt",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_Asphalt.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_Asphalt.uasset",
+      "bytes": 11829,
+      "sha256": "9494f78c1027ce8fc9805130ce26a80e0148c39e0b51ef66cddf886211e769d1",
+      "format": "uasset",
+      "provenance": "poly_asphalt",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_CarPaint_Local",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_CarPaint_Local.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_CarPaint_Local.uasset",
+      "bytes": 25015,
+      "sha256": "f71b092a071a721f58148049fe96268ee549cc49aae86a801f958b7495b8ec8f",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_Markings",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_Markings.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_Markings.uasset",
+      "bytes": 9765,
+      "sha256": "c59133fceae6d4bf9098ea73fcc3a53ae9190319cd0af739a71c4e872eba3f21",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_Paving",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_Paving.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_Paving.uasset",
+      "bytes": 11837,
+      "sha256": "4f5d2c25ee9d5240f72fba18958bc1fe615e886832fd309faa9d5e00d5314543",
+      "format": "uasset",
+      "provenance": "poly_paving",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2_GroundScale100",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_GroundScale100.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_GroundScale100.uasset",
+      "bytes": 12524,
+      "sha256": "ef15e588bd95205a8c1d2ec210cde9589cdde92fe9c9ac267fa652129fb24e2d",
+      "format": "uasset",
+      "provenance": "poly_soil",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2_Soil",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_Soil.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_Soil.uasset",
+      "bytes": 12277,
+      "sha256": "b4303a7a0ad470d73d73998b2d6fc821f106037dae1a58a3713fac5ec3a694c3",
+      "format": "uasset",
+      "provenance": "poly_soil",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Blue",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Blue.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Blue.uasset",
+      "bytes": 13963,
+      "sha256": "ee5562f57b0ff90165d225363966b0b01afb86d66e9baef7d8827d38b60f460b",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_BlueDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_BlueDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_BlueDetail.uasset",
+      "bytes": 10280,
+      "sha256": "578bb32a10772dcd3a14c6deb9c417d30b5d521333f2a4b41d700bb0f86b7202",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Clay",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Clay.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Clay.uasset",
+      "bytes": 13883,
+      "sha256": "ef6f8a701767a8e2954b0745d3b419af537676869d2d157d98b9937b56d52742",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_ClayDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_ClayDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_ClayDetail.uasset",
+      "bytes": 10213,
+      "sha256": "9c1bca47375fa6b2517ecdc1664f2d07a410c4c850623a521e91c5bef57ff389",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Curb",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Curb.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Curb.uasset",
+      "bytes": 10210,
+      "sha256": "4cadf5c546539a3091b5524d2964e000521363768144239d0b1eeff137c7f9aa",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_GlassSign",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_GlassSign.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_GlassSign.uasset",
+      "bytes": 10597,
+      "sha256": "998ee6932faa78b13327b83fd724bed7f49b08f87a57f14ad084d2d088c51203",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Metal",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Metal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Metal.uasset",
+      "bytes": 9853,
+      "sha256": "27049fc89227fe07c346d2ff9dff723d2fe01aeb92574eaf136d6afd52b9f14f",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Roof",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Roof.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Roof.uasset",
+      "bytes": 10134,
+      "sha256": "5537b546c8187a277ec6572b93c58c22dda70caa53c19483307e2038c9fbea89",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_RoofMetal",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_RoofMetal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_RoofMetal.uasset",
+      "bytes": 10357,
+      "sha256": "edc6be2a2422351878b018baefcc662f2d689a7a84a8f07335e607a0871c44ae",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Stone",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Stone.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Stone.uasset",
+      "bytes": 13862,
+      "sha256": "8cddcd9637a837320dd7e510e3b73aa744d23c7055789cf5aa5b70ecd683e5f7",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_StoneDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_StoneDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_StoneDetail.uasset",
+      "bytes": 10264,
+      "sha256": "9d752657d311ef0efd96817204ff3d7265dbc5a0a9a603f9472bd36ce7bea99a",
+      "format": "uasset",
+      "provenance": "authored",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_PlasterNormalDX",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_PlasterNormalDX.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_PlasterNormalDX.uasset",
+      "bytes": 2302472,
+      "sha256": "f3d98dfd36fa2c532c18dc6f1984eeefa7be0530995b9373f279786b55367827",
+      "format": "uasset",
+      "provenance": "poly_facade",
+      "selected": false
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_Soil_basecolor",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_basecolor.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_basecolor.uasset",
+      "bytes": 1222653,
+      "sha256": "ca5d11ba80c9c90ebe7c4a568ac641336498fd68224defc0d71fb3a8f94772c1",
+      "format": "uasset",
+      "provenance": "poly_soil",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_Soil_normal_dx",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_normal_dx.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_normal_dx.uasset",
+      "bytes": 6527363,
+      "sha256": "b7dd3942825f58c3caf5f417d8465d05c47be30c3f6a02cb3411121e6f04e7e2",
+      "format": "uasset",
+      "provenance": "poly_soil",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_Soil_roughness",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_roughness.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_roughness.uasset",
+      "bytes": 658271,
+      "sha256": "a59ddcdb6809d1877f52468d983a7a94af0b10e073d52e796aea5d11db9f96cc",
+      "format": "uasset",
+      "provenance": "poly_soil",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_asphalt_basecolor",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_basecolor.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_basecolor.uasset",
+      "bytes": 3090119,
+      "sha256": "dc19dfbd8fad0206fa736e85d0a1b0a33607bba40a61edec8562d960e1168f89",
+      "format": "uasset",
+      "provenance": "poly_asphalt",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_asphalt_normal_dx",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_normal_dx.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_normal_dx.uasset",
+      "bytes": 11284555,
+      "sha256": "18afd57b6499bd5ebfe63845affdc8e5fdc9f38bf20d4e37623bcc0e12d5b778",
+      "format": "uasset",
+      "provenance": "poly_asphalt",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_asphalt_roughness",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_roughness.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_roughness.uasset",
+      "bytes": 2243896,
+      "sha256": "cc30288b4632bb034bd4e375ff20bc936f79ba4039d74c3f6627c6d478dbb63a",
+      "format": "uasset",
+      "provenance": "poly_asphalt",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_paving_basecolor",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_basecolor.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_basecolor.uasset",
+      "bytes": 3831142,
+      "sha256": "db526e93fad805264dc979aebee42d1623b621a3ef01a30115140d5a6cae0749",
+      "format": "uasset",
+      "provenance": "poly_paving",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_paving_normal_dx",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_normal_dx.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_normal_dx.uasset",
+      "bytes": 24669546,
+      "sha256": "138babf2e507fb5a556322b564e9bdb07d45782805f8fe09401df0542115d863",
+      "format": "uasset",
+      "provenance": "poly_paving",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_paving_roughness",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_roughness.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_roughness.uasset",
+      "bytes": 2138544,
+      "sha256": "9e176f30e72d4398ad128c00c31e59c40f6245761c820986cbffb92592f16ef0",
+      "format": "uasset",
+      "provenance": "poly_paving",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01.uasset",
+      "bytes": 76230,
+      "sha256": "85d969d3781d129b2fcf037b76809edd21a5b6e76b98d59a4cc35d6a67a4555a",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches.uasset",
+      "bytes": 75669,
+      "sha256": "ec29fd66be78d6e1cc577b00c9f05bc6b1dc2048b07c115df21d55c185f89b6f",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves.uasset",
+      "bytes": 72958,
+      "sha256": "0f535c1081f2af0c40b868cb65004c2a5e80093198fbc87c71f1197278fd6493",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree.uasset",
+      "bytes": 37711899,
+      "sha256": "b6f4308f6efd7b50aff5cf27c20a03281ded052502e4bcf84a913b969b2bc5b9",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff.uasset",
+      "bytes": 1259358,
+      "sha256": "c98b99bb379a9cec4aa055e81490a73dc9b473a52514a4fbd4ac168209cdf8fb",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl.uasset",
+      "bytes": 2295660,
+      "sha256": "a445678a68c82cc67738627ff5daeb1295f45a3888033e2365c25c0c459c24a2",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough.uasset",
+      "bytes": 1337107,
+      "sha256": "3e15f4c038fda3c3a2081f7b01fba663b1c15e28e8992df0088db5938b66d899",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff.uasset",
+      "bytes": 1712731,
+      "sha256": "f4a8922d1b929c460a3617058bbe4110c7587db6a2a1ada495a1ca9ef52c43a9",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha.uasset",
+      "bytes": 511323,
+      "sha256": "de976bbe71f0cfa1e2705de5b866453e94b016390a9c814469b2e6fe6e560eb5",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl.uasset",
+      "bytes": 1271969,
+      "sha256": "d0b822b4aa9ec74e03a842cd1c525154a97efa70dcb44436608124adadf73abb",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough.uasset",
+      "bytes": 1271563,
+      "sha256": "b11366bd8262aad28dccb6563d132f92145ef428916c621e462b0a650d7eebba",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl.uasset",
+      "bytes": 2859166,
+      "sha256": "839971c112a36622b3e329cc60155054a67ff45df9de243f651848d9141ab021",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough.uasset",
+      "bytes": 1689719,
+      "sha256": "1124b3b51947daa2398ab40bc0b4ae06b9a5a45b7008d2b07d6a2980d5f985eb",
+      "format": "uasset",
+      "provenance": "poly_tree",
+      "selected": true
+    }
+  ],
+  "template_provenance": [
+    {
+      "relative": "Assets/M_CarPaint.uasset",
+      "sha256": "e5cd38f571f94c4f843632880e854730d4c17fa24866da952a34f7ccf0901072",
+      "matches_checkout": true
+    },
+    {
+      "relative": "Assets/M_Glass.uasset",
+      "sha256": "de2e00728b13b7c593880fab6def89b7205609051bec3373aaeee909ddb022d5",
+      "matches_checkout": true
+    },
+    {
+      "relative": "Assets/M_Metal.uasset",
+      "sha256": "802256efdf03ebb57a81eba060d75aae0995d3163721ae8716b6965c5a3ec925",
+      "matches_checkout": true
+    },
+    {
+      "relative": "Assets/M_TireRubber.uasset",
+      "sha256": "b4b0a0a5561834712ef7710cce1baff365fd07ba963a28bb28d2fca7bcd5d757",
+      "matches_checkout": true
+    },
+    {
+      "relative": "Assets/MI_CarPaint.uasset",
+      "sha256": "544e1321ac42f0cfd3a4c5028d7310f1d8df8337ab17f974c0214c6eebd602ab",
+      "matches_checkout": true
+    },
+    {
+      "relative": "Assets/T_CarPaintFlakes_N.uasset",
+      "sha256": "3271905a2f9a2e61ecfdd6ddc89c54c72663d37ec644ef8e32011c182a000e17",
+      "matches_checkout": true
+    },
+    {
+      "relative": "Assets/T_Smudges_R.uasset",
+      "sha256": "9233eaa0bc94e2947b60fca17501b652633ca62284da6146692a69ce59858a9c",
+      "matches_checkout": true
+    },
+    {
+      "relative": "SM_AutomotiveTP_Car.uasset",
+      "sha256": "1d236a56707ca93616e4ae0cea230762aa79ccc8a0293cb5684168111096ce14",
+      "matches_checkout": true
+    }
+  ],
+  "game_missing_before": {
+    "/Game/ConceptCar/Car/Assets/MI_CarPaint": [
+      "/Game/Car/SM_AutomotiveTP_Car"
+    ],
+    "/Game/ConceptCar/Car/Assets/M_Glass": [
+      "/Game/Car/SM_AutomotiveTP_Car"
+    ],
+    "/Game/ConceptCar/Car/Assets/M_Metal": [
+      "/Game/Car/SM_AutomotiveTP_Car"
+    ],
+    "/Game/ConceptCar/Car/Assets/M_TireRubber": [
+      "/Game/Car/SM_AutomotiveTP_Car"
+    ],
+    "/Game/ConceptCar/Car/SM_AutomotiveTP_Car": [
+      "/Game/Car/SM_AutomotiveTP_Car"
+    ]
+  },
+  "game_missing_after": {},
+  "package_graph": {
+    "/Game/Car/Assets/MI_CarPaint": {
+      "imports": [
+        "/Game/ConceptCar/Car/Assets/M_CarPaint",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/ConceptCar/Car/Assets/T_Smudges_R"
+      ],
+      "ue4": 522,
+      "ue5": 1017
+    },
+    "/Game/Car/Assets/M_CarPaint": {
+      "imports": [
+        "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/ConceptCar/Car/Assets/T_Smudges_R",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/ConceptCar/Car/Assets/T_Smudges_R"
+      ],
+      "ue4": 522,
+      "ue5": 1017
+    },
+    "/Game/Car/Assets/M_Glass": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1017
+    },
+    "/Game/Car/Assets/M_Metal": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1003
+    },
+    "/Game/Car/Assets/M_TireRubber": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 0
+    },
+    "/Game/Car/Assets/T_CarPaintFlakes_N": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 0
+    },
+    "/Game/Car/Assets/T_Smudges_R": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 0
+    },
+    "/Game/Car/SM_AutomotiveTP_Car": {
+      "imports": [
+        "/Game/ConceptCar/Car/Assets/MI_CarPaint",
+        "/Game/ConceptCar/Car/Assets/M_Glass",
+        "/Game/ConceptCar/Car/Assets/M_Metal",
+        "/Game/ConceptCar/Car/Assets/M_TireRubber",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/InterchangeImport",
+        "/Script/InterchangePipelines",
+        "/Script/NavigationSystem",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/ConceptCar/Car/SM_AutomotiveTP_Car"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/ConceptCar/Car/Assets/MI_CarPaint": {
+      "imports": [
+        "/Game/ConceptCar/Car/Assets/M_CarPaint",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/ConceptCar/Car/Assets/T_Smudges_R"
+      ],
+      "ue4": 522,
+      "ue5": 1017
+    },
+    "/Game/ConceptCar/Car/Assets/M_CarPaint": {
+      "imports": [
+        "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/ConceptCar/Car/Assets/T_Smudges_R",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/ConceptCar/Car/Assets/T_Smudges_R"
+      ],
+      "ue4": 522,
+      "ue5": 1017
+    },
+    "/Game/ConceptCar/Car/Assets/M_Glass": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1017
+    },
+    "/Game/ConceptCar/Car/Assets/M_Metal": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1003
+    },
+    "/Game/ConceptCar/Car/Assets/M_TireRubber": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 0
+    },
+    "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 0
+    },
+    "/Game/ConceptCar/Car/Assets/T_Smudges_R": {
+      "imports": [
+        "/Script/CoreUObject",
+        "/Script/Engine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 0
+    },
+    "/Game/ConceptCar/Car/SM_AutomotiveTP_Car": {
+      "imports": [
+        "/Game/ConceptCar/Car/Assets/MI_CarPaint",
+        "/Game/ConceptCar/Car/Assets/M_Glass",
+        "/Game/ConceptCar/Car/Assets/M_Metal",
+        "/Game/ConceptCar/Car/Assets/M_TireRubber",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/InterchangeImport",
+        "/Script/InterchangePipelines",
+        "/Script/NavigationSystem",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/ConceptCar/Car/SM_AutomotiveTP_Car"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_02": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_nor_gl",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_diff": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_02_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_Asphalt": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_Asphalt"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_Markings": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_Markings"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_Paving": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_Paving"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_BlueDetail": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_BlueDetail"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_ClayDetail": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_ClayDetail"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Curb": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Curb"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_GlassSign": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_GlassSign"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Ground": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Ground"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Markings": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Markings"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Metal": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Metal"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Paving": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Paving"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Roof": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Roof"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_RoofMetal": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_RoofMetal"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_Soil": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_Soil"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_R2_StoneDetail": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_R2_StoneDetail"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Geometry/SM_Roof": {
+      "imports": [
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Geometry/SM_Roof"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Lvl_IB_S25_RealismLab": {
+      "imports": [
+        "/Engine/BasicShapes/Cube",
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Game/Car/Assets/M_Glass",
+        "/Game/Car/Assets/M_Metal",
+        "/Game/Car/Assets/M_TireRubber",
+        "/Game/Car/SM_AutomotiveTP_Car",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry",
+        "/Game/IB_S25/Geometry/SM_Asphalt",
+        "/Game/IB_S25/Geometry/SM_R2_BlueDetail",
+        "/Game/IB_S25/Geometry/SM_R2_ClayDetail",
+        "/Game/IB_S25/Geometry/SM_R2_Curb",
+        "/Game/IB_S25/Geometry/SM_R2_GlassSign",
+        "/Game/IB_S25/Geometry/SM_R2_Ground",
+        "/Game/IB_S25/Geometry/SM_R2_Markings",
+        "/Game/IB_S25/Geometry/SM_R2_Metal",
+        "/Game/IB_S25/Geometry/SM_R2_Paving",
+        "/Game/IB_S25/Geometry/SM_R2_Roof",
+        "/Game/IB_S25/Geometry/SM_R2_RoofMetal",
+        "/Game/IB_S25/Geometry/SM_R2_Soil",
+        "/Game/IB_S25/Geometry/SM_R2_StoneDetail",
+        "/Game/IB_S25/Materials/MI_CarPaint_0",
+        "/Game/IB_S25/Materials/MI_CarPaint_1",
+        "/Game/IB_S25/Materials/MI_CarPaint_2",
+        "/Game/IB_S25/Materials/MI_R2v2_Blue",
+        "/Game/IB_S25/Materials/MI_R2v2_Clay",
+        "/Game/IB_S25/Materials/MI_R2v2_Stone",
+        "/Game/IB_S25/Materials/M_Asphalt",
+        "/Game/IB_S25/Materials/M_Markings",
+        "/Game/IB_S25/Materials/M_Paving",
+        "/Game/IB_S25/Materials/M_R2_GroundScale100",
+        "/Game/IB_S25/Materials/M_R2_Soil",
+        "/Game/IB_S25/Materials/M_R2v3_BlueDetail",
+        "/Game/IB_S25/Materials/M_R2v3_ClayDetail",
+        "/Game/IB_S25/Materials/M_R2v3_Curb",
+        "/Game/IB_S25/Materials/M_R2v3_GlassSign",
+        "/Game/IB_S25/Materials/M_R2v3_Metal",
+        "/Game/IB_S25/Materials/M_R2v3_Roof",
+        "/Game/IB_S25/Materials/M_R2v3_RoofMetal",
+        "/Game/IB_S25/Materials/M_R2v3_StoneDetail",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree",
+        "/Script/Engine",
+        "/Script/ImpactBeyond",
+        "/Script/NavigationSystem",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Engine/EditorResources/LightIcons/S_LightError",
+        "/Script/NavigationSystem"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/MI_CarPaint_0": {
+      "imports": [
+        "/Game/IB_S25/Materials/M_CarPaint_Local",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/MI_CarPaint_0"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/MI_CarPaint_1": {
+      "imports": [
+        "/Game/IB_S25/Materials/M_CarPaint_Local",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/MI_CarPaint_1"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/MI_CarPaint_2": {
+      "imports": [
+        "/Game/IB_S25/Materials/M_CarPaint_Local",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/MI_CarPaint_2"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/MI_R2v2_Blue": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/MI_R2v2_Blue"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/MI_R2v2_Clay": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/MI_R2v2_Clay"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/MI_R2v2_Stone": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/MI_R2v2_Stone"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_Asphalt": {
+      "imports": [
+        "/Game/IB_S25/Textures/T_asphalt_basecolor",
+        "/Game/IB_S25/Textures/T_asphalt_normal_dx",
+        "/Game/IB_S25/Textures/T_asphalt_roughness",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_Asphalt",
+        "/Game/IB_S25/Textures/T_asphalt_basecolor",
+        "/Game/IB_S25/Textures/T_asphalt_normal_dx",
+        "/Game/IB_S25/Textures/T_asphalt_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_CarPaint_Local": {
+      "imports": [
+        "/Game/Car/Assets/T_CarPaintFlakes_N",
+        "/Game/Car/Assets/T_Smudges_R",
+        "/Script/Engine",
+        "/Script/UnrealEd"
+      ],
+      "soft_packages": [
+        "/Game/Car/Assets/T_Smudges_R",
+        "/Game/IB_S25/Materials/M_CarPaint_Local"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_Markings": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_Markings"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_Paving": {
+      "imports": [
+        "/Game/IB_S25/Textures/T_paving_basecolor",
+        "/Game/IB_S25/Textures/T_paving_normal_dx",
+        "/Game/IB_S25/Textures/T_paving_roughness",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_Paving",
+        "/Game/IB_S25/Textures/T_paving_basecolor",
+        "/Game/IB_S25/Textures/T_paving_normal_dx",
+        "/Game/IB_S25/Textures/T_paving_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2_GroundScale100": {
+      "imports": [
+        "/Game/IB_S25/Textures/T_R2_Soil_basecolor",
+        "/Game/IB_S25/Textures/T_R2_Soil_normal_dx",
+        "/Game/IB_S25/Textures/T_R2_Soil_roughness",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2_GroundScale100",
+        "/Game/IB_S25/Textures/T_R2_Soil_basecolor",
+        "/Game/IB_S25/Textures/T_R2_Soil_normal_dx",
+        "/Game/IB_S25/Textures/T_R2_Soil_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2_Soil": {
+      "imports": [
+        "/Game/IB_S25/Textures/T_R2_Soil_basecolor",
+        "/Game/IB_S25/Textures/T_R2_Soil_normal_dx",
+        "/Game/IB_S25/Textures/T_R2_Soil_roughness",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2_Soil",
+        "/Game/IB_S25/Textures/T_R2_Soil_basecolor",
+        "/Game/IB_S25/Textures/T_R2_Soil_normal_dx",
+        "/Game/IB_S25/Textures/T_R2_Soil_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_Blue": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/Game/IB_S25/Materials/M_R2v3_Blue",
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_BlueDetail": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_BlueDetail"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_Clay": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/Game/IB_S25/Materials/M_R2v3_Clay",
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_ClayDetail": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_ClayDetail"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_Curb": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_Curb"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_GlassSign": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_GlassSign"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_Metal": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_Metal"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_Roof": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_Roof"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_RoofMetal": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_RoofMetal"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_Stone": {
+      "imports": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX",
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+        "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+        "/Game/IB_S25/Materials/M_R2v3_Stone",
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Materials/M_R2v3_StoneDetail": {
+      "imports": [
+        "/Script/Engine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Materials/M_R2v3_StoneDetail"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_R2_PlasterNormalDX": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_R2_PlasterNormalDX"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_R2_Soil_basecolor": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_R2_Soil_basecolor"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_R2_Soil_normal_dx": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_R2_Soil_normal_dx"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_R2_Soil_roughness": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_R2_Soil_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_asphalt_basecolor": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_asphalt_basecolor"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_asphalt_normal_dx": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_asphalt_normal_dx"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_asphalt_roughness": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_asphalt_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_paving_basecolor": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_paving_basecolor"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_paving_normal_dx": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_paving_normal_dx"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Textures/T_paving_roughness": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [
+        "/Game/IB_S25/Textures/T_paving_roughness"
+      ],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01": {
+      "imports": [
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches": {
+      "imports": [
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves": {
+      "imports": [
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough",
+        "/InterchangeAssets/gltf/Substrate/M_GLTF",
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree": {
+      "imports": [
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches",
+        "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves",
+        "/Script/Engine",
+        "/Script/InterchangeEngine",
+        "/Script/NavigationSystem"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    },
+    "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough": {
+      "imports": [
+        "/Script/Engine",
+        "/Script/InterchangeEngine"
+      ],
+      "soft_packages": [],
+      "ue4": 522,
+      "ue5": 1018
+    }
+  },
+  "payload": [
+    {
+      "package": "/Game/Car/Assets/M_Glass",
+      "path": "ImpactBeyond/Content/Car/Assets/M_Glass.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_Glass.uasset",
+      "bytes": 14025,
+      "sha256": "de2e00728b13b7c593880fab6def89b7205609051bec3373aaeee909ddb022d5",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/Car/Assets/M_Metal",
+      "path": "ImpactBeyond/Content/Car/Assets/M_Metal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_Metal.uasset",
+      "bytes": 8613,
+      "sha256": "802256efdf03ebb57a81eba060d75aae0995d3163721ae8716b6965c5a3ec925",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/Car/Assets/M_TireRubber",
+      "path": "ImpactBeyond/Content/Car/Assets/M_TireRubber.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/M_TireRubber.uasset",
+      "bytes": 90978,
+      "sha256": "b4b0a0a5561834712ef7710cce1baff365fd07ba963a28bb28d2fca7bcd5d757",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/Car/Assets/T_CarPaintFlakes_N",
+      "path": "ImpactBeyond/Content/Car/Assets/T_CarPaintFlakes_N.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/T_CarPaintFlakes_N.uasset",
+      "bytes": 3184174,
+      "sha256": "3271905a2f9a2e61ecfdd6ddc89c54c72663d37ec644ef8e32011c182a000e17",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/Car/Assets/T_Smudges_R",
+      "path": "ImpactBeyond/Content/Car/Assets/T_Smudges_R.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/Assets/T_Smudges_R.uasset",
+      "bytes": 2308217,
+      "sha256": "9233eaa0bc94e2947b60fca17501b652633ca62284da6146692a69ce59858a9c",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/Car/SM_AutomotiveTP_Car",
+      "path": "ImpactBeyond/Content/Car/SM_AutomotiveTP_Car.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/Car/SM_AutomotiveTP_Car.uasset",
+      "bytes": 6301783,
+      "sha256": "1d236a56707ca93616e4ae0cea230762aa79ccc8a0293cb5684168111096ce14",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/MI_CarPaint",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/MI_CarPaint.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/MI_CarPaint.uasset",
+      "bytes": 12897,
+      "sha256": "544e1321ac42f0cfd3a4c5028d7310f1d8df8337ab17f974c0214c6eebd602ab",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/M_CarPaint",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/M_CarPaint.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/M_CarPaint.uasset",
+      "bytes": 25034,
+      "sha256": "e5cd38f571f94c4f843632880e854730d4c17fa24866da952a34f7ccf0901072",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/M_Glass",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/M_Glass.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/M_Glass.uasset",
+      "bytes": 14025,
+      "sha256": "de2e00728b13b7c593880fab6def89b7205609051bec3373aaeee909ddb022d5",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/M_Metal",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/M_Metal.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/M_Metal.uasset",
+      "bytes": 8613,
+      "sha256": "802256efdf03ebb57a81eba060d75aae0995d3163721ae8716b6965c5a3ec925",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/M_TireRubber",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/M_TireRubber.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/M_TireRubber.uasset",
+      "bytes": 90978,
+      "sha256": "b4b0a0a5561834712ef7710cce1baff365fd07ba963a28bb28d2fca7bcd5d757",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/T_CarPaintFlakes_N",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/T_CarPaintFlakes_N.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/T_CarPaintFlakes_N.uasset",
+      "bytes": 3184174,
+      "sha256": "3271905a2f9a2e61ecfdd6ddc89c54c72663d37ec644ef8e32011c182a000e17",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/Assets/T_Smudges_R",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/Assets/T_Smudges_R.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/Assets/T_Smudges_R.uasset",
+      "bytes": 2308217,
+      "sha256": "9233eaa0bc94e2947b60fca17501b652633ca62284da6146692a69ce59858a9c",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/ConceptCar/Car/SM_AutomotiveTP_Car",
+      "path": "ImpactBeyond/Content/ConceptCar/Car/SM_AutomotiveTP_Car.uasset",
+      "origin": "engine_template",
+      "source_path": "Templates/TemplateResources/Standard/ConceptCar/Content/Car/SM_AutomotiveTP_Car.uasset",
+      "bytes": 6301783,
+      "sha256": "1d236a56707ca93616e4ae0cea230762aa79ccc8a0293cb5684168111096ce14",
+      "format": "uasset",
+      "provenance": "epic_conceptcar",
+      "purpose": "restore serialized original ConceptCar package path"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_glass.uasset",
+      "bytes": 74361,
+      "sha256": "a3ff1532d1d2469610ebdd49d29481006d5acbdb81abbabb6d54dd10ead3f8fe",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_objects.uasset",
+      "bytes": 73776,
+      "sha256": "58e2e9550012a42acf2334bcb19eb37cf0b1b8c12f8fdf1b6cca116bd83d943e",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_plaster.uasset",
+      "bytes": 73700,
+      "sha256": "901a5f628993939f853d35984094c7282ac56be58e1665f129352dcad7d7385a",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Materials/modular_urban_apartments_facade_trim_01.uasset",
+      "bytes": 73670,
+      "sha256": "8b3ab5730f635dcb3ce0cec31e11188aaf935c56ed9662168f833e998f03c721",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayDouble.uasset",
+      "bytes": 207979,
+      "sha256": "337150938760777d15afa0b4524861cac0b1de7e3a0424f2c2955222db75a605",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/BayWide.uasset",
+      "bytes": 208773,
+      "sha256": "a8e7d7ed49bcbd5cf2b0b843f623dda6feb2e44a44440615c543d9f3bf56ca99",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Cornice.uasset",
+      "bytes": 86586,
+      "sha256": "80d42a00b91a92bb04920bbf249d61462a529bd2217684e9d73bc560db2d3b80",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/StaticMeshes/Entry.uasset",
+      "bytes": 185605,
+      "sha256": "2431232867559d5252660cb4820202078dfdf0f4547d63338faa7220721bf914",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha.uasset",
+      "bytes": 1355340,
+      "sha256": "d4bde6d0008a08e7aa2a8f79f06eb527cedbcf8c17f25cae17d9ed4bf5b3a40d",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_diff-modular_urban_apartments_facade_objects_alpha1.uasset",
+      "bytes": 1355353,
+      "sha256": "a2e4494874566e6107acacd3a53292337e66c9db76258994b67d2fe9eb95575e",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough.uasset",
+      "bytes": 1847331,
+      "sha256": "c7047b7b5b586e8910bfc3a7c7115a653d533e285676c779b5b46ab29f1e1c4c",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_metal-modular_urban_apartments_facade_objects_rough1.uasset",
+      "bytes": 1847344,
+      "sha256": "a90aeb7463e348af536add0b341b50cfb6f05ffc41a15621c0cecef9bc79f6fb",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl.uasset",
+      "bytes": 1515212,
+      "sha256": "4437ab2e3caa555c180007733a59d0e44d2db1577718bfe20bf9e0b3379f0f9b",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_objects_nor_gl1.uasset",
+      "bytes": 1515225,
+      "sha256": "b086c3275828f63ce08fa4c9c4b81d8aeba3d50629b364b5bb6a7631f684a445",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_diff.uasset",
+      "bytes": 1278585,
+      "sha256": "253dcbd61be3bf3be14d6e0f1fd84c1ab6eb066dad47277a286bea94a21c5fb0",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_nor_gl.uasset",
+      "bytes": 2300578,
+      "sha256": "05f3861b47ef9b612462667e99eff00175006b418f95d3fbb38e796e2ef2508a",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_plaster_rough.uasset",
+      "bytes": 1364386,
+      "sha256": "a5f15678d3278699a3635b29115efa05859ef099a70f62dc9f7e9180e07180de",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_diff.uasset",
+      "bytes": 1251364,
+      "sha256": "a59af710da65ca7e1a20d2a79145b4a928227951b5e61c67dc02246e5de1c350",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_nor_gl.uasset",
+      "bytes": 2084780,
+      "sha256": "61b104a78fe9f7223b1d66ceb4e7f517b9cff8a5a8e26612e30c30d7135d9ffc",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough",
+      "path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_Donors/UrbanFacades/ImpactApartments/Textures/modular_urban_apartments_facade_trim_01_rough.uasset",
+      "bytes": 1572236,
+      "sha256": "d97a083ab195e755eea060530371ade375622a69c6faf9a583094d91e0ac40ff",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_Asphalt",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Asphalt.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_Asphalt.uasset",
+      "bytes": 71609,
+      "sha256": "9f24a635256d0db65672509a9a0052bb0991239434e15a0ccaa6ae73ea9af71b",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_BlueDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_BlueDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_BlueDetail.uasset",
+      "bytes": 77567,
+      "sha256": "baa18ce54c2c61f8de979ab53e665a72f402ecb71873a813c90f4d4d4c6da193",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_ClayDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_ClayDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_ClayDetail.uasset",
+      "bytes": 77686,
+      "sha256": "e36df62cbfedadec3350bd7f5b0c945f3df3ace15bae1cd3c3c7b53fa6c50b6a",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Curb",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Curb.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Curb.uasset",
+      "bytes": 190109,
+      "sha256": "de1a1855dd1f67df8b99001c0d21e79d545d5a3fbfec9e2cf7abee8668aecf9c",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_GlassSign",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_GlassSign.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_GlassSign.uasset",
+      "bytes": 75386,
+      "sha256": "fd107dfe5696d814d31772af8d04c910c4a78a7d46aa58b40ed55d1624b525ca",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Ground",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Ground.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Ground.uasset",
+      "bytes": 84384,
+      "sha256": "48696651632e86ac2e36a32626201f24c6f95ab8344d433ec41faa66c3f95f5d",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Markings",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Markings.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Markings.uasset",
+      "bytes": 75598,
+      "sha256": "41d30bff85fa5ca9f8d25f8d724de2947c257b19746535395f4e4c671b438ec9",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Metal",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Metal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Metal.uasset",
+      "bytes": 179914,
+      "sha256": "52943cbf9928283190d69a77abb877db978a03b179237ddbf350ddd8baac9746",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Paving",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Paving.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Paving.uasset",
+      "bytes": 76245,
+      "sha256": "702fa5a6de322615089d6d06079a2c8c2bfb83b82ffe8d63883d1bdd1f86b54c",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Roof",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Roof.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Roof.uasset",
+      "bytes": 74982,
+      "sha256": "25e9b1456aa8f847e2cc2ca100165e4152aafec0c8230d488a5ae549f0a87889",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_RoofMetal",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_RoofMetal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_RoofMetal.uasset",
+      "bytes": 79631,
+      "sha256": "79cfd27debbb1fdeb03ab3fd8e8a0189804caaf5a945c9f1255ab37130ca37c1",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_Soil",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Soil.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_Soil.uasset",
+      "bytes": 71725,
+      "sha256": "95a49cebd7fe2a571c94ccbe2af983bf8e628a16feb33fedd3581b506f0e4436",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Geometry/SM_R2_StoneDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_StoneDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Geometry/SM_R2_StoneDetail.uasset",
+      "bytes": 77031,
+      "sha256": "4063d5c79eb916ab1a946661a615a3a6815bc64737078ccf71e6b6d8d214e2aa",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Lvl_IB_S25_RealismLab",
+      "path": "ImpactBeyond/Content/IB_S25/Lvl_IB_S25_RealismLab.umap",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Lvl_IB_S25_RealismLab.umap",
+      "bytes": 462893,
+      "sha256": "0b4a99b4bbd1089fc76a00c6ecb50f075c58d3133568d5ceb502b6d60dfc4055",
+      "format": "umap",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_CarPaint_0",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_0.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_0.uasset",
+      "bytes": 8678,
+      "sha256": "c06e5fa13a4735c10ed9a18b8f5f0ab2a4c80c5de46a48cae633f89347f3fcc3",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_CarPaint_1",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_1.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_1.uasset",
+      "bytes": 8655,
+      "sha256": "96c310a2561ca25839ee04674459ba21790586c7f3214fc637cad4dbf917f1e4",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_CarPaint_2",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_2.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_CarPaint_2.uasset",
+      "bytes": 8014,
+      "sha256": "d701afaab94d0b69a7b3bad57a648064d755918d188c527aaf134567eb0cc46b",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_R2v2_Blue",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Blue.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Blue.uasset",
+      "bytes": 74292,
+      "sha256": "e6a680b0192c6a7aefabe0e7ff6f8e3d729639d9a135f8e16a20d487b3a38d2d",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_R2v2_Clay",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Clay.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Clay.uasset",
+      "bytes": 74292,
+      "sha256": "b8973eeba65bf2578aaaecb3c728589b0e76fc23183322854244f80fa48b7b3b",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/MI_R2v2_Stone",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Stone.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/MI_R2v2_Stone.uasset",
+      "bytes": 78761,
+      "sha256": "97bdf50ad32c569bfd2ffc47e3f0471cc42df7071b4befff9e643cdd6c0af82c",
+      "format": "uasset",
+      "provenance": "poly_facade"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_Asphalt",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_Asphalt.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_Asphalt.uasset",
+      "bytes": 11829,
+      "sha256": "9494f78c1027ce8fc9805130ce26a80e0148c39e0b51ef66cddf886211e769d1",
+      "format": "uasset",
+      "provenance": "poly_asphalt"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_CarPaint_Local",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_CarPaint_Local.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_CarPaint_Local.uasset",
+      "bytes": 25015,
+      "sha256": "f71b092a071a721f58148049fe96268ee549cc49aae86a801f958b7495b8ec8f",
+      "format": "uasset",
+      "provenance": "epic_conceptcar"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_Markings",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_Markings.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_Markings.uasset",
+      "bytes": 9765,
+      "sha256": "c59133fceae6d4bf9098ea73fcc3a53ae9190319cd0af739a71c4e872eba3f21",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_Paving",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_Paving.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_Paving.uasset",
+      "bytes": 11837,
+      "sha256": "4f5d2c25ee9d5240f72fba18958bc1fe615e886832fd309faa9d5e00d5314543",
+      "format": "uasset",
+      "provenance": "poly_paving"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2_GroundScale100",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_GroundScale100.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_GroundScale100.uasset",
+      "bytes": 12524,
+      "sha256": "ef15e588bd95205a8c1d2ec210cde9589cdde92fe9c9ac267fa652129fb24e2d",
+      "format": "uasset",
+      "provenance": "poly_soil"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2_Soil",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_Soil.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2_Soil.uasset",
+      "bytes": 12277,
+      "sha256": "b4303a7a0ad470d73d73998b2d6fc821f106037dae1a58a3713fac5ec3a694c3",
+      "format": "uasset",
+      "provenance": "poly_soil"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_BlueDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_BlueDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_BlueDetail.uasset",
+      "bytes": 10280,
+      "sha256": "578bb32a10772dcd3a14c6deb9c417d30b5d521333f2a4b41d700bb0f86b7202",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_ClayDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_ClayDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_ClayDetail.uasset",
+      "bytes": 10213,
+      "sha256": "9c1bca47375fa6b2517ecdc1664f2d07a410c4c850623a521e91c5bef57ff389",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Curb",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Curb.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Curb.uasset",
+      "bytes": 10210,
+      "sha256": "4cadf5c546539a3091b5524d2964e000521363768144239d0b1eeff137c7f9aa",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_GlassSign",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_GlassSign.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_GlassSign.uasset",
+      "bytes": 10597,
+      "sha256": "998ee6932faa78b13327b83fd724bed7f49b08f87a57f14ad084d2d088c51203",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Metal",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Metal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Metal.uasset",
+      "bytes": 9853,
+      "sha256": "27049fc89227fe07c346d2ff9dff723d2fe01aeb92574eaf136d6afd52b9f14f",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_Roof",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Roof.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_Roof.uasset",
+      "bytes": 10134,
+      "sha256": "5537b546c8187a277ec6572b93c58c22dda70caa53c19483307e2038c9fbea89",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_RoofMetal",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_RoofMetal.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_RoofMetal.uasset",
+      "bytes": 10357,
+      "sha256": "edc6be2a2422351878b018baefcc662f2d689a7a84a8f07335e607a0871c44ae",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Materials/M_R2v3_StoneDetail",
+      "path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_StoneDetail.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Materials/M_R2v3_StoneDetail.uasset",
+      "bytes": 10264,
+      "sha256": "9d752657d311ef0efd96817204ff3d7265dbc5a0a9a603f9472bd36ce7bea99a",
+      "format": "uasset",
+      "provenance": "authored"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_Soil_basecolor",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_basecolor.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_basecolor.uasset",
+      "bytes": 1222653,
+      "sha256": "ca5d11ba80c9c90ebe7c4a568ac641336498fd68224defc0d71fb3a8f94772c1",
+      "format": "uasset",
+      "provenance": "poly_soil"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_Soil_normal_dx",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_normal_dx.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_normal_dx.uasset",
+      "bytes": 6527363,
+      "sha256": "b7dd3942825f58c3caf5f417d8465d05c47be30c3f6a02cb3411121e6f04e7e2",
+      "format": "uasset",
+      "provenance": "poly_soil"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_R2_Soil_roughness",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_roughness.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_R2_Soil_roughness.uasset",
+      "bytes": 658271,
+      "sha256": "a59ddcdb6809d1877f52468d983a7a94af0b10e073d52e796aea5d11db9f96cc",
+      "format": "uasset",
+      "provenance": "poly_soil"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_asphalt_basecolor",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_basecolor.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_basecolor.uasset",
+      "bytes": 3090119,
+      "sha256": "dc19dfbd8fad0206fa736e85d0a1b0a33607bba40a61edec8562d960e1168f89",
+      "format": "uasset",
+      "provenance": "poly_asphalt"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_asphalt_normal_dx",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_normal_dx.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_normal_dx.uasset",
+      "bytes": 11284555,
+      "sha256": "18afd57b6499bd5ebfe63845affdc8e5fdc9f38bf20d4e37623bcc0e12d5b778",
+      "format": "uasset",
+      "provenance": "poly_asphalt"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_asphalt_roughness",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_roughness.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_asphalt_roughness.uasset",
+      "bytes": 2243896,
+      "sha256": "cc30288b4632bb034bd4e375ff20bc936f79ba4039d74c3f6627c6d478dbb63a",
+      "format": "uasset",
+      "provenance": "poly_asphalt"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_paving_basecolor",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_basecolor.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_basecolor.uasset",
+      "bytes": 3831142,
+      "sha256": "db526e93fad805264dc979aebee42d1623b621a3ef01a30115140d5a6cae0749",
+      "format": "uasset",
+      "provenance": "poly_paving"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_paving_normal_dx",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_normal_dx.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_normal_dx.uasset",
+      "bytes": 24669546,
+      "sha256": "138babf2e507fb5a556322b564e9bdb07d45782805f8fe09401df0542115d863",
+      "format": "uasset",
+      "provenance": "poly_paving"
+    },
+    {
+      "package": "/Game/IB_S25/Textures/T_paving_roughness",
+      "path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_roughness.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Textures/T_paving_roughness.uasset",
+      "bytes": 2138544,
+      "sha256": "9e176f30e72d4398ad128c00c31e59c40f6245761c820986cbffb92592f16ef0",
+      "format": "uasset",
+      "provenance": "poly_paving"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01.uasset",
+      "bytes": 76230,
+      "sha256": "85d969d3781d129b2fcf037b76809edd21a5b6e76b98d59a4cc35d6a67a4555a",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_branches.uasset",
+      "bytes": 75669,
+      "sha256": "ec29fd66be78d6e1cc577b00c9f05bc6b1dc2048b07c115df21d55c185f89b6f",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Materials/island_tree_01_leaves.uasset",
+      "bytes": 72958,
+      "sha256": "0f535c1081f2af0c40b868cb65004c2a5e80093198fbc87c71f1197278fd6493",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/StaticMeshes/S25_IslandTree.uasset",
+      "bytes": 37711899,
+      "sha256": "b6f4308f6efd7b50aff5cf27c20a03281ded052502e4bcf84a913b969b2bc5b9",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_diff.uasset",
+      "bytes": 1259358,
+      "sha256": "c98b99bb379a9cec4aa055e81490a73dc9b473a52514a4fbd4ac168209cdf8fb",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_nor_gl.uasset",
+      "bytes": 2295660,
+      "sha256": "a445678a68c82cc67738627ff5daeb1295f45a3888033e2365c25c0c459c24a2",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_branches_rough.uasset",
+      "bytes": 1337107,
+      "sha256": "3e15f4c038fda3c3a2081f7b01fba663b1c15e28e8992df0088db5938b66d899",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_diff.uasset",
+      "bytes": 1712731,
+      "sha256": "f4a8922d1b929c460a3617058bbe4110c7587db6a2a1ada495a1ca9ef52c43a9",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_diff-island_tree_01_leaves_alpha.uasset",
+      "bytes": 511323,
+      "sha256": "de976bbe71f0cfa1e2705de5b866453e94b016390a9c814469b2e6fe6e560eb5",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_nor_gl.uasset",
+      "bytes": 1271969,
+      "sha256": "d0b822b4aa9ec74e03a842cd1c525154a97efa70dcb44436608124adadf73abb",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_leaves_rough.uasset",
+      "bytes": 1271563,
+      "sha256": "b11366bd8262aad28dccb6563d132f92145ef428916c621e462b0a650d7eebba",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_nor_gl.uasset",
+      "bytes": 2859166,
+      "sha256": "839971c112a36622b3e329cc60155054a67ff45df9de243f651848d9141ab021",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    },
+    {
+      "package": "/Game/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough",
+      "path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough.uasset",
+      "origin": "checkout",
+      "source_path": "ImpactBeyond/Content/IB_S25/Vegetation/S25_IslandTree/Textures/island_tree_01_rough.uasset",
+      "bytes": 1689719,
+      "sha256": "1124b3b51947daa2398ab40bc0b4ae06b9a5a45b7008d2b07d6a2980d5f985eb",
+      "format": "uasset",
+      "provenance": "poly_tree"
+    }
+  ],
+  "payload_count": 90,
+  "payload_bytes": 154029743,
+  "native_prerequisites": [
+    {
+      "package": "/Engine/BasicShapes/Cube",
+      "bundled": false,
+      "path": "Engine/Content/BasicShapes/Cube.uasset",
+      "bytes": 16384,
+      "sha256": "0647a386495c2a9a187e273a7f040eae635f25371023d4e360d82bffa52077c5"
+    },
+    {
+      "package": "/Engine/EditorResources/LightIcons/S_LightError",
+      "bundled": false,
+      "path": "Engine/Content/EditorResources/LightIcons/S_LightError.uasset",
+      "bytes": 22827,
+      "sha256": "3245467f0dd165f4ea0bb60660f848ad830f9b14239cb3544fee05be680358e6"
+    },
+    {
+      "package": "/Engine/EngineMaterials/WorldGridMaterial",
+      "bundled": false,
+      "path": "Engine/Content/EngineMaterials/WorldGridMaterial.uasset",
+      "bytes": 30169,
+      "sha256": "a11b00e3ac0f981bb4f988915f2dcab17b2ac62a15be502e8c04606fff8ad20e"
+    },
+    {
+      "package": "/InterchangeAssets/gltf/Substrate/M_GLTF",
+      "bundled": false,
+      "path": "Engine/Plugins/Interchange/Assets/Content/gltf/Substrate/M_GLTF.uasset",
+      "bytes": 285882,
+      "sha256": "1aadc6af55bb91146a1fd92f9f103512ede034969c81854a5acf940049c5af4e"
+    },
+    {
+      "package": "/Script/CoreUObject",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/Engine",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/ImpactBeyond",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/InterchangeEngine",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/InterchangeImport",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/InterchangePipelines",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/NavigationSystem",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    },
+    {
+      "package": "/Script/UnrealEd",
+      "bundled": false,
+      "requirement": "native script module; load/cook classification requires integrator UE validation"
+    }
+  ],
+  "interchange_plugin": {
+    "path": "Engine/Plugins/Interchange/Assets/InterchangeAssets.uplugin",
+    "sha256": "331248276182b1887418493f57c271c4c1310a85e99d8e99a487b7c066564bdf",
+    "enabled_by_default": true,
+    "modules": [
+      {
+        "Name": "InterchangeAssets",
+        "Type": "Runtime",
+        "LoadingPhase": "PostConfigInit"
+      }
+    ],
+    "plugin_dependencies": [
+      {
+        "Name": "BaseMaterial",
+        "Enabled": true
+      }
+    ],
+    "bundled": false
+  },
+  "native_class_contract": {
+    "class": "/Script/ImpactBeyond.ImpactFacade",
+    "component": "Facade",
+    "type": "UHierarchicalInstancedStaticMeshComponent",
+    "files": [
+      {
+        "path": "ImpactBeyond/Source/ImpactBeyond/ImpactFacade.h",
+        "sha256": "a1ab3734d2dc55e5304f55a4351911b7a59fea185abb6a0a15f32ca8d3210ee6"
+      },
+      {
+        "path": "ImpactBeyond/Source/ImpactBeyond/ImpactFacade.cpp",
+        "sha256": "63b9ffea144bf380b7f64cc95e8dc1c0a07e9cb978740ca8608f115a00e81006"
+      }
+    ],
+    "copied": false
+  },
+  "source_receipts": [
+    {
+      "path": "Tools/IBS25_sources/manifest.json",
+      "sha256": "14880047f069a6ba3f800b86803fad0acbc5930943e54d24bc5658d52369110a"
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/receipt.json",
+      "sha256": "cfec051c509b8524b66a8c7cf44093ec6c142099705bc9678233ac3610cdb95a"
+    },
+    {
+      "path": "Tools/IBS25_sources/soil/receipt.json",
+      "sha256": "9985fcd5ee3b039b0cfc19fd31e146c8ab711f5b3b74866acb7557ebe375b866"
+    }
+  ],
+  "verified_raw_sources": [
+    {
+      "path": "Tools/IBS25_sources/asphalt_02_diff_2k.jpg",
+      "bytes": 3075676,
+      "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_diff_2k.jpg",
+      "receipt": "Tools/IBS25_sources/manifest.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/asphalt_02_nor_dx_2k.png",
+      "bytes": 9117875,
+      "sha256": "5005be1e5825b4a28b701e60a1a9f73569447deecf59574b1cfa7b1394d4293b",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_02/asphalt_02_nor_dx_2k.png",
+      "receipt": "Tools/IBS25_sources/manifest.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/asphalt_02_rough_2k.jpg",
+      "bytes": 2230457,
+      "sha256": "b9a516b61b7040a9245ac206642d5f767ad9589a0169c4a1668221429e8a998c",
+      "source": "https://polyhaven.com/a/asphalt_02",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_rough_2k.jpg",
+      "receipt": "Tools/IBS25_sources/manifest.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/concrete_pavement_diff_2k.jpg",
+      "bytes": 3817566,
+      "sha256": "e5a1cecfe7765cc0b24a6ab0abf492bd21c9e7af64e97fc46ef6021d0645fbd3",
+      "source": "https://polyhaven.com/a/concrete_pavement",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_pavement/concrete_pavement_diff_2k.jpg",
+      "receipt": "Tools/IBS25_sources/manifest.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/concrete_pavement_nor_dx_2k.png",
+      "bytes": 23876537,
+      "sha256": "a63766e8e3c1872bca4c815a22707c6dab3f2545819e4ff9d97ad266a827cab5",
+      "source": "https://polyhaven.com/a/concrete_pavement",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement/concrete_pavement_nor_dx_2k.png",
+      "receipt": "Tools/IBS25_sources/manifest.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/concrete_pavement_rough_2k.jpg",
+      "bytes": 2125646,
+      "sha256": "e97b7d190dcda5a842813502505bf3d1b2348b4cad57b1d51d1bcc694a92d137",
+      "source": "https://polyhaven.com/a/concrete_pavement",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_pavement/concrete_pavement_rough_2k.jpg",
+      "receipt": "Tools/IBS25_sources/manifest.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/island_tree_01_1k.gltf",
+      "bytes": 8576,
+      "sha256": "78e905a40670bfabb2760601d4d9a6c17193a50d68e6271c66893eb7bd75906d",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/island_tree_01/island_tree_01_1k.gltf",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_nor_gl_1k.jpg",
+      "bytes": 1207134,
+      "sha256": "ca22e428e1b1ebac47b2fc67ec355700c8779d6628d2fc6c3ebae9002988f63e",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_nor_gl_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_diff_1k.jpg",
+      "bytes": 791327,
+      "sha256": "51bff9a3a6ed7d89ff4c73f01708b7267ed8d7a82b0cb12343741894f708218f",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_diff_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_arm_1k.jpg",
+      "bytes": 727403,
+      "sha256": "bf972dff0fbc71f146b4c02103fc3596477a49a9eff46b87b13c89b7b90d18ca",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_arm_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_leaves_nor_gl_1k.jpg",
+      "bytes": 379443,
+      "sha256": "07ba461c0c95da4e49a42981766bdb6191d4c3c4d815796c082266dcc3cecdb8",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_leaves_nor_gl_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_leaves_diff_1k.jpg",
+      "bytes": 191886,
+      "sha256": "f56d762a1507754752abf164cc12acbc1e87ce87fa609ac44b98a1b0037c89d8",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_leaves_diff_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_leaves_arm_1k.jpg",
+      "bytes": 489476,
+      "sha256": "90da3a072dbcb052715b1313b9dbc69a4aa8a09a31a4b3868411a2bb51d72037",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_leaves_arm_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_branches_nor_gl_1k.jpg",
+      "bytes": 819101,
+      "sha256": "2d67393ba76a0f49cf965fa0c99d8c16268e71e87b1203d35539bfdb971a514e",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_branches_nor_gl_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_branches_diff_1k.jpg",
+      "bytes": 528304,
+      "sha256": "bee5ec22196e9e31ad0c95a5a9b4636571cc0124d5bb27a92f1e307d289cc60d",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_branches_diff_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/textures/island_tree_01_branches_arm_1k.jpg",
+      "bytes": 484806,
+      "sha256": "9e3f82263247ce4f619692cea4c4f6fe9936ff465a86623481849062642c7d05",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_branches_arm_1k.jpg",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/tree/island_tree_01.bin",
+      "bytes": 60709812,
+      "sha256": "1faa817b46e24ed6fc90d3ec72188a0dc5ac75e82c89b3dd3c5fdaecf7cc005c",
+      "source": "https://polyhaven.com/a/island_tree_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/island_tree_01/island_tree_01.bin",
+      "receipt": "Tools/IBS25_sources/tree/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/soil/brown_mud_leaves_01_diff_1k.jpg",
+      "bytes": 1206953,
+      "sha256": "c598c555f13cd5328409fd5e2a45496a26e319e52299e3959042f1449c2f1b06",
+      "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_diff_1k.jpg",
+      "receipt": "Tools/IBS25_sources/soil/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/soil/brown_mud_leaves_01_nor_dx_1k.png",
+      "bytes": 6108061,
+      "sha256": "3823ba3222353b372d3dc348ed1465f3df9be79508e0da891721be2c16435e89",
+      "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/brown_mud_leaves_01/brown_mud_leaves_01_nor_dx_1k.png",
+      "receipt": "Tools/IBS25_sources/soil/receipt.json",
+      "verified": true,
+      "bundled": false
+    },
+    {
+      "path": "Tools/IBS25_sources/soil/brown_mud_leaves_01_rough_1k.jpg",
+      "bytes": 644332,
+      "sha256": "9f84b7e7b5fdd2ff9798645fdec243b994fced05e543692761994b793211b5d0",
+      "source": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_rough_1k.jpg",
+      "receipt": "Tools/IBS25_sources/soil/receipt.json",
+      "verified": true,
+      "bundled": false
+    }
+  ],
+  "not_copied": [
+    "Config",
+    "Binaries",
+    "Intermediate",
+    "Saved",
+    "raw downloads",
+    "engine/plugin content",
+    "IB_C00",
+    "unused intermediate lab assets"
+  ],
+  "validation_pending": [
+    "Unreal load/AssetRegistry validation in candidate",
+    "Substrate/Interchange compatibility",
+    "cook/package",
+    "gameplay/collision",
+    "visible DX12 benchmark",
+    "art acceptance"
+  ]
+}

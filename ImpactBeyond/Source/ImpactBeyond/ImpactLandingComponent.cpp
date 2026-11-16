@@ -1,4 +1,6 @@
 #include "ImpactLandingComponent.h"
+#include "IB_S35/IBS35GripComponent.h"
+#include "IB_S35/IBS35ReceiverComponent.h"
 
 #include "AudioDeviceHandle.h"
 #include "Components/AudioComponent.h"
@@ -31,16 +33,38 @@ UImpactLandingComponent::UImpactLandingComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = false;
+	PrimaryComponentTick.TickGroup = TG_PrePhysics;
 }
 
 void UImpactLandingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Hero = Cast<ACharacter>(GetOwner());
+	InstigatorId = FGuid::NewGuid();
+	if (const auto* Grip = GetOwner()->FindComponentByClass<UIBS35GripComponent>()) InstigatorId = Grip->InstigatorId;
 	if (Hero)
 	{
 		Hero->LandedDelegate.AddDynamic(this, &UImpactLandingComponent::HandleLanded);
 	}
+}
+
+void UImpactLandingComponent::EndPlay(const EEndPlayReason::Type Reason)
+{
+	if (Hero) Hero->LandedDelegate.RemoveDynamic(this, &UImpactLandingComponent::HandleLanded);
+	CancelImpactDive(); CanonicalStrike.Unbind();
+	Super::EndPlay(Reason);
+}
+
+FVector UImpactLandingComponent::LocalUp() const
+{
+	return bUseLocalGravity && IsValid(Hero) ? Hero->GetActorUpVector().GetSafeNormal() : FVector::UpVector;
+}
+
+bool UImpactLandingComponent::IsWalkableImpact(const FHitResult& Hit) const
+{
+	return IsValid(Hero) && Hit.bBlockingHit && !Hit.bStartPenetrating
+		&& (bUseLocalGravity ? FVector::DotProduct(Hit.ImpactNormal, LocalUp()) >= Hero->GetCharacterMovement()->GetWalkableFloorZ()
+			: Hero->GetCharacterMovement()->IsWalkable(Hit));
 }
 
 bool UImpactLandingComponent::CanStartImpact() const
@@ -51,6 +75,8 @@ bool UImpactLandingComponent::CanStartImpact() const
 		return false;
 	}
 	const UCharacterMovementComponent* Movement = Hero->GetCharacterMovement();
+	if (const auto* Grip = Hero->FindComponentByClass<UIBS35GripComponent>())
+		if (Grip->GetHeld() || Grip->IsCharging()) return false;
 	return Movement->IsFlying() || Movement->IsFalling();
 }
 
@@ -66,34 +92,52 @@ bool UImpactLandingComponent::IsDiving() const
 
 void UImpactLandingComponent::StartImpact()
 {
+	StartImpactDive();
+}
+
+bool UImpactLandingComponent::StartImpactDive()
+{
 	if (!CanStartImpact())
 	{
-		return;
+		return false;
 	}
 	UCharacterMovementComponent* Movement = Hero->GetCharacterMovement();
 	const UCapsuleComponent* Capsule = Hero->GetCapsuleComponent();
 	const FVector Start = Capsule->GetComponentLocation();
+	const FVector Down = -LocalUp();
 	FHitResult Floor;
 	const FCollisionQueryParams Query(SCENE_QUERY_STAT(ImpactLandingFloor), false, Hero);
-	if (!GetWorld()->SweepSingleByProfile(Floor, Start, Start - FVector(0, 0, MaximumDescent), FQuat::Identity,
+	if (!GetWorld()->SweepSingleByProfile(Floor, Start, Start + Down * MaximumDescent, Capsule->GetComponentQuat(),
 		Capsule->GetCollisionProfileName(), Capsule->GetCollisionShape(), Query)
-		|| Floor.Distance < MinimumDescent || !Movement->IsWalkable(Floor))
+		|| Floor.Distance < MinimumDescent || !IsWalkableImpact(Floor))
 	{
-		return;
+		return false;
 	}
 
 	Phase = EPhase::Diving;
 	PhaseTime = 0.0f;
 	Hero->StopJumping();
 	Hero->ConsumeMovementInputVector();
+	if (bUseLocalGravity) Movement->SetGravityDirection(Down);
 	Movement->SetMovementMode(MOVE_Falling);
-	Movement->Velocity = FVector(0.0, 0.0, FMath::Min(Movement->Velocity.Z, -static_cast<double>(DiveSpeed)));
+	LastDescentSpeed = float(FMath::Max(double(DiveSpeed), FVector::DotProduct(Movement->Velocity, Down)));
+	Movement->Velocity = Down * LastDescentSpeed;
+	AttackId = FGuid::NewGuid();
 	SetComponentTickEnabled(true);
+	return true;
+}
+
+void UImpactLandingComponent::CancelImpactDive()
+{
+	Phase = EPhase::Ready; PhaseTime = 0; AttackId.Invalidate();
+	if (ShockwaveLines) ShockwaveLines->Flush();
+	SetComponentTickEnabled(false);
 }
 
 void UImpactLandingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (!FMath::IsFinite(DeltaTime) || DeltaTime <= 0) return;
 	if (!IsValid(Hero))
 	{
 		SetComponentTickEnabled(false);
@@ -103,10 +147,10 @@ void UImpactLandingComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	if (Phase == EPhase::Diving)
 	{
 		Hero->ConsumeMovementInputVector();
+		LastDescentSpeed = float(FMath::Max(0.0, FVector::DotProduct(Hero->GetVelocity(), -LocalUp())));
 		if (PhaseTime >= MaximumDiveTime || !Hero->GetCharacterMovement()->IsFalling())
 		{
-			Phase = EPhase::Ready;
-			SetComponentTickEnabled(false);
+			CancelImpactDive();
 		}
 	}
 	else if (Phase == EPhase::Recovering)
@@ -127,7 +171,7 @@ void UImpactLandingComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UImpactLandingComponent::HandleLanded(const FHitResult& Hit)
 {
-	if (!IsDiving() || !Hero->GetCharacterMovement()->IsWalkable(Hit))
+	if (!IsDiving() || !IsWalkableImpact(Hit))
 	{
 		return;
 	}
@@ -136,8 +180,9 @@ void UImpactLandingComponent::HandleLanded(const FHitResult& Hit)
 	EarliestStartTime = GetWorld()->GetTimeSeconds() + CooldownSeconds;
 	ImpactNormal = Hit.ImpactNormal.GetSafeNormal();
 	ImpactOrigin = Hit.ImpactPoint + ImpactNormal * 8.0f;
-	const float ImpactSpeed = static_cast<float>(FMath::Max(0.0, -Hero->GetVelocity().Z));
+	const float ImpactSpeed = float(FMath::Max(double(LastDescentSpeed), FVector::DotProduct(Hero->GetVelocity(), -LocalUp())));
 	ApplyShockwave(ImpactOrigin, ImpactSpeed);
+	OnImpact.Broadcast(ImpactSpeed, ImpactOrigin, ImpactNormal);
 	if (FApp::CanEverRender() && !ShockwaveLines)
 	{
 		ShockwaveLines = NewObject<ULineBatchComponent>(Hero);
@@ -156,6 +201,7 @@ void UImpactLandingComponent::ApplyShockwave(const FVector& Origin, float Impact
 		FVector Contact;
 		float Distance;
 		bool bPanel;
+		FGuid TargetLife;
 	};
 	TArray<FOverlapResult> Overlaps;
 	const FCollisionQueryParams Query(SCENE_QUERY_STAT(ImpactLandingWave), false, Hero);
@@ -172,9 +218,10 @@ void UImpactLandingComponent::ApplyShockwave(const FVector& Origin, float Impact
 			continue;
 		}
 		Seen.Add(Primitive);
+		const auto* Receiver = Actor->FindComponentByClass<UIBS35ReceiverComponent>();
 		const bool bPanel = Actor->ActorHasTag(PanelTag) || Primitive->ComponentHasTag(PanelTag);
-		if (!bPanel && (!(Actor->ActorHasTag(TargetTag) || Primitive->ComponentHasTag(TargetTag))
-			|| !Primitive->IsSimulatingPhysics()))
+		const bool Tagged = Actor->ActorHasTag(TargetTag) || Primitive->ComponentHasTag(TargetTag);
+		if (CanonicalStrike.IsBound() ? !Receiver && !bPanel && !Tagged : !bPanel && (!Tagged || !Primitive->IsSimulatingPhysics()))
 		{
 			continue;
 		}
@@ -184,16 +231,19 @@ void UImpactLandingComponent::ApplyShockwave(const FVector& Origin, float Impact
 		{
 			Contact = Primitive->Bounds.Origin;
 		}
-		const float Range = FVector::Dist2D(Origin, Contact);
+		const float Range = float(bUseLocalGravity ? FVector::VectorPlaneProject(Contact - Origin, ImpactNormal).Size() : FVector::Dist2D(Origin, Contact));
 		if (Range < Radius)
 		{
-			Candidates.Add({Primitive, Contact, Range, bPanel});
+			Candidates.Add({Primitive, Contact, Range, bPanel, Receiver ? Receiver->TargetId : FGuid()});
 		}
 	}
 	Candidates.Sort([](const FCandidate& A, const FCandidate& B) { return A.Distance < B.Distance; });
 	int32 Reactions = 0;
+	TSet<AActor*> RoutedActors;
 	for (const FCandidate& Candidate : Candidates)
 	{
+		if (!IsValid(Candidate.Component) || !IsValid(Candidate.Component->GetOwner())
+			|| RoutedActors.Contains(Candidate.Component->GetOwner())) continue;
 		FHitResult Obstruction;
 		if (GetWorld()->LineTraceSingleByChannel(Obstruction, Origin + ImpactNormal * 20.0f,
 			Candidate.Component->Bounds.Origin, ECC_Visibility, Query) && Obstruction.GetActor() != Candidate.Component->GetOwner())
@@ -202,7 +252,26 @@ void UImpactLandingComponent::ApplyShockwave(const FVector& Origin, float Impact
 		}
 		const float Falloff = 1.0f - Candidate.Distance / Radius;
 		const float Strength = FMath::Min(ImpactSpeed, 3600.0f) * Falloff;
-		if (Candidate.bPanel)
+		const FVector Offset = Candidate.Component->Bounds.Origin - Origin;
+		const FVector Radial = bUseLocalGravity ? FVector::VectorPlaneProject(Offset, ImpactNormal).GetSafeNormal() : Offset.GetSafeNormal2D();
+		const FVector Direction = (Radial + ImpactNormal * .48f).GetSafeNormal();
+		if (CanonicalStrike.IsBound())
+		{
+			FHitResult Contact(Candidate.Component->GetOwner(), Candidate.Component, Candidate.Contact, -Direction);
+			Contact.bBlockingHit = true;
+			FIBS35DamageMessage Message;
+			Message.AttackId = AttackId; Message.InstigatorId = InstigatorId; Message.TargetId = Candidate.TargetLife;
+			Message.InstigatorActor = Hero; Message.TargetPart = Candidate.Component;
+			Message.DamageKind = EIBS35DamageKind::HeavyPunch;
+			Message.HealthDelta = -FMath::Clamp(Strength * .025f, 0.f, 90.f);
+			Message.Contact = Candidate.Contact; Message.bAirborne = true;
+			const float Mass = Candidate.Component->IsSimulatingPhysics() ? FMath::Max(1.f, Candidate.Component->GetMass()) : 80.f;
+			Message.Impulse = Direction * FMath::Min(Strength * .42f, 950.f) * Mass;
+			Message.RelativeVelocity = Direction * Strength - Candidate.Component->GetComponentVelocity();
+			if (!CanonicalStrike.Execute(Message, Contact)) continue;
+			RoutedActors.Add(Candidate.Component->GetOwner());
+		}
+		else if (Candidate.bPanel)
 		{
 			// Only dedicated, prepared panels may respond; the circuit's throw panel uses its own hit path.
 			if (Strength < 230.0f)
@@ -214,8 +283,6 @@ void UImpactLandingComponent::ApplyShockwave(const FVector& Origin, float Impact
 		}
 		else
 		{
-			const FVector Radial = (Candidate.Component->Bounds.Origin - Origin).GetSafeNormal2D();
-			const FVector Direction = (Radial + ImpactNormal * 0.48f).GetSafeNormal();
 			Candidate.Component->WakeAllRigidBodies();
 			Candidate.Component->AddImpulse(Direction * FMath::Min(Strength * 0.42f, 950.0f), NAME_None, true);
 		}

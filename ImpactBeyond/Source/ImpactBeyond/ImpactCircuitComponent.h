@@ -6,6 +6,11 @@
 class ACharacter;
 class UStaticMeshComponent;
 class UStaticMesh;
+struct FImpactCircuitCanonical;
+struct FImpactCircuitCanonicalDeleter
+{
+	void operator()(FImpactCircuitCanonical* Ptr) const;
+};
 
 UCLASS()
 class UImpactCircuitComponent : public UActorComponent
@@ -14,6 +19,7 @@ class UImpactCircuitComponent : public UActorComponent
 
 public:
 	UImpactCircuitComponent();
+	virtual ~UImpactCircuitComponent() override;
 	void ToggleGrab();
 	void ThrowCar();
 	void BeginThrowCharge();
@@ -25,11 +31,14 @@ public:
 	float GetThrowCharge() const;
 	bool IsPlayingThrow() const;
 	bool IsCarHeld() const;
+	int32 GetCanonicalAcceptedHits() const;
+	float GetCanonicalTargetHealth() const;
 
 	static constexpr float ThrowReleaseTime = 0.18f;
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
@@ -93,4 +102,6 @@ private:
 	FQuat CarCarryRotationOffset = FQuat::Identity;
 	FVector LeftChassisGrip = FVector::ZeroVector;
 	FVector RightChassisGrip = FVector::ZeroVector;
+	TUniquePtr<FImpactCircuitCanonical, FImpactCircuitCanonicalDeleter> Canonical;
+	FGuid ThrowAttackId;
 };

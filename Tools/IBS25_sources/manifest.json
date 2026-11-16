@@ -1,0 +1,74 @@
+[
+  {
+    "key": "asphalt_basecolor",
+    "filename": "asphalt_02_diff_2k.jpg",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_diff_2k.jpg",
+    "source": "https://polyhaven.com/a/asphalt_02",
+    "license": "https://polyhaven.com/license",
+    "license_id": "CC0-1.0",
+    "resolution": 2048,
+    "format": "jpg",
+    "bytes": 3075676,
+    "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+  },
+  {
+    "key": "asphalt_normal_dx",
+    "filename": "asphalt_02_nor_dx_2k.png",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/asphalt_02/asphalt_02_nor_dx_2k.png",
+    "source": "https://polyhaven.com/a/asphalt_02",
+    "license": "https://polyhaven.com/license",
+    "license_id": "CC0-1.0",
+    "resolution": 2048,
+    "format": "png",
+    "bytes": 9117875,
+    "sha256": "5005be1e5825b4a28b701e60a1a9f73569447deecf59574b1cfa7b1394d4293b"
+  },
+  {
+    "key": "asphalt_roughness",
+    "filename": "asphalt_02_rough_2k.jpg",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_rough_2k.jpg",
+    "source": "https://polyhaven.com/a/asphalt_02",
+    "license": "https://polyhaven.com/license",
+    "license_id": "CC0-1.0",
+    "resolution": 2048,
+    "format": "jpg",
+    "bytes": 2230457,
+    "sha256": "b9a516b61b7040a9245ac206642d5f767ad9589a0169c4a1668221429e8a998c"
+  },
+  {
+    "key": "paving_basecolor",
+    "filename": "concrete_pavement_diff_2k.jpg",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_pavement/concrete_pavement_diff_2k.jpg",
+    "source": "https://polyhaven.com/a/concrete_pavement",
+    "license": "https://polyhaven.com/license",
+    "license_id": "CC0-1.0",
+    "resolution": 2048,
+    "format": "jpg",
+    "bytes": 3817566,
+    "sha256": "e5a1cecfe7765cc0b24a6ab0abf492bd21c9e7af64e97fc46ef6021d0645fbd3"
+  },
+  {
+    "key": "paving_normal_dx",
+    "filename": "concrete_pavement_nor_dx_2k.png",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/concrete_pavement/concrete_pavement_nor_dx_2k.png",
+    "source": "https://polyhaven.com/a/concrete_pavement",
+    "license": "https://polyhaven.com/license",
+    "license_id": "CC0-1.0",
+    "resolution": 2048,
+    "format": "png",
+    "bytes": 23876537,
+    "sha256": "a63766e8e3c1872bca4c815a22707c6dab3f2545819e4ff9d97ad266a827cab5"
+  },
+  {
+    "key": "paving_roughness",
+    "filename": "concrete_pavement_rough_2k.jpg",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_pavement/concrete_pavement_rough_2k.jpg",
+    "source": "https://polyhaven.com/a/concrete_pavement",
+    "license": "https://polyhaven.com/license",
+    "license_id": "CC0-1.0",
+    "resolution": 2048,
+    "format": "jpg",
+    "bytes": 2125646,
+    "sha256": "e97b7d190dcda5a842813502505bf3d1b2348b4cad57b1d51d1bcc694a92d137"
+  }
+]

@@ -1,0 +1,57 @@
+#include "IBS3Manifest.h"
+
+FString FIBS3City::DisplayName() const
+{
+    if (CityId == TEXT("CITY_CENTRAL")) return TEXT("Central");
+    if (CityId == TEXT("CITY_PORT")) return TEXT("Puerto");
+    if (CityId == TEXT("CITY_COAST")) return TEXT("Costa");
+    if (CityId == TEXT("CITY_MOUNTAIN")) return TEXT("Montana");
+    return CityId.ToString();
+}
+
+FString FIBS3City::ActivityName() const
+{
+    if (CityId == TEXT("CITY_CENTRAL")) return TEXT("Plaza y azoteas");
+    if (CityId == TEXT("CITY_PORT")) return TEXT("Muelles y carga");
+    if (CityId == TEXT("CITY_COAST")) return TEXT("Paseo y parque");
+    if (CityId == TEXT("CITY_MOUNTAIN")) return TEXT("Mirador y puentes");
+    return TEXT("Explorar");
+}
+
+UIBS3WorldManifest::UIBS3WorldManifest()
+{
+    auto Add=[this](const TCHAR* City,const TCHAR* Region,double Lat,double Lon,int32 Seed)
+    {
+        FIBS3City C; C.CityId=City; C.RegionId=Region; C.LatitudeDegrees=Lat; C.LongitudeDegrees=Lon; C.Seed=Seed;
+        Cities.Add(C);
+    };
+    Add(TEXT("CITY_CENTRAL"),TEXT("earth.city.primary"),0,0,1101);
+    Add(TEXT("CITY_PORT"),TEXT("earth.city.port"),0,90,1102);
+    Add(TEXT("CITY_COAST"),TEXT("earth.city.coast"),0,179.5,1103);
+    Add(TEXT("CITY_MOUNTAIN"),TEXT("earth.city.mountain"),75,-90,1104);
+    Cities[0].BuildingHeightScale=2.2; Cities[1].BuildingHeightScale=0.6;
+    Cities[2].BuildingHeightScale=0.9; Cities[3].BuildingHeightScale=1.3;
+}
+
+bool UIBS3WorldManifest::Validate(FString& Error) const
+{
+    if(BodyId.IsNone() || Revision<1 || !FMath::IsFinite(RadiusCm) || RadiusCm<100000 || !FMath::IsFinite(static_cast<float>(RadiusCm)) || Cities.IsEmpty() ||
+        !FMath::IsFinite(GravityCmS2) || GravityCmS2<=0 || !FMath::IsFinite(static_cast<float>(GravityCmS2)) || !FMath::IsFinite(BrakeCmS2) || BrakeCmS2<=0 ||
+        !FMath::IsFinite(TraversalSpeedCmS) || TraversalSpeedCmS<=0 || !FMath::IsFinite(InitialLoadP95Seconds) || InitialLoadP95Seconds<0 ||
+        !FMath::IsFinite(PrefetchMarginCm) || PrefetchMarginCm<0 || !FMath::IsFinite(PhysicsBubbleCm) || PhysicsBubbleCm<1000 ||
+        !FMath::IsFinite(ResidencyHysteresisCm) || ResidencyHysteresisCm<0 ||
+        !FMath::IsFinite(static_cast<float>(TraversalSpeedCmS)) || !FMath::IsFinite(static_cast<float>(BrakeCmS2)))
+    { Error=TEXT("Invalid planet, speed, gravity, braking, or load-budget data"); return false; }
+    TSet<FName> CityIds,RegionIds;
+    for(const FIBS3City& C:Cities)
+    {
+        if(C.CityId.IsNone() || C.RegionId.IsNone() || CityIds.Contains(C.CityId) || RegionIds.Contains(C.RegionId) ||
+            !FMath::IsFinite(C.LatitudeDegrees) || !FMath::IsFinite(C.LongitudeDegrees) || FMath::Abs(C.LatitudeDegrees)>90 || FMath::Abs(C.LongitudeDegrees)>180 ||
+            !FMath::IsFinite(C.FootprintRadiusCm) || C.FootprintRadiusCm<30000 || !FMath::IsFinite(C.SurfaceOffsetCm) || C.SurfaceOffsetCm<0 ||
+            !FMath::IsFinite(C.BuildingHeightScale) || C.BuildingHeightScale<=0 ||
+            !FMath::IsFinite(static_cast<float>(4500*C.BuildingHeightScale)) || !FMath::IsFinite(static_cast<float>(RadiusCm+C.SurfaceOffsetCm)))
+        { Error=TEXT("City IDs/regions must be unique and coordinates/footprints valid"); return false; }
+        CityIds.Add(C.CityId); RegionIds.Add(C.RegionId);
+    }
+    return true;
+}

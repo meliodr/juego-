@@ -683,6 +683,8 @@ bool FImpactCircuitTest::RunTest(const FString& Parameters)
 		{
 			TestTrue(TEXT("Held car lifted above street"), Car->GetComponentLocation().Z > 150.0);
 			TestTrue(TEXT("Intact panel blocks collision"), Panel->IsCollisionEnabled());
+			TestEqual(TEXT("Canonical target starts at full health"), Circuit->GetCanonicalTargetHealth(), 100.0f);
+			TestEqual(TEXT("No canonical hit before physical contact"), Circuit->GetCanonicalAcceptedHits(), 0);
 			FVector LeftGrip, RightGrip;
 			TestTrue(TEXT("Lifting exposes two chassis contact targets"), Circuit->GetGripTargets(LeftGrip, RightGrip));
 			Circuit->ThrowCar();
@@ -693,6 +695,8 @@ bool FImpactCircuitTest::RunTest(const FString& Parameters)
 		}
 		if (Frame < 200) { return false; }
 		TestFalse(TEXT("Car impact disables panel collision"), Panel->IsCollisionEnabled());
+		TestEqual(TEXT("Physical throw reaches the sole S4 receiver once"), Circuit->GetCanonicalAcceptedHits(), 1);
+		TestEqual(TEXT("Canonical S4 mutation precedes panel opening"), Circuit->GetCanonicalTargetHealth(), 0.0f);
 		const FVector Center = Panel->GetComponentLocation();
 		FCollisionQueryParams Query(SCENE_QUERY_STAT(ImpactCircuitOpening), false, Car->GetOwner());
 		TestFalse(TEXT("Capsule can cross the opening"), World->SweepTestByChannel(
@@ -1141,10 +1145,14 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 						PanelGap, Panel->IsCollisionEnabled() ? TEXT("yes") : TEXT("no")));
 					TestTrue(TEXT("Low throw reaches the panel"), PanelGap <= 300.0);
 					TestTrue(TEXT("Low throw leaves the panel intact"), Panel->IsCollisionEnabled());
+					TestEqual(TEXT("Low-energy contact does not mutate canonical health"), Circuit->GetCanonicalTargetHealth(), 100.0f);
+					TestEqual(TEXT("Low-energy contact dispatches no canonical hit"), Circuit->GetCanonicalAcceptedHits(), 0);
 				}
 				if (Level == 2)
 				{
 					TestFalse(TEXT("High charged throw opens the panel"), Panel->IsCollisionEnabled());
+					TestEqual(TEXT("Charged throw dispatches one canonical hit"), Circuit->GetCanonicalAcceptedHits(), 1);
+					TestEqual(TEXT("Charged throw has one authoritative health state"), Circuit->GetCanonicalTargetHealth(), 0.0f);
 				}
 				State->bAwaitingReload = true;
 				Circuit->ResetCircuit();
@@ -1192,6 +1200,8 @@ bool FImpactTransportCyclesTest::RunTest(const FString& Parameters)
 		if (Frame == 350)
 		{
 			TestFalse(TEXT("Airborne throw opens the panel"), Panel->IsCollisionEnabled());
+			TestEqual(TEXT("Airborne throw dispatches one canonical hit"), Circuit->GetCanonicalAcceptedHits(), 1);
+			TestEqual(TEXT("Airborne reaction follows canonical health loss"), Circuit->GetCanonicalTargetHealth(), 0.0f);
 			Hero->GetCharacterMovement()->StopMovementImmediately();
 			Hero->SetActorLocation(FVector(PanelCenter.X, PanelCenter.Y - 300.0, 115.0), false, nullptr, ETeleportType::TeleportPhysics);
 		}

@@ -1,0 +1,17 @@
+# Private licensed inputs and locally generated derivatives.
+/ImpactBeyond/Content/Adventures_Pack/
+/ImpactBeyond/Content/robot13/
+/ImpactBeyond/Content/SciFi_Beast06/
+/ImpactBeyond/Content/IB_Playable/
+/ImpactBeyond/Content/IB_S25/
+/ImpactBeyond/Content/IB_S3/
+/ImpactBeyond/Content/ConceptCar/
+
+# Rebuild from checked-in recipes; do not publish source packs or local evidence.
+/Tools/IBS25_generated/
+/Tools/IBS25_refined_generated/
+/Tools/IBS25_portability_staging/
+/Tools/IBS25_evidence/
+/IB_S3_GeometryQA/
+__pycache__/
+*.pyc
