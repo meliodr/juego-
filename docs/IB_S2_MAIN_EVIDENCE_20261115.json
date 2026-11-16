@@ -1,0 +1,350 @@
+{
+  "scope": "Local UHT/UBT and NullRHI automation; no cook/DX12/audio/physical controller; logs retained locally, only relative filenames and hashes published",
+  "engine": "5.8.4 CL58902052",
+  "compiler": "MSVC14.44.35228",
+  "sdk": "10.0.26100.0",
+  "validated_ImpactBeyond_tree": "ca4b0e1c3b8c8ef8dc4d4abc82f0e0958873528f",
+  "runs": [
+    {
+      "validated_commit": "0f51da71db813ca2275b42b1fb2d5630ecf32e27",
+      "result": "PASS",
+      "completed": [
+        {
+          "name": "Build-ImpactBeyondEditor",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:01:46.8231426Z"
+        },
+        {
+          "name": "Build-ImpactBeyond",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:03:03.3748360Z"
+        },
+        {
+          "name": "Flight.Headless",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:03:30.2090866Z"
+        },
+        {
+          "name": "Circuit.Headless",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:03:41.7902139Z"
+        },
+        {
+          "name": "Circuit.TransportCycles",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:04:29.0294381Z"
+        },
+        {
+          "name": "Circuit.CityVehicles",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:04:40.1596316Z"
+        },
+        {
+          "name": "Landing.Headless",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:04:51.0835327Z"
+        },
+        {
+          "name": "Planet.RadialLab",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:05:01.5915549Z"
+        }
+      ],
+      "closed_utc": "2026-11-15T21:05:01.5973429Z",
+      "automation_success": [
+        "ImpactBeyond.Circuit.CityVehicles",
+        "ImpactBeyond.Circuit.Headless",
+        "ImpactBeyond.Circuit.TransportCycles",
+        "ImpactBeyond.Flight.Headless",
+        "ImpactBeyond.Landing.Headless",
+        "ImpactBeyond.Planet.RadialLab"
+      ],
+      "cargo_measurements": [],
+      "logs": [
+        {
+          "name": "Build-ImpactBeyond.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Build-ImpactBeyond.stdout.log",
+          "bytes": 5561,
+          "sha256": "81acfa80dc2ad28f3a104fdf37028d83014680ae8aaec99537c5fe250bb84b49"
+        },
+        {
+          "name": "Build-ImpactBeyondEditor.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Build-ImpactBeyondEditor.stdout.log",
+          "bytes": 5576,
+          "sha256": "65550788bddf692b7a7453b9a4150895a654557f62e1456ad24e79514f603e97"
+        },
+        {
+          "name": "Circuit.CityVehicles.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Circuit.CityVehicles.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Circuit.CityVehicles.unreal.log",
+          "bytes": 198731,
+          "sha256": "28e4c258b1dc5b1273a79ae818183081c3cdfabdb0773b743768eca4938aefe9"
+        },
+        {
+          "name": "Circuit.Headless.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Circuit.Headless.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Circuit.Headless.unreal.log",
+          "bytes": 202512,
+          "sha256": "a8229ec687d2da78030c07a979c809b4ef91375a43e668d91785cc54d59e5c20"
+        },
+        {
+          "name": "Circuit.TransportCycles.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Circuit.TransportCycles.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Circuit.TransportCycles.unreal.log",
+          "bytes": 405038,
+          "sha256": "2e09ed5206aa0ad67604c7fd2c4852998ad5938629cc77f6daef62001cc57485"
+        },
+        {
+          "name": "Flight.Headless.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Flight.Headless.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Flight.Headless.unreal.log",
+          "bytes": 201394,
+          "sha256": "e3e5d511da092d00ad812b0dfabc50d0b8c76f39b640d5925e3f019d00414524"
+        },
+        {
+          "name": "Landing.Headless.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Landing.Headless.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Landing.Headless.unreal.log",
+          "bytes": 198663,
+          "sha256": "0a0e401197a7d60e78ff818390764a75a50426aa889ce6f054f133d6a8d3fce7"
+        },
+        {
+          "name": "Planet.RadialLab.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Planet.RadialLab.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Planet.RadialLab.unreal.log",
+          "bytes": 199074,
+          "sha256": "65c91e48d97ebee1fd128de199350db759cebc4910f92c6a7437ee1910e38690"
+        }
+      ]
+    },
+    {
+      "validated_commit": "f2769ed35f3fbd1a085ce93d868719b65e19b316",
+      "result": "PASS",
+      "completed": [
+        {
+          "name": "Build-ImpactBeyondEditor",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:11:50.5814458Z"
+        },
+        {
+          "name": "Build-ImpactBeyond",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:13:05.2265332Z"
+        },
+        {
+          "name": "Flight.Headless",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:13:26.0194564Z"
+        },
+        {
+          "name": "Circuit.Headless",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:13:37.0754728Z"
+        },
+        {
+          "name": "Circuit.TransportCycles",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:14:26.7361198Z"
+        },
+        {
+          "name": "Circuit.CityVehicles",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:14:37.9272597Z"
+        },
+        {
+          "name": "Landing.Headless",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:14:48.8318733Z"
+        },
+        {
+          "name": "Planet.RadialLab",
+          "exit_code": 0,
+          "utc": "2026-11-15T21:14:59.0292511Z"
+        }
+      ],
+      "closed_utc": "2026-11-15T21:14:59.0380307Z",
+      "automation_success": [
+        "ImpactBeyond.Circuit.CityVehicles",
+        "ImpactBeyond.Circuit.Headless",
+        "ImpactBeyond.Circuit.TransportCycles",
+        "ImpactBeyond.Flight.Headless",
+        "ImpactBeyond.Landing.Headless",
+        "ImpactBeyond.Planet.RadialLab"
+      ],
+      "cargo_measurements": [
+        "Cargo sweep 32000 cm/s lateral 0.00: measured 32000.0 cm/s, nose 5260.0, wall 5260.0",
+        "Cargo sweep 36800 cm/s lateral 0.00: measured 36800.0 cm/s, nose 5260.0, wall 5260.0",
+        "Cargo sweep 32000 cm/s lateral 0.12: measured 32015.9 cm/s, nose 5260.1, wall 5260.0",
+        "Cargo sweep 36800 cm/s lateral 0.12: measured 36815.8 cm/s, nose 5260.0, wall 5260.0"
+      ],
+      "logs": [
+        {
+          "name": "Build-ImpactBeyond.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Build-ImpactBeyond.stdout.log",
+          "bytes": 5428,
+          "sha256": "c438a5163f4073180b8244693ea765cccd23181972ef19014ca0b62888a2e19b"
+        },
+        {
+          "name": "Build-ImpactBeyondEditor.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Build-ImpactBeyondEditor.stdout.log",
+          "bytes": 5687,
+          "sha256": "f96966414ef740ed5ecd06d695841d52d0089055dc2fea0c9d898b3c34e0ecae"
+        },
+        {
+          "name": "Circuit.CityVehicles.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Circuit.CityVehicles.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Circuit.CityVehicles.unreal.log",
+          "bytes": 198894,
+          "sha256": "c6026c2779c850178c804ddca6534dc2ac75751024ab55d58c373339594a469d"
+        },
+        {
+          "name": "Circuit.Headless.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Circuit.Headless.stdout.log",
+          "bytes": 1217,
+          "sha256": "cbaefe76c0549f7419753fd0aa0779e56675ef49052ee8b599ec2a5922fdc90a"
+        },
+        {
+          "name": "Circuit.Headless.unreal.log",
+          "bytes": 202827,
+          "sha256": "ba0e8ca7b4074d9971ad954f031490444f1532749fe660e91c7907911bb40f65"
+        },
+        {
+          "name": "Circuit.TransportCycles.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Circuit.TransportCycles.stdout.log",
+          "bytes": 1217,
+          "sha256": "cbaefe76c0549f7419753fd0aa0779e56675ef49052ee8b599ec2a5922fdc90a"
+        },
+        {
+          "name": "Circuit.TransportCycles.unreal.log",
+          "bytes": 420491,
+          "sha256": "d5db257e2525f1a8dc69c898c6b6e87c2fa5544f9c42db3625a9eaca9e2aeed0"
+        },
+        {
+          "name": "Flight.Headless.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Flight.Headless.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Flight.Headless.unreal.log",
+          "bytes": 201095,
+          "sha256": "7f793b70399633bcb0a21b10f48040f285aad7983d5c61df617c9d90c7fb421c"
+        },
+        {
+          "name": "Landing.Headless.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Landing.Headless.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Landing.Headless.unreal.log",
+          "bytes": 199139,
+          "sha256": "ef40e9c0fddfadea78cb7f1f17bad9d55d5194000eb67d0641414060559f0f07"
+        },
+        {
+          "name": "Planet.RadialLab.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "Planet.RadialLab.stdout.log",
+          "bytes": 1217,
+          "sha256": "c8702a1722bed55ab3e649ad49c30f828c04fc773aefec16c410af19d55b08f7"
+        },
+        {
+          "name": "Planet.RadialLab.unreal.log",
+          "bytes": 198643,
+          "sha256": "d9ad09551245560d81c8a6b450549f86d55418797227ac84b491a4b2b61ae9fc"
+        }
+      ]
+    }
+  ]
+}
