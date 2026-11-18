@@ -1,5 +1,10 @@
 # IMPACT: BEYOND
 
+## Estado actual de recursos Fab — 18/11/2026
+
+**[Selección vigente para Codex](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo maestro: 82 paquetes](docs/FAB_CATALOGO_MAESTRO.csv)** · **[Auditoría lote 03](docs/FAB_AUDITORIA_LOTE03_2026-11-18.md)**. Distribución: 12 SELECCIONAR, 10 PROBAR, 40 RESERVAR, 20 DESCARTAR. Tres son **promociones oficiales del 17/11 al 1/12** (Absorption FX, fábrica industrial, dron compañero); 27 productos nuevos muestran Free en páginas públicas. **Reclamados/instalados: NO VERIFICADOS**, UE5.8 no probada para los assets nuevos. Las tablas del 15/11 que siguen más abajo son historia, no los totales actuales. El plan principal ya indica S1–S7 jugable y perfilado (16/11): se prioriza fidelidad visual de ciudad, vegetación, malecón y océano sin introducir dependencias ni compras innecesarias.
+
+
 ## Fab: selección y biblioteca — 15/11/2026
 
 **[Selección activa de Fab](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo CSV para Codex, 52 fichas públicas](docs/FAB_CATALOGO_MAESTRO.csv)** · [Lote 01](docs/FAB_AUDITORIA_LOTE01_2026-11-15.md) · [Lote 02](docs/FAB_AUDITORIA_LOTE02_2026-11-15.md).
