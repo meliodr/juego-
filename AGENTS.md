@@ -1,5 +1,12 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Actualización de recursos y estado jugable — 18/11/2026
+
+Leer **docs/FAB_AUDITORIA_LOTE03_2026-11-18.md** además de **docs/FAB_SELECCION_ACTIVA.md** y **docs/FAB_CATALOGO_MAESTRO.csv** (82 fichas: 12 seleccionadas, 10 por probar, 40 reservas y 20 descartes). Los números anteriores de 52/8/5/27/12 que se ven más abajo son un registro del 15/11, no actuales. **No inferir propiedad**, el acceso de navegador conectado a My Library no está operativo desde este chat; 3 promociones del 17/11 al 1/12 (Absorption FX, Post-Apocalyptic Factory, Advanced Companion Drone). No comprar/reclamar/descargar/instalar ni enviar contenido NoAI a programas de IA generativa.
+
+**La versión S1–S7 fue integrada y validada como build funcional según docs/PLAN_ACTIVO.md y docs/IB_S7_CLOSURE_REVIEW.md al 16/11/2026.** Ya no hablar de W00/W01 como pendientes actuales. Si se evalúan nuevos recursos, hacerlo con un solo ensayo aislado de ciudad/vegetación/malecón/agua por necesidad y priorizar consistencia realista/perfil GPU, sin alterar la build S7 que funciona.
+
+
 ## Reglas de selección Fab — catálogo activo (2026-11-15)
 
 Antes de crear un personaje, animación, vehículo, escenario, robot, kaiju, VFX o sonido, leer **docs/FAB_SELECCION_ACTIVA.md** y consultar **docs/FAB_CATALOGO_MAESTRO.csv**. Consultar lotes 01/02 para detalles por ficha. Los 52 productos solo están confirmados como **Gratis/Free en listados públicos**, NO como reclamados o instalados. No inferir «lo tengo» ni «no lo tengo» sin acceso real a Mi biblioteca; no descargar, comprar, reclamar o instalar nada automáticamente. Clasificación vigente: 8 SELECCIONAR, 5 PROBAR, 27 RESERVAR, 12 DESCARTAR. Una categoría no implica funcionalidad lista: un modelo de robot no es robot desarmable hasta la prueba.
