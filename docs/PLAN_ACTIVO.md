@@ -1,5 +1,10 @@
 # IMPACT: BEYOND — Plan activo
 
+## Recursos Fab — seguimiento del 18/11/2026
+
+La [selección Fab vigente](FAB_SELECCION_ACTIVA.md), el [catálogo de 82 candidatos](FAB_CATALOGO_MAESTRO.csv) y el [lote 03](FAB_AUDITORIA_LOTE03_2026-11-18.md) se añadieron como **investigación externa**, NO como cambios integrados en S7. Son 12 seleccionados, 10 para ensayo, 40 reservas, 20 descartados. Continúan sin verificar Mi biblioteca, instalaciones y compatibilidad en el editor UE5.8. Priorizar cuando se autorice una prueba pequeña el arbolado realista de DZ Sample Trees (palmeras/cocotero), bancos y props de City Props Sample, contraste de fachada/modularidad y Water System nativo. Preservar arte y rendimiento de la build S7, medir memoria/VRAM y no adoptar packs gigantes ni mezclar estilos. Promociones de Fab vigentes hasta 1/12: Absorption FX, Post-Apocalyptic Factory y Advanced Companion Drone (el último descartado por alcance actual). Mantener el resto de la fase validada y sus criterios sin regresiones.
+
+
 Actualización: 16 de noviembre de 2026. **Versión jugable S1–S7 integrada y validada mediante build, autoría, paquete, pruebas funcionales y perfil DX12/audio.** [Evidencia final](IB_S7_CLOSURE_REVIEW.md). Publicación/reconciliación en cierre; arranque visible desde Steam verificado con el ejecutable final y Steam Input activado. Evaluación humana del control y mando físico separada; no se afirma aceptación de todos los ensayos sostenidos del plan.
 
 Este documento consolida las decisiones de [PR17](https://github.com/meliodr/juego-/pull/17), los problemas de [PR22](https://github.com/meliodr/juego-/pull/22) y el alcance de [PR23](https://github.com/meliodr/juego-/pull/23). Las instrucciones históricas de laboratorios sobre S2 no ordenan rehacerlos ni bloquean la integración autorizada por el usuario. La cola está en [TAREAS_ACTIVAS.md](TAREAS_ACTIVAS.md).
