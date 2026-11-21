@@ -1,8 +1,8 @@
 # IMPACT: BEYOND
 
-## Estado actual de recursos Fab — 18/11/2026
+## Estado actual de recursos Fab — 21/11/2026
 
-**[Selección vigente para Codex](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo maestro: 82 paquetes](docs/FAB_CATALOGO_MAESTRO.csv)** · **[Auditoría lote 03](docs/FAB_AUDITORIA_LOTE03_2026-11-18.md)**. Distribución: 12 SELECCIONAR, 10 PROBAR, 40 RESERVAR, 20 DESCARTAR. Tres son **promociones oficiales del 17/11 al 1/12** (Absorption FX, fábrica industrial, dron compañero); 27 productos nuevos muestran Free en páginas públicas. **Reclamados/instalados: NO VERIFICADOS**, UE5.8 no probada para los assets nuevos. Las tablas del 15/11 que siguen más abajo son historia, no los totales actuales. El plan principal ya indica S1–S7 jugable y perfilado (16/11): se prioriza fidelidad visual de ciudad, vegetación, malecón y océano sin introducir dependencias ni compras innecesarias.
+**[Selección vigente para Codex](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo maestro: 91 fichas](docs/FAB_CATALOGO_MAESTRO.csv)** · **[Auditoría lote 04](docs/FAB_AUDITORIA_LOTE04_2026-11-21.md)**. Distribución: 12 SELECCIONAR, 14 PROBAR, 43 RESERVAR, 22 DESCARTAR. Lote 04 añade 9 fichas Free nuevas; las tres promociones oficiales del 17/11–1/12 siguen activas. **Reclamados/instalados: NO VERIFICADOS; pruebas UE5.8: NO EJECUTADAS.** City Sample y City Sample Vehicles muestran Allows AI=Yes, Generated with AI=No. La build S1–S7 sigue integrada y validada (16/11); los nuevos packs son comparaciones opcionales, no una orden de modificar la build.
 
 
 ## Fab: selección y biblioteca — 15/11/2026
