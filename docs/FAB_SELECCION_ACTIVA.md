@@ -1,6 +1,21 @@
 # IMPACT: BEYOND — Selección activa de Fab para Codex
 
-## Actualización prioritaria — 18 de noviembre de 2026
+## Actualización prioritaria — 21 de noviembre de 2026
+
+**Última revisión: [lote 04](FAB_AUDITORIA_LOTE04_2026-11-21.md).** El [catálogo maestro](FAB_CATALOGO_MAESTRO.csv) tiene **91 URLs únicas**: **12 SELECCIONAR, 14 PROBAR, 43 RESERVAR y 22 DESCARTAR**. Se añadieron 9 fichas nuevas con precio Free visible; no hay nuevas selecciones inmediatas porque S1–S7 ya está integrado y validado. Los nuevos candidatos sirven para ensayos aislados, no para alterar la build estable. Todos los 91 productos siguen con propiedad e instalación **NO_VERIFICADAS** y pruebas UE5.8 **NO_EJECUTADAS**. El precio Free es público, no prueba que el usuario lo haya reclamado.
+
+**Nuevos ensayos potenciales:** [Free Animation Pack](https://www.fab.com/listings/8de31c5d-93bc-4bd4-9606-ca789ce91b99) vs Motifect; [Item Destruction FX](https://www.fab.com/listings/b23c6751-60f1-40b2-8ee7-5e4dc7f9c9e8) como VFX (no fractura); [Vehicle Variety Pack Volume 2](https://www.fab.com/listings/591e3b3f-9d49-4cd2-8e28-d471c1a10cab) vs v1; [Free Modular Magic SFX](https://www.fab.com/listings/f0422e67-33d3-4c6e-b7a1-1059193960de), sujeto a validar plugin/licencia. En reserva: ALS animations por procedencia, Promo Sound FX y M5 VFX Vol2. Se descartaron un garaje rural y una muestra gótica por estilo/alcance.
+
+**Metadatos corregidos:** las fichas actuales de City Sample y City Sample Vehicles indican Allows usage with AI=Yes, Generated with AI=No; el CSV anterior tenía No. City Sample Buildings sigue Free y NoAI. No usaremos IA generativa ni entrenaremos modelos; NoAI permanece fuera de entradas generativas.
+
+**Promoción:** Fab confirma [Absorption FX](https://www.fab.com/listings/81550176-a90e-4e07-8817-c8d1a1d3884b), [Post-Apocalyptic Factory](https://www.fab.com/listings/c0226253-11f0-425d-8b2c-df9c42c73f49) y [Advanced Companion Drone](https://www.fab.com/listings/205d550d-0a5f-4d5c-9f3e-8f6254b9dc4f) hasta **1/12/2026 9:59 a. m. ET**. No reclamados desde esta auditoría.
+
+**Sin cambios en Mi biblioteca:** la sesión privada no fue accesible. No marcar reclamado/no reclamado, instalado/no instalado ni UE5.8 compatible probado sin evidencia del usuario/editor. No se realizó ninguna compra, reclamación, descarga o instalación.
+
+---
+
+
+## Historial de actualización — 18 de noviembre de 2026 (superado por lote 04)
 
 **Última revisión: [lote 03](FAB_AUDITORIA_LOTE03_2026-11-18.md).** El [catálogo maestro](FAB_CATALOGO_MAESTRO.csv) contiene ahora **82 entradas distintas**: **12 SELECCIONAR, 10 PROBAR, 40 RESERVAR y 20 DESCARTAR** (incluye tres promociones que terminan el **1/12/2026 a las 9:59 a. m. ET**). Las cifras y decisiones de la auditoría del **15/11** que aparecen más abajo son HISTÓRICAS, no el total vigente. Ninguna ficha se ha confirmado como RECLAMADA/INSTALADA por el usuario; tampoco se probó la compatibilidad real de los nuevos packs con UE5.8. Las 27 fichas nuevas con Free/Gratis público pueden cambiar de precio y las 3 promocionales no muestran el precio 0 en visitante, pero sí en la página oficial de promoción. No comprar, reclamar, descargar ni instalar desde esta auditoría.
 
