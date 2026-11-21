@@ -1,13 +1,15 @@
 # AGENTS.md — IMPACT: BEYOND
 
-## Actualización de recursos y estado jugable — 18/11/2026
+## Actualización de recursos y estado jugable — 21/11/2026
 
-Leer **docs/FAB_AUDITORIA_LOTE03_2026-11-18.md** además de **docs/FAB_SELECCION_ACTIVA.md** y **docs/FAB_CATALOGO_MAESTRO.csv** (82 fichas: 12 seleccionadas, 10 por probar, 40 reservas y 20 descartes). Los números anteriores de 52/8/5/27/12 que se ven más abajo son un registro del 15/11, no actuales. **No inferir propiedad**, el acceso de navegador conectado a My Library no está operativo desde este chat; 3 promociones del 17/11 al 1/12 (Absorption FX, Post-Apocalyptic Factory, Advanced Companion Drone). No comprar/reclamar/descargar/instalar ni enviar contenido NoAI a programas de IA generativa.
+Leer **docs/FAB_AUDITORIA_LOTE04_2026-11-21.md**, **docs/FAB_SELECCION_ACTIVA.md** y **docs/FAB_CATALOGO_MAESTRO.csv** (91 fichas: 12 seleccionadas, 14 por probar, 43 reservas y 22 descartes). Los totales de 82/12/10/40/20 corresponden al lote 03 del 18/11; los de 52/8/5/27/12 al 15/11. **No inferir propiedad**: no hay acceso a Mi biblioteca privada desde esta auditoría; los 91 elementos tienen reclamación e instalación NO_VERIFICADAS y prueba UE5.8 NO_EJECUTADA. Fab confirma tres promociones hasta el 1/12/2026 9:59 a. m. ET: Absorption FX, Post-Apocalyptic Factory y Advanced Companion Drone. No comprar/reclamar/descargar/instalar. No entrenar IA. Mantener bytes NoAI fuera de entradas a programas generativos.
+
+La ficha actual de City Sample y City Sample Vehicles muestra Allows usage with AI=Yes y Generated with AI=No; City Sample Buildings sigue NoAI. La función Allows AI es metadato de permiso, no instrucción para usar IA. No entrenar ningún modelo ni usar generación de contenido para este juego.
 
 **La versión S1–S7 fue integrada y validada como build funcional según docs/PLAN_ACTIVO.md y docs/IB_S7_CLOSURE_REVIEW.md al 16/11/2026.** Ya no hablar de W00/W01 como pendientes actuales. Si se evalúan nuevos recursos, hacerlo con un solo ensayo aislado de ciudad/vegetación/malecón/agua por necesidad y priorizar consistencia realista/perfil GPU, sin alterar la build S7 que funciona.
 
 
-## Reglas de selección Fab — catálogo activo (2026-11-15)
+## Reglas de selección Fab — histórico del 15/11/2026 (superado por lotes 03/04)
 
 Antes de crear un personaje, animación, vehículo, escenario, robot, kaiju, VFX o sonido, leer **docs/FAB_SELECCION_ACTIVA.md** y consultar **docs/FAB_CATALOGO_MAESTRO.csv**. Consultar lotes 01/02 para detalles por ficha. Los 52 productos solo están confirmados como **Gratis/Free en listados públicos**, NO como reclamados o instalados. No inferir «lo tengo» ni «no lo tengo» sin acceso real a Mi biblioteca; no descargar, comprar, reclamar o instalar nada automáticamente. Clasificación vigente: 8 SELECCIONAR, 5 PROBAR, 27 RESERVAR, 12 DESCARTAR. Una categoría no implica funcionalidad lista: un modelo de robot no es robot desarmable hasta la prueba.
 
