@@ -1,6 +1,11 @@
 # AGENTS.md — IMPACT: BEYOND
 
-## Actualización de recursos y estado jugable — 21/11/2026
+## Selección Fab vigente — 24/11/2026
+
+Leer docs/FAB_SELECCION_ACTIVA.md, docs/FAB_CATALOGO_MAESTRO.csv y docs/FAB_AUDITORIA_LOTE05_2026-11-24.md (105 fichas; 12 SELECCIONAR, 19 PROBAR, 52 RESERVAR, 22 DESCARTAR). Prioridad: comparar City Street Props en una manzana/malecón aislada. Ningún nuevo asset está confirmado reclamado, instalado o probado. No entrenar IA ni enviar bytes NoAI a modelos generativos; compras RD$0, no reclamar/descargar/instalar desde auditoría. No sustituir el planeta existente por GeoForgeRuntime ni cambiar render global por materiales Substrate. Mantener la build S1–S7 y las reglas de pruebas, licencia y rollback. Totales anteriores son históricos.
+
+
+## Historial de recursos y estado jugable — 21/11/2026
 
 Leer **docs/FAB_AUDITORIA_LOTE04_2026-11-21.md**, **docs/FAB_SELECCION_ACTIVA.md** y **docs/FAB_CATALOGO_MAESTRO.csv** (91 fichas: 12 seleccionadas, 14 por probar, 43 reservas y 22 descartes). Los totales de 82/12/10/40/20 corresponden al lote 03 del 18/11; los de 52/8/5/27/12 al 15/11. **No inferir propiedad**: no hay acceso a Mi biblioteca privada desde esta auditoría; los 91 elementos tienen reclamación e instalación NO_VERIFICADAS y prueba UE5.8 NO_EJECUTADA. Fab confirma tres promociones hasta el 1/12/2026 9:59 a. m. ET: Absorption FX, Post-Apocalyptic Factory y Advanced Companion Drone. No comprar/reclamar/descargar/instalar. No entrenar IA. Mantener bytes NoAI fuera de entradas a programas generativos.
 
