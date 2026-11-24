@@ -1,6 +1,11 @@
 # IMPACT: BEYOND — Plan activo
 
-## Recursos Fab — seguimiento del 21/11/2026
+## Recursos Fab — seguimiento del 24/11/2026
+
+[Selección vigente](FAB_SELECCION_ACTIVA.md), [CSV 105 fichas](FAB_CATALOGO_MAESTRO.csv), [lote 05](FAB_AUDITORIA_LOTE05_2026-11-24.md). 12 seleccionados, 19 por probar, 52 reservas, 22 descartados. **Investigación externa, no cambios de build.** Priorizar ensayo de 10–20 mallas de City Street Props vs City Props Sample en una manzana/malecón, mantener árboles/Water System. Alternativas aisladas para NPC táctico, kaiju, locomoción y chispas. GeoForgeRuntime y Substrate en reserva, sin cambios de sistema planetario ni render. No reclamar, comprar, descargar o instalar. Mantener estados NO_VERIFICADO y NO_EJECUTADO hasta evidencia local.
+
+
+## Recursos Fab — historial del 21/11/2026
 
 La [selección vigente](FAB_SELECCION_ACTIVA.md), el [catálogo de 91 fichas](FAB_CATALOGO_MAESTRO.csv) y la [auditoría lote 04](FAB_AUDITORIA_LOTE04_2026-11-21.md) son **investigación externa**, NO cambios integrados en S7. Distribución: 12 seleccionados, 14 por probar, 43 reservas, 22 descartados. Reclamación e instalación siguen NO_VERIFICADAS; pruebas UE5.8 NO_EJECUTADAS. La build S1–S7 validada al 16/11 no se modifica. Prioridad de mejora visual: una sola manzana/malecón con DZ Sample Trees, City Props Sample, una fachada modular y Water System nativo. Los nuevos candidatos de animación, VFX, vehículos y audio son comparaciones opcionales en mapas aislados. No instalar paquetes masivos, no introducir plugins sin verificar coste, licencia y dependencia, no degradar arte ni VRAM de la build estable. Las promociones oficiales actuales expiran 1/12: Absorption FX y Post-Apocalyptic Factory para pruebas acotadas; Advanced Companion Drone sigue descartado por alcance. Mantener uso privado, offline y compras RD$0.
 
