@@ -1,6 +1,11 @@
 # IMPACT: BEYOND
 
-## Estado actual de recursos Fab — 21/11/2026
+## Estado actual de recursos Fab — 24/11/2026
+
+[Catálogo maestro](docs/FAB_CATALOGO_MAESTRO.csv): **105 fichas únicas**; 12 SELECCIONAR, 19 PROBAR, 52 RESERVAR, 22 DESCARTAR. [Selección vigente](docs/FAB_SELECCION_ACTIVA.md) y [lote 05](docs/FAB_AUDITORIA_LOTE05_2026-11-24.md). Prioridad de ensayo artístico: City Street Props (305 mallas) frente al City Props Sample, 10–20 piezas, sin alterar la build estable. 14 nuevos registros Free públicos; no equivalen a reclamaciones ni a pruebas UE5.8. Las promociones del 1/12 siguen vigentes. Los totales inferiores son históricos.
+
+
+## Historial de recursos Fab — 21/11/2026
 
 **[Selección vigente para Codex](docs/FAB_SELECCION_ACTIVA.md)** · **[Catálogo maestro: 91 fichas](docs/FAB_CATALOGO_MAESTRO.csv)** · **[Auditoría lote 04](docs/FAB_AUDITORIA_LOTE04_2026-11-21.md)**. Distribución: 12 SELECCIONAR, 14 PROBAR, 43 RESERVAR, 22 DESCARTAR. Lote 04 añade 9 fichas Free nuevas; las tres promociones oficiales del 17/11–1/12 siguen activas. **Reclamados/instalados: NO VERIFICADOS; pruebas UE5.8: NO EJECUTADAS.** City Sample y City Sample Vehicles muestran Allows AI=Yes, Generated with AI=No. La build S1–S7 sigue integrada y validada (16/11); los nuevos packs son comparaciones opcionales, no una orden de modificar la build.
 
