@@ -1,6 +1,19 @@
 # IMPACT: BEYOND — Selección activa de Fab para Codex
 
-## Actualización prioritaria — 21 de noviembre de 2026
+## Actualización prioritaria — 24 de noviembre de 2026
+
+**[Lote 05](FAB_AUDITORIA_LOTE05_2026-11-24.md)** · [Catálogo maestro](FAB_CATALOGO_MAESTRO.csv): **105 URLs únicas** (91 anteriores + 14 fichas Free; 12 SELECCIONAR, 19 PROBAR, 52 RESERVAR, 22 DESCARTAR). El lote 04 y los totales anteriores son históricos. No se revalidaron todos los precios antiguos. Las nuevas fichas son candidatos, NO instalaciones ni compatibilidad UE5.8 probada. Todos los estados de propiedad/instalación existentes quedan intactos; las nuevas filas son NO_VERIFICADO/NO_EJECUTADO. Sin acceso al navegador de origen ni al editor.
+
+**Prioridad artística P0:** [City Street Props](https://www.fab.com/listings/717d655e-923f-4c03-bc0b-3509fd1b0ec8) de Dekogon (305 mallas urbanas, Nanite/Lumen, NoAI) frente a City Props Sample. Probar 10–20 piezas en una manzana/malecón, no importar toda la escena; medir colisión, materiales y VRAM. Mantener DZ Sample Trees y Water System nativo. No se cambia la build S1–S7 por investigar catálogos.
+
+**Otros ensayos P1:** [Quantum Modular Character Free Sample](https://www.fab.com/listings/8e200050-3158-4762-b297-f785b5b1533d) para policía/seguridad; [Monster](https://www.fab.com/listings/6fc1668f-c5d9-4146-8da1-ee3d7f958026) con UE4.26–5.8 declarado, rig UE4, sin desarme confirmado; [Game Animation Sample](https://www.fab.com/listings/880e319a-a59e-4ed2-b268-b32dac7fa016) (500+ clips terrestres, NoAI) como donante de 6–10 clips, no reemplazo del vuelo; [Sparks Embers](https://www.fab.com/listings/48e20eb7-0812-4670-b206-44d3b5aa8a01) para una comparación Niagara. En reserva: GeoForgeRuntime (UE5.7/5.8 declarado, planeta editable voxel, Generated with AI=Yes, plugin C++; no integrar), materiales Substrate, Content Examples y otras seis reservas listadas en el lote. No se halló otro paquete completo de vuelo, robot o carros con Free verificable y suficiente valor adicional.
+
+**Promociones:** [Fab](https://www.fab.com/limited-time-free) confirma las mismas tres hasta el 01/12/2026 a las 9:59 a. m. ET. No se reclamó ninguna. Mantener decisiones anteriores. City Sample y Vehicles conservan Allows AI=Yes en fichas abiertas hoy; Buildings mantiene NoAI. No entrenar IA ni enviar activos NoAI a modelos generativos. Juego privado, individual, offline, presupuesto RD$0. No comprar/reclamar/descargar/instalar; un ensayo aislado por necesidad, preservar estabilidad y rollback.
+
+---
+
+
+## Historial — 21 de noviembre de 2026 (superado por lote 05)
 
 **Última revisión: [lote 04](FAB_AUDITORIA_LOTE04_2026-11-21.md).** El [catálogo maestro](FAB_CATALOGO_MAESTRO.csv) tiene **91 URLs únicas**: **12 SELECCIONAR, 14 PROBAR, 43 RESERVAR y 22 DESCARTAR**. Se añadieron 9 fichas nuevas con precio Free visible; no hay nuevas selecciones inmediatas porque S1–S7 ya está integrado y validado. Los nuevos candidatos sirven para ensayos aislados, no para alterar la build estable. Todos los 91 productos siguen con propiedad e instalación **NO_VERIFICADAS** y pruebas UE5.8 **NO_EJECUTADAS**. El precio Free es público, no prueba que el usuario lo haya reclamado.
 
