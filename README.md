@@ -1,5 +1,14 @@
 # IMPACT: BEYOND
 
+## Recursos Fab — actualización del 27/11/2026
+
+[Catálogo maestro](docs/FAB_CATALOGO_MAESTRO.csv): **120 URLs únicas**, 12 SELECCIONAR, 23 PROBAR, 62 RESERVAR, 23 DESCARTAR. [Lote 06](docs/FAB_AUDITORIA_LOTE06_2026-11-27.md): +15 fichas con Free público, incluyendo una variante del mismo Teuthisan ya catalogado; 4 ensayos opcionales, 10 reservas, 1 descarte. Totales inferiores históricos. No es compatibilidad UE5.8 verificada ni inventario de propiedad; no se revalidaron todos los precios históricos. No reclamar, comprar, descargar, instalar ni modificar build desde esta auditoría.
+
+Prioridad: City Street Props más una fachada Modular Urban houses; Factory Environment Collection como alternativa a promoción industrial. Teuthisan variante (UE5.6+) y Utility Truck FBX son pruebas opcionales; CVFX descartado por funciones generativas. Preservar build S1–S7, offline, RD$0, no entrenar IA ni enviar assets NoAI a modelos generativos.
+
+Las tres ofertas oficiales siguen hasta 01/12/2026, 9:59 a. m. ET. Sin acceso a Mi biblioteca (navegador de origen no disponible) ni editor: NO_VERIFICADO/NO_VERIFICADO/NO_EJECUTADO. Ningún recurso nuevo integrado. Reutilizar lo máximo y crear lo mínimo.
+
+
 ## Estado actual de recursos Fab — 24/11/2026
 
 [Catálogo maestro](docs/FAB_CATALOGO_MAESTRO.csv): **105 fichas únicas**; 12 SELECCIONAR, 19 PROBAR, 52 RESERVAR, 22 DESCARTAR. [Selección vigente](docs/FAB_SELECCION_ACTIVA.md) y [lote 05](docs/FAB_AUDITORIA_LOTE05_2026-11-24.md). Prioridad de ensayo artístico: City Street Props (305 mallas) frente al City Props Sample, 10–20 piezas, sin alterar la build estable. 14 nuevos registros Free públicos; no equivalen a reclamaciones ni a pruebas UE5.8. Las promociones del 1/12 siguen vigentes. Los totales inferiores son históricos.
