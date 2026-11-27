@@ -1,5 +1,14 @@
 # IMPACT: BEYOND — Plan activo
 
+## Recursos Fab — actualización del 27/11/2026
+
+[Catálogo maestro](FAB_CATALOGO_MAESTRO.csv): **120 URLs únicas**, 12 SELECCIONAR, 23 PROBAR, 62 RESERVAR, 23 DESCARTAR. [Lote 06](FAB_AUDITORIA_LOTE06_2026-11-27.md): +15 fichas con Free público, incluyendo una variante del mismo Teuthisan ya catalogado; 4 ensayos opcionales, 10 reservas, 1 descarte. Totales inferiores históricos. No es compatibilidad UE5.8 verificada ni inventario de propiedad; no se revalidaron todos los precios históricos. No reclamar, comprar, descargar, instalar ni modificar build desde esta auditoría.
+
+**Prioridad P0:** City Street Props sigue Free/NoAI; comparar 10–20 props y una fachada de [Modular Urban houses](https://www.fab.com/listings/c6a42d9c-f2c5-4155-8ced-b1d6d1592f41) (10 edificios, 40+ mallas) en la manzana de ensayo. **P1:** [Factory Environment Collection](https://www.fab.com/listings/2ee66462-8c2b-4303-892c-83f7fc0d9b3e) como alternativa a la fábrica promocional; [Utility Truck](https://www.fab.com/listings/4eb1d2af-3ede-4a06-8766-7c73e1a96492) como donante FBX; [Teuthisan edición ASC](https://www.fab.com/listings/04d8f11b-ddf6-4e0c-835b-9648e8b4379d) UE5.6+ declarado, comparar con versión Epic ya catalogada, elegir una. No declarar desarme, destrucción ni compatibilidad sin test. Sentinel 00/01 UE5.7+ y Aurora/SUBMERGE en reserva. CVFX Environment Generator descartado por funciones generativas/servicios online. Mantener build S1–S7, planeta y render actuales; no entrenar IA ni enviar NoAI a programas generativos.
+
+Las tres ofertas oficiales siguen hasta 01/12/2026, 9:59 a. m. ET. Sin acceso a Mi biblioteca (navegador de origen no disponible) ni editor: NO_VERIFICADO/NO_VERIFICADO/NO_EJECUTADO. Ningún recurso nuevo integrado. Reutilizar lo máximo y crear lo mínimo.
+
+
 ## Recursos Fab — seguimiento del 24/11/2026
 
 [Selección vigente](FAB_SELECCION_ACTIVA.md), [CSV 105 fichas](FAB_CATALOGO_MAESTRO.csv), [lote 05](FAB_AUDITORIA_LOTE05_2026-11-24.md). 12 seleccionados, 19 por probar, 52 reservas, 22 descartados. **Investigación externa, no cambios de build.** Priorizar ensayo de 10–20 mallas de City Street Props vs City Props Sample en una manzana/malecón, mantener árboles/Water System. Alternativas aisladas para NPC táctico, kaiju, locomoción y chispas. GeoForgeRuntime y Substrate en reserva, sin cambios de sistema planetario ni render. No reclamar, comprar, descargar o instalar. Mantener estados NO_VERIFICADO y NO_EJECUTADO hasta evidencia local.
