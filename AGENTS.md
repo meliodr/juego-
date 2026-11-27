@@ -1,5 +1,14 @@
 # AGENTS.md — IMPACT: BEYOND
 
+## Recursos Fab — actualización del 27/11/2026
+
+[Catálogo maestro](docs/FAB_CATALOGO_MAESTRO.csv): **120 URLs únicas**, 12 SELECCIONAR, 23 PROBAR, 62 RESERVAR, 23 DESCARTAR. [Lote 06](docs/FAB_AUDITORIA_LOTE06_2026-11-27.md): +15 fichas con Free público, incluyendo una variante del mismo Teuthisan ya catalogado; 4 ensayos opcionales, 10 reservas, 1 descarte. Totales inferiores históricos. No es compatibilidad UE5.8 verificada ni inventario de propiedad; no se revalidaron todos los precios históricos. No reclamar, comprar, descargar, instalar ni modificar build desde esta auditoría.
+
+Prioridad: City Street Props más una fachada Modular Urban houses; Factory Environment Collection como alternativa a promoción industrial. Teuthisan variante (UE5.6+) y Utility Truck FBX son pruebas opcionales; CVFX descartado por funciones generativas. Preservar build S1–S7, offline, RD$0, no entrenar IA ni enviar assets NoAI a modelos generativos.
+
+Las tres ofertas oficiales siguen hasta 01/12/2026, 9:59 a. m. ET. Sin acceso a Mi biblioteca (navegador de origen no disponible) ni editor: NO_VERIFICADO/NO_VERIFICADO/NO_EJECUTADO. Ningún recurso nuevo integrado. Reutilizar lo máximo y crear lo mínimo.
+
+
 ## Selección Fab vigente — 24/11/2026
 
 Leer docs/FAB_SELECCION_ACTIVA.md, docs/FAB_CATALOGO_MAESTRO.csv y docs/FAB_AUDITORIA_LOTE05_2026-11-24.md (105 fichas; 12 SELECCIONAR, 19 PROBAR, 52 RESERVAR, 22 DESCARTAR). Prioridad: comparar City Street Props en una manzana/malecón aislada. Ningún nuevo asset está confirmado reclamado, instalado o probado. No entrenar IA ni enviar bytes NoAI a modelos generativos; compras RD$0, no reclamar/descargar/instalar desde auditoría. No sustituir el planeta existente por GeoForgeRuntime ni cambiar render global por materiales Substrate. Mantener la build S1–S7 y las reglas de pruebas, licencia y rollback. Totales anteriores son históricos.
