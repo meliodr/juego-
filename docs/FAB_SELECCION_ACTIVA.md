@@ -1,5 +1,14 @@
 # IMPACT: BEYOND — Selección activa de Fab para Codex
 
+## Actualización prioritaria — 27 de noviembre de 2026
+
+[Catálogo maestro](FAB_CATALOGO_MAESTRO.csv): **120 URLs únicas**, 12 SELECCIONAR, 23 PROBAR, 62 RESERVAR, 23 DESCARTAR. [Lote 06](FAB_AUDITORIA_LOTE06_2026-11-27.md): +15 fichas con Free público, incluyendo una variante del mismo Teuthisan ya catalogado; 4 ensayos opcionales, 10 reservas, 1 descarte. Totales inferiores históricos. No es compatibilidad UE5.8 verificada ni inventario de propiedad; no se revalidaron todos los precios históricos. No reclamar, comprar, descargar, instalar ni modificar build desde esta auditoría.
+
+**Prioridad P0:** City Street Props sigue Free/NoAI; comparar 10–20 props y una fachada de [Modular Urban houses](https://www.fab.com/listings/c6a42d9c-f2c5-4155-8ced-b1d6d1592f41) (10 edificios, 40+ mallas) en la manzana de ensayo. **P1:** [Factory Environment Collection](https://www.fab.com/listings/2ee66462-8c2b-4303-892c-83f7fc0d9b3e) como alternativa a la fábrica promocional; [Utility Truck](https://www.fab.com/listings/4eb1d2af-3ede-4a06-8766-7c73e1a96492) como donante FBX; [Teuthisan edición ASC](https://www.fab.com/listings/04d8f11b-ddf6-4e0c-835b-9648e8b4379d) UE5.6+ declarado, comparar con versión Epic ya catalogada, elegir una. No declarar desarme, destrucción ni compatibilidad sin test. Sentinel 00/01 UE5.7+ y Aurora/SUBMERGE en reserva. CVFX Environment Generator descartado por funciones generativas/servicios online. Mantener build S1–S7, planeta y render actuales; no entrenar IA ni enviar NoAI a programas generativos.
+
+Las tres ofertas oficiales siguen hasta 01/12/2026, 9:59 a. m. ET. Sin acceso a Mi biblioteca (navegador de origen no disponible) ni editor: NO_VERIFICADO/NO_VERIFICADO/NO_EJECUTADO. Ningún recurso nuevo integrado. Reutilizar lo máximo y crear lo mínimo.
+
+
 ## Actualización prioritaria — 24 de noviembre de 2026
 
 **[Lote 05](FAB_AUDITORIA_LOTE05_2026-11-24.md)** · [Catálogo maestro](FAB_CATALOGO_MAESTRO.csv): **105 URLs únicas** (91 anteriores + 14 fichas Free; 12 SELECCIONAR, 19 PROBAR, 52 RESERVAR, 22 DESCARTAR). El lote 04 y los totales anteriores son históricos. No se revalidaron todos los precios antiguos. Las nuevas fichas son candidatos, NO instalaciones ni compatibilidad UE5.8 probada. Todos los estados de propiedad/instalación existentes quedan intactos; las nuevas filas son NO_VERIFICADO/NO_EJECUTADO. Sin acceso al navegador de origen ni al editor.
